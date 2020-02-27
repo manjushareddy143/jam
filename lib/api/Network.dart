@@ -1,4 +1,4 @@
-mport 'package:http/http.dart';
+import 'package:http/http.dart';
 
 class Network {
   final String url;
