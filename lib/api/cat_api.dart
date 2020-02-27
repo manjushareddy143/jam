@@ -1,3 +1,6 @@
+import 'network.dart';
+import 'package:flutter_demo/cat_info.dart';
+
 const String apiKey = 'Your Key';
 //1
 const String catAPIURL = 'https://api.thecatapi.com/v1/breeds?';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'button.dart';
+import 'package:flutter_demo/api/cat_api.dart';
 
 void main() => runApp(MyApp());
 
@@ -24,6 +24,31 @@ class MyApp extends StatelessWidget {
       ),
       //home: MyHomePage(title: 'Flutter Demo Home Page'),
       home: Button(),
+    );
+  }
+}
+class Button extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Button'),
+      ),
+      body: Center(
+        child: FlatButton.icon(
+          color: Colors.pink,
+          icon: Icon(Icons.apps), //`Icon` to display
+          label: Text('GET API'), //`Text` to display
+          onPressed: () {
+           Future<http.Response> fetchPost() {
+              return http.get('https://jsonplaceholder.typicode.com/posts/1');
+    }
+            }
+            //Code to execute when Floating Action Button is clicked
+            //...
+          },
+        ),
+      ),
     );
   }
 }

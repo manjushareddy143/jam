@@ -1,18 +1,18 @@
-import 'package:http/http.dart';
+import 'package:http/http.dart'; //imports the http library
 
 class Network {
   final String url;
-  //2
-  Network(this.url);
 
-  // 3
+  Network(this.url); //network class has constructor that takes the string url
+
+  //it includes asynchronous function named getData
   Future getData() async {
     print('Calling uri: $url');
-    // 4
+    // uses http get method with the given url and waits for the response
     Response response = await get(url);
-    // 5
+    // checks the status code if 200 response is ok, if anything else its an error
     if (response.statusCode == 200) {
-      // 6
+      // returns the result
       return response.body;
     } else {
       print(response.statusCode);
