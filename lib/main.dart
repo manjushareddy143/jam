@@ -1,52 +1,46 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/api/cat_api.dart';
+import 'package:http/http.dart' as http;
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      //home: MyHomePage(title: 'Flutter Demo Home Page'),
-      home: Button(),
-    );
-  }
+void main() {
+  runApp(new MaterialApp(
+    home: new HomePage(),
+  ));
 }
-class Button extends StatelessWidget {
+
+class HomePage extends StatefulWidget {
+  @override
+  HomePageState createState() => new HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+
+  String data;
+
+//Api call n responce method
+
+  Future<String> getData() async {
+    http.Response  response = await http.get(
+        Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
+        headers: {
+          "Accept": "application/json"
+        }
+    );
+    data=json.decode(response.body);
+    print(response.body);
+
+    return "Success!";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Button'),
-      ),
-      body: Center(
-        child: FlatButton.icon(
-          color: Colors.pink,
-          icon: Icon(Icons.apps), //`Icon` to display
-          label: Text('GET API'), //`Text` to display
-          onPressed: () {
-           Future<http.Response> fetchPost() {
-              return http.get('https://jsonplaceholder.typicode.com/posts/1');
-    }
-            }
-            //Code to execute when Floating Action Button is clicked
-            //...
-          },
+    return new Scaffold(
+      body: new Center(
+        child: new RaisedButton(
+          child: new Text("Get API requested data"),
+          onPressed: getData,
         ),
       ),
     );
