@@ -17,9 +17,10 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
 
-  List data;
+  List<Post> data;
+  List tempData;
 
-  Future<String> getData() async {
+  Future<List<Post>> getData() async {
     var response = await http.get(
         Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
         headers: {
@@ -28,31 +29,14 @@ class HomePageState extends State<HomePage> {
     );
 
     this.setState(() {
-      data = json.decode(response.body);
+      tempData = json.decode(response.body);
+      // return data.map<Post>((json) => Post.fromJson(json)).toList();
     });
-
-    print(data[1]["title"]);
-
-    return data.map<Post>((json) => Post.fromJson(json)).toList();
+    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
+    print(Post);
   }
 
-  class Post{
-    final int userId;
-    final int id;
-    final String title;
 
-    Post(
-  {this.userId, this.id, this.title});
-
-    factory Post.fromJson(Map<String, dynamic> json){
-      return Post(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
-      );
-  }
-
-  }
 
   @override
   void initState(){
@@ -65,18 +49,31 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("List"),
-      ),
-      body: new ListView.builder(
-        itemCount: data == null ? 0 : data.length,
-        itemBuilder: (BuildContext context, int index) {
-          return new Card(
-            child: new Text(data[index]["title"]),
+        appBar: new AppBar(
+          title: new Text("List"),
+        ),
+        body: new ListView.builder(
+            itemCount: data == null ? 0 : data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return new Card(
+                child: Text(data[index].title),
 
-          );
-        },
-      ),
+              );}
+        ));
+  }}
+class Post {
+  int userId;
+  int id;
+  String title;
+
+  Post({this.userId, this.id, this.title});
+
+  factory Post.fromJson(Map<String, dynamic> json){
+    return Post(
+      userId: json['userId'],
+      id: json['id'],
+      title: json['title'],
     );
   }
+
 }
