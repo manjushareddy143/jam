@@ -1,14 +1,23 @@
+
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter_demo/api/network.dart';
 
 void main() {
   runApp(new MaterialApp(
     home: new HomePage(),
   ));
 }
+
+
+
+const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,29 +29,48 @@ class HomePageState extends State<HomePage> {
   List<Post> data;
   List tempData;
 
-  Future<List<Post>> getData() async {
-    var response = await http.get(
-        Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
-        headers: {
-          "Accept": "application/json"
-        }
-    );
 
-    this.setState(() {
-      tempData = json.decode(response.body);
-      // return data.map<Post>((json) => Post.fromJson(json)).toList();
-    });
-    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
-    print(Post);
-  }
+
+
+
+
 
 
 
   @override
   void initState(){
     super.initState();
-    this.getData();
+    this.getMyData();
+    this.setState(() {
+
+
+
+    });
+
+
+
+
   }
+
+
+   Future<List<Post>> getMyData() async{
+    MyNet network = MyNet('$apiUrl');
+    var response = await network.getData();
+    tempData = json.decode(response);
+    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
+    return data;
+
+
+
+
+  }
+
+
+
+
+
+
+
 
 
 
@@ -60,7 +88,33 @@ class HomePageState extends State<HomePage> {
 
               );}
         ));
-  }}
+  }
+/* Future<List<Post>> getData() async {
+    var response = await http.get(
+        Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
+        headers: {
+          "Accept": "application/json"
+        }
+    );
+*/
+/* Future<List<Post>> getMyData() async{
+   MyNet n = MyNet('https://jsonplaceholder.typicode.com/posts');
+   var res = await network.getData();
+    this.setState(() {
+      tempData = json.decode(res.body);
+
+    });
+    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
+    print(Post);
+  }
+*/}
+
+
+
+
+
+
+
 class Post {
   int userId;
   int id;
@@ -68,12 +122,15 @@ class Post {
 
   Post({this.userId, this.id, this.title});
 
-  factory Post.fromJson(Map<String, dynamic> json){
+  factory Post.fromJson(Map<String, dynamic> json){print(Post(
+    userId: json['userId'],
+    id: json['id'],
+    title: json['title'],
+  ),);
     return Post(
       userId: json['userId'],
       id: json['id'],
       title: json['title'],
     );
   }
-
 }
