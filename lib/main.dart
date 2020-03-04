@@ -1,7 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:flutter_demo/services.dart';
 
 import 'package:flutter/material.dart';
 
@@ -19,6 +19,24 @@ const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
 
 
+
+/*class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Collapsing List Demo')),
+        body: CollapsingList(),
+      ),
+    );
+  }
+}*/
+
+
+
+
+
+
 class HomePage extends StatefulWidget {
   @override
   HomePageState createState() => new HomePageState();
@@ -31,25 +49,12 @@ class HomePageState extends State<HomePage> {
 
 
 
-
-
-
-
-
-
   @override
   void initState(){
     super.initState();
     this.getMyData();
     this.setState(() {
-
-
-
     });
-
-
-
-
   }
 
 
@@ -60,17 +65,7 @@ class HomePageState extends State<HomePage> {
     data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
     return data;
 
-
-
-
   }
-
-
-
-
-
-
-
 
 
 
@@ -78,36 +73,21 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("List"),
+          title: new Text(""),
         ),
-        body: new ListView.builder(
+        body:CollapsingList(),
+            /*
+        new ListView.builder(
             itemCount: data == null ? 0 : data.length,
             itemBuilder: (BuildContext context, int index) {
               return new Card(
                 child: Text(data[index].title),
 
               );}
-        ));
+        )*/);
   }
-/* Future<List<Post>> getData() async {
-    var response = await http.get(
-        Uri.encodeFull("https://jsonplaceholder.typicode.com/posts"),
-        headers: {
-          "Accept": "application/json"
-        }
-    );
-*/
-/* Future<List<Post>> getMyData() async{
-   MyNet n = MyNet('https://jsonplaceholder.typicode.com/posts');
-   var res = await network.getData();
-    this.setState(() {
-      tempData = json.decode(res.body);
 
-    });
-    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
-    print(Post);
-  }
-*/}
+}
 
 
 
