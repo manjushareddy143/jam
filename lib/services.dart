@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-
+import 'package:flutter_demo/api/detail.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -61,11 +61,26 @@ class CollapsingList extends StatelessWidget {
         SliverGrid.count(
           crossAxisCount: 3, // how many grid needed in a row
           children: <Widget> [
-            Container(color: Colors.red, height: 150.0, child: new Column(
+            GestureDetector( //tapping to go the corresponding view linked with it using navigator
+              onTap: () {
+                Navigator.push(context,MaterialPageRoute(builder: (context)=> HelloWorldApp()));
+              },
+
+              child: new Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                new Icon(Icons.face),
-                new Text('salon for women')
+                //new Padding(padding: EdgeInsets.all(10.0)),
+                new Container(
+                    width: 80.00,
+                    height: 40.00,
+                    decoration: new BoxDecoration( //immutable description of how to paint box(i.e. border, color, shadow etc.)
+                      image: new DecorationImage( //image is painted using paintImage for BoxDecoration
+                        image: ExactAssetImage('assets/images/6745.jpg'),//fetches image from an AssetBundle
+                        fit: BoxFit.fitHeight,
+                      ),
+                    )),//new Icon(Icons.face),
+                new Padding(padding: EdgeInsets.all(10.0)),
+                new Text('salon for women'),
               ],
             ),  ),
             Container(color: Colors.purple, height: 150.0),
@@ -112,19 +127,6 @@ class CollapsingList extends StatelessWidget {
               );
             },
             childCount: 20,
-          ),
-        ),
-        makeHeader('Header Section 4'),
-        // Yes, this could also be a SliverFixedExtentList. Writing 
-        // this way just for an example of SliverList construction.
-        SliverList(
-          delegate: SliverChildListDelegate(
-            [
-              Container(color: Colors.pink, height: 150.0),
-              Container(color: Colors.cyan, height: 150.0),
-              Container(color: Colors.indigo, height: 150.0),
-              Container(color: Colors.blue, height: 150.0),
-            ],
           ),
         ),
       ],
