@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 
-
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
     @required this.minHeight,
     @required this.maxHeight,
     @required this.child,
-  });
+  }); //configuration for the slivers layout
   final double minHeight;
   final double maxHeight;
   final Widget child;
@@ -22,9 +21,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       double shrinkOffset,
       bool overlapsContent)
   {
-    return new SizedBox.expand(child: child);
+    return new SizedBox.expand(child: child); //box with a specified size
   }
-  @override
+  @override //called to check if the present delegate is different from old delegate, if yes it rebuilds
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return maxHeight != oldDelegate.maxHeight ||
         minHeight != oldDelegate.minHeight ||
@@ -32,7 +31,17 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 class CollapsingList extends StatelessWidget {
-  SliverPersistentHeader makeHeader(String headerText) {
+  @override
+  /*void initState(){
+    super.initState();
+    this.getServices();
+    this.setState(() {
+    });
+  } */
+
+
+
+  SliverPersistentHeader makeHeader(String headerText) { //a layout that SliverAppBar uses for its shrinking/growing effect
     return SliverPersistentHeader(
       pinned: true,
       delegate: _SliverAppBarDelegate(
@@ -46,13 +55,19 @@ class CollapsingList extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
+    return CustomScrollView( //view that contains an expanding app bar followed by a list & grid
       slivers: <Widget>[
         makeHeader('Various Services'),
         SliverGrid.count(
           crossAxisCount: 3, // how many grid needed in a row
-          children: [
-            Container(color: Colors.red, height: 150.0),
+          children: <Widget> [
+            Container(color: Colors.red, height: 150.0, child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                new Icon(Icons.face),
+                new Text('salon for women')
+              ],
+            ),  ),
             Container(color: Colors.purple, height: 150.0),
             Container(color: Colors.green, height: 150.0),
             Container(color: Colors.orange, height: 150.0),
@@ -62,7 +77,10 @@ class CollapsingList extends StatelessWidget {
             Container(color: Colors.indigo, height: 150.0),
             Container(color: Colors.blue, height: 150.0),
           ],
+
+
         ),
+
         makeHeader('Header Section 2'),
         SliverFixedExtentList(
           itemExtent: 150.0,
@@ -113,3 +131,5 @@ class CollapsingList extends StatelessWidget {
     );
   }
 }
+
+
