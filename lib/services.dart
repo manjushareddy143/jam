@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
-import 'package:flutter_demo/api/detail.dart';
+import 'package:jam/api/detail.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -53,50 +53,73 @@ class CollapsingList extends StatelessWidget {
       ),
     );
   }
+
+
+
+
+
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView( //view that contains an expanding app bar followed by a list & grid
       slivers: <Widget>[
-        makeHeader('Various Services'),
+        makeHeader('Various Services'), //calling appbar method by passing the Text as argument.
+        //Padding: const EdgeInsets.all(8.0),
+
         SliverGrid.count(
           crossAxisCount: 3, // how many grid needed in a row
+          mainAxisSpacing: 4.0,
+          crossAxisSpacing: 4.0,
           children: <Widget> [
-            GestureDetector( //tapping to go the corresponding view linked with it using navigator
-              onTap: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context)=> HelloWorldApp()));
-              },
 
-              child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                //new Padding(padding: EdgeInsets.all(10.0)),
-                new Container(
-                    width: 80.00,
-                    height: 40.00,
-                    decoration: new BoxDecoration( //immutable description of how to paint box(i.e. border, color, shadow etc.)
-                      image: new DecorationImage( //image is painted using paintImage for BoxDecoration
+
+            Container(        alignment: FractionalOffset.center,
+                              decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey[600]),
+                              ),
+
+                child:new GestureDetector( //tapping to go the corresponding view linked with it using navigator
+                              onTap: () {
+                               Navigator.push(context,MaterialPageRoute(builder: (context)=> HelloWorldApp()));
+                                         },
+                child:
+                   new Column(
+
+                      mainAxisAlignment:  MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                       children: <Widget>[
+
+
+
+                    new Container(
+
+                        width: 130.00,
+                        height: 60.00,
+                        decoration: new BoxDecoration(  //immutable description of how to paint box(i.e. border, color, shadow etc.)
+                        image: new DecorationImage( //image is painted using paintImage for BoxDecoration
                         image: ExactAssetImage('assets/images/6745.jpg'),//fetches image from an AssetBundle
                         fit: BoxFit.fitHeight,
-                      ),
-                    )),//new Icon(Icons.face),
-                new Padding(padding: EdgeInsets.all(10.0)),
-                new Text('salon for women'),
-              ],
-            ),  ),
-            Container(color: Colors.purple, height: 150.0),
-            Container(color: Colors.green, height: 150.0),
-            Container(color: Colors.orange, height: 150.0),
-            Container(color: Colors.yellow, height: 150.0),
-            Container(color: Colors.pink, height: 150.0),
-            Container(color: Colors.cyan, height: 150.0),
-            Container(color: Colors.indigo, height: 150.0),
-            Container(color: Colors.blue, height: 150.0),
+
+                          ),
+                       )),//new Icon(Icons.face),
+
+                    new Padding(padding: EdgeInsets.all(10.0)),
+
+                    new Text('salon for women'),
+                  ],
+                ),
+              ),
+            ),
           ],
-
-
         ),
 
-        makeHeader('Header Section 2'),
+       /* makeHeader('Header Section 2'),
         SliverFixedExtentList(
           itemExtent: 150.0,
           delegate: SliverChildListDelegate(
@@ -108,8 +131,8 @@ class CollapsingList extends StatelessWidget {
               Container(color: Colors.yellow),
             ],
           ),
-        ),
-        makeHeader('Header Section 3'),
+        ), */
+        /*makeHeader('Header Section 3'),
         SliverGrid(
           gridDelegate:
           new SliverGridDelegateWithMaxCrossAxisExtent(
@@ -128,10 +151,42 @@ class CollapsingList extends StatelessWidget {
             },
             childCount: 20,
           ),
-        ),
+        ), */
       ],
     );
   }
 }
 
 
+
+/*class Testi {
+
+  String name;
+
+  Testi({this.name, this.id});
+
+  factory Testi.fromJson(Map<String, dynamic> json){
+    return new Testi(name: json['name'] as String,
+
+    );
+
+  }
+}
+
+
+
+getMyData() async{
+  String objText = '{"name": "a"}, {"name": "b"}, {"name": "c"}, {"name": "d"},';
+
+  tempData = json.decode(objText);
+
+  data=tempData.map<Testi>((m) => new Testi.fromJson(m)).toList();
+  setState(() {
+
+  });
+
+
+
+  // return data;
+
+}*/

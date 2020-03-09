@@ -9,8 +9,8 @@ class MyNet {
   MyNet(this.url);
 
 //here api call request and response happens in getData() method
-  Future<dynamic> getData() async {
-   var response = await get(url);
+  Future  getData() async {
+   var response = await get(url, headers: {"Accept":"application/json"});
 
 //checking if the data is fetched, if yes response is 200 else mentions the problem happened while fetching json file.
     if (response.statusCode == 200) {

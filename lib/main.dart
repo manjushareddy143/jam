@@ -1,11 +1,11 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_demo/services.dart';
+import 'package:jam/services.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_demo/api/network.dart';
+import 'package:jam/api/network.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -53,18 +53,26 @@ class HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
-    this.getMyData();
+   //this.getMyData();
     this.setState(() {
     });
   }
 
 
-   Future<List<Post>> getMyData() async{
+    getMyData() async{
     MyNet network = MyNet('$apiUrl');
     var response = await network.getData();
+
     tempData = json.decode(response);
-    data= tempData.map<Post>((json) => Post.fromJson(json)).toList();
-    return data;
+
+    data=tempData.map<Post>((m) => new Post.fromJson(m)).toList();
+    setState(() {
+
+    });
+
+
+
+   // return data;
 
   }
 
@@ -74,18 +82,23 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text(""),
+          title: new Text("Testing"),
+
         ),
-        body:CollapsingList(),
-            /*
-        new ListView.builder(
+        body:      CollapsingList(),
+
+       /*   ListView.builder(
             itemCount: data == null ? 0 : data.length,
+
             itemBuilder: (BuildContext context, int index) {
               return new Card(
-                child: Text(data[index].title),
+                child:
+
+                Text(data[index].title),
 
               );}
-        )*/);
+        )   */
+    );
   }
 
 }
@@ -97,21 +110,17 @@ class HomePageState extends State<HomePage> {
 
 
 class Post {
-  int userId;
-  int id;
-  String title;
+    int userId;
+   int id;
+   String title;
 
   Post({this.userId, this.id, this.title});
 
-  factory Post.fromJson(Map<String, dynamic> json){print(Post(
-    userId: json['userId'],
-    id: json['id'],
-    title: json['title'],
-  ),);
-    return Post(
-      userId: json['userId'],
-      id: json['id'],
-      title: json['title'],
+  factory Post.fromJson(Map<String, dynamic> json){
+    return new Post(userId: json['userId'] as int,
+     id: json['id'] as int,
+     title: json['title'] as String,
     );
+
   }
 }
