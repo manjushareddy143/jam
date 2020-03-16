@@ -7,13 +7,51 @@ import 'package:flutter/material.dart';
 
 import 'package:jam/api/network.dart';
 
-void main() {
-  runApp(new MaterialApp(
-    home: new HomePage(),
-  ));
+ main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget{
+   @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: SplashScreen());
+
+  }
+}
+class SplashScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return SplashScreenState();
+  }
 }
 
 
+class SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 2), () {
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+
+          ));
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(
+        child: new Image.asset("assets/images/splashScreen.png",
+        fit: BoxFit.fill,
+          height: double.infinity,
+          width: double.infinity,),
+      ),
+    );
+  }
+}
 
 const String apiUrl = 'https://jsonplaceholder.typicode.com/posts';
 
