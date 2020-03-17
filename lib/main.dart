@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:jam/login/login.dart';
 import 'package:jam/services.dart';
 
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => UserLogin(),
 
           ));
     });

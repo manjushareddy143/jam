@@ -5,7 +5,7 @@ class HelloWorldApp extends StatelessWidget {
     return new MaterialApp(
       home: new Material(
         child: new Center(
-          child: new Text("Hello world!"),
+          child: new Text("Service view of the tapped one!"),
 
         ),
 
