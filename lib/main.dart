@@ -45,7 +45,7 @@ class SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       body: new Center(
-        child: new Image.asset("assets/images/splashScreen.png",
+        child: new Image.asset("assets/images/Splash-1x.jpg",
         fit: BoxFit.fill,
           height: double.infinity,
           width: double.infinity,),
