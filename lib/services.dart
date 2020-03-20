@@ -49,7 +49,7 @@ class CollapsingList extends StatelessWidget {
         maxHeight: 200.0,
         child: Container(
             color: Colors.lightBlue, child: Center(child:
-        Text(headerText))),
+               Text(headerText))),
       ),
     );
   }

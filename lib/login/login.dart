@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jam/services.dart';
+import 'package:jam/api/network.dart';
+
+
+
+
 
 class UserLogin extends StatefulWidget {
 
@@ -9,19 +14,44 @@ class UserLogin extends StatefulWidget {
 
 
 class _user extends State<UserLogin>{
+  final _primeKey = GlobalKey<State>();
+  const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
-   bool _value1 = false;
+  bool _value1 = false;
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
+
+  authen() async {
+    MyNet network = MyNet('$loginURL');
+    var loginResponse = await network.getData();
+    print(loginResponse);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(title: Text("JAM"),
+            content: new Text(loginResponse),
+            actions: <Widget>[
+              new FlatButton(color: Colors.teal,
+                child: new Text("OK"), onPressed: () {
+                  Navigator.of(context).pop();
+                },),
+            ],);
+        });
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
-    Paint paint = Paint();
-    paint.color= Colors.teal;
-    return new Material(
 
-          child:  SingleChildScrollView(
+
+    Paint paint = Paint();
+    final txtUser = TextEditingController();
+    final txtPass = TextEditingController();
+    paint.color= Colors.teal;
+    return  new Material( key: _primeKey,
+
+        child:  SingleChildScrollView(
             //child:Padding(
 
               // padding: const EdgeInsets.fromLTRB(5,20,5,20),
@@ -59,21 +89,37 @@ class _user extends State<UserLogin>{
                   
                   Container( padding: new  EdgeInsets.all(20),
                     child:
-                   Column(children: <Widget>[
+                    Column(children: <Widget>[
 
-                    new TextFormField(
+                     new TextFormField(
+                      controller: txtUser
+                      ,
+                       validator: (value){
+                         if (value.isEmpty) {
+                           return 'Please enter username!!';
+                         }
+                         return null;
+                       },
 
-
-                    obscureText: false,
+                       obscureText: false,
                        decoration: InputDecoration( suffixIcon: Icon(Icons.face),
                       border: OutlineInputBorder(),
                       labelText: 'Email or Username',
                     ),
+
                   ),
-                    SizedBox(height: 20),
-                     new TextField(
-                    obscureText: true,
-                    decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                       SizedBox(height: 20),
+                     new TextFormField(
+                       controller: txtPass,
+                       validator: (value){
+                         if (value.isEmpty) {
+                           return 'Please enter password!!';
+                         }
+                         return null;
+                       },
+
+                      obscureText: true,
+                       decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
@@ -92,25 +138,49 @@ class _user extends State<UserLogin>{
                     ],
                   ),),
                   SizedBox(height: 10),
-                  new  FlatButton(
+                  new  RaisedButton(
                     color: Colors.teal,
                     textColor: Colors.white,
                     padding: EdgeInsets.fromLTRB(150,10,150,10),
-                    onPressed: () {
-
-                      Navigator.push(
-                           context,
-                          MaterialPageRoute(
-                            builder: (context) => CollapsingList(),
-
-                          ));
-
-
-                    },
+                     //invokes _authUser function which validate data entered as well does the api call
                     child: const Text(
                         'Login',
                         style: TextStyle(fontSize: 20)
                     ),
+                    onPressed: () {
+                      if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
+                        showDialog(
+                            context: context, builder: (BuildContext context) {
+                          return AlertDialog(content: new Text(
+                              "Please fill in the given feilds"),
+                            actions: <Widget>[
+                              new FlatButton(color: Colors.teal,
+                                child: new Text("OK"), onPressed: () {
+                                  Navigator.of(context).pop();
+                                },),
+                            ],);
+                        });
+                      }
+                      else {
+                        authen();
+                      }
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   ),
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -132,5 +202,6 @@ class _user extends State<UserLogin>{
           );
 
   }
+
 
 }
