@@ -15,29 +15,29 @@ class UserLogin extends StatefulWidget {
 
 class _user extends State<UserLogin>{
   final _primeKey = GlobalKey<State>();
-  const String loginURL ="";
+  //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   bool _value1 = false;
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
-  authen() async {
-    MyNet network = MyNet('$loginURL');
-    var loginResponse = await network.getData();
-    print(loginResponse);
+  /* authen() async {
+   //MyNet network = MyNet('$loginURL');
+    //var loginResponse = await network.getData();
+   // print(loginResponse);
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(title: Text("JAM"),
-            content: new Text(loginResponse),
+            content: new Text("hello"),
             actions: <Widget>[
               new FlatButton(color: Colors.teal,
                 child: new Text("OK"), onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.push(context,MaterialPageRoute(builder: (context)=> CollapsingList()));
                 },),
             ],);
         });
-  }
+  } */
 
 
 
@@ -148,7 +148,10 @@ class _user extends State<UserLogin>{
                         style: TextStyle(fontSize: 20)
                     ),
                     onPressed: () {
-                      if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
+
+
+                      Navigator.push(context,MaterialPageRoute(builder: (context)=> CollapsingList()));
+                    /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
                         showDialog(
                             context: context, builder: (BuildContext context) {
                           return AlertDialog(content: new Text(
@@ -163,7 +166,7 @@ class _user extends State<UserLogin>{
                       }
                       else {
                         authen();
-                      }
+                      } */
                     }
 
 
@@ -182,6 +185,25 @@ class _user extends State<UserLogin>{
 
 
                   ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text("Already have an account?"),
@@ -197,9 +219,11 @@ class _user extends State<UserLogin>{
 
 
              ]
-            )
-          )
-          );
+            ),
+          ),
+
+              );
+
 
   }
 

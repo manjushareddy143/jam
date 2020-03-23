@@ -43,7 +43,7 @@ class CollapsingList extends StatelessWidget {
 
   SliverPersistentHeader makeHeader(String headerText) { //a layout that SliverAppBar uses for its shrinking/growing effect
     return SliverPersistentHeader(
-      pinned: true,
+      //pinned: true,
       delegate: _SliverAppBarDelegate(
         minHeight: 60.0,
         maxHeight: 200.0,
@@ -67,9 +67,9 @@ class CollapsingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView( //view that contains an expanding app bar followed by a list & grid
+    return Scaffold( body: CustomScrollView( //view that contains an expanding app bar followed by a list & grid
       slivers: <Widget>[
-        makeHeader('Various Services'), //calling appbar method by passing the Text as argument.
+        makeHeader('Various Services', ), //calling appbar method by passing the Text as argument.
         //Padding: const EdgeInsets.all(8.0),
 
         SliverGrid.count(
@@ -89,104 +89,110 @@ class CollapsingList extends StatelessWidget {
                                Navigator.push(context,MaterialPageRoute(builder: (context)=> HelloWorldApp()));
                                          },
                 child:
-                   new Column(
+                    Column(
 
                       mainAxisAlignment:  MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      //crossAxisAlignment: CrossAxisAlignment.center,
                        children: <Widget>[
 
 
 
-                    new Container(
+                      Container(
 
-                        width: 130.00,
-                        height: 60.00,
+                        width: 80.00,
+                        height: 80.00,
                         decoration: new BoxDecoration(  //immutable description of how to paint box(i.e. border, color, shadow etc.)
                         image: new DecorationImage( //image is painted using paintImage for BoxDecoration
                         image: ExactAssetImage('assets/images/6745.jpg'),//fetches image from an AssetBundle
-                        fit: BoxFit.fitHeight,
+                        fit: BoxFit.fill,
 
                           ),
                        )),//new Icon(Icons.face),
 
-                    new Padding(padding: EdgeInsets.all(10.0)),
+                     Padding(padding: EdgeInsets.all(1.0)),
 
-                    new Text('salon for women'),
+                     Text('salon for women', style: TextStyle(fontSize: 10)),
+
                   ],
-                ),
+             ),
               ),
             ),
           ],
+
         ),
 
-       /* makeHeader('Header Section 2'),
-        SliverFixedExtentList(
-          itemExtent: 150.0,
-          delegate: SliverChildListDelegate(
-            [
-              Container(color: Colors.red),
-              Container(color: Colors.purple),
-              Container(color: Colors.green),
-              Container(color: Colors.orange),
-              Container(color: Colors.yellow),
-            ],
-          ),
-        ), */
-        /*makeHeader('Header Section 3'),
-        SliverGrid(
-          gridDelegate:
-          new SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-            mainAxisSpacing: 10.0,
-            crossAxisSpacing: 10.0,
-            childAspectRatio: 4.0,
-          ),
-          delegate: new SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-              return new Container(
-                alignment: Alignment.center,
-                color: Colors.teal[100 * (index % 9)],
-                child: new Text('grid item $index'),
-              );
-            },
-            childCount: 20,
-          ),
-        ), */
+
+
+
       ],
+
+
+
+    ),
+
+
+    bottomNavigationBar : BottomNavigationBar(
+      currentIndex: 0,
+        items: [ BottomNavigationBarItem(
+         backgroundColor: Colors.lightBlue,
+           icon: Icon(
+               Icons.home,
+             size: 30,
+                  color: Colors.white70,
+                 ),
+             title: Text(
+                  "Home",
+                 style: TextStyle(fontSize: 30, color: Colors.white70),
+                  ),
+    activeIcon: Icon(
+    Icons.home,
+    size: 30,
+    color:Colors.black,
+    ),
+    ),
+    BottomNavigationBarItem(
+    backgroundColor: Colors.lightBlue,
+    icon: Icon(
+    Icons.category,
+    size: 30,
+    color: Colors.white70,
+    ),
+    title: Text(
+    "Categories",
+    style: TextStyle(fontSize: 30, color: Colors.white70),
+    ),
+    ),
+    BottomNavigationBarItem(
+    backgroundColor: Colors.lightBlue,
+    icon: Icon(
+    Icons.perm_identity,
+    size: 30,
+    color: Colors.white70,
+    ),
+    title: Text(
+    "My Account",
+    style: TextStyle(fontSize: 30, color: Colors.white70),
+    ),
+    ),
+    BottomNavigationBarItem(
+    backgroundColor: Colors.lightBlue,
+    icon: Icon(
+    Icons.train,
+    size: 30,
+    color: Colors.white70,
+    ),
+    title: Text(
+    "Orders",
+    style: TextStyle(fontSize: 30, color: Colors.white70),
+    ),
+    ),
+  ],
+    ),
+
     );
+
   }
 }
 
 
 
-/*class Testi {
-
-  String name;
-
-  Testi({this.name, this.id});
-
-  factory Testi.fromJson(Map<String, dynamic> json){
-    return new Testi(name: json['name'] as String,
-
-    );
-
-  }
-}
-
-
-
-getMyData() async{
-  String objText = '{"name": "a"}, {"name": "b"}, {"name": "c"}, {"name": "d"},';
-
-  tempData = json.decode(objText);
-
-  data=tempData.map<Testi>((m) => new Testi.fromJson(m)).toList();
-  setState(() {
-
-  });
-
-
-
-  // return data;
-
-}*/
