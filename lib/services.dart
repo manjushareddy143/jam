@@ -170,15 +170,3 @@ class CollapsingList extends StatelessWidget {
 
 
 
-class NewPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("New Page")),
-      body: Center(
-          child: Text("New Page",
-              style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold))),
-    );
-  }
-}
-

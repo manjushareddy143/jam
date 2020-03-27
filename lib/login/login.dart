@@ -151,7 +151,7 @@ class _user extends State<UserLogin>{
                     onPressed: () {
 
 
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=> Home()));
+                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
                     /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
                         showDialog(
                             context: context, builder: (BuildContext context) {
