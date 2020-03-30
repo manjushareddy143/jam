@@ -1,6 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:jam/api/detail.dart';
+import 'package:jam/carousel.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -54,6 +56,8 @@ class CollapsingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       body:
       CustomScrollView( //view that contains an expanding app bar followed by a list & grid
@@ -112,6 +116,17 @@ class CollapsingList extends StatelessWidget {
 
           ),
 
+          SliverFixedExtentList(
+            itemExtent: 150.0,
+            delegate: SliverChildListDelegate(
+              [
+               Container( child: CarouselDemo()),
+              ],
+            ),
+          ),
+
+
+
 
         ],
 
@@ -120,52 +135,24 @@ class CollapsingList extends StatelessWidget {
 
 
 
-      /*bottomNavigationBar: BottomNavigationBar(
-        onTap: (int index) {
-          Navigator.of(context)
-              .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
-            return new NewPage();
-          }));
-
-        } ,
-
-
-
-        selectedItemColor: Colors.teal,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.white,
-        iconSize: 30,
-        type: BottomNavigationBarType.fixed,
-
-        items: [ BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home,),
-            title: new Text("Home")
-        ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.category,),
-              title: new Text("Categories")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                  Icons.perm_identity),
-              title: new Text("My Account")
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.train,),
-              title: new Text("Orders")
-
-          ),
-        ],
-
-      ),*/
 
 
     );
 
   }
+  //CarouselSlider carouselSlider;
+  //int _current = 0;
+  final imgList = ['assets/images/ac-repair.jpeg', 'assets/images/salon.jpg'];
+ /* List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
+  }
+*/
+
+
 }
 
 
