@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:jam/api/detail.dart';
-import 'package:jam/carousel.dart';
+import 'package:jam/swiper.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -117,9 +117,10 @@ class CollapsingList extends StatelessWidget {
           ),
 
           SliverFixedExtentList(
-            itemExtent: 150.0,
+            itemExtent: 200.0,
             delegate: SliverChildListDelegate(
               [
+
                Container( child: CarouselDemo()),
               ],
             ),
@@ -140,17 +141,6 @@ class CollapsingList extends StatelessWidget {
     );
 
   }
-  //CarouselSlider carouselSlider;
-  //int _current = 0;
-  final imgList = ['assets/images/ac-repair.jpeg', 'assets/images/salon.jpg'];
- /* List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-    return result;
-  }
-*/
 
 
 }
