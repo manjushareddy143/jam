@@ -16,6 +16,13 @@ class CarouselDemoState extends State<CarouselDemo> {
     'assets/images/ac-repair.jpeg',
     'assets/images/ac-repair.jpeg',
   ];
+  List<String> phrase = [
+    'Home Cleaning Services',
+    'Exclusive Offers',
+    '50% off',
+    'Home Repair & Maintenance',
+  ];
+
 
 
   @override
@@ -28,15 +35,16 @@ class CarouselDemoState extends State<CarouselDemo> {
       return Stack( children:<Widget>[Center(child: Image.asset(
         photos[photoIndex],
         fit: BoxFit.fill,
-      width: double.infinity,),),
+      width: double.infinity,),
+      ),
           Center(
           child: Container(
           //width: 90,
           //height: 90,
           //color: Colors.white,
-            child: Text("Home Cleaning Services",
-          style: TextStyle( fontWeight: FontWeight.w800,
-          color: Colors.black,
+            child: Text(phrase[photoIndex],
+          style: TextStyle( fontWeight: FontWeight.bold,
+          color: Colors.white,
           )),),)]
 
 
