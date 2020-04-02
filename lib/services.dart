@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:jam/api/detail.dart';
 import 'package:jam/swiper.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -166,14 +167,62 @@ class CollapsingList extends StatelessWidget {
               ],
             ),
           ),
+         SliverFixedExtentList(itemExtent: 200.0,
+        delegate: SliverChildListDelegate(
+             [
+
+             Container( child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 children:<Widget>[
+               Text('Why We Are?',
+                 textAlign: TextAlign.center,
+                 overflow: TextOverflow.ellipsis,
+                 style: TextStyle(fontWeight: FontWeight.w300, fontSize: 28.0,),
+               ),
+                   Text('We value our customers',
+                     textAlign: TextAlign.center,
+                     overflow: TextOverflow.ellipsis,
+                     style: TextStyle(fontWeight: FontWeight.w300, fontSize: 19.0,color: Colors.grey),
+                   ),
+                   SizedBox(height: 20,),
+                   Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                       children: <Widget>[
+                         Container(child: Column(
+                           children: <Widget>[
+                             Icon(Icons.account_box, color: Colors.teal, size:40.0),
+                             Text('Verified Professionals',)
+
+                           ],
+                         ),),
+                         Container(child: Column(
+                           children: <Widget>[
+                             Icon(Icons.assignment, color: Colors.teal, size:40.0),
+                             Text('Insured Work',)
+
+                           ],
+                         ),),
+
+                         Container(child:Column(
+                           children: <Widget>[
+                             Icon(MaterialIcons.person, color: Colors.teal, size:40.0),
+                             Text('Professional Support',)
+
+                           ],
+                         )),
+                       ],
+                   ),
+             ]
+
+             ),),
+    ],),
 
 
 
 
-        ],
 
-
-      ),
+         ),
+  ], ),
 
 
 
