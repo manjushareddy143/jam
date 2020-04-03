@@ -1,6 +1,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/services.dart';
 

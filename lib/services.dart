@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:jam/api/detail.dart';
+import 'package:jam/api/detailStart.dart';
 import 'package:jam/swiper.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/placeholder_widget.dart';
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate({
@@ -55,8 +57,16 @@ class CollapsingList extends StatelessWidget {
     'Agricultural & garden services',
 
   ];
-
-
+  final List<Widget> _service = [
+    //CollapsingList(),
+    //DetailPage(),
+    PlaceholderWidget(Colors.red),
+    HomeStart(),
+    PlaceholderWidget(Colors.grey),
+    PlaceholderWidget(Colors.white),
+    PlaceholderWidget(Colors.deepOrange),
+    PlaceholderWidget(Colors.green)
+  ];
 
 
   SliverPersistentHeader makeHeader(String headerText) {
@@ -114,8 +124,7 @@ class CollapsingList extends StatelessWidget {
 
                   child: new GestureDetector( //tapping to go the corresponding view linked with it using navigator
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => HelloWorldApp()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => _service[serviceIndex]));
                     },
                     child:
 

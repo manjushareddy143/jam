@@ -3,13 +3,13 @@ import 'package:jam/api/detail.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/services.dart';
 
-class Home extends StatefulWidget {
+class HomeStart extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomeState();
+    return _HomeStart();
   }
 }
-class _HomeState extends State<Home> {
+class _HomeStart extends State<HomeStart> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     CollapsingList(),
@@ -22,37 +22,20 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.white70,
 
-        title:Column( crossAxisAlignment: CrossAxisAlignment.start,children: <Widget>[
-        Text('Your Location',
-           textAlign: TextAlign.left,style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w400, color: Colors.grey,  ), ),
-          Container( child: new GestureDetector( //tapping to go the corresponding view linked with it using navigator
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => NewPage()));
-            },child: Row(children: <Widget>[Text('B Ring Road, Doha, Qatar',style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w400 , color: Colors.black),),
-            Icon(Icons.arrow_drop_down, color: Colors.teal,)],),),)
+        title:
 
-            ],),
-
-          actions: <Widget>[
-         new IconButton(icon: new Icon(Icons.shopping_cart),
-      onPressed: (){},),
-
-          ],
-
-         iconTheme: IconThemeData(
-         color: Colors.grey,
-         ),
-
+          Text('1100 +  AC Services',
+            textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400, color: Colors.black,  ), ),
 
 
 
 
 
       ),
-      body: _children[_currentIndex],
+      body: DetailPage(),
+      //_children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
 
         onTap: onTabTapped,// this will be set when a new tab is tapped
