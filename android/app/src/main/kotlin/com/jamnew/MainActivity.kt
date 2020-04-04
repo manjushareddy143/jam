@@ -1,4 +1,4 @@
-package com.jam
+package com.jamnew
 
 import android.support.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
