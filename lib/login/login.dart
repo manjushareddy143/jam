@@ -15,10 +15,14 @@ class UserLogin extends StatefulWidget {
 
 
 class _user extends State<UserLogin>{
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
   final _primeKey = GlobalKey<State>();
   //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   bool _value1 = false;
+  final txtUser = TextEditingController();
+  final txtPass = TextEditingController();
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
@@ -47,14 +51,15 @@ class _user extends State<UserLogin>{
 
 
     Paint paint = Paint();
-    final txtUser = TextEditingController();
-    final txtPass = TextEditingController();
+
     paint.color= Colors.teal;
     return  new Material( key: _primeKey,
 
-        child:  SingleChildScrollView(
+        child:  new Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child:  SingleChildScrollView(
             //child:Padding(
-
               // padding: const EdgeInsets.fromLTRB(5,20,5,20),
                 child: new Column(
 
@@ -99,7 +104,7 @@ class _user extends State<UserLogin>{
                          if (value.isEmpty) {
                            return 'Please enter username!!';
                          }
-                         return null;
+                         return validateEmail(value);
                        },
 
                        obscureText: false,
@@ -150,8 +155,8 @@ class _user extends State<UserLogin>{
                     ),
                     onPressed: () {
 
+                      _validateInputs();
 
-                      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
                     /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
                         showDialog(
                             context: context, builder: (BuildContext context) {
@@ -223,10 +228,31 @@ class _user extends State<UserLogin>{
             ),
           ),
 
-              );
+              ));
 
 
   }
 
+  void _validateInputs() {
+    if (_formKey.currentState.validate()) {
+//    If all data are correct then do API call
+      _formKey.currentState.save();
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
+    } else {
+//    If all data are not valid then start auto validation.
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
 
+  String validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value))
+      return 'Enter Valid Email';
+    else
+      return null;
+  }
 }
