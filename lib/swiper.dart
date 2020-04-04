@@ -35,7 +35,7 @@ class CarouselDemoState extends State<CarouselDemo> {
       return Stack( children:<Widget>[Center(child: Image.asset(
         photos[photoIndex],
         fit: BoxFit.fill,
-      width: double.infinity,),
+      width: double.infinity,height: 250,),
       ),
           Center(
           child: Container(
