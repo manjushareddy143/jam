@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:jam/login/signup.dart';
+import 'package:jam/login/signup_screen.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
@@ -10,10 +10,8 @@ import 'package:jam/home_widget.dart';
 
 
 class UserLogin extends StatefulWidget {
-
   _user createState() => new _user();
 }
-
 
 class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -45,14 +43,9 @@ class _user extends State<UserLogin>{
         });
   } */
 
-
-
   @override
   Widget build(BuildContext context) {
-
-
     Paint paint = Paint();
-
     paint.color= Colors.teal;
     return  new Material( key: _primeKey,
 
@@ -175,48 +168,14 @@ class _user extends State<UserLogin>{
                         authen();
                       } */
                     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                   ),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Create an account?"),
+                      Text("Don't have an account?"),
 
                       FlatButton( onPressed:(){
-                        Navigator.push(context,MaterialPageRoute(builder: (context)=> SignUp()));},
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=> SignupScreen()));},
                         child:
                         Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
