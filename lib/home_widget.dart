@@ -55,12 +55,13 @@ class _HomeState extends State<Home> {
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
 
-        onTap: onTabTapped,// this will be set when a new tab is tapped
+        onTap: onTabTapped,// this  will be set when a new tab is tapped
         currentIndex: _currentIndex, // new
         selectedItemColor: Colors.teal,
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         iconSize: 30,
+        
         type: BottomNavigationBarType.fixed,
 
         items: [ BottomNavigationBarItem(
