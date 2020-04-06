@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:jam/login/signup.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
@@ -212,9 +213,12 @@ class _user extends State<UserLogin>{
 
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Already have an account?"),
+                      Text("Create an account?"),
 
-                      Text("Sign In", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),
+                      FlatButton( onPressed:(){
+                        Navigator.push(context,MaterialPageRoute(builder: (context)=> SignUp()));},
+                        child:
+                        Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
