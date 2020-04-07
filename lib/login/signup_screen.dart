@@ -222,7 +222,7 @@ class _SignupPageState extends State<SignupPage> {
           onPressed: () {
             _validateInputs();
           },
-          child: const Text('Signu Up', style: TextStyle(fontSize: 20,color: Colors.white)),
+          child: const Text('Sign Up', style: TextStyle(fontSize: 20,color: Colors.white)),
         ),
       ],
     );
