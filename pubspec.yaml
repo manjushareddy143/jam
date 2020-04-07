@@ -19,6 +19,15 @@ environment:
 dependencies:
   flutter_launcher_icons: ^0.7.4
 
+  flutter_datetime_picker: ^1.3.5
+
+  intl: ^0.15.8
+
+  # loading view
+  flutter_spinkit: ^4.0.0
+  # for shared preferences
+  shared_preferences: ^0.5.6
+
 
 
 

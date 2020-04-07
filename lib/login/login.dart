@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
+import 'package:jam/utils/httpclient.dart';
+import 'package:jam/utils/utils.dart';
 
 
 
@@ -184,9 +189,6 @@ class _user extends State<UserLogin>{
                   SizedBox(height: 30,),
                   Text('Skip for Now',
                     textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
-
-
-
              ]
             ),
           ),
@@ -196,11 +198,49 @@ class _user extends State<UserLogin>{
 
   }
 
+  Future callLoginAPI() async {
+    Map<String, String> data = new Map();
+
+    data["email"] = txtUser.text;
+    data["password"] = txtPass.text;
+
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/login', data);
+      processLoginResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processLoginResponse(Response res) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+
+        if(data['code'] == false) {
+          printLog("token : $data");
+          print(data["message"]);
+          showInfoAlert(context, data["message"]);
+        } else {
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
+        }
+      } else {
+        printLog("login response code is not 200");
+
+      }
+    }
+  }
+
   void _validateInputs() {
+
     if (_formKey.currentState.validate()) {
 //    If all data are correct then do API call
       _formKey.currentState.save();
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
+      callLoginAPI();
     } else {
 //    If all data are not valid then start auto validation.
       setState(() {
