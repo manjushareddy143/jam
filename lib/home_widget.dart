@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jam/api/detail.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
@@ -41,6 +42,8 @@ class _HomeState extends State<Home> {
          new IconButton(icon: new Icon(Icons.shopping_cart),
       onPressed: (){
            Preferences.removePreference("email");
+           Navigator.pushReplacement(context, MaterialPageRoute(
+               builder: (context) => UserLogin()));
       },),
 
           ],
