@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jam/api/detail.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/services.dart';
+import 'package:jam/utils/preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -38,7 +39,9 @@ class _HomeState extends State<Home> {
 
           actions: <Widget>[
          new IconButton(icon: new Icon(Icons.shopping_cart),
-      onPressed: (){},),
+      onPressed: (){
+           Preferences.removePreference("email");
+      },),
 
           ],
 

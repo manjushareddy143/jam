@@ -6,8 +6,9 @@ import 'package:jam/login/login.dart';
 import 'package:jam/services.dart';
 
 import 'package:flutter/material.dart';
-
+import 'package:jam/home_widget.dart';
 import 'package:jam/api/network.dart';
+import 'package:jam/utils/preferences.dart';
 
  main() {
   runApp(MyApp());
@@ -33,13 +34,34 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-
-      Navigator.pushReplacement(
+    /* Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => UserLogin(),
 
-          ));
+          )); */
+      
+      Preferences.readObject("email").then((val){
+        if(val == null)
+          {
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+      builder: (context) => UserLogin(),
+
+      )); }
+        else{
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+      builder: (context) => Home(),
+
+      ));
+      }
+
+      });
+
+
     });
   }
   @override

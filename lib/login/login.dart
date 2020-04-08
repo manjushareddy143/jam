@@ -8,6 +8,7 @@ import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
 import 'package:jam/utils/httpclient.dart';
+import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 
 
@@ -226,7 +227,11 @@ class _user extends State<UserLogin>{
           print(data["message"]);
           showInfoAlert(context, data["message"]);
         } else {
-          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
+          String r =data["email"];
+          print(r);
+
+          Preferences.saveObject("email", r);
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home()));
         }
       } else {
         printLog("login response code is not 200");
