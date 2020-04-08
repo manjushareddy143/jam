@@ -39,10 +39,10 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool isISP = false;
+ /* bool isISP = false;
   String _type;
   List<DropdownMenuItem<String>> _dropDownTypes;
-  Map<String, dynamic> _lstType = {"CSP" : "Corporate Service Provider", "ISP" : "Individual Service Provider"};
+  Map<String, dynamic> _lstType = {"CSP" : "Corporate Service Provider", "ISP" : "Individual Service Provider"}; */
 
 
   String _gender = "Male";
@@ -55,14 +55,14 @@ class _SignupPageState extends State<SignupPage> {
   final txtPass = TextEditingController();
   final txtConfPass = TextEditingController();
   final txtContact = TextEditingController();
-  final txtExp = TextEditingController();
+  //final txtExp = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
-    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
-    _type = _dropDownTypes[0].value;
+    //_dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
+    //_type = _dropDownTypes[0].value;
   }
 
   @override
@@ -179,15 +179,17 @@ class _SignupPageState extends State<SignupPage> {
 //            _account = val;
                 },
               ),
+             setRadio(),
+             checkBox(),
              // dropdown setup
-              setDropDown(),
+             // setDropDown(),
 
             ],
           ),
         ),
 
         // DETAILS
-        Visibility(
+      /*  Visibility(
         visible: isISP,
           child: Column(
             children: <Widget>[
@@ -210,7 +212,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
     ],
           )
-        ),
+        ), */
 
         SizedBox(height: 10),
 
@@ -251,12 +253,12 @@ class _SignupPageState extends State<SignupPage> {
     data["name"] = txtName.text;
     data["password"] = txtPass.text;
     data["contact"] = txtContact.text;
-    if(_type == "ISP") {
+   /* if(_type == "ISP") {
       data["type"] = "Individual service provider";
     } else {
       data["type"] = "Corporate Service Provider";
     }
-
+*/
     data["gender"] = _gender;
 //    String lang = "";
 //    if(arabic) {
@@ -265,13 +267,18 @@ class _SignupPageState extends State<SignupPage> {
 //    if(english) {
 //      lang += "english,";
 //    }
-//    data["language"] = lang;
+//  data["language"] = lang;
     data["language"] = "arabic,english";
-    data["start_time"] = startTime;
-    data["end_time"] = endTime;
-    data["experience"] = txtExp.text;
+   // data["start_time"] = startTime;
+   // data["end_time"] = endTime;
+   // data["experience"] = txtExp.text;
     data["email"] = txtEmail.text;
-    try {
+    print(data["gender"]);
+    print(data["name"]);
+    print(data["email"]);
+    print(data["language"]);
+    print(data["password"]);
+  /*  try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
       await httpClient.postRequest(context, 'http://jam.savitriya.com/api/register', data);
@@ -280,7 +287,7 @@ class _SignupPageState extends State<SignupPage> {
       if (e is Exception) {
         printExceptionLog(e);
       }
-    }
+    } */
   }
 
   void processLoginResponse(Response res) {
@@ -292,6 +299,7 @@ class _SignupPageState extends State<SignupPage> {
         var data = json.decode(res.body);
 
         if(data['status'] == "200") {
+
           Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
         } else {
 
@@ -307,7 +315,7 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
-  String startTime = null;
+ /* String startTime = null;
   String endTime = null;
   
   Widget setTimer() {
@@ -398,7 +406,7 @@ class _SignupPageState extends State<SignupPage> {
       }
     });
   }
-
+*/
 
   Widget checkBox() {
     return Container(
