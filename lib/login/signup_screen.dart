@@ -68,23 +68,27 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
+    return Scaffold(resizeToAvoidBottomPadding: false,
       appBar: BackButtonAppBar(title: widget.title,),
       body: Container(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         margin: const EdgeInsets.all(10.0),
-        child: Center(
-            child: Container(
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 2.0, color: Colors.grey)),
-              child: new Form(
-                key: _formKey,
-                autovalidate: _autoValidate,
-                child: signupScreenUI(),
-              ),
-            )),
+        
+          child: Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2.0, color: Colors.grey)),
+                  child: new Form(
+                    key: _formKey,
+                    autovalidate: _autoValidate,
+                    child: signupScreenUI(),
+                  ),
+                ),
+              )),
+       
       ),
     );
   }
