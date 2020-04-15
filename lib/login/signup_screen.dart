@@ -1,5 +1,6 @@
 
 
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,8 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:jam/components/back_button_appbar.dart';
 import 'package:jam/home_widget.dart';
+import 'package:jam/models/service.dart';
+import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/widget_helper.dart';
@@ -156,7 +159,7 @@ class _SignupPageState extends State<SignupPage> {
               TextFormField(
                 obscureText: true,
                 decoration: InputDecoration(hintText: "Confirm Password"),
-                controller: TextEditingController(),//..text = 'KAR-MT30',
+//                controller: TextEditingController(),//..text = 'KAR-MT30',
                 validator:  (value){
                   print("val = $value");
                   print(txtPass.text);
@@ -263,6 +266,7 @@ class _SignupPageState extends State<SignupPage> {
       data["type"] = "Corporate Service Provider";
     }
 */
+    data["type"] = "SC";
     data["gender"] = _gender;
 //    String lang = "";
 //    if(arabic) {
@@ -272,7 +276,10 @@ class _SignupPageState extends State<SignupPage> {
 //      lang += "english,";
 //    }
 //  data["language"] = lang;
-    data["language"] = "arabic,english";
+//    data["language"] = "arabic,english";
+    String lang = languages.join(', ');
+    print(lang);
+    data["language"] = lang;//"arabic,english";
    // data["start_time"] = startTime;
    // data["end_time"] = endTime;
    // data["experience"] = txtExp.text;
@@ -282,16 +289,16 @@ class _SignupPageState extends State<SignupPage> {
     print(data["email"]);
     print(data["language"]);
     print(data["password"]);
-  /*  try {
+    try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/register', data);
+      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/customer_register', data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
       }
-    } */
+    }
   }
 
   void processLoginResponse(Response res) {
@@ -299,18 +306,13 @@ class _SignupPageState extends State<SignupPage> {
     if (res != null) {
 
       if (res.statusCode == 200) {
-
-        var data = json.decode(res.body);
-
-        if(data['status'] == "200") {
-
-          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
-        } else {
-
-          printLog("token : $data");
-          print(data["message"]);
-          showInfoAlert(context, data["error"].toString());
-        }
+//        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ));
+//        getServices();
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);
@@ -318,6 +320,43 @@ class _SignupPageState extends State<SignupPage> {
       }
     }
   }
+
+//  void getServices() async {
+//    try {
+//      Map<String, String> data = new HashMap();
+//      HttpClient httpClient = new HttpClient();
+//      var syncReportResponse =
+//      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
+//      processReportResponse(syncReportResponse);
+//    } on Exception catch (e) {
+//      if (e is Exception) {
+//        printExceptionLog(e);
+//      }
+//    }
+//  }
+
+//  void processReportResponse(Response res) {
+//    print('get daily format');
+//    if (res != null) {
+//      if (res.statusCode == 200) {
+//        var data = json.decode(res.body);
+//        print(data);
+//        List roles = data;
+//        List<Service> listofRoles = Service.processServices(roles);
+//        printLog(listofRoles.length);
+//        // Preferences.saveObject('reportformate', jsonEncode(listofRoles));
+//        Navigator.pushReplacement(
+//            context,
+//            MaterialPageRoute(
+//              builder: (context) => HomeScreen(),
+//            ));
+//      } else {
+//        printLog("login response code is not 200");
+//      }
+//    } else {
+//      print('no data');
+//    }
+//  }
 
  /* String startTime = null;
   String endTime = null;
@@ -412,6 +451,8 @@ class _SignupPageState extends State<SignupPage> {
   }
 */
 
+ List languages = new List();
+
   Widget checkBox() {
     return Container(
       child: Column(
@@ -422,6 +463,15 @@ class _SignupPageState extends State<SignupPage> {
               Checkbox(
                 value: arabic,
                 onChanged: (bool value) {
+                  if(value) {
+                    if(!languages.contains('arabic')) {
+                      languages.add('arabic');
+                    }
+                  } else {
+                    if(languages.contains('arabic')) {
+                      languages.remove('arabic');
+                    }
+                  }
                   setState(() {
                       arabic = value;
                   });
@@ -432,6 +482,15 @@ class _SignupPageState extends State<SignupPage> {
               new Checkbox(
                 value: english,
                 onChanged: (bool value) {
+                  if(value) {
+                    if(!languages.contains('english')) {
+                      languages.add('english');
+                    }
+                  } else {
+                    if(languages.contains('english')) {
+                      languages.remove('english');
+                    }
+                  }
                   setState(() {
                       english = value;
                   });

@@ -83,10 +83,8 @@ class HttpClient {
       BuildContext context, String apiUrl, Map<String, String> data,
       String token, bool showLoad, bool hideLoad) async {
     //String apiUrl = baseUrl + "${url}";
-    print('showLoad: $showLoad');
-    if(showLoad) {
-      showLoading(context);
-    }
+//    print('showLoad: $showLoad');
+    showLoading(context);
 
     printLog(apiUrl);
 
@@ -94,27 +92,27 @@ class HttpClient {
     if (isNetworkAvailable) {
       Map<String, String> headers = new Map();
 
-      String params = "";
+//      String params = "";
 
-      if (data != null) {
-        apiUrl += "?";
-        data.forEach((k, v) {
-          params = params + k + "=" + v + "&";
-        });
-        if (params.length > 0) {
-          params = params.substring(0, params.length - 1);
-        }
-      }
-
-      apiUrl += params;
+//      if (data != null) {
+//        apiUrl += "?";
+//        data.forEach((k, v) {
+//          params = params + k + "=" + v + "&";
+//        });
+//        if (params.length > 0) {
+//          params = params.substring(0, params.length - 1);
+//        }
+//      }
+//
+//      apiUrl += params;
 
       printLog(apiUrl);
 
 //      headers["Content-Type"] = "application/json";
       //headers["Authorization"] = "Bearer ${token}";
-      headers["Authorization"] = "$token"; //"Basic";
+//      headers["Authorization"] = "$token"; //"Basic";
 
-      http.Response response = await http.get(apiUrl, headers: headers);
+      http.Response response = await http.get(apiUrl);
 
       response = handleResponse(context, response, hideLoad);
 
@@ -163,13 +161,13 @@ class HttpClient {
 
     print('hideload: $hideLoad');
     //we received API response
-    if(hideLoad){
-      print('come to hide');
+//    if(hideLoad){
+//      print('come to hide');
       dismissLoading(context);
-    } else {
-      print('dont hide');
-    }
-
+//    } else {
+//      print('dont hide');
+//    }
+    print('123123');
 
     //handle token expire and logout the user (400 and 406 indicates expired tokens)
     if (response.statusCode == 400 || response.statusCode == 406) {

@@ -12,8 +12,7 @@ class HomeStart extends StatefulWidget {
 class _HomeStart extends State<HomeStart> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    CollapsingList(),
-
+    HomeDesign(),
     PlaceholderWidget(Colors.white),
     PlaceholderWidget(Colors.deepOrange),
     PlaceholderWidget(Colors.green)
