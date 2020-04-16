@@ -1,12 +1,8 @@
-import 'dart:collection';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:jam/login/signup_screen.dart';
-import 'package:jam/models/service.dart';
-import 'package:jam/screens/home_screen.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
@@ -26,7 +22,6 @@ class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   final _primeKey = GlobalKey<State>();
-  //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   bool _value1 = false;
   final txtUser = TextEditingController();
@@ -34,12 +29,16 @@ class _user extends State<UserLogin>{
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
+
+
   @override
   Widget build(BuildContext context) {
     Paint paint = Paint();
     paint.color= Colors.teal;
     return  new Scaffold( key: _primeKey,
 
+
+       
           body: new Form(
             key: _formKey,
             autovalidate: _autoValidate,
@@ -142,22 +141,7 @@ class _user extends State<UserLogin>{
 
                         _validateInputs();
 
-                      /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
-                          showDialog(
-                              context: context, builder: (BuildContext context) {
-                            return AlertDialog(content: new Text(
-                                "Please fill in the given feilds"),
-                              actions: <Widget>[
-                                new FlatButton(color: Colors.teal,
-                                  child: new Text("OK"), onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },),
-                              ],);
-                          });
-                        }
-                        else {
-                          authen();
-                        } */
+
                       }
                     ),
 
@@ -190,7 +174,6 @@ class _user extends State<UserLogin>{
 
     data["email"] = txtUser.text;
     data["password"] = txtPass.text;
-    data["access_type"] = 'api';
 
     try {
       HttpClient httpClient = new HttpClient();
@@ -207,7 +190,6 @@ class _user extends State<UserLogin>{
   void processLoginResponse(Response res) {
     if (res != null) {
       if (res.statusCode == 200) {
-        printLog("y0000");
         var data = json.decode(res.body);
 
         if(data['code'] == false) {
@@ -219,53 +201,14 @@ class _user extends State<UserLogin>{
           print(r);
 
           Preferences.saveObject("email", r);
-//          getServices();
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home()));
         }
-
       } else {
         printLog("login response code is not 200");
 
       }
     }
   }
-
-//  void getServices() async {
-//    try {
-//      Map<String, String> data = new HashMap();
-//      HttpClient httpClient = new HttpClient();
-//      var syncReportResponse =
-//      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
-//      processReportResponse(syncReportResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
-
-//  void processReportResponse(Response res) {
-//    print('get daily format');
-//    if (res != null) {
-//      if (res.statusCode == 200) {
-//        var data = json.decode(res.body);
-//        print(data);
-//        List roles = data;
-//        List<Service> listofRoles = Service.processServices(roles);
-//        printLog(listofRoles.length);
-//        // Preferences.saveObject('reportformate', jsonEncode(listofRoles));
-//
-//      } else {
-//        printLog("login response code is not 200");
-//      }
-//    } else {
-//      print('no data');
-//    }
-//  }
 
   void _validateInputs() {
 
