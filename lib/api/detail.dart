@@ -1,7 +1,7 @@
-//import 'package:flutter/cupertino.dart';
-//import 'package:flutter/material.dart';
-//import 'dart:math' as math;
-//import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'dart:math' as math;
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 //
 //class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 //  _SliverAppBarDelegate({
