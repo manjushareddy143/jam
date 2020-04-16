@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -23,7 +22,6 @@ class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   final _primeKey = GlobalKey<State>();
-  //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   bool _value1 = false;
   final txtUser = TextEditingController();
@@ -31,23 +29,7 @@ class _user extends State<UserLogin>{
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
-  /* authen() async {
-   //MyNet network = MyNet('$loginURL');
-    //var loginResponse = await network.getData();
-   // print(loginResponse);
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(title: Text("JAM"),
-            content: new Text("hello"),
-            actions: <Widget>[
-              new FlatButton(color: Colors.teal,
-                child: new Text("OK"), onPressed: () {
-                  Navigator.push(context,MaterialPageRoute(builder: (context)=> CollapsingList()));
-                },),
-            ],);
-        });
-  } */
+
 
   @override
   Widget build(BuildContext context) {
@@ -159,22 +141,7 @@ class _user extends State<UserLogin>{
 
                         _validateInputs();
 
-                      /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
-                          showDialog(
-                              context: context, builder: (BuildContext context) {
-                            return AlertDialog(content: new Text(
-                                "Please fill in the given feilds"),
-                              actions: <Widget>[
-                                new FlatButton(color: Colors.teal,
-                                  child: new Text("OK"), onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },),
-                              ],);
-                          });
-                        }
-                        else {
-                          authen();
-                        } */
+
                       }
                     ),
 

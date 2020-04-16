@@ -34,14 +34,14 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 2), () {
-    /* Navigator.pushReplacement(
+     Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => UserLogin(),
+            builder: (context) => Home(),
 
-          )); */
+          ));
       
-      Preferences.readObject("email").then((val){
+    /*  Preferences.readObject("email").then((val){
         if(val == null)
           {
       Navigator.pushReplacement(
@@ -59,7 +59,7 @@ class SplashScreenState extends State<SplashScreen> {
       ));
       }
 
-      });
+      }); */
 
 
     });
