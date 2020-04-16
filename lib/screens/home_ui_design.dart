@@ -1,4 +1,3 @@
-
 import 'dart:collection';
 import 'dart:convert';
 
@@ -10,31 +9,26 @@ import 'package:jam/models/service.dart';
 import 'dart:math' as math;
 
 import 'package:jam/placeholder_widget.dart';
+import 'package:jam/screens/provider_list_screen.dart';
 import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 
 class HomeUIDesign extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: HomeUIPage(serverIP: "127.0.0.1")
-    );
+    return Center(child: HomeUIPage());
   }
 }
 
 class HomeUIPage extends StatefulWidget {
-  final String serverIP;
-
-  const HomeUIPage ({ Key key, this.serverIP }): super(key: key);
+  const HomeUIPage({Key key}) : super(key: key);
 
   @override
   _HomeUIPageState createState() => _HomeUIPageState();
 }
 
 class _HomeUIPageState extends State<HomeUIPage> {
-
   List<Service> listofServices;
   int serviceIndex = 0;
 
@@ -65,22 +59,22 @@ class _HomeUIPageState extends State<HomeUIPage> {
 //    PlaceholderWidget(Colors.green)
 //  ];
 
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    new Future<String>.delayed(new Duration(seconds: 5), () => null).then((String value) {
+    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+        .then((String value) {
       getServices();
     });
   }
 
-   getServices() async {
+  getServices() async {
     try {
       HttpClient httpClient = new HttpClient();
-      var syncReportResponse =
-      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
+      var syncReportResponse = await httpClient.getRequest(context,
+          "http://jam.savitriya.com/api/all_services", null, null, true, false);
       processReportResponse(syncReportResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -100,12 +94,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
           print("mayur 22");
 
           listofServices = Service.processServices(roles);
-
-          print(listofServices.length);
-          print("mayur 33b ");
 //          build(context);
         });
-
       } else {
         printLog("login response code is not 200");
       }
@@ -124,28 +114,26 @@ class _HomeUIPageState extends State<HomeUIPage> {
         ),
       );
     } else {
-
-//    getServices();
       return new Scaffold(
-      body: CustomScrollView(
-        //view that contains an expanding app bar followed by a list & grid
-        slivers: <Widget>[
-          makeHeader(""),
-          //calling appbar method by passing the Text as argument.
-          //Padding: const EdgeInsets.all(8.0),
+        body: CustomScrollView(
+          //view that contains an expanding app bar followed by a list & grid
+          slivers: <Widget>[
+            makeHeader(""),
+            //calling appbar method by passing the Text as argument.
+            //Padding: const EdgeInsets.all(8.0),
 
-          SliverGrid(
-              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-              ),
-              /*crossAxisCount: 3, // how many grid needed in a row
+            SliverGrid(
+                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                ),
+                /*crossAxisCount: 3, // how many grid needed in a row
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,*/
-              delegate: new SliverChildBuilderDelegate(
-                    (BuildContext context, int serviceIndex) {
-                  return
-                    // children: <Widget>[
-                    Container(
+                delegate: new SliverChildBuilderDelegate(
+                  (BuildContext context, int serviceIndex) {
+                    return
+                        // children: <Widget>[
+                        Container(
                       alignment: FractionalOffset.center,
                       height: 400.0,
                       width: 400.0,
@@ -158,18 +146,21 @@ class _HomeUIPageState extends State<HomeUIPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomeStart())); //, _service[serviceIndex]
+                                  builder: (context) =>
+                                      ProviceListPage())); //, _service[serviceIndex]
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-
                             Container(
-                                width: 100.00,
-                                height: 100.00,
-                                child: Image.network(listofServices[serviceIndex].icon_image, fit: BoxFit.fill,),
-                                ), //new Icon(Icons.face),
+                              width: 100.00,
+                              height: 100.00,
+                              child: Image.network(
+                                listofServices[serviceIndex].icon_image,
+                                fit: BoxFit.fill,
+                              ),
+                            ), //new Icon(Icons.face),
 
                             Padding(padding: EdgeInsets.all(1.0)),
 
@@ -179,114 +170,113 @@ class _HomeUIPageState extends State<HomeUIPage> {
                         ),
                       ),
                     );
-                },
-                childCount: listofServices.length,
-              )),
+                  },
+                  childCount: listofServices.length,
+                )),
 
-          SliverFixedExtentList(
-            itemExtent: 200.0,
-            delegate: SliverChildListDelegate(
-              [
-                Container(child: CarouselDemo()),
-              ],
+            SliverFixedExtentList(
+              itemExtent: 200.0,
+              delegate: SliverChildListDelegate(
+                [
+                  Container(child: CarouselDemo()),
+                ],
+              ),
             ),
-          ),
-          SliverFixedExtentList(
-            itemExtent: 200.0,
-            delegate: SliverChildListDelegate(
-              [
-                Container(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          'Why We Are?',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 28.0,
-                          ),
-                        ),
-                        Text(
-                          'We value our customers',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+            SliverFixedExtentList(
+              itemExtent: 200.0,
+              delegate: SliverChildListDelegate(
+                [
+                  Container(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Why We Are?',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
                               fontWeight: FontWeight.w300,
-                              fontSize: 19.0,
-                              color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Icon(Icons.account_box,
-                                      color: Colors.teal, size: 40.0),
-                                  Text(
-                                    'Verified Professionals',
-                                  )
-                                ],
-                              ),
+                              fontSize: 28.0,
                             ),
-                            Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Icon(Icons.assignment,
-                                      color: Colors.teal, size: 40.0),
-                                  Text(
-                                    'Insured Work',
-                                  )
-                                ],
-                              ),
-                            ),
-                            Container(
+                          ),
+                          Text(
+                            'We value our customers',
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 19.0,
+                                color: Colors.grey),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Container(
                                 child: Column(
                                   children: <Widget>[
-                                    Icon(MaterialIcons.person,
+                                    Icon(Icons.account_box,
                                         color: Colors.teal, size: 40.0),
                                     Text(
-                                      'Professional Support',
+                                      'Verified Professionals',
                                     )
                                   ],
-                                )),
-                          ],
-                        ),
-                      ]),
-                ),
-              ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Icon(Icons.assignment,
+                                        color: Colors.teal, size: 40.0),
+                                    Text(
+                                      'Insured Work',
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                  child: Column(
+                                children: <Widget>[
+                                  Icon(MaterialIcons.person,
+                                      color: Colors.teal, size: 40.0),
+                                  Text(
+                                    'Professional Support',
+                                  )
+                                ],
+                              )),
+                            ],
+                          ),
+                        ]),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-
+          ],
+        ),
+      );
     }
-    }
+  }
 
   SliverPersistentHeader makeHeader(String headerText) {
     return SliverPersistentHeader(
-      //pinned: true,
+        //pinned: true,
         delegate: _SliverAppBarDelegate(
-          minHeight: 60.0,
-          maxHeight: 200.0,
-          child: Container(
-            //color: Colors.lightBlue,
-            child: Center(
-              child:
+      minHeight: 60.0,
+      maxHeight: 200.0,
+      child: Container(
+        //color: Colors.lightBlue,
+        child: Center(
+          child:
               //Text(headerText))),
               Image.asset(
-                "assets/images/topbar.jpg",
-                fit: BoxFit.fill,
-              ),
-            ),
+            "assets/images/topbar.jpg",
+            fit: BoxFit.fill,
           ),
-        ));
+        ),
+      ),
+    ));
   }
 }
 
@@ -319,4 +309,3 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child != oldDelegate.child;
   }
 }
-

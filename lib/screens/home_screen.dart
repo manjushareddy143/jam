@@ -41,6 +41,8 @@ class _HomePageState extends State<HomePage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+
+
 //            SizedBox(width: 10,),
             Text(
               'Your Location',
