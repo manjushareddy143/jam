@@ -4,6 +4,7 @@ import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/screens/home_ui_design.dart';
+import 'package:jam/screens/myOrders.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
 
@@ -136,7 +137,7 @@ class _HomePageState extends State<HomePage> {
     HomeUIDesign(),
     PlaceholderWidget(Colors.white),
     PlaceholderWidget(Colors.deepOrange),
-    PlaceholderWidget(Colors.green)
+    Orders()
   ];
 
   void onTabTapped(int index) {
