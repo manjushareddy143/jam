@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
@@ -42,56 +43,44 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
- /* bool isISP = false;
-  String _type;
+  bool isMale = false;
+  String dropdownvalue;
   List<DropdownMenuItem<String>> _dropDownTypes;
-  Map<String, dynamic> _lstType = {"CSP" : "Corporate Service Provider", "ISP" : "Individual Service Provider"}; */
+  Map<String, dynamic> _lstType = {"N":"","M":"Male","F": "Female",};
 
 
   String _gender = "Male";
 
   bool arabic = false;
   bool english = false;
-
+  final txtLname=TextEditingController();
   final txtName = TextEditingController();
   final txtEmail = TextEditingController();
   final txtPass = TextEditingController();
   final txtConfPass = TextEditingController();
   final txtContact = TextEditingController();
   //final txtExp = TextEditingController();
-
+  bool _value1 = false;
+  void _value1Changed(bool value) => setState(() => _value1 = value);
 
   @override
   void initState() {
     super.initState();
-    //_dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
-    //_type = _dropDownTypes[0].value;
+    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
+    dropdownvalue = _dropDownTypes[0].value;
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(resizeToAvoidBottomPadding: false,
-      appBar: BackButtonAppBar(title: widget.title,),
-      body: Container(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        margin: const EdgeInsets.all(10.0),
-        
-          child: Center(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2.0, color: Colors.grey)),
-                  child: new Form(
-                    key: _formKey,
-                    autovalidate: _autoValidate,
-                    child: signupScreenUI(),
-                  ),
-                ),
-              )),
-       
+
+      body: SingleChildScrollView(
+        child: new Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: signupScreenUI(),
+        ),
       ),
     );
   }
@@ -107,133 +96,202 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   Widget signupScreenUI() {
-    return new Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
+    return Container(margin: EdgeInsets.all(20),
+      child: new Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 50),
+          new Image.asset("assets/images/Logo-1x.png",
+            height: 60.0, width: 120.0 , fit: BoxFit.fill, ),
+          new Text(
+            'SIGN UP',
+            textAlign: TextAlign.center,
 
-        // NORMAL
-        Visibility(
-          visible: true,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(hintText: "Name"),
-                controller: txtName,//..text = 'KAR-MT30',
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Please enter name!!';
-                  }
-                  return null;
-                },
-                onSaved: (String val) {
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
+          ),
+          // NORMAL
+          SizedBox(height: 30,),
+
+          Column( mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children:  <Widget>[
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+
+
+                      labelText: 'First Name',),
+                  controller: txtName,//..text = 'KAR-MT30',
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter name!!';
+                    }
+                    return null;
+                  },
+                  onSaved: (String val) {
 //            _account = val;
-                },
+                  },
+                ),
               ),
-              TextFormField(
-                decoration: InputDecoration(hintText: "E-mail"),
-                controller: txtEmail,//..text = 'KAR-MT30',
-                keyboardType: TextInputType.emailAddress,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Please enter username!!';
-                  }
-                  return validateEmail(value);
-                },
-                onSaved: (String val) {
+
+               SizedBox(height: 10,),
+
+               Material(elevation: 10.0,shadowColor: Colors.grey,
+                 child: TextFormField(
+                   decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                   labelText: 'Last Name',),
+                   controller: txtLname,//..text = 'KAR-MT30',
+                   validator: (value){
+                     if (value.isEmpty) {
+                       return 'Please enter last name!!';
+                     }
+                     return null;
+                   },
+                   onSaved: (String val) {
 //            _account = val;
-                },
+                   },
+                 ),
+               ),
+              SizedBox(height: 10,),
+
+              setDropDown(),
+
+              SizedBox(height: 10,),
+
+
+
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.email),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                    labelText: 'Email',),
+                  controller: txtEmail,//..text = 'KAR-MT30',
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter username!!';
+                    }
+                    return validateEmail(value);
+                  },
+                  onSaved: (String val) {
+//            _account = val;
+                  },
+                ),
               ),
-              TextFormField(
-                decoration: InputDecoration(hintText: "Password",),
-                obscureText: true,
-                controller: txtPass,//..text = 'KAR-MT30',
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Please enter password!!';
-                  }
-                  return null;
-                },
-                onSaved: (String val) {
-                },
+              SizedBox(height: 10,),
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                    labelText: 'Phone',),
+                  controller: txtContact,//..text = 'KAR-MT30',
+                  keyboardType: TextInputType.phone,
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter contact number!!';
+                    }
+                    return null;
+                  },
+                  onSaved: (String val) {
+//            _account = val;
+                  },
+                ),
               ),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(hintText: "Confirm Password"),
+              SizedBox(height: 10,),
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                    labelText: 'Password',),
+                  obscureText: true,
+                  controller: txtPass,//..text = 'KAR-MT30',
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter password!!';
+                    }
+                    return null;
+                  },
+                  onSaved: (String val) {
+                  },
+                ),
+              ),
+              SizedBox(height: 10,),
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  obscureText: true,
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 1,  ), ),
+                    labelText: 'Confirm Password',),
 //                controller: TextEditingController(),//..text = 'KAR-MT30',
-                validator:  (value){
-                  print("val = $value");
-                  print(txtPass.text);
-                  if (value != txtPass.text) {
-                    return 'Confirm password mismatch!!';
-                  }
-                  return null;
-                },
-                onSaved: (String val) {
+                  validator:  (value){
+                    print("val = $value");
+                    print(txtPass.text);
+                    if (value != txtPass.text) {
+                      return 'Confirm password mismatch!!';
+                    }
+                    return null;
+                  },
+                  onSaved: (String val) {
 //            _account = val;
-                },
+                  },
+                ),
               ),
-              TextFormField(
-                decoration: InputDecoration(hintText: "Contact"),
-                controller: txtContact,//..text = 'KAR-MT30',
-                keyboardType: TextInputType.phone,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Please enter contact number!!';
-                  }
-                  return null;
-                },
-                onSaved: (String val) {
-//            _account = val;
-                },
-              ),
-             setRadio(),
-             checkBox(),
+              SizedBox(height: 10,),
+
+            // setRadio(),
+            // checkBox(),
+             Row(
+               children: <Widget>[
+                Checkbox(value: _value1, onChanged: _value1Changed),
+                Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),])
              // dropdown setup
              // setDropDown(),
 
             ],
           ),
-        ),
 
-        // DETAILS
-      /*  Visibility(
-        visible: isISP,
-          child: Column(
-            children: <Widget>[
-              setRadio(),
-              checkBox(),
-              setTimer(),
-              TextFormField(
-                decoration: InputDecoration(hintText: "Experience"),
-                controller: txtExp,//..text = 'KAR-MT30',
-                keyboardType: TextInputType.number,
-                validator: (value){
-                  if (value.isEmpty) {
-                    return 'Please enter Experience!!';
-                  }
-                  return null;
-                },
-                onSaved: (String val) {
+          // DETAILS
+        /*  Visibility(
+          visible: isISP,
+            child: Column(
+              children: <Widget>[
+                setRadio(),
+                checkBox(),
+                setTimer(),
+                TextFormField(
+                  decoration: InputDecoration(hintText: "Experience"),
+                  controller: txtExp,//..text = 'KAR-MT30',
+                  keyboardType: TextInputType.number,
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter Experience!!';
+                    }
+                    return null;
+                  },
+                  onSaved: (String val) {
 //            _account = val;
-                },
-              ),
-    ],
-          )
-        ), */
-
-        SizedBox(height: 10),
-
-        RaisedButton(
-          color: Colors.teal,
-          textColor: Colors.white,
-          padding: EdgeInsets.fromLTRB(100,10,100,10),
-//          color: MyColors.turquoise,
-          onPressed: () {
-            _validateInputs();
-          },
-          child: const Text('Sign Up', style: TextStyle(fontSize: 20,color: Colors.white)),
-        ),
+                  },
+                ),
       ],
+            )
+          ), */
+
+          SizedBox(height: 10),
+
+          RaisedButton(
+            color: Colors.teal,
+            textColor: Colors.white,
+            padding: EdgeInsets.fromLTRB(150,10,150,10),
+//          color: MyColors.turquoise,
+            onPressed: () {
+              _validateInputs();
+            },
+            child: const Text('Sign Up', style: TextStyle(fontSize: 20,color: Colors.white)),
+          ),
+        ],
+      ),
     );
   }
 
@@ -277,9 +335,9 @@ class _SignupPageState extends State<SignupPage> {
 //    }
 //  data["language"] = lang;
 //    data["language"] = "arabic,english";
-    String lang = languages.join(', ');
-    print(lang);
-    data["language"] = lang;//"arabic,english";
+ //   String lang = languages.join(', ');
+   // print(lang);
+   // data["language"] = lang;//"arabic,english";
    // data["start_time"] = startTime;
    // data["end_time"] = endTime;
    // data["experience"] = txtExp.text;
@@ -451,7 +509,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 */
 
- List languages = new List();
+/* List languages = new List();
 
   Widget checkBox() {
     return Container(
@@ -502,9 +560,9 @@ class _SignupPageState extends State<SignupPage> {
         ],
       ),
     );
-  }
+  } */
 
-  GenderEnum _character = GenderEnum.Male;
+ /* GenderEnum _character = GenderEnum.Male;
 
   Widget setRadio() {
     return Container(
@@ -536,6 +594,46 @@ class _SignupPageState extends State<SignupPage> {
         ],
       ),
     );
+  } */
+
+  Widget setDropDown() {
+    return Material(elevation: 10.0,shadowColor: Colors.grey,
+      child: Container(
+       padding: const EdgeInsets.fromLTRB(10,5,10,5),
+        child: Row(
+          children:[
+            Text("Gender" , style: TextStyle(fontSize: 17 , color: Colors.black45)),
+            SizedBox(width: 50,),
+            Expanded(child: DropdownButton(
+                isExpanded: true,
+                value: dropdownvalue,
+                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
+                items: _dropDownTypes,
+                onChanged: changedDropDownItem),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(Map<String, dynamic> reportForlist) {
+    List<DropdownMenuItem<String>> items = List();
+    reportForlist.forEach((key, val) {
+      items.add(DropdownMenuItem(value: key, child: Text(val)));
+    });
+    return items;
   }
 
+  void changedDropDownItem(String selectedItem) {
+    setState(() {
+      dropdownvalue = selectedItem;
+      print(dropdownvalue);
+      if(selectedItem == "") {
+        isMale = true;
+      } else {
+        isMale = false;
+      }
+    });
+  }
 }
