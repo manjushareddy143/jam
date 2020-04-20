@@ -106,7 +106,6 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   @override
   Widget build(BuildContext context) {
-    print("mayur 11");
     if (listofServices == null) {
       return new Scaffold(
         appBar: new AppBar(

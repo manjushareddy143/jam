@@ -107,7 +107,7 @@ class _ProviderListState extends State<ProviderListPage> {
           appBar: AppBar(
             backgroundColor: Colors.white70,
             title: Text(
-              '1100 +  AC Services',
+              listofProviders.length.toString() + ' ' + this.service.name,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 20.0,
