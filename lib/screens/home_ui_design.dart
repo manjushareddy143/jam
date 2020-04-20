@@ -73,17 +73,16 @@ class _HomeUIPageState extends State<HomeUIPage> {
   getServices() async {
     try {
       HttpClient httpClient = new HttpClient();
-      var syncReportResponse = await httpClient.getRequest(context,
-          "http://jam.savitriya.com/api/all_services", null, null, true, false);
-      processReportResponse(syncReportResponse);
+      var syncServicesResponse = await httpClient.getRequest(context,
+          "http://jam.savitriya.com/api/v1/all_services", null, null, true, false);
+      processServiceResponse(syncServicesResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
       }
     }
   }
-
-  void processReportResponse(Response res) {
+  void processServiceResponse(Response res) {
     print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
@@ -103,6 +102,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
       print('no data');
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,11 +143,13 @@ class _HomeUIPageState extends State<HomeUIPage> {
                       child: new GestureDetector(
                         //tapping to go the corresponding view linked with it using navigator
                         onTap: () {
+
+//                          printLog(listofServices[serviceIndex].name);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ProviceListPage())); //, _service[serviceIndex]
+                                      ProviderListPage(service: listofServices[serviceIndex],))); //, _service[serviceIndex]
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -195,7 +195,7 @@ class _user extends State<UserLogin>{
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/login', data);
+      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/v1/login', data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {

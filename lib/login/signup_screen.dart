@@ -292,7 +292,7 @@ class _SignupPageState extends State<SignupPage> {
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/customer_register', data);
+      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/v1/customer_register', data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
