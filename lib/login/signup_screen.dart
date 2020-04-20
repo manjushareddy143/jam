@@ -14,6 +14,7 @@ import 'package:jam/home_widget.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/httpclient.dart';
+import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/widget_helper.dart';
 
@@ -46,7 +47,7 @@ class _SignupPageState extends State<SignupPage> {
   bool isMale = false;
   String dropdownvalue;
   List<DropdownMenuItem<String>> _dropDownTypes;
-  Map<String, dynamic> _lstType = {"N":"","M":"Male","F": "Female",};
+  List _lstType = ["Male","Female"];
 
 
   String _gender = "Male";
@@ -106,7 +107,6 @@ class _SignupPageState extends State<SignupPage> {
           new Text(
             'SIGN UP',
             textAlign: TextAlign.center,
-
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
           ),
@@ -118,9 +118,8 @@ class _SignupPageState extends State<SignupPage> {
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
                   decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-
-
                       labelText: 'First Name',),
                   controller: txtName,//..text = 'KAR-MT30',
                   validator: (value){
@@ -140,6 +139,7 @@ class _SignupPageState extends State<SignupPage> {
                Material(elevation: 10.0,shadowColor: Colors.grey,
                  child: TextFormField(
                    decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                     contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                    labelText: 'Last Name',),
                    controller: txtLname,//..text = 'KAR-MT30',
@@ -165,6 +165,7 @@ class _SignupPageState extends State<SignupPage> {
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
                   decoration: InputDecoration( suffixIcon: Icon(Icons.email),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                     labelText: 'Email',),
                   controller: txtEmail,//..text = 'KAR-MT30',
@@ -184,6 +185,7 @@ class _SignupPageState extends State<SignupPage> {
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
                   decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                     labelText: 'Phone',),
                   controller: txtContact,//..text = 'KAR-MT30',
@@ -203,6 +205,7 @@ class _SignupPageState extends State<SignupPage> {
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
                   decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                     labelText: 'Password',),
                   obscureText: true,
@@ -222,19 +225,15 @@ class _SignupPageState extends State<SignupPage> {
                 child: TextFormField(
                   obscureText: true,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 1,  ), ),
                     labelText: 'Confirm Password',),
 //                controller: TextEditingController(),//..text = 'KAR-MT30',
                   validator:  (value){
-                    print("val = $value");
-                    print(txtPass.text);
                     if (value != txtPass.text) {
                       return 'Confirm password mismatch!!';
                     }
                     return null;
-                  },
-                  onSaved: (String val) {
-//            _account = val;
                   },
                 ),
               ),
@@ -246,50 +245,26 @@ class _SignupPageState extends State<SignupPage> {
                children: <Widget>[
                 Checkbox(value: _value1, onChanged: _value1Changed),
                 Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),])
-             // dropdown setup
-             // setDropDown(),
-
             ],
           ),
 
-          // DETAILS
-        /*  Visibility(
-          visible: isISP,
-            child: Column(
-              children: <Widget>[
-                setRadio(),
-                checkBox(),
-                setTimer(),
-                TextFormField(
-                  decoration: InputDecoration(hintText: "Experience"),
-                  controller: txtExp,//..text = 'KAR-MT30',
-                  keyboardType: TextInputType.number,
-                  validator: (value){
-                    if (value.isEmpty) {
-                      return 'Please enter Experience!!';
-                    }
-                    return null;
-                  },
-                  onSaved: (String val) {
-//            _account = val;
-                  },
-                ),
-      ],
-            )
-          ), */
-
           SizedBox(height: 10),
 
-          RaisedButton(
-            color: Colors.teal,
-            textColor: Colors.white,
-            padding: EdgeInsets.fromLTRB(150,10,150,10),
-//          color: MyColors.turquoise,
-            onPressed: () {
-              _validateInputs();
-            },
-            child: const Text('Sign Up', style: TextStyle(fontSize: 20,color: Colors.white)),
+        ButtonTheme(
+          minWidth: 300.0,
+//          height: 100.0,
+          child:  RaisedButton(
+              color: Colors.teal,
+              textColor: Colors.white,
+              child: const Text(
+                  'Sign Up',
+                  style: TextStyle(fontSize: 20)
+              ),
+              onPressed: () {
+                _validateInputs();
+              }
           ),
+        )
         ],
       ),
     );
@@ -300,10 +275,19 @@ class _SignupPageState extends State<SignupPage> {
   void _validateInputs() {
 
     if (_formKey.currentState.validate()) {
+      if(_value1) {
+        _formKey.currentState.save();
+        printLog('validate');
+//        FocusScopeNode currentFocus = FocusScope.of(context);
+//        if (!currentFocus.hasPrimaryFocus) {
+//          currentFocus.unfocus();
+//        }
+        callLoginAPI();
+      } else {
+        showInfoAlert(context, 'Please accept terms & conditions');
+      }
 //    If all data are correct then do API call
-      _formKey.currentState.save();
-      printLog('validate');
-      callLoginAPI();
+
     } else {
 //    If all data are not valid then start auto validation.
       setState(() {
@@ -316,41 +300,18 @@ class _SignupPageState extends State<SignupPage> {
     Map<String, String> data = new Map();
 
     data["name"] = txtName.text;
+    data["email"] = txtEmail.text;
     data["password"] = txtPass.text;
     data["contact"] = txtContact.text;
-   /* if(_type == "ISP") {
-      data["type"] = "Individual service provider";
-    } else {
-      data["type"] = "Corporate Service Provider";
-    }
-*/
-    data["type"] = "SC";
+    data["type_id"] = "4";
+    data["term_id"] = "1";
     data["gender"] = _gender;
-//    String lang = "";
-//    if(arabic) {
-//      lang += "arabic,";
-//    }
-//    if(english) {
-//      lang += "english,";
-//    }
-//  data["language"] = lang;
-//    data["language"] = "arabic,english";
- //   String lang = languages.join(', ');
-   // print(lang);
-   // data["language"] = lang;//"arabic,english";
-   // data["start_time"] = startTime;
-   // data["end_time"] = endTime;
-   // data["experience"] = txtExp.text;
-    data["email"] = txtEmail.text;
-    print(data["gender"]);
-    print(data["name"]);
-    print(data["email"]);
-    print(data["language"]);
-    print(data["password"]);
+//    data["languages"] = "Arabic, English";
+
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/v1/customer_register', data);
+      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/v1/register', data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -364,6 +325,9 @@ class _SignupPageState extends State<SignupPage> {
     if (res != null) {
 
       if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        String r =data["email"];
+        Preferences.saveObject("email", r);
 //        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=> Home()));
         Navigator.pushReplacement(
             context,
@@ -617,23 +581,25 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(Map<String, dynamic> reportForlist) {
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
     List<DropdownMenuItem<String>> items = List();
-    reportForlist.forEach((key, val) {
-      items.add(DropdownMenuItem(value: key, child: Text(val)));
+
+    reportForlist.forEach((key) {
+      items.add(DropdownMenuItem(value:key , child: Text(key)));
     });
     return items;
   }
 
   void changedDropDownItem(String selectedItem) {
     setState(() {
-      dropdownvalue = selectedItem;
-      print(dropdownvalue);
-      if(selectedItem == "") {
-        isMale = true;
-      } else {
-        isMale = false;
-      }
+      _gender = selectedItem;
+//      dropdownvalue = selectedItem;
+//      print(dropdownvalue);
+//      if(selectedItem == "") {
+//        isMale = true;
+//      } else {
+//        isMale = false;
+//      }
     });
   }
 }

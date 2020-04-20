@@ -139,25 +139,7 @@ class _user extends State<UserLogin>{
                         style: TextStyle(fontSize: 20)
                     ),
                     onPressed: () {
-
                       _validateInputs();
-
-                      /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
-                          showDialog(
-                              context: context, builder: (BuildContext context) {
-                            return AlertDialog(content: new Text(
-                                "Please fill in the given feilds"),
-                              actions: <Widget>[
-                                new FlatButton(color: Colors.teal,
-                                  child: new Text("OK"), onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },),
-                              ],);
-                          });
-                        }
-                        else {
-                          authen();
-                        } */
                     }
                 ),
 
@@ -211,13 +193,11 @@ class _user extends State<UserLogin>{
         var data = json.decode(res.body);
 
         if(data['code'] == false) {
-          printLog("token : $data");
+
           print(data["message"]);
           showInfoAlert(context, data["message"]);
         } else {
           String r =data["email"];
-          print(r);
-
           Preferences.saveObject("email", r);
 //          getServices();
           Navigator.pushReplacement(
