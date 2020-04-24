@@ -299,6 +299,7 @@ class _SignupPageState extends State<SignupPage> {
   var firebaseAuth;
   Future getOTP(String phone) async{
     firebaseAuth = await FirebaseAuth.instance;
+
     firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 60),
@@ -388,38 +389,38 @@ class _SignupPageState extends State<SignupPage> {
         verificationId: actualCode, smsCode: smsCode);
     print(_authCredential);
 
-    firebaseAuth.signInWithCredential(_authCredential)
-        .then((AuthResult value) {
-      if (value.user != null) {
-        setState(() {
-          print(value);
-          print(value.user);
-          status = 'Authentication successful';
-        });
-        Widget_Helper.dismissLoading(context);
-      } else {
-        setState(() {
-          status = 'Invalid code/invalid authentication';
-        });
-      }
-    }).catchError((error) {
-      setState(() {
-        status = 'Something has gone wrong, please try later';
-      });
-    });
-
-//     firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+//    firebaseAuth.signInWithCredential(_authCredential)
+//        .then((AuthResult value) {
+//      if (value.user != null) {
+//        setState(() {
+//          print(value);
+//          print(value.user);
+//          status = 'Authentication successful';
+//        });
+//        Widget_Helper.dismissLoading(context);
+//      } else {
+//        setState(() {
+//          status = 'Invalid code/invalid authentication';
+//        });
+//      }
+//    }).catchError((error) {
 //      setState(() {
 //        status = 'Something has gone wrong, please try later';
-//        print("error : $error");
 //      });
-//    }).then((FirebaseUser user) async {
-//      setState(() {
-//        status = 'Authentication successful';
-//        print("user : $user");
-//      });
-//      apiCallForSignup();
 //    });
+
+     firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+      setState(() {
+        status = 'Something has gone wrong, please try later';
+        print("error : $error");
+      });
+    }).then((FirebaseUser user) async {
+      setState(() {
+        status = 'Authentication successful';
+        print("user : $user");
+      });
+      apiCallForSignup();
+    });
   }
 
   void apiCallForSignup() {
