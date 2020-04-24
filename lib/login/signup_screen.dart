@@ -2,11 +2,14 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:jam/components/back_button_appbar.dart';
@@ -16,7 +19,9 @@ import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/widget/otp_screen.dart';
 import 'package:jam/widget/widget_helper.dart';
+import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 
 enum GenderEnum {  Male, Female  }
 
@@ -75,7 +80,6 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(resizeToAvoidBottomPadding: false,
-
       body: SingleChildScrollView(
         child: new Form(
           key: _formKey,
@@ -96,15 +100,22 @@ class _SignupPageState extends State<SignupPage> {
       return null;
   }
 
+  bool _fridgeEdit = true;
+
   Widget signupScreenUI() {
     return Container(margin: EdgeInsets.all(20),
-      child: new Column(
+      child:
+      Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: 50),
-          new Image.asset("assets/images/Logo-1x.png",
+
+          Image.asset("assets/images/Logo-1x.png",
             height: 60.0, width: 120.0 , fit: BoxFit.fill, ),
-          new Text(
+
+          SizedBox(height: 5,),
+
+          Text(
             'SIGN UP',
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
@@ -113,10 +124,12 @@ class _SignupPageState extends State<SignupPage> {
           // NORMAL
           SizedBox(height: 30,),
 
-          Column( mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children:  <Widget>[
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
+                  enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -128,16 +141,13 @@ class _SignupPageState extends State<SignupPage> {
                     }
                     return null;
                   },
-                  onSaved: (String val) {
-//            _account = val;
-                  },
                 ),
               ),
 
                SizedBox(height: 10,),
-
                Material(elevation: 10.0,shadowColor: Colors.grey,
                  child: TextFormField(
+                   enabled: _fridgeEdit,
                    decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                      contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -149,41 +159,12 @@ class _SignupPageState extends State<SignupPage> {
                      }
                      return null;
                    },
-                   onSaved: (String val) {
-//            _account = val;
-                   },
                  ),
                ),
               SizedBox(height: 10,),
-
-              setDropDown(),
-
-              SizedBox(height: 10,),
-
-
-
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.email),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: 'Email',),
-                  controller: txtEmail,//..text = 'KAR-MT30',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value){
-                    if (value.isEmpty) {
-                      return 'Please enter username!!';
-                    }
-                    return validateEmail(value);
-                  },
-                  onSaved: (String val) {
-//            _account = val;
-                  },
-                ),
-              ),
-              SizedBox(height: 10,),
-              Material(elevation: 10.0,shadowColor: Colors.grey,
-                child: TextFormField(
+                  enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -196,51 +177,11 @@ class _SignupPageState extends State<SignupPage> {
                     }
                     return null;
                   },
-                  onSaved: (String val) {
-//            _account = val;
-                  },
                 ),
               ),
-              SizedBox(height: 10,),
-              Material(elevation: 10.0,shadowColor: Colors.grey,
-                child: TextFormField(
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: 'Password',),
-                  obscureText: true,
-                  controller: txtPass,//..text = 'KAR-MT30',
-                  validator: (value){
-                    if (value.isEmpty) {
-                      return 'Please enter password!!';
-                    }
-                    return null;
-                  },
-                  onSaved: (String val) {
-                  },
-                ),
-              ),
-              SizedBox(height: 10,),
-              Material(elevation: 10.0,shadowColor: Colors.grey,
-                child: TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent, width: 1,  ), ),
-                    labelText: 'Confirm Password',),
-//                controller: TextEditingController(),//..text = 'KAR-MT30',
-                  validator:  (value){
-                    if (value != txtPass.text) {
-                      return 'Confirm password mismatch!!';
-                    }
-                    return null;
-                  },
-                ),
-              ),
+
               SizedBox(height: 10,),
 
-            // setRadio(),
-            // checkBox(),
              Row(
                children: <Widget>[
                 Checkbox(value: _value1, onChanged: _value1Changed),
@@ -252,49 +193,240 @@ class _SignupPageState extends State<SignupPage> {
 
         ButtonTheme(
           minWidth: 300.0,
-//          height: 100.0,
           child:  RaisedButton(
               color: Colors.teal,
               textColor: Colors.white,
               child: const Text(
                   'Sign Up',
-                  style: TextStyle(fontSize: 20)
+                  style: TextStyle(fontSize: 16.5)
               ),
               onPressed: () {
                 _validateInputs();
               }
           ),
-        )
+        ),
+
+
+
+          /// OTP ENTERY
+          Visibility(
+            visible: _showOTPField,
+            child:
+          Column(
+            children: <Widget>[
+              SizedBox(height: 30),
+              Text(
+                'ENTER OTP',
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Hexcolor('#0ca798')),
+              ),
+              PinEntryTextField(
+                  showFieldAsBox: false,
+                  fields: 6,
+                  onSubmit: submitPin
+              ),
+
+              SizedBox(height: 10),
+
+              ButtonTheme(
+                minWidth: 300.0,
+                child:  RaisedButton(
+                    color: Colors.teal,
+                    textColor: Colors.white,
+                    child: const Text(
+                        'Next',
+                        style: TextStyle(fontSize: 16.5)
+                    ),
+                    onPressed: () {
+                      otpVerification();
+                    }
+                ),
+              ),
+              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Resend OTP"),
+                  IconButton(icon: Icon(Icons.refresh), onPressed: () {
+
+                  },
+                  ),
+
+                ],
+              ),
+              ),
+            ],
+          ),
+
+          )
         ],
       ),
     );
   }
 
   bool _autoValidate = false;
+  bool _showOTPField = false;
+  String pinCode = "";
 
+  submitPin(String pin) {
+    print(pin);
+    pinCode = pin;
+  }
+
+
+  void otpVerification() async {
+    await _signInWithPhoneNumber(pinCode);
+  }
+
+  static String status;
   void _validateInputs() {
 
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-        printLog('validate');
-//        FocusScopeNode currentFocus = FocusScope.of(context);
-//        if (!currentFocus.hasPrimaryFocus) {
-//          currentFocus.unfocus();
-//        }
-        callLoginAPI();
+        Widget_Helper.showLoading(context);
+        getOTP(txtContact.text);
+//        callLoginAPI();
       } else {
         showInfoAlert(context, 'Please accept terms & conditions');
       }
-//    If all data are correct then do API call
-
     } else {
-//    If all data are not valid then start auto validation.
       setState(() {
         _autoValidate = true;
       });
     }
   }
+
+  var firebaseAuth;
+  Future getOTP(String phone) async{
+    firebaseAuth = await FirebaseAuth.instance;
+    firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: null,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
+  static String actualCode;
+
+  codeSent (String verificationId, [int forceResendingToken]) async {
+    actualCode = verificationId;
+    print('Code sent to');
+
+    setState(() {
+      _showOTPField = true;
+      _fridgeEdit = false;
+      Widget_Helper.dismissLoading(context);
+      printLog("Auto retrieval time out:: $actualCode");
+      status = "\nEnter the code sent to";
+    });
+  }
+
+  codeAutoRetrievalTimeout(String verificationId) {
+    actualCode = verificationId;
+    setState(() {
+      status = "\nAuto retrieval time out:: $actualCode";
+      print("TIME OUT");
+      Widget_Helper.dismissLoading(context);
+    });
+  }
+
+   verificationFailed (AuthException authException) {
+    print("authException.message :${authException.message}");
+    setState(() {
+      Widget_Helper.dismissLoading(context);
+      status = '${authException.message}';
+//      print("Error message: " + status);
+      if (authException.message.contains('not authorized'))
+        status = 'Something has gone wrong, please try later';
+      else if (authException.message.contains('Network'))
+        status = 'Please check your internet connection and try again';
+      else
+        status = 'Something has gone wrong, please try later';
+
+      showInfoAlert(context, status);
+    });
+  }
+
+  var _authCredential;
+  verificationCompleted (AuthCredential auth) {
+    printLog("auth === $auth");
+    Widget_Helper.dismissLoading(context);
+    setState(() {
+      status = 'Auto retrieving verification code';
+    });
+    _authCredential = auth;
+    print("AUTH   ::::::::: $_authCredential");
+    Widget_Helper.dismissLoading(context);
+    firebaseAuth.signInWithCredential(_authCredential)
+        .then((AuthResult value) {
+      if (value.user != null) {
+        setState(() {
+          print(value.user);
+          status = 'Authentication successful';
+        });
+
+      } else {
+        setState(() {
+          status = 'Invalid code/invalid authentication';
+        });
+      }
+    }).catchError((error) {
+      setState(() {
+        status = 'Something has gone wrong, please try later';
+      });
+    });
+  }
+
+
+
+   Future _signInWithPhoneNumber(String smsCode) async {
+    print("SMS $smsCode");
+    print("actualCode $actualCode");
+    _authCredential = await PhoneAuthProvider.getCredential(
+        verificationId: actualCode, smsCode: smsCode);
+    print(_authCredential);
+
+    firebaseAuth.signInWithCredential(_authCredential)
+        .then((AuthResult value) {
+      if (value.user != null) {
+        setState(() {
+          print(value);
+          print(value.user);
+          status = 'Authentication successful';
+        });
+        Widget_Helper.dismissLoading(context);
+      } else {
+        setState(() {
+          status = 'Invalid code/invalid authentication';
+        });
+      }
+    }).catchError((error) {
+      setState(() {
+        status = 'Something has gone wrong, please try later';
+      });
+    });
+
+//     firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+//      setState(() {
+//        status = 'Something has gone wrong, please try later';
+//        print("error : $error");
+//      });
+//    }).then((FirebaseUser user) async {
+//      setState(() {
+//        status = 'Authentication successful';
+//        print("user : $user");
+//      });
+//      apiCallForSignup();
+//    });
+  }
+
+  void apiCallForSignup() {
+    print("Signup");
+  }
+
+
 
   Future callLoginAPI() async {
     Map<String, String> data = new Map();
@@ -382,7 +514,7 @@ class _SignupPageState extends State<SignupPage> {
 
  /* String startTime = null;
   String endTime = null;
-  
+
   Widget setTimer() {
     return Container(
       child: Row(
@@ -406,7 +538,7 @@ class _SignupPageState extends State<SignupPage> {
               child: startTime == null ? Text('Start Time', style: TextStyle(color: Colors.blue),): Text(startTime
                 , style: TextStyle(color: Colors.blue),),
     ),
-          
+
           Text("To"),
 
           FlatButton(

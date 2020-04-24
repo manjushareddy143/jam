@@ -41,6 +41,38 @@ class Widget_Helper {
     }
   }
 
+  static GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
+  static void dismissLoading(BuildContext context) {
+      Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  static void showLoading(BuildContext context) {
+
+    //show loading view only if it is set to true
+//    if (shouldShowLoading) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            key: _keyLoader,
+            child: new Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: new CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.tealAccent),
+                    )),
+                new Text("Please wait"),
+              ],
+            ),
+          );
+        },
+      );
+//    }
+  }
 
   static void getSelectedField(String fieldLbl) {
     fieldName = fieldLbl;

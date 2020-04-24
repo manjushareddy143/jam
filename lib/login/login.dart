@@ -13,6 +13,7 @@ import 'package:jam/home_widget.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/widget/otp_screen.dart';
 
 
 
@@ -148,7 +149,13 @@ class _user extends State<UserLogin>{
                     Text("Don't have an account?"),
 
                     FlatButton( onPressed:(){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=> SignupScreen()));},
+                      Navigator.push(context, new MaterialPageRoute(
+                        builder: (BuildContext context) => SignupScreen(),
+//                        fullscreenDialog: false,
+                      ));
+//                      Navigator.push(context,MaterialPageRoute(
+//                          builder: (context)=> SignupScreen()));
+                      },
                       child:
                       Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                     // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
@@ -248,7 +255,11 @@ class _user extends State<UserLogin>{
 //  }
 
   void _validateInputs() {
-
+//    _showDialog(context),
+//    showDialog(
+//      context: context,
+//      builder: (BuildContext context) => OTPScreen.buildAboutDialog(context),
+//    );
     if (_formKey.currentState.validate()) {
 //    If all data are correct then do API call
       _formKey.currentState.save();
