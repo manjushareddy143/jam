@@ -283,7 +283,7 @@ class _SignupPageState extends State<SignupPage> {
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-        Widget_Helper.showLoading(context);
+//        Widget_Helper.showLoading(context);
         getOTP(txtContact.text);
 //        callLoginAPI();
       } else {
@@ -303,7 +303,7 @@ class _SignupPageState extends State<SignupPage> {
     firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 60),
-        verificationCompleted: null,
+        verificationCompleted: verificationCompleted,
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
@@ -318,7 +318,7 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       _showOTPField = true;
       _fridgeEdit = false;
-      Widget_Helper.dismissLoading(context);
+//      Widget_Helper.dismissLoading(context);
       printLog("Auto retrieval time out:: $actualCode");
       status = "\nEnter the code sent to";
     });
@@ -329,14 +329,14 @@ class _SignupPageState extends State<SignupPage> {
     setState(() {
       status = "\nAuto retrieval time out:: $actualCode";
       print("TIME OUT");
-      Widget_Helper.dismissLoading(context);
+//      Widget_Helper.dismissLoading(context);
     });
   }
 
    verificationFailed (AuthException authException) {
     print("authException.message :${authException.message}");
     setState(() {
-      Widget_Helper.dismissLoading(context);
+//      Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
 //      print("Error message: " + status);
       if (authException.message.contains('not authorized'))
@@ -353,51 +353,21 @@ class _SignupPageState extends State<SignupPage> {
   var _authCredential;
   verificationCompleted (AuthCredential auth) {
     printLog("auth === $auth");
-    Widget_Helper.dismissLoading(context);
+//    Widget_Helper.dismissLoading(context);
     setState(() {
       status = 'Auto retrieving verification code';
     });
     _authCredential = auth;
     print("AUTH   ::::::::: $_authCredential");
-    Widget_Helper.dismissLoading(context);
-    firebaseAuth.signInWithCredential(_authCredential)
-        .then((AuthResult value) {
-      if (value.user != null) {
-        setState(() {
-          print(value.user);
-          status = 'Authentication successful';
-        });
-
-      } else {
-        setState(() {
-          status = 'Invalid code/invalid authentication';
-        });
-      }
-    }).catchError((error) {
-      setState(() {
-        status = 'Something has gone wrong, please try later';
-      });
-    });
-  }
-
-
-
-   Future _signInWithPhoneNumber(String smsCode) async {
-    print("SMS $smsCode");
-    print("actualCode $actualCode");
-    _authCredential = await PhoneAuthProvider.getCredential(
-        verificationId: actualCode, smsCode: smsCode);
-    print(_authCredential);
-
+//    Widget_Helper.dismissLoading(context);
 //    firebaseAuth.signInWithCredential(_authCredential)
 //        .then((AuthResult value) {
 //      if (value.user != null) {
 //        setState(() {
-//          print(value);
 //          print(value.user);
 //          status = 'Authentication successful';
 //        });
-//        Widget_Helper.dismissLoading(context);
+//
 //      } else {
 //        setState(() {
 //          status = 'Invalid code/invalid authentication';
@@ -408,19 +378,51 @@ class _SignupPageState extends State<SignupPage> {
 //        status = 'Something has gone wrong, please try later';
 //      });
 //    });
+  }
 
-     firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+
+
+   Future _signInWithPhoneNumber(String smsCode) async {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: actualCode,
+      smsCode: smsCode,
+    );
+
+    firebaseAuth.signInWithCredential(_authCredential)
+        .then((AuthResult value) {
+          print("RESULT");
+      if (value.user != null) {
+        setState(() {
+//          print(value);
+          print(value.user.phoneNumber);
+          status = 'Authentication successful';
+          print(status);
+        });
+//        Widget_Helper.dismissLoading(context);
+      } else {
+        setState(() {
+          status = 'Invalid code/invalid authentication';
+          print(status);
+        });
+      }
+    }).catchError((error) {
       setState(() {
         status = 'Something has gone wrong, please try later';
-        print("error : $error");
       });
-    }).then((FirebaseUser user) async {
-      setState(() {
-        status = 'Authentication successful';
-        print("user : $user");
-      });
-      apiCallForSignup();
     });
+
+//     firebaseAuth.signInWithCredential(_authCredential).catchError((error) {
+//      setState(() {
+//        status = 'Something has gone wrong, please try later';
+//        print("error : $error");
+//      });
+//    }).then((FirebaseUser user) async {
+//      setState(() {
+//        status = 'Authentication successful';
+//        print("user : $user");
+//      });
+//      apiCallForSignup();
+//    });
   }
 
   void apiCallForSignup() {
