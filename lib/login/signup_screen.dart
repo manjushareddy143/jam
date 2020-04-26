@@ -208,7 +208,7 @@ class _SignupPageState extends State<SignupPage> {
                 'ENTER OTP',
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Hexcolor('#0ca798')),
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
               ),
               PinEntryTextField(
                   showFieldAsBox: false,

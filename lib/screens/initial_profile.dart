@@ -2,6 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/resources/configurations.dart';
 
 class InitialProfileScreen extends StatelessWidget {
 
@@ -32,7 +33,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   bool _autoValidate = false;
   List<DropdownMenuItem<String>> _dropDownTypes;
   List _lstType = ["Male","Female"];
-//  String _g?ender = "Male";
   String dropdownvalue;
 
   @override
@@ -72,7 +72,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       ],
     ),
       decoration: BoxDecoration(
-        color: Colors.green,
+        color: Configurations.themColor,
 //        image: DecorationImage(
 //          image: NetworkImage(
 //                'https://placeimg.com/640/480/any',
@@ -109,6 +109,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       ),
     );
   }
+
+  String addressString = "ww";
 
   Widget profileUI() {
     return Container(
@@ -154,7 +156,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   },
                 ),
               ),
-
               SizedBox(height: 20,),
 
               // Mobile
@@ -176,7 +177,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   },
                 ),
               ),
-
               SizedBox(height: 20,),
 
               // Email
@@ -199,65 +199,53 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   },
                 ),
               ),
-
               SizedBox(height: 20,),
 
               // Gender
               setDropDown(),
-
-              SizedBox(height: 20,),
-
-              Card(
-                elevation: 5.0,
-                child: Column(
-//                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    const ListTile(
-                      leading: Icon(Icons.location_on),
-                      subtitle: Text('The Enchanted Nightingale Music by Julie Gable. Lyrics by Sidney Stein.'),
-                    ),
-                    ButtonBar(
-                      children: <Widget>[
-                        FlatButton(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(Icons.my_location, color: Colors.black54,size: 15,),
-                              SizedBox(width: 10,),
-                              Text('Set your Location', style: TextStyle(color: Colors.black54),)
-
-                            ],
-                          ),
-                          onPressed: (
-
-
-                              ) { /* ... */ },
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 20,),
-            Material(
-              elevation: 5.0,shadowColor: Colors.grey,
-              child: TextField(
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-              ),
-            ),
-
-
-
             ],
           ),
           ),
 
 
+          Padding(padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+          child: Card(
+            elevation: 5.0,
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                 onTap: addressEnter,
+                  leading: Icon(Icons.location_on),
+                  title: Text((adrs_name.text == "") ? "Enter Adress" : adrs_name.text),
+                  subtitle: Text(addressString),
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.my_location, color: Configurations.themColor, size: 15,),
+                          SizedBox(width: 10,),
+                          Text('Set your Location', style: TextStyle(color: Configurations.themColor),)
+                        ],
+                      ),
+                      onPressed: () {
+                        /* ... */
+                        addressEnter();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          ),
+
 
 
           ButtonTheme(
-            minWidth: 300.0,
+            minWidth: MediaQuery.of(context).size.width - 20,
             child:  RaisedButton(
                 color: Colors.teal,
                 textColor: Colors.white,
@@ -274,6 +262,229 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
         ],
       )
+    );
+  }
+
+  final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
+  bool _autoValidateAddress = false;
+
+  final adrs_name =TextEditingController();
+  final adrs_line1 =TextEditingController();
+  final adrs_line2 =TextEditingController();
+  final adrs_landmark =TextEditingController();
+  final adrs_disctric =TextEditingController();
+  final adrs_city =TextEditingController();
+  final adrs_postalcode =TextEditingController();
+
+  Widget _buildAddressDialog(BuildContext context) {
+    return new AlertDialog(
+        title: Row(
+          children: <Widget>[
+            Icon(Icons.location_on),
+    Text('Enter Address', ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Form(child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              // Name
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: "Address Name",
+                ),
+                controller: adrs_name,
+                validator: (value){
+                  if (value.isEmpty) {
+                    return 'Please enter Address name!!';
+                  }
+                  return null;
+                },
+              ),
+
+              Row(
+                children: <Widget>[
+                  // Address Line 1
+                  Container(
+                    width: 100.0,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Address 1",
+                      ),
+                      controller: adrs_line1,
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Enter Address!!';
+                        }
+                        return null;
+                      },
+                    ),
+
+                  ),
+                  SizedBox(width: 10,),
+                  // Address Line 2
+                  Container(
+                    width: 100.0,
+                    child:
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Address 2",
+                      ),
+                      controller: adrs_line2,
+                    ),
+
+                  ),
+                ],
+              ),
+
+              Row(
+                children: <Widget>[
+
+                  // Landmark
+                  Container(
+                    width: 100.0,
+                    child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Landmark",
+                        ),
+                        controller: adrs_landmark
+                    ),
+                  ),
+
+                  SizedBox(width: 10,),
+
+                  // District
+                  Container(
+                    width: 100.0,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "District",
+                      ),
+                      controller: adrs_disctric,
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Please enter District!!';
+                        }
+                        return null;
+                      },
+                    ),
+                  )
+                ],
+              ),
+
+              Row(
+                children: <Widget>[
+
+                  // City
+                  Container(
+                    width: 100.0,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "City",
+                      ),
+                      controller: adrs_city,
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Please enter City!!';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  SizedBox(width: 10,),
+
+                  // postal Code
+                  Container(
+                    width: 100.0,
+                    child:
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Postal Code",
+                      ),
+                      controller: adrs_postalcode,
+                      validator: (value){
+                        if (value.isEmpty) {
+                          return 'Please enter postal code!!';
+                        }
+                        return null;
+                      },
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 20,),
+              ButtonTheme(
+                minWidth: 300.0,
+                child:  RaisedButton(
+                    color: Colors.teal,
+                    textColor: Colors.white,
+                    child: const Text(
+                        'Save',
+                        style: TextStyle(fontSize: 16.5)
+                    ),
+                    onPressed: () {
+                      addressSave();
+                    }
+                ),
+              ),
+            ],
+          ),
+            key: _formAddressKey,
+            autovalidate: _autoValidateAddress,
+          ),
+
+
+        ),
+//      actions: <Widget>[
+//          new FlatButton(
+//            onPressed: () {
+//              addressSave();
+//              },
+////            textColor: Theme.of(context).primaryColor,
+//            child: Text('Save'),
+//          ),
+//        ],
+    );
+  }
+
+  void addressSave() {
+    if (_formAddressKey.currentState.validate()) {
+      _formAddressKey.currentState.save();
+
+
+      setState(() {
+        print(adrs_line1.text);
+        print(adrs_line2.text);
+        print(adrs_landmark.text);
+
+        addressString = adrs_line1.text;
+        if(adrs_line2.text.isNotEmpty) {
+          addressString += "\n" + adrs_line2.text;
+        }
+
+        if(adrs_landmark.text.isNotEmpty) {
+          addressString += "\n" + adrs_landmark.text;
+        }
+        addressString += "\n" + adrs_disctric.text
+            + "\n" + adrs_city.text + "\n" + adrs_postalcode.text;
+      });
+      Navigator.of(context).pop();
+
+    } else {
+      setState(() {
+        _autoValidateAddress = true;
+      });
+    }
+
+  }
+
+
+  void addressEnter() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => _buildAddressDialog(context),
     );
   }
 
@@ -305,22 +516,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
       items.add(DropdownMenuItem(value:key , child: Text(key)
-//      TextFormField(
-//        enabled: false,
-//        controller: TextEditingController()..text = key,
-//        decoration: InputDecoration(
-//            isDense: true,
-//            prefixIcon: Icon((key == "Male") ? Ionicons.ios_male : Ionicons.ios_female , color: Colors.black54,),
-//            contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-//            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-//        ),
-//        validator: (value){
-//          if (value.isEmpty) {
-//            return 'Please enter name!!';
-//          }
-//          return null;
-//        },
-//      )
       ));
     });
     return items;
@@ -329,13 +524,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void changedDropDownItem(String selectedItem) {
     setState(() {
       dropdownvalue = selectedItem;
-//      dropdownvalue = selectedItem;
-//      print(dropdownvalue);
-//      if(selectedItem == "") {
-//        isMale = true;
-//      } else {
-//        isMale = false;
-//      }
     });
   }
 }

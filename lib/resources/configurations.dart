@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:hexcolor/hexcolor.dart';
+
 class Configurations {
   //URLS
   // droetker_staging / droetker
@@ -10,6 +14,7 @@ class Configurations {
   static const String PROVIDER_SERVICES_URL = BASE_URL + APP_URL + API_VERSION + "/providers/service";
   static const String SERVICES_ALL_URL = BASE_URL + APP_URL + API_VERSION +"/all_services";
 
+  static Color themColor = Hexcolor('#0ca798');
   //IN SECONDS
   static const int CHECK_INTERNET_TIMEOUT = 15;
 
