@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
@@ -184,7 +185,7 @@ class _user extends State<UserLogin>{
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/v1/login', data);
+      await httpClient.postRequest(context, Configurations.LOGIN_URL, data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {

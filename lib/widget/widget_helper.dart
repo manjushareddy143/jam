@@ -11,6 +11,12 @@ class Widget_Helper {
   static String fieldName = "";
   static String fieldValue = "";
 
+  bool shouldShowLoading;
+
+  Widget_Helper({bool shouldShowLoading = true}) {
+    this.shouldShowLoading = shouldShowLoading;
+  }
+
 
   static Map reportData = new Map<String, String>();
 
@@ -44,13 +50,15 @@ class Widget_Helper {
   static GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
   static void dismissLoading(BuildContext context) {
+    if (Widget_Helper().shouldShowLoading) {
       Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 
   static void showLoading(BuildContext context) {
 
     //show loading view only if it is set to true
-//    if (shouldShowLoading) {
+    if (Widget_Helper().shouldShowLoading) {
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -71,7 +79,7 @@ class Widget_Helper {
           );
         },
       );
-//    }
+    }
   }
 
   static void getSelectedField(String fieldLbl) {

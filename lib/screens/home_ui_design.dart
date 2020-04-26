@@ -9,6 +9,7 @@ import 'package:jam/models/service.dart';
 import 'dart:math' as math;
 
 import 'package:jam/placeholder_widget.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/provider_list_screen.dart';
 import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
@@ -74,7 +75,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
     try {
       HttpClient httpClient = new HttpClient();
       var syncServicesResponse = await httpClient.getRequest(context,
-          "http://jam.savitriya.com/api/v1/all_services", null, null, true, false);
+          Configurations.SERVICES_ALL_URL , null, null, true, false);
       processServiceResponse(syncServicesResponse);
     } on Exception catch (e) {
       if (e is Exception) {

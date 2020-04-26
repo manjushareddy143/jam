@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -64,7 +65,7 @@ class _ProviderListState extends State<ProviderListPage> {
     try {
       HttpClient httpClient = new HttpClient();
       var syncProviderResponse = await httpClient.getRequest(context,
-          "http://jam.savitriya.com/api/v1/providers/service?id=" + this.service.id.toString(), null, null, true, false);
+          Configurations.PROVIDER_SERVICES_URL + "?id=" + this.service.id.toString(), null, null, true, false);
       processProvidersResponse(syncProviderResponse);
     } on Exception catch (e) {
       if (e is Exception) {
