@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatelessWidget{
   @override
@@ -27,9 +27,9 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
     super.initState();
   }
   Future getimage()async{
-    final image = await ImagePicker.pickImage(source: ImageSource.gallery);
+//    final image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
-      _image = image;
+//      _image = image;
     });
 
   }

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
@@ -13,6 +14,7 @@ import 'package:jam/home_widget.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/widget/otp_screen.dart';
 
 
 
@@ -139,25 +141,7 @@ class _user extends State<UserLogin>{
                         style: TextStyle(fontSize: 20)
                     ),
                     onPressed: () {
-
                       _validateInputs();
-
-                      /*  if (txtUser.text.isEmpty || txtPass.text.isEmpty) {
-                          showDialog(
-                              context: context, builder: (BuildContext context) {
-                            return AlertDialog(content: new Text(
-                                "Please fill in the given feilds"),
-                              actions: <Widget>[
-                                new FlatButton(color: Colors.teal,
-                                  child: new Text("OK"), onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },),
-                              ],);
-                          });
-                        }
-                        else {
-                          authen();
-                        } */
                     }
                 ),
 
@@ -166,7 +150,13 @@ class _user extends State<UserLogin>{
                     Text("Don't have an account?"),
 
                     FlatButton( onPressed:(){
-                      Navigator.push(context,MaterialPageRoute(builder: (context)=> SignupScreen()));},
+                      Navigator.push(context, new MaterialPageRoute(
+                        builder: (BuildContext context) => SignupScreen(),
+//                        fullscreenDialog: false,
+                      ));
+//                      Navigator.push(context,MaterialPageRoute(
+//                          builder: (context)=> SignupScreen()));
+                      },
                       child:
                       Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                     // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
@@ -195,7 +185,7 @@ class _user extends State<UserLogin>{
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, 'http://jam.savitriya.com/api/login', data);
+      await httpClient.postRequest(context, Configurations.LOGIN_URL, data);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -211,13 +201,11 @@ class _user extends State<UserLogin>{
         var data = json.decode(res.body);
 
         if(data['code'] == false) {
-          printLog("token : $data");
+
           print(data["message"]);
           showInfoAlert(context, data["message"]);
         } else {
           String r =data["email"];
-          print(r);
-
           Preferences.saveObject("email", r);
 //          getServices();
           Navigator.pushReplacement(
@@ -268,7 +256,11 @@ class _user extends State<UserLogin>{
 //  }
 
   void _validateInputs() {
-
+//    _showDialog(context),
+//    showDialog(
+//      context: context,
+//      builder: (BuildContext context) => OTPScreen.buildAboutDialog(context),
+//    );
     if (_formKey.currentState.validate()) {
 //    If all data are correct then do API call
       _formKey.currentState.save();

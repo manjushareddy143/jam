@@ -11,6 +11,12 @@ class Widget_Helper {
   static String fieldName = "";
   static String fieldValue = "";
 
+  bool shouldShowLoading;
+
+  Widget_Helper({bool shouldShowLoading = true}) {
+    this.shouldShowLoading = shouldShowLoading;
+  }
+
 
   static Map reportData = new Map<String, String>();
 
@@ -41,6 +47,40 @@ class Widget_Helper {
     }
   }
 
+  static GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
+  static void dismissLoading(BuildContext context) {
+    if (Widget_Helper().shouldShowLoading) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
+  static void showLoading(BuildContext context) {
+
+    //show loading view only if it is set to true
+    if (Widget_Helper().shouldShowLoading) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+            key: _keyLoader,
+            child: new Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                    padding: EdgeInsets.all(16.0),
+                    child: new CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.tealAccent),
+                    )),
+                new Text("Please wait"),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
 
   static void getSelectedField(String fieldLbl) {
     fieldName = fieldLbl;

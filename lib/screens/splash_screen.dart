@@ -10,6 +10,7 @@ import 'package:jam/home_widget.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:jam/screens/initial_profile.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
@@ -56,12 +57,18 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   onDoneLoading() async {
-    Preferences.readObject("email").then((val) {
+    Preferences.readObject("profile").then((val) {
       if (val == null) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => UserLogin(),
+            ));
+      } else if (val == "1") {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InitialProfileScreen(),
             ));
       } else {
 //        getServices();

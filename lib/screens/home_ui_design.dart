@@ -9,6 +9,7 @@ import 'package:jam/models/service.dart';
 import 'dart:math' as math;
 
 import 'package:jam/placeholder_widget.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/provider_list_screen.dart';
 import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
@@ -73,17 +74,16 @@ class _HomeUIPageState extends State<HomeUIPage> {
   getServices() async {
     try {
       HttpClient httpClient = new HttpClient();
-      var syncReportResponse = await httpClient.getRequest(context,
-          "http://jam.savitriya.com/api/all_services", null, null, true, false);
-      processReportResponse(syncReportResponse);
+      var syncServicesResponse = await httpClient.getRequest(context,
+          Configurations.SERVICES_ALL_URL , null, null, true, false);
+      processServiceResponse(syncServicesResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
       }
     }
   }
-
-  void processReportResponse(Response res) {
+  void processServiceResponse(Response res) {
     print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
@@ -104,9 +104,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    print("mayur 11");
     if (listofServices == null) {
       return new Scaffold(
         appBar: new AppBar(
@@ -143,11 +143,13 @@ class _HomeUIPageState extends State<HomeUIPage> {
                       child: new GestureDetector(
                         //tapping to go the corresponding view linked with it using navigator
                         onTap: () {
+
+//                          printLog(listofServices[serviceIndex].name);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ProviceListPage())); //, _service[serviceIndex]
+                                      ProviderListPage(service: listofServices[serviceIndex],))); //, _service[serviceIndex]
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

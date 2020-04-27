@@ -1,26 +1,36 @@
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:jam/models/provider.dart';
+import 'package:jam/models/service.dart';
+import 'package:jam/resources/configurations.dart';
+import 'package:jam/utils/httpclient.dart';
+import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'dart:math' as math;
 
-class ProviceListScreen extends StatelessWidget {
-
+class ProviderListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: ProviceListPage()
-    );
+    return Center(child: ProviderListPage());
   }
 }
 
-class ProviceListPage extends StatefulWidget {
-
-//  const ProviceListPage ({ Key key }): super(key: key);
+class ProviderListPage extends StatefulWidget {
+  final Service service;
+  ProviderListPage({Key key, @required this.service}) : super(key: key);
 
   @override
-  _ProviceListState createState() => _ProviceListState();
+  _ProviderListState createState() => _ProviderListState(service: this.service);
 }
-class _ProviceListState extends State<ProviceListPage> {
+
+class _ProviderListState extends State<ProviderListPage> {
+  final Service service;
+  _ProviderListState({Key key, @required this.service});
+
+  List<Provider> listofProviders;
 
   int acIndex = 0;
   List<String> acImage = [
@@ -28,7 +38,6 @@ class _ProviceListState extends State<ProviceListPage> {
     'assets/images/ayu.jpg',
     'assets/images/shah.jpg',
     'assets/images/sal.jpg',
-
   ];
   List<String> acName = [
     'Himanshu Malik',
@@ -36,133 +45,200 @@ class _ProviceListState extends State<ProviceListPage> {
     'Abdur Rahman',
     'Osama',
   ];
-  List<String> acExp = [
-    '1','3','3.5','4'
-  ];
-  List<String> acRev = [
-    '3','3','5','2'
-  ];
+//  List<String> acExp = ['1', '3', '3.5', '4'];
+//  List<String> acRev = ['3', '3', '5', '2'];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print('service.name ===');
+    print(service.id);
+
+    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+        .then((String value) {
+      getProviders();
+    });
+  }
+
+  getProviders() async {
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncProviderResponse = await httpClient.getRequest(context,
+          Configurations.PROVIDER_SERVICES_URL + "?id=" + this.service.id.toString(), null, null, true, false);
+      processProvidersResponse(syncProviderResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processProvidersResponse(Response res) {
+    print('get daily format');
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print(data);
+        List providers = data;
+        setState(() {
+          print("mayur 22");
+          listofProviders = Provider.processProviders(providers);
+//          build(context);
+        });
+      } else {
+        printLog("login response code is not 200");
+      }
+    } else {
+      print('no data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white70,
-        title:
-        Text('1100 +  AC Services',
-          textAlign: TextAlign.left,style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400, color: Colors.black,  ), ),
-      ),
-      body: CustomScrollView(
-        slivers: <Widget>[
+
+    if (listofProviders == null) {
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Loading..."),
+        ),
+      );
+    } else {
+      return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white70,
+            title: Text(
+              listofProviders.length.toString() + ' ' + this.service.name,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: listOfCards(),
+            ),
+          )
+      );
+    }
+
+  }
+
+  List<Widget> listOfCards() {
+    List<Widget> list = new List();
+
+    list.add(Image.network(
+      this.service.banner_image,
+      fit: BoxFit.contain,
+    ));
+
+    for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
+      printLog(listofProviders[providerCount].name);
+      list.add(setupCard(listofProviders[providerCount]));
+    }
 
 
+    return list;
+  }
 
 
-
-//          makeHeader(''),
-          SliverFixedExtentList(
-            itemExtent: 210.0,
-            delegate: new SliverChildBuilderDelegate(
-                  (BuildContext context, int acIndex) {
-                return  Container(
-
-                    child: Wrap(alignment: WrapAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Wrap(
-                          alignment: WrapAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Container(
-                              width: 100,
-                              height: 100,
-                              decoration: new BoxDecoration(shape: BoxShape.circle, image: new DecorationImage(fit: BoxFit.fill, image: new AssetImage(acImage[acIndex])) ),
-                            ),
-                            SizedBox(width:20),
-                            Container(width: 240,padding: EdgeInsets.all(10.0),
-                              height: 120,
-                              child:
-                              Column(crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  new Text(
-                                    acName[acIndex],
-                                    textAlign: TextAlign.left,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w600),
-                                  ),
-                                  new Text(
-                                    "Experience:" + acExp[acIndex] + "Year",
-                                    textAlign: TextAlign.left,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 17.0,),
-                                  ),
-                                  new SizedBox(height: 10,),
-                                  Row(children: <Widget>[
-                                    new SmoothStarRating(
-                                        allowHalfRating: false,
-
-                                        starCount: 5,
-                                        rating: 3.0,
-                                        size: 20.0,
-                                        filledIconData: Icons.star,
-                                        halfFilledIconData: Icons.star,
-                                        color: Colors.amber,
-                                        borderColor: Colors.amber,
-                                        //unfilledStar: Icon(Icons., color: Colors.grey),
-                                        spacing:0.0
-                                    ),Text(acRev[acIndex]+"Reviews",textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
-                                  ])
-                                ],
-                              ),
-                            )
-
-                          ],
-                        ),
-                        Wrap( alignment: WrapAlignment.center,
-                          children: <Widget>[
-
-                            Container(decoration:  BoxDecoration(border: Border.all(width: 0.2, color: Colors.grey)),
-                                width: 260,
-                                height: 60,
-                                child:Row(crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(width: 20,),
-                                    Icon(Icons.assignment, color: Colors.teal,),
-                                    Text('Get Quotes',style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w400 , color: Colors.teal),)
-                                  ],
-                                )
-                            ),
-
-
-                            Container( //padding: EdgeInsets.all(10.0),
-                              width: 140,
-                              height: 60,
-                              decoration:  BoxDecoration(border: Border.all(width: 0.2, color: Colors.grey)),
-                              child: Row(crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Icon(Icons.phone, color: Colors.teal,),
-                                  Text('Call',style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300 , color: Colors.black),)
-                                ],
-                              ),
-                            ),
-
-                          ],),
-                      ],)
-
-                );
-
-              },
-              childCount : 4,
+  Widget setupCard(Provider provider) {
+    return new Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+            onTap: ()=> {
+              print('tap on card')
+            },
+            leading: Container(
+              width: 60,
+              height: 100,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                    image: NetworkImage(
+                        provider.image),
+                    fit: BoxFit.fill,
+                  )),
+            ),
+            title: Text(provider.name),
+            subtitle:   Text('Experience: 2 Years'),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
+            child: Row(
+              children: <Widget>[
+                SmoothStarRating(
+                  allowHalfRating: false,
+                  starCount: 5,
+                  rating: 3.0,
+                  size: 20.0,
+                  filledIconData: Icons.star,
+                  halfFilledIconData: Icons.star,
+                  color: Colors.amber,
+                  borderColor: Colors.amber,
+                  //unfilledStar: Icon(Icons., color: Colors.grey),
+                  spacing:0.0,
+                  onRatingChanged: (v) {
+//                    rating = v;
+                    setState(() {});
+                  },
+                ),
+                Text(" 3 Reviews",textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
+              ],
             ),
           ),
 
-
-
-
-        ],),
+//          SizedBox(
+//            height: 10,
+//          ),
+          Align(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      child: FlatButton.icon(
+//                          color: Colors.red,
+                        icon: Icon(Icons.monetization_on, color: Colors.teal), //`Icon` to display
+                        label: Text('Get Quotes', style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.teal)), //`Text` to display
+                        onPressed: () {
+                          print('Quotes Press');
+                        },
+                      ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+                    child: FlatButton.icon(
+                      icon: Icon(Icons.call, color: Colors.teal), //`Icon` to display
+                      label: Text('Call', style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.teal)), //`Text` to display
+                      onPressed: () {
+                        print('Call Press');
+                        //Code to execute when Floating Action Button is clicked
+                        //...
+                      },
+                    ),
+                  )
+                ],
+              )
+          ),
+        ],
+      ),
     );
+  }
+
+  _ratingChange(int rate) {
+    printLog('rating change $rate');
   }
 }
