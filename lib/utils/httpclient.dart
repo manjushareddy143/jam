@@ -62,9 +62,9 @@ class HttpClient {
 
       var body = json.encode(data);
 
-      headers["Content-Type"] = "application/json";
-      headers["Authorization"] = 'Basic';
-      print(apiUrl);
+//      headers["Content-Type"] = "application/json";
+//      headers["Authorization"] = 'Basic';
+      print(apiUrl + " 123");
 
       http.Response response =
           await http.post(apiUrl, headers: headers, body: body);
@@ -159,35 +159,37 @@ class HttpClient {
 
     printLog("Response : $response");
 
-    print('hideload: $hideLoad');
-    //we received API response
-//    if(hideLoad){
-//      print('come to hide');
       dismissLoading(context);
-//    } else {
-//      print('dont hide');
-//    }
-    print('123123');
+
+    printLog(response.statusCode);
+    printLog(response.body);
 
     //handle token expire and logout the user (400 and 406 indicates expired tokens)
     if (response.statusCode == 400 || response.statusCode == 406) {
 
-      printLog(response.body);
+
+
+      showInfoAlert(context, response.body);
 //      processLogout(context);
       //to indicate caller doesn't need to handle API response
       return null;
-    }
-    //success
-    else if (response.statusCode == 200) {
+    } else if (response.statusCode == 200) {
       print('200 ok');
       return response;
     } else {
       //show error only if't is set to true
-      if (shouldShowError) {
-        var data = json.decode(response.body);
-        String message = data['message'];
-        showInfoAlert(context, message);
-      }
+//      if (shouldShowError) {
+      var data = jsonDecode(response.body);
+
+//      Map<String, dynamic> message =new HashMap<String, dynamic>();
+//      message = data['error'];
+      print('error');
+      print(data['error']);
+
+//          showInfoAlert(context, message[0]);
+
+
+//      }
       //to indicate caller doesn't need to handle API response
       return null;
     }

@@ -388,6 +388,8 @@ class _SignupPageState extends State<SignupPage> {
 //    data["gender"] = "Male";
 //    data["languages"] = "Arabic, English";
 
+    printLog(data);
+
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
@@ -403,7 +405,6 @@ class _SignupPageState extends State<SignupPage> {
   void processLoginResponse(Response res) {
     print("come for response");
     if (res != null) {
-
       if (res.statusCode == 200) {
         print('Howdy, ${res.statusCode}!');
         var data = json.decode(res.body);

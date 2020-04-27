@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:image_picker/image_picker.dart';
 
 class InitialProfileScreen extends StatelessWidget {
 
@@ -39,7 +41,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List<DropdownMenuItem<String>> _dropDownTypes;
   List _lstType = ["Male","Female"];
   String dropdownvalue;
-
+  File _image;
   @override
   void initState() {
     super.initState();
@@ -64,8 +66,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      appBar: AppBar(title: Text("Complete your Profile", style: TextStyle(color: Colors.black),), automaticallyImplyLeading: false, centerTitle: false, backgroundColor: Colors.white,),
-//      resizeToAvoidBottomPadding: false,
       body: SingleChildScrollView(
         child: new Form(
           key: _formKey,
@@ -76,28 +76,33 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
+  Future getImage() async {
+//    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        );
+    setState(() {
+      _image = image;
+      print("IMAGE:::::::::: $_image");
+    });
+  }
+
+
   Widget _buildCoverImage(Size screenSize) {
     return Container(
-//      constraints: const BoxConstraints(minWidth: double.infinity),
       height: screenSize.height /3.6,
-//      width: screenSize.width *2,
-    child: Column(
-      children: <Widget>[
-        SizedBox(height: 30),
-        _buildProfileImage(),
-        SizedBox(height: 10),
-        Text("Image format jpeg or png", style: TextStyle(color: Colors.white70),),
-        Text("Image size upto 3MB", style: TextStyle(color: Colors.white70)),
-      ],
-    ),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 30),
+          _buildProfileImage(),
+          SizedBox(height: 10),
+          Text("Image format jpeg or png", style: TextStyle(color: Colors.white70),),
+          Text("Image size upto 3MB", style: TextStyle(color: Colors.white70)),
+        ],
+      ),
       decoration: BoxDecoration(
         color: Configurations.themColor,
-//        image: DecorationImage(
-//          image: NetworkImage(
-//                'https://placeimg.com/640/480/any',
-//              ),
-//          fit: BoxFit.cover,
-//        ),
       ),
     );
   }
@@ -108,15 +113,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: GestureDetector(
           onTap: () {
             print("object");
+            getImage();
           }, // handle your image tap here
         ),
         width: 120.0,
         height: 120.0,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-                'https://placeimg.com/640/480/any',
-              ),
+          image:
+          DecorationImage(
+            image: (_image == null) ? AssetImage("assets/icons/icons8-gender-48.png") : FileImage(_image),
+//            NetworkImage(
+//                'https://placeimg.com/640/480/any',
+//              ),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -306,7 +314,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           addressData["city"] = adrs_city.text;
           addressData["postal_code"] = adrs_postalcode.text;
           data["address"] = addressData.toString();
-
           Preferences.saveObject("profile", "0");
 
         });
