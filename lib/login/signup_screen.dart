@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/screens/initial_profile.dart';
@@ -79,15 +80,6 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
-    else
-      return null;
-  }
 
   bool _fridgeEdit = true;
 
@@ -235,9 +227,10 @@ class _SignupPageState extends State<SignupPage> {
               Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Resend OTP"),
-                  IconButton(icon: Icon(Icons.refresh), onPressed: () {
-
-                  },
+                  IconButton(icon: Icon(Icons.refresh),
+                    onPressed: () {
+                    callLoginAPI();
+                    },
                   ),
 
                 ],
@@ -267,13 +260,8 @@ class _SignupPageState extends State<SignupPage> {
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-//        Widget_Helper.showLoading(context);
-//        getOTP(txtContact.text);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => InitialProfileScreen(),
-            ));
+        Widget_Helper.showLoading(context);
+        getOTP(txtContact.text);
       } else {
         showInfoAlert(context, 'Please accept terms & conditions');
       }
@@ -391,13 +379,13 @@ class _SignupPageState extends State<SignupPage> {
   Future callLoginAPI() async {
     Map<String, String> data = new Map();
 
-    data["name"] = txtName.text;
-    data["email"] = "testmk1@test.com";
-    data["password"] = "123";
+    data["first_name"] = txtName.text;
+    data["last_name"] = txtLname.text;
+//    data["password"] = "123";
     data["contact"] = txtContact.text;
     data["type_id"] = "4";
     data["term_id"] = "1";
-    data["gender"] = "Male";
+//    data["gender"] = "Male";
 //    data["languages"] = "Arabic, English";
 
     try {
@@ -417,13 +405,44 @@ class _SignupPageState extends State<SignupPage> {
     if (res != null) {
 
       if (res.statusCode == 200) {
+        print('Howdy, ${res.statusCode}!');
         var data = json.decode(res.body);
-        String r =data["email"];
-        Preferences.saveObject("email", r);
+        if (data['first_name'] is int) {
+          print("first_name");
+        }
+        if (data['last_name'] is int) {
+          print("last_name");
+        }
+        if (data['contact'] is int) {
+          print("contact");
+        }
+        if (data['id'] is int) {
+          print("id");
+        }
+        if (data['type_id'] is int) {
+          print("type_id");
+        } else {
+          print("type_id" + data['type_id']);
+        }
+
+        if (data['term_id'] is int) {
+          print("term_id");
+        } else {
+          print("TERMS" + data['term_id']);
+        }
+        User user = User.fromJson(data);
+        Preferences.saveObject("user", jsonEncode(user.toJson()));
+        Preferences.saveObject("profile", "1");
+//        Navigator.pushReplacement(
+//            context,
+//            MaterialPageRoute(
+//              builder: (context) => HomeScreen(),
+//            ));
+      ///////////////////
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => InitialProfileScreen(),
             ));
       } else {
         printLog("login response code is not 200");

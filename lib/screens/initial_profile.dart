@@ -1,8 +1,13 @@
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/utils/preferences.dart';
+import 'package:jam/utils/utils.dart';
 
 class InitialProfileScreen extends StatelessWidget {
 
@@ -38,8 +43,22 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   @override
   void initState() {
     super.initState();
+    setProfile();
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
+  }
+
+  void setProfile() async  {
+    await Preferences.readObject("user").then((onValue) async {
+
+      var userdata = json.decode(onValue);
+      User user = User.fromJson(userdata);
+      setState(() {
+        firstName = user.first_name;
+        phoneNumber = user.contact;
+        email = user.email;
+      });
+    });
   }
 
   @override
@@ -110,12 +129,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
-  String addressString = "ww";
+  String addressString = "";
+  String firstName = "";
+  String phoneNumber = "";
+  String email = "";
 
+  final prfl_fname =TextEditingController();
+  final prfl_email =TextEditingController();
   Widget profileUI() {
     return Container(
-//        constraints: const BoxConstraints(minWidth: double.infinity),
-//        width: double.infinity,
       margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -137,20 +159,17 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               Material(
                 elevation: 5.0,shadowColor: Colors.grey,
                 child: TextFormField(
-//                  enabled: false,
+                  controller: (firstName == "") ? prfl_fname : prfl_fname..text = firstName,
                   decoration: InputDecoration(
                   prefixIcon: Icon(Icons.person, textDirection: TextDirection.rtl,),
-                      isDense: true,
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                     labelText: "First name",
-//                    isDense: true,
                     hasFloatingPlaceholder: false
-
                   ),
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter name!!';
+                      return 'Please enter first name!!';
                     }
                     return null;
                   },
@@ -162,19 +181,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               Material(
                 elevation: 5.0,shadowColor: Colors.grey,
                 child: TextFormField(
-                  controller: TextEditingController()..text = "234",
+                  enabled: false,
+                  controller: TextEditingController()..text = phoneNumber,
                   decoration: InputDecoration(
-                    isDense: true,
-                    prefixIcon: Icon(Icons.phone,),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+//                    isDense: true,
+                    prefixIcon: Icon(Icons.phone,textDirection: TextDirection.rtl),
+//                    contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  hasFloatingPlaceholder: false,
                     ),
-                  validator: (value){
-                    if (value.isEmpty) {
-                      return 'Please enter name!!';
-                    }
-                    return null;
-                  },
                 ),
               ),
               SizedBox(height: 20,),
@@ -183,19 +198,19 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               Material(
                 elevation: 5.0,shadowColor: Colors.grey,
                 child: TextFormField(
-                  controller: TextEditingController(),
+                  controller: (prfl_email == "") ? prfl_email : prfl_email..text = email,
                   decoration: InputDecoration(
-                    isDense: true,
                     prefixIcon: Icon(Icons.email,),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: "Email"
+                    labelText: "Email",
+                    hasFloatingPlaceholder: false,
                   ),
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter name!!';
+                      return 'Please enter email!!';
                     }
-                    return null;
+                    return validateEmail(value);
                   },
                 ),
               ),
@@ -208,6 +223,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           ),
 
 
+          // ADDRESS
           Padding(padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
           child: Card(
             elevation: 5.0,
@@ -217,7 +233,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 ListTile(
                  onTap: addressEnter,
                   leading: Icon(Icons.location_on),
-                  title: Text((adrs_name.text == "") ? "Enter Adress" : adrs_name.text),
+                  title: Text((adrs_name.text == "") ? "Enter Address" : adrs_name.text),
                   subtitle: Text(addressString),
                 ),
                 ButtonBar(
@@ -254,6 +270,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     style: TextStyle(fontSize: 16.5)
                 ),
                 onPressed: () {
+                  print("api call");
+                  initialProfileCall();
 //                  _validateInputs();
                 }
             ),
@@ -265,8 +283,49 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
+  void initialProfileCall() {
+    if(_autoValidateAddress) {
+      addressEnter();
+    } else {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        _autoValidate = false;
+        setState(() {
+          var data = new Map<String, String>();
+          data["id"] = "8";
+          data["first_name"] = prfl_fname.text;
+          data["gender"] = dropdownvalue;
+          data["email"] =prfl_email.text;
+
+          var addressData = new Map<String, String>();
+          addressData["name"] = adrs_name.text;
+          addressData["address_line1"] = adrs_line1.text;
+          addressData["address_line2"] = adrs_line2.text;
+          addressData["landmark"] = adrs_landmark.text;
+          addressData["district"] = adrs_disctric.text;
+          addressData["city"] = adrs_city.text;
+          addressData["postal_code"] = adrs_postalcode.text;
+          data["address"] = addressData.toString();
+
+          Preferences.saveObject("profile", "0");
+
+        });
+
+      }
+      else {
+        setState(() {
+          _autoValidate = true;
+        });
+      }
+    }
+
+
+
+
+  }
+
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
-  bool _autoValidateAddress = false;
+  bool _autoValidateAddress = true;
 
   final adrs_name =TextEditingController();
   final adrs_line1 =TextEditingController();
@@ -452,6 +511,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void addressSave() {
     if (_formAddressKey.currentState.validate()) {
       _formAddressKey.currentState.save();
+      _autoValidateAddress = false;
 
 
       setState(() {
