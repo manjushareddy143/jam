@@ -392,6 +392,7 @@ class _SignupPageState extends State<SignupPage> {
 
     try {
       HttpClient httpClient = new HttpClient();
+      print('api call start signup');
       var syncUserResponse =
       await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
       processLoginResponse(syncUserResponse);

@@ -6,7 +6,7 @@ class Configurations {
   //URLS
   // droetker_staging / droetker
   static const String BASE_URL = "http://192.168.43.40";
-  static const String APP_URL = "/jam-backend/public";
+  static const String APP_URL = "/jam/public";
   static const String API_VERSION = "/api/v1";
 //  static const String About_Account_URL = "https://mybms.in/a/droetker";
   static const String REGISTER_URL = BASE_URL + APP_URL + API_VERSION + "/register";
