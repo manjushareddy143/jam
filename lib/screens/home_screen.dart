@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/placeholder_widget.dart';
+import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
 import 'package:jam/screens/myOrders.dart';
 import 'package:jam/screens/myProfile.dart';
@@ -136,7 +137,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
 //    HomeDesign(),
     HomeUIDesign(),
-    PlaceholderWidget(Colors.white),
+    InquiryScreen(),
     Profile(),
     Orders()
   ];
