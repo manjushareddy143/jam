@@ -3,8 +3,8 @@ import 'package:jam/models/address.dart';
 
 class User {
   final int id;
-  final String type_id;
-  final String term_id;
+  final int type_id;
+  final int term_id;
   final int org_id;
 
   final String first_name;
@@ -26,8 +26,7 @@ class User {
         languages = json['languages'], contact = json['contact'],
         email = json['email'], gender = json['gender'],
         org_id = json['org_id'], term_id = json['term_id'],
-        type_id = json['type_id'], address = json['address'];
-  //.map<Address>((json) => new Address.fromJson(json));
+        type_id = json['type_id'], address = ((json.containsKey('address') && json['address'] != null ) ? Address.fromJson(json['address']) : null);
 
   Map<String, dynamic> toJson() => {
     'id': id, 'first_name': first_name,
@@ -35,6 +34,6 @@ class User {
     'languages': languages, 'contact': contact,
     'email': email, 'gender': gender,
     'org_id': org_id, 'term_id': term_id,
-    'type_id': type_id, 'address': address,
+    'type_id': type_id, 'address': (address != null) ? address : null ,
   };
 }

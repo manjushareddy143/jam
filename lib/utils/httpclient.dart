@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +31,24 @@ class HttpClient {
   }
 
   Future<Map> postMultipartRequest(BuildContext context,
-      String apiUrl, Map data) async {
+      String apiUrl, Map data, List<http.MultipartFile> files) async {
+
+    var body = json.encode(data);
+
     Map responseData = new HashMap();
     showLoading(context);
-    printLog('start call');
+    printLog('start call === $apiUrl');
     bool isNetworkAvailable = await checkInternetConnection();
 
     if (isNetworkAvailable) {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.fields.addAll(data);
+
+      if(files != null) {
+        print('files');
+        request.files.addAll(files);
+      }
+
       var response = await request.send();
       printLog(response.statusCode);
       responseData = await handleMultipartResponse(context, response);
@@ -67,7 +77,7 @@ class HttpClient {
       print(apiUrl + " 123");
 
       http.Response response =
-          await http.post(apiUrl, headers: headers, body: body);
+          await http.post(apiUrl, headers: headers, body: data);
 
       response = handleResponse(context, response, true);
 
@@ -106,7 +116,6 @@ class HttpClient {
 //
 //      apiUrl += params;
 
-      printLog(apiUrl);
 
 //      headers["Content-Type"] = "application/json";
       //headers["Authorization"] = "Bearer ${token}";
@@ -135,16 +144,11 @@ class HttpClient {
     }
     //success
     else if (response.statusCode == 200) {
-      print('200 ok');
       final respStr = await response.stream.bytesToString();
       print('mydata === $respStr');
       Map responseData = jsonDecode(respStr);
-      if(responseData['code'] ==  "200") {
         return responseData;
-      } else {
-        showInfoAlert(context, responseData['message']);
-        return null;
-      }
+
     } else {
       String message = response.statusCode.toString();
       showInfoAlert(context, message);

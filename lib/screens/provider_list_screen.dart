@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -32,19 +33,19 @@ class _ProviderListState extends State<ProviderListPage> {
 
   List<Provider> listofProviders;
 
-  int acIndex = 0;
-  List<String> acImage = [
-    'assets/images/vicky.jpg',
-    'assets/images/ayu.jpg',
-    'assets/images/shah.jpg',
-    'assets/images/sal.jpg',
-  ];
-  List<String> acName = [
-    'Himanshu Malik',
-    'Afrar Sheikh',
-    'Abdur Rahman',
-    'Osama',
-  ];
+//  int acIndex = 0;
+//  List<String> acImage = [
+//    'assets/images/vicky.jpg',
+//    'assets/images/ayu.jpg',
+//    'assets/images/shah.jpg',
+//    'assets/images/sal.jpg',
+//  ];
+//  List<String> acName = [
+//    'Himanshu Malik',
+//    'Afrar Sheikh',
+//    'Abdur Rahman',
+//    'Osama',
+//  ];
 //  List<String> acExp = ['1', '3', '3.5', '4'];
 //  List<String> acRev = ['3', '3', '5', '2'];
 
@@ -52,7 +53,7 @@ class _ProviderListState extends State<ProviderListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('service.name ===');
+    print('service.name === ${service}');
     print(service.id);
 
     new Future<String>.delayed(new Duration(seconds: 5), () => null)
@@ -79,10 +80,9 @@ class _ProviderListState extends State<ProviderListPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
+        print('providers=== $data');
         List providers = data;
         setState(() {
-          print("mayur 22");
           listofProviders = Provider.processProviders(providers);
 //          build(context);
         });
@@ -136,7 +136,7 @@ class _ProviderListState extends State<ProviderListPage> {
     ));
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
-      printLog(listofProviders[providerCount].name);
+      printLog(listofProviders[providerCount].first_name);
       list.add(setupCard(listofProviders[providerCount]));
     }
 
@@ -166,7 +166,7 @@ class _ProviderListState extends State<ProviderListPage> {
                     fit: BoxFit.fill,
                   )),
             ),
-            title: Text(provider.name),
+            title: Text(provider.first_name),
             subtitle:   Text('Experience: 2 Years'),
           ),
           Container(
@@ -212,6 +212,12 @@ class _ProviderListState extends State<ProviderListPage> {
                                 color: Colors.teal)), //`Text` to display
                         onPressed: () {
                           print('Quotes Press');
+
+                          Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                          builder: (context) =>
+                              InquiryPage(service: this.service)));
                         },
                       ),
                   ),

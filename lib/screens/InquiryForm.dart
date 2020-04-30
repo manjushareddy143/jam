@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:jam/models/service.dart';
 import 'package:jam/screens/home_screen.dart';
+
 class InquiryScreen extends StatelessWidget {
 
   @override
@@ -12,15 +14,19 @@ class InquiryScreen extends StatelessWidget {
     );
   }
 }
+
 class InquiryPage extends StatefulWidget {
 
-
-
-
+  final Service service;
+  InquiryPage({Key key, @required this.service}) : super(key: key);
   @override
-  _InquiryPageState createState() => _InquiryPageState();
+  _InquiryPageState createState() => _InquiryPageState(service: this.service);
 }
 class _InquiryPageState extends State<InquiryPage> {
+
+  final Service service;
+  _InquiryPageState({Key key, @required this.service});
+
   TextEditingController dateCtl = TextEditingController();
   final txtName = TextEditingController();
   final txtContact = TextEditingController();

@@ -407,40 +407,12 @@ class _SignupPageState extends State<SignupPage> {
     print("come for response");
     if (res != null) {
       if (res.statusCode == 200) {
-        print('Howdy, ${res.statusCode}!');
         var data = json.decode(res.body);
-        if (data['first_name'] is int) {
-          print("first_name");
-        }
-        if (data['last_name'] is int) {
-          print("last_name");
-        }
-        if (data['contact'] is int) {
-          print("contact");
-        }
-        if (data['id'] is int) {
-          print("id");
-        }
-        if (data['type_id'] is int) {
-          print("type_id");
-        } else {
-          print("type_id" + data['type_id']);
-        }
-
-        if (data['term_id'] is int) {
-          print("term_id");
-        } else {
-          print("TERMS" + data['term_id']);
-        }
         User user = User.fromJson(data);
+        printLog(user.first_name);
+        print(user.contact);
         Preferences.saveObject("user", jsonEncode(user.toJson()));
         Preferences.saveObject("profile", "1");
-//        Navigator.pushReplacement(
-//            context,
-//            MaterialPageRoute(
-//              builder: (context) => HomeScreen(),
-//            ));
-      ///////////////////
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
