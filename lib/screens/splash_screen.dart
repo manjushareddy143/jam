@@ -62,7 +62,7 @@ class SplashScreenState extends State<SplashScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => UserLogin(),
+              builder: (context) =>UserLogin(),
             ));
       } else if (val == "1") {
         Navigator.pushReplacement(
