@@ -1,8 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/sub_category.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:jam/utils/preferences.dart';
+import 'package:jam/utils/utils.dart';
 
 class InquiryScreen extends StatelessWidget {
 
@@ -31,37 +38,51 @@ class _InquiryPageState extends State<InquiryPage> {
   final txtName = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
-
-
+  String firstName = "";
+  String phoneNumber = "";
+  String email = "";
+  String user_id;
 
   DateTime _currentDt = new DateTime.now();
 
-
-
   bool isAC = false;
-  String dropdownvalue;
-  List<DropdownMenuItem<String>> _dropDownTypes;
-  Map<String, dynamic> _lstType = {"N":"","A":"AC installation ","B": "Painting & Decor","C":"Electrical Works"};
-
-
-
-
-
-
-
+  String selectedService;
+  List<DropdownMenuItem<String>> _dropDownService;
+  List<Service> _lstServices = new List<Service>();
+  List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
   bool isAC1 = false;
-  String dropdownvalue1;
-  List<DropdownMenuItem<String>> _dropDownTypes1;
-  Map<String, dynamic> _lstType1 = {"N":"","A":"AC installation ","B": "Painting & Decor","C":"Electrical Works"};
+  String selectedSubCategory;
+  List<DropdownMenuItem<String>> _dropDownSubCategory;
+
+
 
   @override
   void initState() {
     super.initState();
-    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
-    dropdownvalue = _dropDownTypes[0].value;
-    _dropDownTypes1 = buildAndGetDropDownMenuItems1(_lstType1);
-    dropdownvalue1 = _dropDownTypes1[0].value;
+    _lstServices.add(this.service);
+    _lstSubCategory.addAll(this.service.categories);
+    _dropDownService = buildServicesMenuItems(_lstServices);
+    selectedService = _dropDownService[0].value;
+    _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
+    selectedSubCategory = _dropDownSubCategory[0].value;
+    setProfile();
+    print(this.service.name);
+  }
+
+  void setProfile() async  {
+    await Preferences.readObject("user").then((onValue) async {
+      var userdata = json.decode(onValue);
+      printLog('userdata');
+      printLog(userdata);
+      User user = User.fromJson(userdata);
+      user_id = user.id.toString();
+      setState(() {
+        firstName = user.first_name;
+        phoneNumber = user.contact;
+        email = user.email;
+      });
+    });
   }
   String validateEmail(String value) {
     Pattern pattern =
@@ -82,12 +103,12 @@ class _InquiryPageState extends State<InquiryPage> {
         ),
       body: SingleChildScrollView(
         child: new Form(
-
           child: inquiryScreenUI(),
         ),
       ),
     );
   }
+
   Widget inquiryScreenUI() {
     return Container(margin: EdgeInsets.all(20),
     child:
@@ -98,14 +119,15 @@ class _InquiryPageState extends State<InquiryPage> {
       SizedBox(height: 10,),
       setDropDown1(),
       SizedBox(height: 10,),
-      Material(elevation: 10.0,shadowColor: Colors.grey,
+      Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
-
           decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 20),
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ),),
             labelText: 'First Name',),
-          controller: txtName,//..text = 'KAR-MT30',
+          controller: (txtName == "") ? txtName : txtName..text = firstName,
+          //txtName,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
               return 'Please enter name!!';
@@ -115,6 +137,7 @@ class _InquiryPageState extends State<InquiryPage> {
         ),
       ),
 
+
       SizedBox(height: 10,),
       Material(elevation: 10.0,shadowColor: Colors.grey,
         child: TextFormField(
@@ -122,11 +145,12 @@ class _InquiryPageState extends State<InquiryPage> {
             contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 20),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
             labelText: 'Email',),
-          controller: txtEmail,//..text = 'KAR-MT30',
+          controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
+          //txtEmail,//..text = 'KAR-MT30',
           keyboardType: TextInputType.emailAddress,
           validator: (value){
             if (value.isEmpty) {
-              return 'Please enter username!!';
+              return 'Please enter email!!';
             }
             return validateEmail(value);
           },
@@ -143,7 +167,8 @@ class _InquiryPageState extends State<InquiryPage> {
             contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 20),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
             labelText: 'Phone',),
-          controller: txtContact,//..text = 'KAR-MT30',
+          controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
+          //txtContact,//..text = 'KAR-MT30',
           keyboardType: TextInputType.phone,
           validator: (value){
             if (value.isEmpty) {
@@ -189,18 +214,19 @@ class _InquiryPageState extends State<InquiryPage> {
     );
   }
   Widget setDropDown() {
-    return Material(elevation: 10.0,shadowColor: Colors.grey,
+    return Material(elevation: 5.0,shadowColor: Colors.grey,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10,5,0,5),
+        padding: const EdgeInsets.fromLTRB(10,0,0,0),
         child: Row(
           children:[
-            Text("Primary Service" , style: TextStyle(fontSize: 17 , color: Colors.black45)),
-            SizedBox(width: 50,),
+            Text("Primary Service" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+            SizedBox(width: 20,),
             Expanded(child: DropdownButton(
+                underline: SizedBox(),
                 isExpanded: true,
-                value: dropdownvalue,
+                value: selectedService,
                 icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
-                items: _dropDownTypes,
+                items: _dropDownService,
                 onChanged: changedDropDownItem),
             ),
 
@@ -209,18 +235,18 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
     );
   }
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(Map<String, dynamic> reportForlist) {
+  List<DropdownMenuItem<String>> buildServicesMenuItems(List<Service> serviceList) {
     List<DropdownMenuItem<String>> items = List();
-    reportForlist.forEach((key, val) {
-      items.add(DropdownMenuItem(value: key, child: Text(val)));
+    serviceList.forEach((val) {
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
     });
     return items;
   }
 
   void changedDropDownItem(String selectedItem) {
     setState(() {
-      dropdownvalue = selectedItem;
-      print(dropdownvalue);
+      selectedService = selectedItem;
+      print(selectedService);
       if(selectedItem == "") {
         isAC = true;
       } else {
@@ -230,25 +256,20 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
 
-
-
-
-
-
-
   Widget setDropDown1() {
-    return Material(elevation: 10.0,shadowColor: Colors.grey,
+    return Material(elevation: 5.0,shadowColor: Colors.grey,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10,5,0,5),
+        padding: const EdgeInsets.fromLTRB(10,0,0,0),
         child: Row(
           children:[
-            Text("Secondary Service" , style: TextStyle(fontSize: 17 , color: Colors.black45)),
-            SizedBox(width: 50,),
+            Text("Secondary Service" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+            SizedBox(width: 20,),
             Expanded(child: DropdownButton(
+                underline: SizedBox(),
                 isExpanded: true,
-                value: dropdownvalue1,
+                value: selectedSubCategory.toLowerCase(),
                 icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
-                items: _dropDownTypes1,
+                items: _dropDownSubCategory,
                 onChanged: changedDropDownItem1),
             ),
 
@@ -257,18 +278,18 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
     );
   }
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems1(Map<String, dynamic> reportForlist) {
+  List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
     List<DropdownMenuItem<String>> items = List();
-    reportForlist.forEach((key, val) {
-      items.add(DropdownMenuItem(value: key, child: Text(val)));
+    listSubCategory.forEach((val) {
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
     });
     return items;
   }
 
   void changedDropDownItem1(String selectedItem) {
     setState(() {
-      dropdownvalue1 = selectedItem;
-      print(dropdownvalue1);
+      selectedSubCategory = selectedItem;
+      print(selectedSubCategory);
       if(selectedItem == "") {
         isAC1 = true;
       } else {
@@ -279,7 +300,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
 
 
-final format = DateFormat("yyyy-MM-dd");
+final format = DateFormat("dd-MM-yyyy");
 final formatt= DateFormat("HH:mm");
 
   Widget setDate(){
@@ -288,8 +309,8 @@ final formatt= DateFormat("HH:mm");
 
         padding: const EdgeInsets.fromLTRB(0,0,0,0),
           child: DateTimeField(
+            initialValue: _currentDt,
             format: format,
-
             decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
               labelText: 'Date',),
@@ -299,8 +320,6 @@ final formatt= DateFormat("HH:mm");
                  firstDate: DateTime.now(),
               initialDate: currentValue ?? DateTime.now(),
                lastDate: DateTime(2021));}
-
-
           ),
     ),);
   }
@@ -314,8 +333,8 @@ final formatt= DateFormat("HH:mm");
             flex: 5,
             child: Material(elevation: 10.0,shadowColor: Colors.grey,
               child: DateTimeField(
+                initialValue: _currentDt,
                   format: formatt,
-
                   decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                     ),
@@ -326,6 +345,9 @@ final formatt= DateFormat("HH:mm");
                   );
                   return DateTimeField.convert(time);
                 },
+                onChanged: (val) => {
+                  print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
+                },
               ),
             ),
           ),
@@ -333,8 +355,8 @@ final formatt= DateFormat("HH:mm");
           Flexible(flex: 5,
             child: Material(elevation: 10.0,shadowColor: Colors.grey,
               child: DateTimeField(
+                initialValue: _currentDt.add(Duration(hours: 1)),
                 format: formatt,
-
                 decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
                   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                 ),
@@ -344,6 +366,9 @@ final formatt= DateFormat("HH:mm");
                     initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
                   );
                   return DateTimeField.convert(time);
+                },
+                onChanged: (val) => {
+                  print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
                 },
               ),
             ),

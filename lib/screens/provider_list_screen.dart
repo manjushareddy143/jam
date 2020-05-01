@@ -211,8 +211,6 @@ class _ProviderListState extends State<ProviderListPage> {
                                 fontWeight: FontWeight.w400,
                                 color: Colors.teal)), //`Text` to display
                         onPressed: () {
-                          print('Quotes Press');
-
                           Navigator.push(
                           context,
                           MaterialPageRoute(
