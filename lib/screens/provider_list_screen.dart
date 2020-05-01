@@ -12,12 +12,12 @@ import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
 
-class ProviderListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: ProviderListPage());
-  }
-}
+//class ProviderListScreen extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return Center(child: ProviderListPage());
+//  }
+//}
 
 class ProviderListPage extends StatefulWidget {
   final Service service;

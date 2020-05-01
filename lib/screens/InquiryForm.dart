@@ -11,16 +11,16 @@ import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 
-class InquiryScreen extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Scaffold(
-      body: InquiryPage(),
-    );
-  }
-}
+//class InquiryScreen extends StatelessWidget {
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    // TODO: implement build
+//    return Scaffold(
+//      body: InquiryPage(),
+//    );
+//  }
+//}
 
 class InquiryPage extends StatefulWidget {
 
@@ -34,24 +34,28 @@ class _InquiryPageState extends State<InquiryPage> {
   final Service service;
   _InquiryPageState({Key key, @required this.service});
 
-  TextEditingController dateCtl = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+
   final txtName = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
+  final txtRemark = TextEditingController();
   String firstName = "";
   String phoneNumber = "";
   String email = "";
   String user_id;
+  DateTime selecteDate;
+  DateTime start_time;
+  DateTime end_time;
 
   DateTime _currentDt = new DateTime.now();
 
-  bool isAC = false;
   String selectedService;
   List<DropdownMenuItem<String>> _dropDownService;
   List<Service> _lstServices = new List<Service>();
   List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
-  bool isAC1 = false;
   String selectedSubCategory;
   List<DropdownMenuItem<String>> _dropDownSubCategory;
 
@@ -68,6 +72,9 @@ class _InquiryPageState extends State<InquiryPage> {
     selectedSubCategory = _dropDownSubCategory[0].value;
     setProfile();
     print(this.service.name);
+    selecteDate = _currentDt;//format.format(_currentDt);
+    start_time = _currentDt; //formatt.format(_currentDt); //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
+    end_time =_currentDt.add(Duration(hours: 1)); //formatt.format(_currentDt.add(Duration(hours: 1)));//TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
   }
 
   void setProfile() async  {
@@ -84,6 +91,7 @@ class _InquiryPageState extends State<InquiryPage> {
       });
     });
   }
+
   String validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -103,7 +111,9 @@ class _InquiryPageState extends State<InquiryPage> {
         ),
       body: SingleChildScrollView(
         child: new Form(
+          key: _formKey,
           child: inquiryScreenUI(),
+          autovalidate: _autoValidate,
         ),
       ),
     );
@@ -115,14 +125,16 @@ class _InquiryPageState extends State<InquiryPage> {
     Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: <Widget>[
+
       setDropDown(),
       SizedBox(height: 10,),
+
       setDropDown1(),
       SizedBox(height: 10,),
+
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
           decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-
             contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ),),
             labelText: 'First Name',),
@@ -136,13 +148,12 @@ class _InquiryPageState extends State<InquiryPage> {
           },
         ),
       ),
-
-
       SizedBox(height: 10,),
-      Material(elevation: 10.0,shadowColor: Colors.grey,
+
+      Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
           decoration: InputDecoration( suffixIcon: Icon(Icons.email),
-            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 20),
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
             labelText: 'Email',),
           controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
@@ -160,11 +171,12 @@ class _InquiryPageState extends State<InquiryPage> {
         ),
       ),
       SizedBox(height: 10,),
-      Material(elevation: 10.0,shadowColor: Colors.grey,
+
+      Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
 
           decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-            contentPadding: EdgeInsets.fromLTRB(10, 20, 0, 20),
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
             labelText: 'Phone',),
           controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
@@ -178,41 +190,69 @@ class _InquiryPageState extends State<InquiryPage> {
           },
         ),
       ),
-
-
       SizedBox(height: 10,),
+
       setDate(),
       SizedBox(height: 10,),
+
       setTime(),
       SizedBox(height: 10,),
 
-      Material(elevation: 10.0,shadowColor: Colors.grey,
+      Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextField(
-            maxLines: 7,
+          controller: txtRemark,
+            maxLines: 5,
+          keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-
-            hintText: 'Remark', contentPadding: EdgeInsets.only(left:10,top: 5) ),
+            hintText: 'Remark', contentPadding: EdgeInsets.only(left:10,top: 15) ),
       ),),
       SizedBox(height: 30,),
 
-      RaisedButton(
-
-        color: Colors.teal,
-        textColor: Colors.white,
-        padding: EdgeInsets.fromLTRB(160,15,160,15),
-//          color: MyColors.turquoise,
-        onPressed: () {
-          Navigator.pushReplacement(context, new MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen(),
-//                        fullscreenDialog: false,
-          ));
-
-        },
-        child: const Text('Submit', style: TextStyle(fontSize: 15,color: Colors.white)),
+      ButtonTheme(
+        minWidth: 400.0,
+        child:  RaisedButton(
+            color: Colors.teal,
+            textColor: Colors.white,
+            child: const Text(
+                'Booking',
+                style: TextStyle(fontSize: 16.5)
+            ),
+            onPressed: () {
+              validateForm();
+            }
+        ),
       ),]
     ),
     );
   }
+
+  void validateForm() {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      _autoValidate = false;
+
+      setState(() {
+        Map<String, String> data = new Map();
+        data["user_id"] = user_id;
+        data["service_id"] = selectedService;
+        data["category_id"] = selectedSubCategory;
+        data["orderer_name"] = txtName.text;
+        data["email"] = txtEmail.text;
+        data["contact"] = txtContact.text;
+        data["booking_date"] = format.format(selecteDate);
+        data["start_time"] = formatt.format(start_time);
+        data["end_time"] = formatt.format(end_time);
+        data["remark"] = txtRemark.text;
+        print(data);
+      });
+
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
   Widget setDropDown() {
     return Material(elevation: 5.0,shadowColor: Colors.grey,
       child: Container(
@@ -235,6 +275,7 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
     );
   }
+
   List<DropdownMenuItem<String>> buildServicesMenuItems(List<Service> serviceList) {
     List<DropdownMenuItem<String>> items = List();
     serviceList.forEach((val) {
@@ -247,11 +288,6 @@ class _InquiryPageState extends State<InquiryPage> {
     setState(() {
       selectedService = selectedItem;
       print(selectedService);
-      if(selectedItem == "") {
-        isAC = true;
-      } else {
-        isAC = false;
-      }
     });
   }
 
@@ -267,7 +303,7 @@ class _InquiryPageState extends State<InquiryPage> {
             Expanded(child: DropdownButton(
                 underline: SizedBox(),
                 isExpanded: true,
-                value: selectedSubCategory.toLowerCase(),
+                value: selectedSubCategory.toUpperCase(),
                 icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
                 items: _dropDownSubCategory,
                 onChanged: changedDropDownItem1),
@@ -278,6 +314,7 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
     );
   }
+
   List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
     List<DropdownMenuItem<String>> items = List();
     listSubCategory.forEach((val) {
@@ -290,11 +327,6 @@ class _InquiryPageState extends State<InquiryPage> {
     setState(() {
       selectedSubCategory = selectedItem;
       print(selectedSubCategory);
-      if(selectedItem == "") {
-        isAC1 = true;
-      } else {
-        isAC1 = false;
-      }
     });
   }
 
@@ -304,10 +336,10 @@ final format = DateFormat("dd-MM-yyyy");
 final formatt= DateFormat("HH:mm");
 
   Widget setDate(){
-    return Material(elevation: 10.0,shadowColor: Colors.grey,
+    return Material(elevation: 5.0,shadowColor: Colors.grey,
         child: Container(
-
-        padding: const EdgeInsets.fromLTRB(0,0,0,0),
+        padding: EdgeInsets.fromLTRB(0,0,0,0),
+          height: 50,
           child: DateTimeField(
             initialValue: _currentDt,
             format: format,
@@ -317,63 +349,96 @@ final formatt= DateFormat("HH:mm");
                  onShowPicker: (context, currentValue) {
                  return showDatePicker(
                   context: context,
-                 firstDate: DateTime.now(),
+                 firstDate: _currentDt.add(Duration(days: -365)),
               initialDate: currentValue ?? DateTime.now(),
-               lastDate: DateTime(2021));}
+               lastDate: DateTime(2021)
+                 );
+            },
+            onChanged: (val) => {
+              selecteDate = val
+            },
+
           ),
     ),);
   }
   Widget setTime(){
-    return Container(padding: const EdgeInsets.fromLTRB(0,0,0,0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(padding:
+    EdgeInsets.fromLTRB(0,0,0,0),
+      child: Container(
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+              flex: 4,
+              child: Material(elevation: 5.0,shadowColor: Colors.grey,
+                child: DateTimeField(
+                  initialValue: _currentDt,
+                  format: formatt,
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
+                    hasFloatingPlaceholder: false,
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  ),
+                  onShowPicker: (context, currentValue) async {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                    );
+                    return DateTimeField.convert(time);
+                  },
+                  onChanged: (val) => {
+                    start_time = val// TimeOfDay.fromDateTime(val ?? DateTime.now()).toString(),
+                  },
+                  validator:  (value){
+                    if (value.isAfter(end_time)) {
+                      return 'Invalid time!!';
+                    }
+                    return null;
+                  },
 
-        children: <Widget>[
-          Flexible(
-            flex: 5,
-            child: Material(elevation: 10.0,shadowColor: Colors.grey,
-              child: DateTimeField(
-                initialValue: _currentDt,
+                ),
+              ),
+            ),
+            Flexible(flex: 3,child: Text("To")),
+            Flexible(flex: 4,
+              child: Material(elevation: 5.0,shadowColor: Colors.grey,
+                child: DateTimeField(
+                  initialValue: _currentDt.add(Duration(hours: 1)),
                   format: formatt,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    ),
-                onShowPicker: (context, currentValue) async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                  );
-                  return DateTimeField.convert(time);
-                },
-                onChanged: (val) => {
-                  print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
-                },
-              ),
-            ),
-          ),
-          Flexible(flex: 2,child: Text("To")),
-          Flexible(flex: 5,
-            child: Material(elevation: 10.0,shadowColor: Colors.grey,
-              child: DateTimeField(
-                initialValue: _currentDt.add(Duration(hours: 1)),
-                format: formatt,
-                decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  ),
+                  onShowPicker: (context, currentValue) async {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                    );
+                    return DateTimeField.convert(time);
+                  },
+                  onChanged: (val) => {
+                    end_time = val //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
+//                    print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
+                  },
+                  validator:  (value){
+                    if (value.isBefore(start_time)) {
+                      return 'Invalid time!!';
+                    }
+                    return null;
+                  },
                 ),
-                onShowPicker: (context, currentValue) async {
-                  final time = await showTimePicker(
-                    context: context,
-                    initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                  );
-                  return DateTimeField.convert(time);
-                },
-                onChanged: (val) => {
-                  print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
-                },
               ),
             ),
-          ),
-       ]),
+
+          ],
+        ),
+      )
+//      Row(
+//        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//
+//        children: <Widget>[
+//          ,
+//
+//       ]),
     );
 
   }

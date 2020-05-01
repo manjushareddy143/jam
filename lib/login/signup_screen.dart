@@ -378,10 +378,8 @@ class _SignupPageState extends State<SignupPage> {
 
   Future callLoginAPI() async {
     Map<String, String> data = new Map();
-
     data["first_name"] = txtName.text;
     data["last_name"] = txtLname.text;
-//    data["password"] = "123";
     data["contact"] = txtContact.text;
     data["type_id"] = "4";
     data["term_id"] = "1";
