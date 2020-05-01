@@ -1,7 +1,8 @@
 
 class Provider {
   final int id;
-  final String name;
+  final String first_name;
+  final String last_name;
   final String email;
   final String image;
   final String contact;
@@ -14,13 +15,13 @@ class Provider {
   final String doc;
   final String document_image;
 
-  Provider(this.id, this.name, this.image, this.languages, this.contact,
+  Provider(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
       this.doc, this.document_image, this.email, this.gender, this.org_id,
   this.resident_country,this.term_id, this.type_id);
 
 
   Provider.fromJson(Map<String, dynamic> json)
-      : id = json['id'], name = json['name'], image = json['image'],
+      : id = json['id'], first_name = json['first_name'], last_name = json['last_name'], image = json['image'],
         languages = json['languages'], contact = json['contact'],
         doc = json['doc'], document_image = json['document_image'],
         email = json['email'], gender = json['gender'],

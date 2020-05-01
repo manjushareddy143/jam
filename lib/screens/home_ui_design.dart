@@ -144,12 +144,15 @@ class _HomeUIPageState extends State<HomeUIPage> {
                         //tapping to go the corresponding view linked with it using navigator
                         onTap: () {
 
-//                          printLog(listofServices[serviceIndex].name);
+                          printLog('click == ${listofServices[serviceIndex].name}');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      ProviderListPage(service: listofServices[serviceIndex],))); //, _service[serviceIndex]
+                                      ProviderListPage(service: listofServices[serviceIndex])
+                              )
+                          );
+                          //, _service[serviceIndex]
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,8 +169,12 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
                             Padding(padding: EdgeInsets.all(1.0)),
 
+
                             Text(listofServices[serviceIndex].name,
-                                style: TextStyle(fontSize: 10)),
+                                style: TextStyle(fontSize: 10,),
+                              overflow: TextOverflow.ellipsis,
+
+                            ),
                           ],
                         ),
                       ),
