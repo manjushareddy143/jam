@@ -35,7 +35,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
           delegate: new SliverChildBuilderDelegate(
                   (BuildContext context, int oIndex) {
                 return  Container(
-                  child: Wrap(alignment: WrapAlignment.spaceEvenly,
+                  child: Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    // alignment: WrapAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(margin: EdgeInsets.all(20),
                         alignment: Alignment.center,padding: EdgeInsets.only(top: 10),
