@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
 import 'package:jam/models/user.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 
@@ -244,12 +247,41 @@ class _InquiryPageState extends State<InquiryPage> {
         data["end_time"] = formatt.format(end_time);
         data["remark"] = txtRemark.text;
         print(data);
+        apiCall(data);
       });
-
     } else {
       setState(() {
         _autoValidate = true;
       });
+    }
+  }
+
+  void apiCall(Map<String, String> data) async {
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      var syncOrderResponse =
+          await httpClient.postRequest(context, Configurations.BOOKING_URL, data);
+      processOrderResponse(syncOrderResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processOrderResponse(Response res) {
+    print("come for response");
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print(data);
+        Navigator.pop(context);
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
     }
   }
 
@@ -361,6 +393,7 @@ final formatt= DateFormat("HH:mm");
           ),
     ),);
   }
+
   Widget setTime(){
     return Container(padding:
     EdgeInsets.fromLTRB(0,0,0,0),
@@ -377,6 +410,17 @@ final formatt= DateFormat("HH:mm");
                   format: formatt,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
                     hasFloatingPlaceholder: false,
+//                    errorStyle: TextStyle(
+//                      color: Colors.red,
+//                      wordSpacing: 5.0,
+//                    ),
+//                    labelStyle: TextStyle(
+//                        color: Colors.green,
+//                        letterSpacing: 1.3
+//                    ),
+//                    hintStyle: TextStyle(
+//                        letterSpacing: 1.3
+//                    ),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                   ),
                   onShowPicker: (context, currentValue) async {
@@ -432,13 +476,6 @@ final formatt= DateFormat("HH:mm");
           ],
         ),
       )
-//      Row(
-//        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//
-//        children: <Widget>[
-//          ,
-//
-//       ]),
     );
 
   }

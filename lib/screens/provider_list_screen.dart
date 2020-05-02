@@ -33,22 +33,6 @@ class _ProviderListState extends State<ProviderListPage> {
 
   List<Provider> listofProviders;
 
-//  int acIndex = 0;
-//  List<String> acImage = [
-//    'assets/images/vicky.jpg',
-//    'assets/images/ayu.jpg',
-//    'assets/images/shah.jpg',
-//    'assets/images/sal.jpg',
-//  ];
-//  List<String> acName = [
-//    'Himanshu Malik',
-//    'Afrar Sheikh',
-//    'Abdur Rahman',
-//    'Osama',
-//  ];
-//  List<String> acExp = ['1', '3', '3.5', '4'];
-//  List<String> acRev = ['3', '3', '5', '2'];
-
   @override
   void initState() {
     // TODO: implement initState
@@ -146,7 +130,8 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(Provider provider) {
-    return new Card(
+    return
+      new Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -222,7 +207,7 @@ class _ProviderListState extends State<ProviderListPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                     child: FlatButton.icon(
-                      icon: Icon(Icons.call, color: Colors.teal), //`Icon` to display
+                      icon: Icon(Icons.call, color: Colors.teal),
                       label: Text('Call', style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400,

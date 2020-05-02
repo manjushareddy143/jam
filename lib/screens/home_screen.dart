@@ -40,46 +40,52 @@ class _HomePageState extends State<HomePage> {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
-        automaticallyImplyLeading:  false,
+        automaticallyImplyLeading: false,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-
-
-//            SizedBox(width: 10,),
-            Text(
-              'Your Location',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
-              ),
-            ),
-            Container(
-              child: new GestureDetector(
-                //tapping to go the corresponding view linked with it using navigator
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NewPage()));
-                },
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      'B Ring Road, Doha, Qatar',
-                      style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black),
-                    ),
-                    Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.teal,
-                    )
-                  ],
+            if (_currentIndex == 0)
+              Text(
+                'Your Location',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
                 ),
               ),
-            )
+            if (_currentIndex == 0)
+              Container(
+                child: new GestureDetector(
+                  //tapping to go the corresponding view linked with it using navigator
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewPage()));
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'B Ring Road, Doha, Qatar',
+                        style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.teal,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            if (_currentIndex == 1)
+              setHeader("Categories"),
+            if (_currentIndex == 2)
+              setHeader("My Account"),
+            if (_currentIndex == 3)
+              setHeader("Orders"),
+
           ],
         ),
         actions: <Widget>[
@@ -97,7 +103,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       // Middle Body
-      body:  _children[_currentIndex],
+      body: _children[_currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
@@ -108,7 +114,6 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         iconSize: 30,
-
         type: BottomNavigationBarType.fixed,
 
         items: [
@@ -125,14 +130,25 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
               icon: Icon(Icons.perm_identity), title: new Text("My Account")),
           BottomNavigationBarItem(
-              icon: Icon(
-                Icons.train,
-              ),
-              title: new Text("Orders")),
+            icon: Icon(
+              Icons.train,
+            ),
+            title: new Text("Orders"),
+          ),
         ],
       ),
     );
   }
+
+  Widget setHeader(String title) {
+    return Container(
+      child: Center(
+          child: Text(title,
+              style: TextStyle(color: Colors.black, fontSize: 20),
+              textAlign: TextAlign.center)),
+    );
+  }
+
 
   final List<Widget> _children = [
 //    HomeDesign(),
