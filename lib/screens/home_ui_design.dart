@@ -33,33 +33,6 @@ class _HomeUIPageState extends State<HomeUIPage> {
   List<Service> listofServices;
   int serviceIndex = 0;
 
-//  List<String> serviceImage = [
-//    'assets/images/paint.jpeg',
-//    'assets/images/ac.jpeg',
-////    'assets/images/electric.jpeg',
-////    'assets/images/homeclean.jpg',
-////    'assets/images/plumbing.jpeg',
-////    'assets/images/agri.jpeg',
-//  ];
-//  List<String> servicePhrase = [
-//    'Painting & Decor',
-//    'AC installing & repair',
-////    'Electrical Works',
-////    'Home cleaning & Home Maids',
-////    'Plumbing',
-////    'Agricultural & garden services',
-//  ];
-//  final List<Widget> _service = [
-//    //CollapsingList(),
-//    //DetailPage(),
-//    PlaceholderWidget(Colors.red),
-//    HomeStart(),
-//    PlaceholderWidget(Colors.grey),
-//    PlaceholderWidget(Colors.white),
-//    PlaceholderWidget(Colors.deepOrange),
-//    PlaceholderWidget(Colors.green)
-//  ];
-
   @override
   void initState() {
     // TODO: implement initState
@@ -91,10 +64,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
         print(data);
         List roles = data;
         setState(() {
-          print("mayur 22");
-
           listofServices = Service.processServices(roles);
-//          build(context);
         });
       } else {
         printLog("login response code is not 200");

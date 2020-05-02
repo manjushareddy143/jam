@@ -12,12 +12,12 @@ import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
 
-class ProviderListScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: ProviderListPage());
-  }
-}
+//class ProviderListScreen extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return Center(child: ProviderListPage());
+//  }
+//}
 
 class ProviderListPage extends StatefulWidget {
   final Service service;
@@ -32,22 +32,6 @@ class _ProviderListState extends State<ProviderListPage> {
   _ProviderListState({Key key, @required this.service});
 
   List<Provider> listofProviders;
-
-//  int acIndex = 0;
-//  List<String> acImage = [
-//    'assets/images/vicky.jpg',
-//    'assets/images/ayu.jpg',
-//    'assets/images/shah.jpg',
-//    'assets/images/sal.jpg',
-//  ];
-//  List<String> acName = [
-//    'Himanshu Malik',
-//    'Afrar Sheikh',
-//    'Abdur Rahman',
-//    'Osama',
-//  ];
-//  List<String> acExp = ['1', '3', '3.5', '4'];
-//  List<String> acRev = ['3', '3', '5', '2'];
 
   @override
   void initState() {
@@ -146,7 +130,9 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(Provider provider) {
-    return new Card(
+
+    return
+      new Card(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -196,9 +182,6 @@ class _ProviderListState extends State<ProviderListPage> {
             ),
           ),
 
-//          SizedBox(
-//            height: 10,
-//          ),
           Align(
               child: Row(
                 children: <Widget>[
@@ -211,18 +194,19 @@ class _ProviderListState extends State<ProviderListPage> {
                                 fontWeight: FontWeight.w400,
                                 color: Colors.teal)), //`Text` to display
                         onPressed: () {
+                          printLog('provider::: ${provider}');
                           Navigator.push(
                           context,
                           MaterialPageRoute(
                           builder: (context) =>
-                              InquiryPage(service: this.service)));
+                              InquiryPage(service: this.service, provider: provider,)));
                         },
                       ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                     child: FlatButton.icon(
-                      icon: Icon(Icons.call, color: Colors.teal), //`Icon` to display
+                      icon: Icon(Icons.call, color: Colors.teal),
                       label: Text('Call', style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400,
