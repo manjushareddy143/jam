@@ -300,6 +300,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     if(_autoValidateAddress) {
       addressEnter();
     } else {
+      if(_image == null) {
+        showInfoAlert(context, "Please select Profile Picture");
+      } else {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         _autoValidate = false;
@@ -327,12 +330,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
         });
 
-      }
-      else {
+      } else {
         setState(() {
           _autoValidate = true;
         });
       }
+      }
+
     }
   }
 

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
@@ -9,6 +12,7 @@ import 'package:jam/screens/myOrders.dart';
 import 'package:jam/screens/myProfile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
+import 'package:jam/utils/utils.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -89,8 +93,27 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         actions: <Widget>[
+          if (_currentIndex == 0)
           new IconButton(
             icon: new Icon(Icons.shopping_cart),
+            onPressed: () {
+              Preferences.removePreference("email");
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => UserLogin()));
+            },
+          ),
+          if (_currentIndex == 2)
+          new IconButton(
+            icon: new Icon(Icons.mode_edit),
+            onPressed: () {
+              Preferences.removePreference("email");
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => UserLogin()));
+            },
+          ),
+          if (_currentIndex == 2)
+          new IconButton(
+            icon: new Icon(Icons.exit_to_app),
             onPressed: () {
               Preferences.removePreference("email");
               Navigator.pushReplacement(context,
@@ -155,7 +178,7 @@ class _HomePageState extends State<HomePage> {
     HomeUIDesign(),
     NewPage(),
     Profile(),
-    Orders()
+    OrderUIPage(),
   ];
 
   void onTabTapped(int index) {

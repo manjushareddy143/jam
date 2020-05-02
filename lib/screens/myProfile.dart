@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:jam/models/user.dart';
+import 'package:jam/resources/configurations.dart';
+import 'package:jam/utils/preferences.dart';
+import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 //import 'package:image_picker/image_picker.dart';
 
@@ -16,94 +22,151 @@ class ProfileUIPage extends StatefulWidget {
   _ProfileUIPageState createState() => _ProfileUIPageState();
 }
 class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMixin {
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+
   File _image;
  List<Tab> tabList = List();
   TabController _tabController;
+  User user;
+
   @override
   void initState(){
     tabList.add(new Tab(text: 'About',));
-
     _tabController= TabController(vsync: this, length: tabList.length);
     super.initState();
+    getProfile();
   }
-  Future getimage()async{
-//    final image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-//      _image = image;
-    });
 
+  void getProfile() async  {
+    await Preferences.readObject("user").then((onValue) async {
+      var userdata = json.decode(onValue);
+      setState(() {
+        user = User.fromJson(userdata);
+      });
+    });
   }
+
+  Future getImage() async {
+//    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    var image = await ImagePicker.pickImage(
+      source: ImageSource.gallery,
+    );
+    setState(() {
+      _image = image;
+      print("IMAGE:::::::::: $_image");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-        appBar: new AppBar(leading: BackButton(color:Colors.black),title: Text("My Profile", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,actions: <Widget>[
-          new IconButton(
-            icon: new Icon(Icons.mode_edit),
-            onPressed: () {
+    if(user == null) {
+      return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Loading..."),
+        ),
+      );
+    } else {
+      return Scaffold(
+          body: SingleChildScrollView(
+            child: new Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: myProfileUI(),
+            ),
+          )
+      );
+    }
 
-            },
-          ),
-        ],
-          iconTheme: IconThemeData(
-            color: Colors.teal,
-          ),),
-        body: myProfileUI()
-    );
   }
+
+
   Widget myProfileUI() {
-    return SingleChildScrollView(
-      child: Column( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.end,
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container( padding:EdgeInsets.fromLTRB(0,40,0,5), width: double.infinity,
-             height: 250,
-          color: Colors.black,
-                 child: Column(crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[ _image == null ? Container(
-                   width: 120, height: 120,
-                    decoration: new BoxDecoration(shape: BoxShape.circle, image: new DecorationImage(fit: BoxFit.fill, image: new AssetImage('assets/images/vicky.jpg')) ),
-                     ) : Container(
-                    width: 120, height: 120,
-                    decoration: new BoxDecoration(shape: BoxShape.circle, image: new DecorationImage(fit: BoxFit.fill, image: new FileImage(_image)) ),
-                  ),
-                    SizedBox(height: 5,),
-
-                    Text(
-                      "Hussainali Hamdan",
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400, color: Colors.white),
-                    ),
-
-                    FlatButton(
-                      child:
-                      Text("Upload Photo", textAlign: TextAlign.center,style: TextStyle(fontSize: 10 ,fontWeight: FontWeight.w300, color: Colors.teal)),
-                      onPressed:getimage,
-                    )
-
-
-                    ]
-                  ),
-                 ),
+          _buildCoverImage(MediaQuery.of(context).size),
+          SizedBox(height: 10,),
           setDetails(),
-          /* SizedBox(width: double.infinity,height: 50, child: Container(padding: EdgeInsets.all(15),color: Colors.grey,
-            child: Text('About',style: TextStyle(
-              decoration: TextDecoration.underline, color: Colors.teal,fontSize: 20, fontWeight: FontWeight.w300
-            ),),
-          ),), */
-          setTabbar(),
-
+//          setTabbar(),
         ],
       ),
-
     );
   }
+
+
+  Widget _buildCoverImage(Size screenSize) {
+    return Container(
+      height: screenSize.height /3.6,
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 20),
+          _buildProfileImage(),
+          SizedBox(height: 10),
+      Text(this.user.first_name,
+        textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
+        style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
+            color: Colors.white),
+      ),
+//          Text("Image size upto 3MB", style: TextStyle(color: Colors.white70)),
+          SizedBox(height: 5),
+       GestureDetector(
+         onTap: () {
+           getImage();
+           },
+           child: Text("Upload Photo", textAlign: TextAlign.center,
+               style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
+                   color: Colors.teal)
+           )
+       )
+        ],
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black,
+      ),
+    );
+  }
+
+
+  Widget _buildProfileImage() {
+    return Center(
+      child: Container(
+        child: GestureDetector(
+          onTap: () {
+            print("object");
+            getImage();
+          }, // handle your image tap here
+        ),
+        width: 120.0,
+        height: 120.0,
+        decoration: BoxDecoration(
+          image:
+          DecorationImage(
+            image: (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Colors.white,
+            width: 5.0,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget setDetails(){
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         TextField(
-          decoration: InputDecoration(hintText: "Male", prefixIcon: Icon(Icons.face), enabled: false),
+          decoration: InputDecoration(
+              hintText: "Male", prefixIcon: Icon(Icons.face), enabled: false
+          ),
         ),
         TextField(
           decoration: InputDecoration(hintText: "info@partservices.com", prefixIcon: Icon(Icons.email),enabled: false),
@@ -119,15 +182,11 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
         TextField(
           decoration: InputDecoration(hintText: "11th /B Lorem ipsum dolor sit amet, consectetuer", prefixIcon: Icon(Icons.location_on),enabled: false),
         ),
-
-
-
-
-
       ],
 
     );
   }
+
   Widget setRichText(){
     return Container(padding: EdgeInsets.all(30.0),
 
@@ -148,6 +207,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
 
 
   }
+
   Widget setTabbar(){
     return Column(
       children: <Widget>[
@@ -191,6 +251,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
       ]
     );
   }
+
   Widget _getPage(Tab tab){
     switch(tab.text){
       case 'About' : return setRichText();
