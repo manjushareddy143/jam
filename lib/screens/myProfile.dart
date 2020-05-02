@@ -37,7 +37,8 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: new AppBar(leading: BackButton(color:Colors.black),title: Text("My Profile", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,actions: <Widget>[
+        appBar: new AppBar(leading: BackButton(color:Colors.black),
+          title: Text("My Profile", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.mode_edit),
             onPressed: () {
