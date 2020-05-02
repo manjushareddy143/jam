@@ -28,14 +28,16 @@ import 'package:jam/utils/utils.dart';
 class InquiryPage extends StatefulWidget {
 
   final Service service;
-  InquiryPage({Key key, @required this.service}) : super(key: key);
+  final Provider provider;
+  InquiryPage({Key key, @required this.service, @required this.provider}) : super(key: key);
   @override
-  _InquiryPageState createState() => _InquiryPageState(service: this.service);
+  _InquiryPageState createState() => _InquiryPageState(service: this.service, provider: this.provider);
 }
 class _InquiryPageState extends State<InquiryPage> {
 
   final Service service;
-  _InquiryPageState({Key key, @required this.service});
+  final Provider provider;
+  _InquiryPageState({Key key, @required this.service, @required this.provider});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
@@ -233,7 +235,7 @@ class _InquiryPageState extends State<InquiryPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _autoValidate = false;
-
+      print(provider);
       setState(() {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
@@ -241,10 +243,11 @@ class _InquiryPageState extends State<InquiryPage> {
         data["category_id"] = selectedSubCategory;
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
-        data["contact"] = txtContact.text;
         data["booking_date"] = format.format(selecteDate);
+        data["contact"] = txtContact.text;
         data["start_time"] = formatt.format(start_time);
         data["end_time"] = formatt.format(end_time);
+        data["provider_id"] = provider.id.toString();
         data["remark"] = txtRemark.text;
         print(data);
         apiCall(data);

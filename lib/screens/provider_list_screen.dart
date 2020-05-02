@@ -130,6 +130,7 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(Provider provider) {
+
     return
       new Card(
       child: Column(
@@ -181,9 +182,6 @@ class _ProviderListState extends State<ProviderListPage> {
             ),
           ),
 
-//          SizedBox(
-//            height: 10,
-//          ),
           Align(
               child: Row(
                 children: <Widget>[
@@ -196,11 +194,12 @@ class _ProviderListState extends State<ProviderListPage> {
                                 fontWeight: FontWeight.w400,
                                 color: Colors.teal)), //`Text` to display
                         onPressed: () {
+                          printLog('provider::: ${provider}');
                           Navigator.push(
                           context,
                           MaterialPageRoute(
                           builder: (context) =>
-                              InquiryPage(service: this.service)));
+                              InquiryPage(service: this.service, provider: provider,)));
                         },
                       ),
                   ),

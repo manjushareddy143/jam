@@ -30,11 +30,6 @@ class _OrderUIPageState extends State<OrderUIPage> {
     // TODO: implement initState
     super.initState();
     getProfile();
-
-//    new Future<String>.delayed(new Duration(seconds: 5), () => null)
-//        .then((String value) {
-//
-//    });
   }
   void getProfile() async  {
     await Preferences.readObject("user").then((onValue) async {
@@ -114,14 +109,25 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
   Widget setupCard(Order order) { //Order order
     String statusString = "";
+    var status_color = null;
+    var status_icon = null;
+
     switch(order.status) {
       case 1: statusString = 'Order Pending';
+      status_color = Colors.blue;
+      status_icon = Icons.pan_tool;
       break;
       case 2: statusString = 'Order Completed';
+      status_color = Colors.green;
+      status_icon = Icons.check_circle;
       break;
-      case 2: statusString = 'Order Decline';
+      case 3: statusString = 'Order Decline';
+      status_color = Colors.red;
+      status_icon = Icons.cancel;
       break;
       default : statusString = 'Order Completed';
+      status_color = Colors.green;
+      status_icon = Icons.check_circle;
     }
 
     return Container(
@@ -154,8 +160,15 @@ class _OrderUIPageState extends State<OrderUIPage> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                       textWidthBasis: TextWidthBasis.parent,
                       textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    Text(order.service,),
+
+                    Container(
+                      width: 150,
+                      child: Text(order.service,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5),
+                    ),
                     Text("Order#" + order.id.toString(),),
                     Row(
                       children: <Widget>[
@@ -191,16 +204,11 @@ class _OrderUIPageState extends State<OrderUIPage> {
                                 style: TextStyle(
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.teal)
+                                    color: status_color)
                             )
                         ),
                         SizedBox(width: MediaQuery. of(context). size. width / 4.5,),
-                        if(order.status == 1)
-                        Icon(Icons.pan_tool, color: Colors.green, size: 15,),
-                        if(order.status == 2)
-                          Icon(Icons.check_circle, color: Colors.green, size: 15,),
-                        if(order.status == 3)
-                          Icon(Icons.cancel, color: Colors.green, size: 15,)
+                        Icon(status_icon, color: status_color, size: 15,)
                       ],
                     ),
                   ],
