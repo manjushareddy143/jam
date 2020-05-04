@@ -7,6 +7,7 @@ import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
 import 'package:jam/screens/myOrders.dart';
 import 'package:jam/screens/myProfile.dart';
+import 'package:jam/screens/orderDetail.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
 
@@ -153,7 +154,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
 //    HomeDesign(),
     HomeUIDesign(),
-    NewPage(),
+     NewPage(),
     Profile(),
     Orders()
   ];
