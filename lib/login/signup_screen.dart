@@ -430,17 +430,17 @@ class _SignupPageState extends State<SignupPage> {
     data["type_id"] = "4";
     data["term_id"] = "1";
     printLog(data);
-//    try {
-//      HttpClient httpClient = new HttpClient();
-//      print('api call start signup');
-//      var syncUserResponse =
-//      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
-//      processLoginResponse(syncUserResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      var syncUserResponse =
+      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
+      processLoginResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
   }
 
   void processLoginResponse(Response res) {
