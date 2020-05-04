@@ -300,6 +300,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     if(_autoValidateAddress) {
       addressEnter();
     } else {
+      if(_image == null) {
+        showInfoAlert(context, "Please select Profile Picture");
+      } else {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         _autoValidate = false;
@@ -327,12 +330,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
         });
 
-      }
-      else {
+      } else {
         setState(() {
           _autoValidate = true;
         });
       }
+      }
+
     }
   }
 
@@ -359,17 +363,19 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void processProfileResponse(Map res) {
     print("come for response");
     print(res);
-    User user = User.fromJson(res);
-
-        Preferences.saveObject("user", jsonEncode(user.toJson()));
-        Preferences.saveObject("profile", "0");
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
-        ///////////////////
+    if(res != null) {
+      User user = User.fromJson(res);
+      Preferences.saveObject("user", jsonEncode(user.toJson()));
+      Preferences.saveObject("profile", "0");
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          )
+      );
     }
+
+  }
 
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;

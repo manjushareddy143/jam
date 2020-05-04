@@ -8,7 +8,7 @@ class Address {
   final String city;
   final String postal_code;
   final String location;
-  final String user_id;
+  final int user_id;
 
   Address(this.id, this.address_line1, this.address_line2, this.landmark,
       this.district, this.city, this.postal_code, this.location, this.user_id);
@@ -18,7 +18,7 @@ class Address {
         address_line2 = json['address_line2'], landmark = json['landmark'],
         district = json['district'], city = json['city'],
         postal_code = json['postal_code'], location = json['location'],
-        user_id = json['user_id'];
+        user_id =  json['user_id'];
 
   Map<String, dynamic> toJson() => {
     'id': id, 'address_line1': address_line1,

@@ -50,7 +50,7 @@ class HttpClient {
       }
 
       var response = await request.send();
-      printLog(response.statusCode);
+//      printLog(response.statusCode);
       responseData = await handleMultipartResponse(context, response);
       return responseData;
     } else {
@@ -90,10 +90,8 @@ class HttpClient {
   }
 
   Future<http.Response> getRequest(
-      BuildContext context, String apiUrl, Map<String, String> data,
-      String token, bool showLoad, bool hideLoad) async {
-    //String apiUrl = baseUrl + "${url}";
-//    print('showLoad: $showLoad');
+    BuildContext context, String apiUrl, Map<String, String> data,
+    String token, bool showLoad, bool hideLoad) async {
     showLoading(context);
 
     printLog(apiUrl);
@@ -101,25 +99,6 @@ class HttpClient {
     bool isNetworkAvailable = await checkInternetConnection();
     if (isNetworkAvailable) {
       Map<String, String> headers = new Map();
-
-//      String params = "";
-
-//      if (data != null) {
-//        apiUrl += "?";
-//        data.forEach((k, v) {
-//          params = params + k + "=" + v + "&";
-//        });
-//        if (params.length > 0) {
-//          params = params.substring(0, params.length - 1);
-//        }
-//      }
-//
-//      apiUrl += params;
-
-
-//      headers["Content-Type"] = "application/json";
-      //headers["Authorization"] = "Bearer ${token}";
-//      headers["Authorization"] = "$token"; //"Basic";
 
       http.Response response = await http.get(apiUrl);
 
@@ -136,8 +115,10 @@ class HttpClient {
   Future<Map> handleMultipartResponse(BuildContext context, dynamic response) async {
     print(response.statusCode);
     dismissLoading(context);
-    if (response.statusCode == 400 || response.statusCode == 406) {
+    if (response.statusCode == 400) {
       printLog(response.statusCode);
+      final respStr = await response.stream.bytesToString();
+      print('ERROR === $respStr');
 //      processLogout(context);
       //to indicate caller doesn't need to handle API response
       return null;
@@ -146,51 +127,61 @@ class HttpClient {
     else if (response.statusCode == 200) {
       final respStr = await response.stream.bytesToString();
       print('mydata === $respStr');
+      print('mydata === ${response}');
       Map responseData = jsonDecode(respStr);
         return responseData;
 
-    } else {
-      String message = response.statusCode.toString();
-      showInfoAlert(context, message);
+    } else if (response.statusCode == 406) {
+      final respStr = await response.stream.bytesToString();
+      print('ERROR DATA === $respStr');
+      String errorMsg  =  "";
+      Map data = jsonDecode(respStr);
+      data['error'].forEach((key, val){
+        printLog(key);
+        printLog(val[0]);
+        errorMsg += " " + val[0];
+      });
+
+      showInfoAlert(context, errorMsg);
+    }
+    else {
       return null;
     }
   }
 
-//handle POST and GET response
-  //null will be return in case of error,so caller will not process the response, it will be handled here it self by showing alert or logging out
   http.Response  handleResponse(BuildContext context, http.Response response, bool hideLoad) {
-//    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-    printLog("Response : $response");
-
-      dismissLoading(context);
-
+    dismissLoading(context);
     printLog(response.statusCode);
     printLog(response.body);
-
-    //handle token expire and logout the user (400 and 406 indicates expired tokens)
-    if (response.statusCode == 400 || response.statusCode == 406) {
-
-
-
-      showInfoAlert(context, response.body);
-//      processLogout(context);
-      //to indicate caller doesn't need to handle API response
+    if (response.statusCode == 400) {
       return null;
-    } else if (response.statusCode == 200) {
-      print('200 ok');
+    } else if (response.statusCode == 204) {
       return response;
+    }
+    else if (response.statusCode == 200) {
+      return response;
+    } else if (response.statusCode == 406) {
+      print('error');
+      Map data = jsonDecode(response.body);
+      String errorMsg  =  "";
+      data['error'].forEach((key, val){
+        printLog(key);
+        printLog(val[0]);
+        errorMsg += " " + val[0];
+      });
+      showInfoAlert(context, errorMsg);
     } else {
       //show error only if't is set to true
 //      if (shouldShowError) {
-      var data = jsonDecode(response.body);
+//      var data = jsonDecode(response.body);
+
 
 //      Map<String, dynamic> message =new HashMap<String, dynamic>();
 //      message = data['error'];
-      print('error');
-      print(data['error']);
+//      print('error');
+//      print(data['error']);
 
-//          showInfoAlert(context, message[0]);
+          showInfoAlert(context, 'Unknown error from server, code: ${response.statusCode}');
 
 
 //      }

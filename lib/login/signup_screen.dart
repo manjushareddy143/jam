@@ -19,6 +19,7 @@ import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/widget_helper.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 enum GenderEnum {  Male, Female  }
 
@@ -162,11 +163,46 @@ class _SignupPageState extends State<SignupPage> {
               ),
 
               SizedBox(height: 10,),
+              Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  enabled: _fridgeEdit,
+                  obscureText: true,
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.security),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                    labelText: 'Password',),
+                  controller: txtPass,//..text = 'KAR-MT30',
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return 'Please enter password!!';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+
+              SizedBox(height: 10,),
 
              Row(
                children: <Widget>[
                 Checkbox(value: _value1, onChanged: _value1Changed),
-                Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),])
+                 Text("Agree With ", style: TextStyle(color: Colors.grey),),
+                 InkWell(
+                   child: Text(
+                     "Terms And Condition",
+                     style: TextStyle(decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
+                   ),
+                   onTap: _launchURL,
+                 ),
+//                InkWell(
+//                    child: Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),
+//                    onTap: () async {
+//                      _launchURL();
+//                    }
+//                ),
+//                Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),
+               ]
+             )
             ],
           ),
 
@@ -243,6 +279,15 @@ class _SignupPageState extends State<SignupPage> {
         ],
       ),
     );
+  }
+
+  _launchURL() async {
+    const url = "http://www.savitriya.com/privacy-policy/";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   submitPin(String pin) {
@@ -380,25 +425,22 @@ class _SignupPageState extends State<SignupPage> {
     Map<String, String> data = new Map();
     data["first_name"] = txtName.text;
     data["last_name"] = txtLname.text;
+    data["password"] = txtPass.text;
     data["contact"] = txtContact.text;
     data["type_id"] = "4";
     data["term_id"] = "1";
-//    data["gender"] = "Male";
-//    data["languages"] = "Arabic, English";
-
     printLog(data);
-
-    try {
-      HttpClient httpClient = new HttpClient();
-      print('api call start signup');
-      var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
-      processLoginResponse(syncUserResponse);
-    } on Exception catch (e) {
-      if (e is Exception) {
-        printExceptionLog(e);
-      }
-    }
+//    try {
+//      HttpClient httpClient = new HttpClient();
+//      print('api call start signup');
+//      var syncUserResponse =
+//      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
+//      processLoginResponse(syncUserResponse);
+//    } on Exception catch (e) {
+//      if (e is Exception) {
+//        printExceptionLog(e);
+//      }
+//    }
   }
 
   void processLoginResponse(Response res) {

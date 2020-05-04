@@ -17,19 +17,23 @@ class Orders extends StatelessWidget{
   }
 }
 class OrderUIPage extends StatefulWidget {
+  OrderUIPage({Key key, @required user,}) : super(key: key);
   @override
   _OrderUIPageState createState() => _OrderUIPageState();
 }
 class _OrderUIPageState extends State<OrderUIPage> {
+
   int oIndex = 0;
   List<Order> listofOrders;
   User user;
 
   @override
   void initState() {
+//    printLog(this.user.first_name);
     // TODO: implement initState
     super.initState();
     getProfile();
+//    getOrders();
   }
   void getProfile() async  {
     await Preferences.readObject("user").then((onValue) async {
@@ -82,6 +86,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
     if (listofOrders == null) {
       return new Scaffold(
         appBar: new AppBar(
+          automaticallyImplyLeading: false,
           title: new Text("Loading..."),
         ),
       );

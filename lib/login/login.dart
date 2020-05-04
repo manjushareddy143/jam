@@ -6,8 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:jam/screens/initial_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
 import 'package:jam/home_widget.dart';
@@ -197,27 +199,31 @@ class _user extends State<UserLogin>{
   void processLoginResponse(Response res) {
     if (res != null) {
       if (res.statusCode == 200) {
-        printLog("y0000");
         var data = json.decode(res.body);
-
-        if(data['code'] == false) {
-
-          print(data["message"]);
-          showInfoAlert(context, data["message"]);
+        User user = User.fromJson(data);
+        if(user.address == null) {
+          print('NO ADDRESS');
+          Preferences.saveObject("user", jsonEncode(user.toJson()));
+          Preferences.saveObject("profile", "1");
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => InitialProfileScreen(),
+              ));
         } else {
-          String r =data["email"];
-          Preferences.saveObject("email", r);
-//          getServices();
+          print('HMMM ADDRESS');
+          Preferences.saveObject("user", jsonEncode(user.toJson()));
+          Preferences.saveObject("profile", "0");
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => HomePage(),
               ));
         }
-
       } else {
         printLog("login response code is not 200");
-
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
       }
     }
   }
