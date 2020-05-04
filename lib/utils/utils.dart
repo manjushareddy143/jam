@@ -18,6 +18,7 @@ import 'package:jam/utils/preferences.dart';
 
 //import 'package:pulse/models/helper.dart' as helper;
 
+
 // ignore: missing_return
 Future<bool> checkInternetConnection() async {
   try {

@@ -86,6 +86,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
     if (listofOrders == null) {
       return new Scaffold(
         appBar: new AppBar(
+          automaticallyImplyLeading: false,
           title: new Text("Loading..."),
         ),
       );

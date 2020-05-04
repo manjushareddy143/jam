@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jam/models/user.dart';
@@ -12,19 +13,26 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 //import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
-    return Center(child: ProfileUIPage());
+    return ProfileUIPage();
+      //Center(child: );
   }
 }
 class ProfileUIPage extends StatefulWidget {
+
+  ProfileUIPage({ Key key }) : super(key: key);
   @override
-  _ProfileUIPageState createState() => _ProfileUIPageState();
+  ProfileUIPageState createState() => new ProfileUIPageState();
 }
-class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMixin {
+class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMixin {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
+//  bool isEdit = false;
+  bool isEditProfile = false;
+
 
   File _image;
  List<Tab> tabList = List();
@@ -35,8 +43,23 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   void initState(){
     tabList.add(new Tab(text: 'About',));
     _tabController= TabController(vsync: this, length: tabList.length);
+
     super.initState();
     getProfile();
+  }
+
+  void validateform() {
+    if (_formKey.currentState.validate()) {
+      // If the form is valid, display a Snackbar.
+      print('EDIT');
+      setState(() {
+        if(isEditProfile == true) {
+          isEditProfile = false;
+        } else {
+          isEditProfile = true;
+        }
+      });
+    }
   }
 
   void getProfile() async  {
@@ -49,14 +72,11 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   }
 
   Future getImage() async {
-//    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     var image = await ImagePicker.pickImage(
       source: ImageSource.gallery,
     );
     setState(() {
       _image = image;
-      print("IMAGE:::::::::: $_image");
     });
   }
 
@@ -66,6 +86,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
     if(user == null) {
       return new Scaffold(
         appBar: new AppBar(
+          automaticallyImplyLeading: false,
           title: new Text("Loading..."),
         ),
       );
@@ -80,7 +101,6 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
           )
       );
     }
-
   }
 
 
@@ -93,7 +113,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
           _buildCoverImage(MediaQuery.of(context).size),
           SizedBox(height: 10,),
           setDetails(),
-//          setTabbar(),
+          setTabbar(),
         ],
       ),
     );
@@ -113,12 +133,15 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
         style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
             color: Colors.white),
       ),
-//          Text("Image size upto 3MB", style: TextStyle(color: Colors.white70)),
           SizedBox(height: 5),
        GestureDetector(
          onTap: () {
-           getImage();
-           },
+           if(isEditProfile) {
+             getImage();
+           } else {
+             showInfoAlert(context, "Please enable edit mode");
+           }
+         },
            child: Text("Upload Photo", textAlign: TextAlign.center,
                style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
                    color: Colors.teal)
@@ -139,7 +162,12 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
         child: GestureDetector(
           onTap: () {
             print("object");
-            getImage();
+            if(isEditProfile) {
+              getImage();
+            }else {
+              showInfoAlert(context, "Please enable edit mode");
+            }
+
           }, // handle your image tap here
         ),
         width: 120.0,
@@ -161,26 +189,39 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   }
 
   Widget setDetails(){
+
+    String addressString = user.address.address_line1;
+    if(user.address.address_line2 != "") {
+      addressString += ", " + user.address.address_line2;
+    }
+
+    if(user.address.landmark != "") {
+      addressString += ", " + user.address.landmark;
+    }
+    addressString += ", " + user.address.district
+        + ", " + user.address.city + ", " + user.address.postal_code + ".";
+
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         TextField(
           decoration: InputDecoration(
-              hintText: "Male", prefixIcon: Icon(Icons.face), enabled: false
+              hintText: user.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
           ),
         ),
         TextField(
-          decoration: InputDecoration(hintText: "info@partservices.com", prefixIcon: Icon(Icons.email),enabled: false),
+          decoration: InputDecoration(hintText: user.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
         ),
         TextField(
-          decoration: InputDecoration(hintText: "+911234567890", prefixIcon: Icon(Icons.call),enabled: false),
+          decoration: InputDecoration(hintText: user.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
         ),
 
 
         TextField(
-          decoration: InputDecoration(hintText: "Language Knows English and Hindi", prefixIcon: Icon(Icons.library_books), enabled: false),
+          decoration: InputDecoration(hintText: (user.languages == null) ? "NOT SELECTED" : user.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
         ),
         TextField(
-          decoration: InputDecoration(hintText: "11th /B Lorem ipsum dolor sit amet, consectetuer", prefixIcon: Icon(Icons.location_on),enabled: false),
+          decoration: InputDecoration(hintText: addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
+          helperMaxLines: 5, hintMaxLines: 5),
         ),
       ],
 
@@ -188,20 +229,40 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   }
 
   Widget setRichText(){
-    return Container(padding: EdgeInsets.all(30.0),
-
-      child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Container(
+      padding: EdgeInsets.all(30.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[ Text(
+        children: <Widget>[
+          Text(
             'About Us', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
           SizedBox(height: 10,),
+//          SingleChildScrollView(
+//            child: RichText(
+//              softWrap: true,
+//              textWidthBasis: TextWidthBasis.parent,
+//              overflow: TextOverflow.ellipsis,
+//              maxLines: 150,
+////              text: Text("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod Color is a form of non verbal communication. It is not a static energy and its meaning can change from one day to the next with any individual - it all depends on what energy they are expressing at that point in time "
+////              ),
+//            ),
+//          )
 
-
-          RichText(
-            text:
-            TextSpan(text:'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod Color is a form of non verbal communication. It is not a static energy and its meaning can change from one day to the next with any individual - it all depends on what energy they are expressing at that point in time ' ,style: DefaultTextStyle.of(context).style,)
-
-        ),],
+//          Container(
+////            child:
+////            RichText(
+////                overflow: TextOverflow.ellipsis,
+////                maxLines: 50,
+////                text:
+////                TextSpan(
+////                  text:'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod Color is a form of non verbal communication. It is not a static energy and its meaning can change from one day to the next with any individual - it all depends on what energy they are expressing at that point in time ' ,style: DefaultTextStyle.of(context).style,
+////                )
+////
+////            ),
+//            height: 250,
+//          )
+        ],
       ),
     );
 
@@ -211,7 +272,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   Widget setTabbar(){
     return Column(
       children: <Widget>[
-        new Container(color: Colors.grey,
+        new Container(color: Colors.black12,
           width: double.infinity,
           child: TabBar(
             controller: _tabController,
@@ -219,7 +280,6 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
                   borderSide: BorderSide(
                     width: 2,
                     color: Colors.teal,
-
                   ),
                   insets: EdgeInsets.only(
                       left: 15,
@@ -227,10 +287,6 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
                       bottom: 0)),
             isScrollable: true,
             labelColor: Colors.teal,
-
-
-
-
             //indicatorColor: Colors.teal,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs : tabList
@@ -240,7 +296,6 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
            height: 200,
 
            child: TabBarView(
-
            controller: _tabController,
            children:
            tabList.map((Tab tab){

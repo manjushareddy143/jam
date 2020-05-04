@@ -32,6 +32,7 @@ class HomeUIPage extends StatefulWidget {
 class _HomeUIPageState extends State<HomeUIPage> {
   List<Service> listofServices;
   int serviceIndex = 0;
+  bool isLoadin = true;
 
   @override
   void initState() {
@@ -49,6 +50,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
       HttpClient httpClient = new HttpClient();
       var syncServicesResponse = await httpClient.getRequest(context,
           Configurations.SERVICES_ALL_URL , null, null, true, false);
+
       processServiceResponse(syncServicesResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -59,15 +61,21 @@ class _HomeUIPageState extends State<HomeUIPage> {
   void processServiceResponse(Response res) {
     print('get daily format');
     if (res != null) {
+
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print(data);
         List roles = data;
         setState(() {
           listofServices = Service.processServices(roles);
+          isLoadin = false;
         });
       } else {
         printLog("login response code is not 200");
+        setState(() {
+          isLoadin = false;
+        });
+
       }
     } else {
       print('no data');
@@ -77,164 +85,189 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (listofServices == null) {
+    if (isLoadin) {
       return new Scaffold(
         appBar: new AppBar(
+          automaticallyImplyLeading: false,
           title: new Text("Loading..."),
         ),
       );
     } else {
-      return new Scaffold(
-        body: CustomScrollView(
-          //view that contains an expanding app bar followed by a list & grid
-          slivers: <Widget>[
-            makeHeader(""),
-            //calling appbar method by passing the Text as argument.
-            //Padding: const EdgeInsets.all(8.0),
+//      if(listofServices.length > 0) {
+        return new Scaffold(
+          body: CustomScrollView(
+            //view that contains an expanding app bar followed by a list & grid
+            slivers: <Widget>[
+              makeHeader(""),
+              //calling appbar method by passing the Text as argument.
+              //Padding: const EdgeInsets.all(8.0),
 
-            SliverGrid(
-                gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                ),
-                /*crossAxisCount: 3, // how many grid needed in a row
+              if(listofServices != null)
+              SliverGrid(
+                  gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                  ),
+                  /*crossAxisCount: 3, // how many grid needed in a row
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,*/
-                delegate: new SliverChildBuilderDelegate(
-                  (BuildContext context, int serviceIndex) {
-                    return
+                  delegate: new SliverChildBuilderDelegate(
+                        (BuildContext context, int serviceIndex) {
+                      return
                         // children: <Widget>[
                         Container(
-                      alignment: FractionalOffset.center,
-                      height: 400.0,
-                      width: 400.0,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[200]),
-                      ),
-                      child: new GestureDetector(
-                        //tapping to go the corresponding view linked with it using navigator
-                        onTap: () {
-
-                          printLog('click == ${listofServices[serviceIndex].name}');
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProviderListPage(service: listofServices[serviceIndex])
-                              )
-                          );
-                          //, _service[serviceIndex]
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              width: 100.00,
-                              height: 100.00,
-                              child: Image.network(
-                                listofServices[serviceIndex].icon_image,
-                                fit: BoxFit.fill,
-                              ),
-                            ), //new Icon(Icons.face),
-
-                            Padding(padding: EdgeInsets.all(1.0)),
-
-
-                            Text(listofServices[serviceIndex].name,
-                                style: TextStyle(fontSize: 10,),
-                              overflow: TextOverflow.ellipsis,
-
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  childCount: listofServices.length,
-                )),
-
-            SliverFixedExtentList(
-              itemExtent: 200.0,
-              delegate: SliverChildListDelegate(
-                [
-                  Container(child: CarouselDemo()),
-                ],
-              ),
-            ),
-            SliverFixedExtentList(
-              itemExtent: 200.0,
-              delegate: SliverChildListDelegate(
-                [
-                  Container(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            'Why We Are?',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w300,
-                              fontSize: 28.0,
-                            ),
+                          alignment: FractionalOffset.center,
+                          height: 400.0,
+                          width: 400.0,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey[200]),
                           ),
-                          Text(
-                            'We value our customers',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 19.0,
-                                color: Colors.grey),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Icon(Icons.account_box,
-                                        color: Colors.teal, size: 40.0),
-                                    Text(
-                                      'Verified Professionals',
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    Icon(Icons.assignment,
-                                        color: Colors.teal, size: 40.0),
-                                    Text(
-                                      'Insured Work',
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                  child: Column(
-                                children: <Widget>[
-                                  Icon(MaterialIcons.person,
-                                      color: Colors.teal, size: 40.0),
-                                  Text(
-                                    'Professional Support',
+                          child: new GestureDetector(
+                            //tapping to go the corresponding view linked with it using navigator
+                            onTap: () {
+
+                              printLog('click == ${listofServices[serviceIndex].name}');
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProviderListPage(service: listofServices[serviceIndex])
                                   )
-                                ],
-                              )),
-                            ],
+                              );
+                              //, _service[serviceIndex]
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              //crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  width: 100.00,
+                                  height: 100.00,
+                                  child: Image.network(
+                                    listofServices[serviceIndex].icon_image,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ), //new Icon(Icons.face),
+
+                                Padding(padding: EdgeInsets.all(1.0)),
+
+
+                                Text(listofServices[serviceIndex].name,
+                                  style: TextStyle(fontSize: 10,),
+                                  overflow: TextOverflow.ellipsis,
+
+                                ),
+                              ],
+                            ),
                           ),
-                        ]),
-                  ),
-                ],
+                        );
+                    },
+                    childCount: listofServices.length,
+                  )
               ),
-            ),
-          ],
-        ),
-      );
+
+              // Banner Swipe
+              SliverFixedExtentList(
+                itemExtent: 200.0,
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(child: CarouselDemo()),
+                  ],
+                ),
+              ),
+
+              //
+              SliverFixedExtentList(
+                itemExtent: 200.0,
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Why We Are?',
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 28.0,
+                              ),
+                            ),
+                            Text(
+                              'We value our customers',
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 19.0,
+                                  color: Colors.grey),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                SizedBox(width:  100,
+                                child:Container(
+//                                  width: 50,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Icon(Icons.account_box,
+                                          color: Colors.teal, size: 40.0),
+                                      Text(
+                                        'Verified Professionals',
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                )
+                                  ,),
+
+                                SizedBox(width: 100,
+                                child: Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      Icon(Icons.assignment,
+                                          color: Colors.teal, size: 40.0),
+                                      Text(
+                                        'Insured Work',
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                ),),
+
+                                SizedBox(width: 100,  child: Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(MaterialIcons.person,
+                                            color: Colors.teal, size: 40.0),
+                                        Text(
+                                          'Professional Support',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
+                                    )),)
+
+                              ],
+                            ),
+                          ]),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+
+
     }
   }
 

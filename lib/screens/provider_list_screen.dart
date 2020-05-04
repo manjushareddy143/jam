@@ -84,6 +84,7 @@ class _ProviderListState extends State<ProviderListPage> {
     if (listofProviders == null) {
       return new Scaffold(
         appBar: new AppBar(
+          automaticallyImplyLeading: false,
           title: new Text("Loading..."),
         ),
       );

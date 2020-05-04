@@ -9,12 +9,15 @@ import 'package:jam/placeholder_widget.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
 import 'package:jam/screens/myOrders.dart';
-import 'package:jam/screens/myProfile.dart';
+import 'package:jam/screens/user_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 
 class HomeScreen extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -32,13 +35,24 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+final key = new GlobalKey<ProfileUIPageState>();
+
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
+
+  final _formKey = GlobalKey<FormState>();
+
+
+
+
+
 
   @override
   void initState() {
     super.initState();
   }
+
+  var editIcon = Icons.mode_edit;
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -97,25 +111,33 @@ class _HomePageState extends State<HomePage> {
           new IconButton(
             icon: new Icon(Icons.shopping_cart),
             onPressed: () {
-              Preferences.removePreference("email");
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => UserLogin()));
+//              Preferences.removePreference("user");
+//              Navigator.pushReplacement(context,
+//                  MaterialPageRoute(builder: (context) => UserLogin()));
             },
           ),
           if (_currentIndex == 2)
           new IconButton(
-            icon: new Icon(Icons.mode_edit),
+            icon: new Icon(editIcon),
             onPressed: () {
-              Preferences.removePreference("email");
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => UserLogin()));
+              setState(() {
+                if(editIcon == Icons.mode_edit) {
+                  editIcon = Icons.done;
+                } else {
+                  editIcon = Icons.mode_edit;
+                }
+                key.currentState.validateform();
+              });
+
             },
           ),
           if (_currentIndex == 2)
           new IconButton(
             icon: new Icon(Icons.exit_to_app),
             onPressed: () {
-              Preferences.removePreference("email");
+              Preferences.removePreference("user");
+              Preferences.removePreference("profile");
+
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => UserLogin()));
             },
@@ -130,16 +152,14 @@ class _HomePageState extends State<HomePage> {
 
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
-        // this  will be set when a new tab is tapped
         currentIndex: _currentIndex,
-        // new
         selectedItemColor: Colors.teal,
         unselectedItemColor: Colors.grey,
         backgroundColor: Colors.white,
         iconSize: 30,
         type: BottomNavigationBarType.fixed,
 
-        items: [
+        items:[
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
@@ -174,10 +194,10 @@ class _HomePageState extends State<HomePage> {
 
 
   final List<Widget> _children = [
-//    HomeDesign(),
     HomeUIDesign(),
     NewPage(),
-    Profile(),
+//    Profile(),
+    ProfileUIPage(key: key),
     OrderUIPage(),
   ];
 

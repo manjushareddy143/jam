@@ -363,17 +363,19 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void processProfileResponse(Map res) {
     print("come for response");
     print(res);
-    User user = User.fromJson(res);
-
-        Preferences.saveObject("user", jsonEncode(user.toJson()));
-        Preferences.saveObject("profile", "0");
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
-        ///////////////////
+    if(res != null) {
+      User user = User.fromJson(res);
+      Preferences.saveObject("user", jsonEncode(user.toJson()));
+      Preferences.saveObject("profile", "0");
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          )
+      );
     }
+
+  }
 
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
