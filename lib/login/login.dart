@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/user.dart';
@@ -37,140 +38,172 @@ class _user extends State<UserLogin>{
   final txtPass = TextEditingController();
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
+  FocusNode myFocusNode, myFocusNode2;
+
+  @override
+  void initState() {
+    super.initState();
+
+    myFocusNode = FocusNode();
+    myFocusNode2 = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    myFocusNode.dispose();
+    myFocusNode2.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     Paint paint = Paint();
     paint.color= Colors.teal;
-    return  new Scaffold( key: _primeKey,
+    return  GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-      body: new Form(
-        key: _formKey,
-        autovalidate: _autoValidate,
-        child:  SingleChildScrollView(
-          //child:Padding(
-          // padding: const EdgeInsets.fromLTRB(5,20,5,20),
-          child: new Column(
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: new Scaffold( key: _primeKey,
 
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+        body: new Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child:  SingleChildScrollView(
+            //child:Padding(
+            // padding: const EdgeInsets.fromLTRB(5,20,5,20),
+            child: new Column(
 
-                new Image.asset("assets/images/BG-1x.jpg",
-                  height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-                //Container(
-                //decoration: new BoxDecoration(
-                //image: new DecorationImage(
-                // image: new AssetImage("assets/images/6745.jpg"),
-                //fit: BoxFit.fill,     )
-                // )
-                //),
-                SizedBox(height: 30),
-                new Image.asset("assets/images/Logo-1x.png",
-                  height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
-                /*new Text(
-                       'JAM    ',
-                       textAlign: TextAlign.center,
-                       overflow: TextOverflow.ellipsis,
-                       style: TextStyle(fontWeight: FontWeight.bold,background: paint ,  color: Colors.white, fontSize: 40.0, ),
-                     ), */
-                new Text(
-                  'LOGIN USER',
-                  textAlign: TextAlign.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
 
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
-                ),
-                SizedBox(height: 30),
+                  new Image.asset("assets/images/BG-1x.jpg",
+                    height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
+                  //Container(
+                  //decoration: new BoxDecoration(
+                  //image: new DecorationImage(
+                  // image: new AssetImage("assets/images/6745.jpg"),
+                  //fit: BoxFit.fill,     )
+                  // )
+                  //),
+                  SizedBox(height: 30),
+                  new Image.asset("assets/images/Logo-1x.png",
+                    height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
+                  /*new Text(
+                         'JAM    ',
+                         textAlign: TextAlign.center,
+                         overflow: TextOverflow.ellipsis,
+                         style: TextStyle(fontWeight: FontWeight.bold,background: paint ,  color: Colors.white, fontSize: 40.0, ),
+                       ), */
+                  new Text(
+                    'LOGIN USER',
+                    textAlign: TextAlign.center,
 
-                Container( padding: new  EdgeInsets.all(20),
-                  child:
-                  Column(children: <Widget>[
-
-                    new TextFormField(
-                      controller: txtUser
-                      ,
-                      validator: (value){
-                        if (value.isEmpty) {
-                          return 'Please enter username!!';
-                        }
-                        return validateEmail(value);
-                      },
-
-                      obscureText: false,
-                      decoration: InputDecoration( suffixIcon: Icon(Icons.face),
-                        border: OutlineInputBorder(),
-                        labelText: 'Email or Username',
-                      ),
-
-                    ),
-                    SizedBox(height: 20),
-                    new TextFormField(
-                      controller: txtPass,
-                      validator: (value){
-                        if (value.isEmpty) {
-                          return 'Please enter password!!';
-                        }
-                        return null;
-                      },
-
-                      obscureText: true,
-                      decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                      ),
-                    ),
-                  ],
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
                   ),
-                ),
+                  SizedBox(height: 30),
 
-                Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
-                  children: <Widget>[
-                    Checkbox(value: _value1, onChanged: _value1Changed),
-                    Text("Remember", ),
-                    Spacer(),
-                    Text("Forget Password?",  style: TextStyle( color: Colors.teal),),
-                    // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
-                  ],
-                ),),
-                SizedBox(height: 10),
-                new  RaisedButton(
-                    color: Colors.teal,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(150,10,150,10),
-                    //invokes _authUser function which validate data entered as well does the api call
-                    child: const Text(
-                        'Login',
-                        style: TextStyle(fontSize: 20)
+                  Container( padding: new  EdgeInsets.all(20),
+                    child:
+                    Column(children: <Widget>[
+
+                      new TextFormField(
+                        focusNode: myFocusNode2,
+                        controller: txtUser
+                        ,
+                        validator: (value){
+                          if (value.isEmpty) {
+                            return 'Please enter username!!';
+                          }
+                          return validateEmail(value);
+                        },
+
+                        obscureText: false,
+                        decoration: InputDecoration( suffixIcon: Icon(Icons.face),
+                          border: OutlineInputBorder(),
+                          labelText: 'Email or Username',
+                        ),
+
+                      ),
+                      SizedBox(height: 20),
+                      new TextFormField(
+                        focusNode: myFocusNode,
+                        controller: txtPass,
+                        validator: (value){
+                          if (value.isEmpty) {
+                            return 'Please enter password!!';
+                          }
+                          return null;
+                        },
+
+                        obscureText: true,
+                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                        ),
+                      ),
+                    ],
                     ),
-                    onPressed: () {
-                      _validateInputs();
-                    }
-                ),
+                  ),
 
-                Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Don't have an account?"),
+                  Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
+                    children: <Widget>[
+                      Checkbox(value: _value1, onChanged: _value1Changed),
+                      Text("Remember", ),
+                      Spacer(),
+                      Text("Forget Password?",  style: TextStyle( color: Colors.teal),),
+                      // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
+                    ],
+                  ),),
+                  SizedBox(height: 10),
+                  new  RaisedButton(
 
-                    FlatButton( onPressed:(){
-                      Navigator.push(context, new MaterialPageRoute(
-                        builder: (BuildContext context) => SignupScreen(),
+                      color: Colors.teal,
+                      textColor: Colors.white,
+                      padding: EdgeInsets.fromLTRB(150,10,150,10),
+                      //invokes _authUser function which validate data entered as well does the api call
+                      child: const Text(
+                          'Login',
+                          style: TextStyle(fontSize: 20)
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        _validateInputs();
+                      }
+                  ),
+
+                  Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Don't have an account?"),
+
+                      FlatButton( onPressed:(){
+
+                        Navigator.push(context, new MaterialPageRoute(
+                          builder: (BuildContext context) => SignupScreen(),
 //                        fullscreenDialog: false,
-                      ));
+                        ));
 //                      Navigator.push(context,MaterialPageRoute(
 //                          builder: (context)=> SignupScreen()));
-                      },
-                      child:
-                      Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
-                    // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
-                  ],
-                ),),
-                SizedBox(height: 30,),
-                Text('Skip for Now',
-                  textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
-              ]
+                        },
+                        child:
+                        Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
+                      // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
+                    ],
+                  ),),
+                  SizedBox(height: 30,),
+                  Text('Skip for Now',
+                    textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+                ]
+            ),
           ),
-        ),
 
+        ),
       ),
     );
 
