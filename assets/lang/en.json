@@ -1,0 +1,11 @@
+{
+  "textbox1" : "Email or Username",
+  "textbox2" : "Password",
+  "checkbox" : "Remember",
+  "Text1" : "LOGIN USER",
+  "Text2" : "Forget password?",
+  "Text3" : "Don't have an account?",
+  "Text4" : "Skip for Now",
+  "Button1" : "Login",
+  "Button2" : "Sign In"
+}
