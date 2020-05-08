@@ -14,15 +14,55 @@ import 'package:jam/api/network.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'app_localizations.dart';
 main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  static void setLocale(BuildContext context, Locale locale){
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    state.setLocale(locale);
+  }
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale;
+  void setLocale(Locale locale){
+    setState(() {
+      _locale = locale;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: _locale,
+       localizationsDelegates:[
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), //English
+          const Locale('ar', 'SA'), //Arabic
+        ],
+        localeResolutionCallback: (deviceLocale, supportedLocales) {
+          // Check if the current device locale is supported
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == deviceLocale.languageCode &&
+                supportedLocale.countryCode == deviceLocale.countryCode) {
+              return deviceLocale;
+            }
+          }
+          // If the locale of the device is not supported, use the first one
+          // from the list (English, in this case).
+          return supportedLocales.first;
+        },
+
         home: SplashScreen());
   }
 }

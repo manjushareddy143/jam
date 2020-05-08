@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:jam/classes/language.dart';
 import 'package:jam/login/signup_screen.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/user.dart';
@@ -18,9 +19,9 @@ import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/otp_screen.dart';
-
-
-
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:jam/app_localizations.dart';
+import 'package:jam/main.dart';
 
 
 class UserLogin extends StatefulWidget {
@@ -56,6 +57,17 @@ class _user extends State<UserLogin>{
 
     super.dispose();
   }
+  void _changeLanguage(Language language){
+    Locale _temp;
+    switch(language.languageCode){
+      case 'en': _temp = Locale(language.languageCode, 'US');
+        break;
+      case 'ar': _temp = Locale(language.languageCode, 'SA');
+      break;
+      default: _temp = Locale(language.languageCode, 'US');
+    }
+    MyApp.setLocale(context, _temp);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +94,32 @@ class _user extends State<UserLogin>{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
 
+
+
                   new Image.asset("assets/images/BG-1x.jpg",
                     height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-                  //Container(
-                  //decoration: new BoxDecoration(
-                  //image: new DecorationImage(
-                  // image: new AssetImage("assets/images/6745.jpg"),
-                  //fit: BoxFit.fill,     )
-                  // )
-                  //),
-                  SizedBox(height: 30),
+
+                 
+                 // SizedBox(height: 30),
+                  Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
+                     DropdownButton(
+                      underline: SizedBox(),
+                      onChanged: ( Language language){
+                        _changeLanguage(language);
+                      },
+                      icon: Icon(Icons.language, color: Colors.teal,),
+                      items: Language.languageList()
+                          .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                        value:  lang,
+                        child: Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[Text(lang.flag),
+                            Text(lang.name)],
+                        ) ,
+                      )).toList(),
+
+                    ),
+                   // SizedBox(width: 30)
+                  ],),
                   new Image.asset("assets/images/Logo-1x.png",
                     height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
                   /*new Text(
@@ -101,13 +129,16 @@ class _user extends State<UserLogin>{
                          style: TextStyle(fontWeight: FontWeight.bold,background: paint ,  color: Colors.white, fontSize: 40.0, ),
                        ), */
                   new Text(
-                    'LOGIN USER',
+                    AppLocalizations.of(context).translate('Text1'),
                     textAlign: TextAlign.center,
 
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
                   ),
-                  SizedBox(height: 30),
+
+                  SizedBox(height: 30,
+
+                      ),
 
                   Container( padding: new  EdgeInsets.all(20),
                     child:
@@ -127,7 +158,8 @@ class _user extends State<UserLogin>{
                         obscureText: false,
                         decoration: InputDecoration( suffixIcon: Icon(Icons.face),
                           border: OutlineInputBorder(),
-                          labelText: 'Email or Username',
+                          labelText: //"Email or Username"
+                           AppLocalizations.of(context).translate('textbox1'),
                         ),
 
                       ),
@@ -145,7 +177,7 @@ class _user extends State<UserLogin>{
                         obscureText: true,
                         decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
                           border: OutlineInputBorder(),
-                          labelText: 'Password',
+                          labelText:  AppLocalizations.of(context).translate('textbox2'),
                         ),
                       ),
                     ],
@@ -155,32 +187,35 @@ class _user extends State<UserLogin>{
                   Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
                     children: <Widget>[
                       Checkbox(value: _value1, onChanged: _value1Changed),
-                      Text("Remember", ),
+                      Text(AppLocalizations.of(context).translate('checkbox'), ),
                       Spacer(),
-                      Text("Forget Password?",  style: TextStyle( color: Colors.teal),),
+                      Text(AppLocalizations.of(context).translate('Text2'),  style: TextStyle( color: Colors.teal),),
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
                   SizedBox(height: 10),
-                  new  RaisedButton(
+                  ButtonTheme(
+                    minWidth: 350,
+                    child: new  RaisedButton(
 
-                      color: Colors.teal,
-                      textColor: Colors.white,
-                      padding: EdgeInsets.fromLTRB(150,10,150,10),
-                      //invokes _authUser function which validate data entered as well does the api call
-                      child: const Text(
-                          'Login',
-                          style: TextStyle(fontSize: 20)
-                      ),
-                      onPressed: () {
-                        FocusScope.of(context).unfocus();
-                        _validateInputs();
-                      }
+                        color: Colors.teal,
+                        textColor: Colors.white,
+                        padding: EdgeInsets.fromLTRB(150,10,150,10),
+                        //invokes _authUser function which validate data entered as well does the api call
+                        child:  Text(
+                            AppLocalizations.of(context).translate('Button1'),
+                            style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
+                        ),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          _validateInputs();
+                        }
+                    ),
                   ),
 
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("Don't have an account?"),
+                      Text(AppLocalizations.of(context).translate('Text3')),
 
                       FlatButton( onPressed:(){
 
@@ -192,13 +227,18 @@ class _user extends State<UserLogin>{
 //                          builder: (context)=> SignupScreen()));
                         },
                         child:
-                        Text("Sign Up", textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
+                        Text(AppLocalizations.of(context).translate('Button2'), textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
                   SizedBox(height: 30,),
-                  Text('Skip for Now',
-                    textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+
+
+                  Text(AppLocalizations.of(context).translate('Text4'),
+                      textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+
+
+
                 ]
             ),
           ),
