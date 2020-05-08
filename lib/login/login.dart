@@ -255,7 +255,7 @@ class _user extends State<UserLogin>{
 
     data["email"] = txtUser.text;
     data["password"] = txtPass.text;
-    data["access_type"] = 'api';
+//    data["access_type"] = 'api';
 
     try {
       HttpClient httpClient = new HttpClient();

@@ -76,7 +76,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       source: ImageSource.gallery,
     );
     setState(() {
-      _image = image;
+        _image = image;
     });
   }
 
@@ -157,7 +157,39 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
   Widget _buildProfileImage() {
-    return Center(
+    if(user.image == null) {
+      return Center(
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              print("object");
+              if(isEditProfile) {
+                getImage();
+              }else {
+                showInfoAlert(context, "Please enable edit mode");
+              }
+
+            }, // handle your image tap here
+          ),
+          width: 120.0,
+          height: 120.0,
+          decoration: BoxDecoration(
+            image:
+            DecorationImage(
+              image:
+              (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Center(
       child: Container(
         child: GestureDetector(
           onTap: () {
@@ -175,7 +207,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         decoration: BoxDecoration(
           image:
           DecorationImage(
-            image: (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+            image:
+            (user.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(user.image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -186,6 +219,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         ),
       ),
     );
+    }
   }
 
   Widget setDetails(){
