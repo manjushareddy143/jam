@@ -31,15 +31,23 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
-  void setLocale(Locale locale){
-    setState(() {
+  @override
+  void initState(){
+    setLocale(_locale);
+  }
+
+  void setLocale(Locale locale) {
+
+      setState(() {
       _locale = locale;
     });
   }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)  {
     return MaterialApp(
-      locale: _locale,
+
+
+      //locale: _locale,
        localizationsDelegates:[
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -47,14 +55,15 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
-          const Locale('en', 'US'), //English
-          const Locale('ar', 'SA'), //Arabic
+           Locale('en', 'US'), //English
+           Locale('ar', 'SA'), //Arabic
         ],
         localeResolutionCallback: (deviceLocale, supportedLocales) {
           // Check if the current device locale is supported
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == deviceLocale.languageCode &&
-                supportedLocale.countryCode == deviceLocale.countryCode) {
+          for (var locale in supportedLocales) {
+
+            if (locale != null && locale.languageCode == deviceLocale.languageCode &&
+                locale.countryCode == deviceLocale.countryCode) {
               return deviceLocale;
             }
           }
@@ -63,7 +72,7 @@ class _MyAppState extends State<MyApp> {
           return supportedLocales.first;
         },
 
-        home: SplashScreen());
+        home:   SplashScreen());
   }
 }
 
