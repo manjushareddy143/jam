@@ -66,10 +66,14 @@ class _MyAppState extends State<MyApp> {
         localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
           // Check if the current device locale is supported
           for (var supportedLocale in supportedLocales) {
+            printLog("FOR ${supportedLocale.countryCode}");
             if (locale.countryCode == supportedLocale.countryCode) {
+              printLog("RETUNR ${supportedLocale.countryCode}");
               return supportedLocale;
             }
+            printLog("FOR END ${locale.countryCode}");
           }
+
           return supportedLocales.first;
 //          for (var locale in supportedLocales) {
 //
