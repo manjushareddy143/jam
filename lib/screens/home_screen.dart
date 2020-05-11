@@ -6,7 +6,7 @@ import 'package:jam/models/user.dart';
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
-import 'package:jam/screens/myOrders.dart';
+import 'package:jam/screens/order_list_screen.dart';
 import 'package:jam/screens/user_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
