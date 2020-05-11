@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setLocale(_locale);
+    setLocale(Locale('en', 'US'));
   }
 
   void setLocale(Locale locale) {
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context)  {
     return MaterialApp(
-      //locale: _locale,
+      locale: _locale,
        localizationsDelegates:[
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -64,6 +64,7 @@ class _MyAppState extends State<MyApp> {
            const Locale('ar', 'SA'), //Arabic
         ],
         localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
+          printLog("locale ${locale.countryCode}");
           // Check if the current device locale is supported
           for (var supportedLocale in supportedLocales) {
             printLog("FOR ${supportedLocale.countryCode}");
