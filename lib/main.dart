@@ -31,22 +31,27 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
+//  @override
+//  void initState(){
+//    setLocale(_locale);
+//  }
+
   @override
-  void initState(){
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     setLocale(_locale);
   }
 
   void setLocale(Locale locale) {
-
       setState(() {
       _locale = locale;
     });
   }
+
   @override
   Widget build(BuildContext context)  {
     return MaterialApp(
-
-
       //locale: _locale,
        localizationsDelegates:[
           AppLocalizations.delegate,
@@ -55,8 +60,8 @@ class _MyAppState extends State<MyApp> {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: [
-           Locale('en', 'US'), //English
-           Locale('ar', 'SA'), //Arabic
+           const Locale('en', 'US'), //English
+           const Locale('ar', 'SA'), //Arabic
         ],
         localeResolutionCallback: (deviceLocale, supportedLocales) {
           // Check if the current device locale is supported
