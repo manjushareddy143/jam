@@ -63,18 +63,24 @@ class _MyAppState extends State<MyApp> {
            const Locale('en', 'US'), //English
            const Locale('ar', 'SA'), //Arabic
         ],
-        localeResolutionCallback: (deviceLocale, supportedLocales) {
+        localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
           // Check if the current device locale is supported
-          for (var locale in supportedLocales) {
-
-            if (locale != null && locale.languageCode == deviceLocale.languageCode &&
-                locale.countryCode == deviceLocale.countryCode) {
-              return deviceLocale;
+          for (var supportedLocale in supportedLocales) {
+            if (locale.countryCode == supportedLocale.countryCode) {
+              return supportedLocale;
             }
           }
-          // If the locale of the device is not supported, use the first one
-          // from the list (English, in this case).
           return supportedLocales.first;
+//          for (var locale in supportedLocales) {
+//
+//            if (locale != null && locale.languageCode == deviceLocale.languageCode &&
+//                locale.countryCode == deviceLocale.countryCode) {
+//              return deviceLocale;
+//            }
+//          }
+//          // If the locale of the device is not supported, use the first one
+//          // from the list (English, in this case).
+//          return supportedLocales.first;
         },
 
         home:   SplashScreen());
