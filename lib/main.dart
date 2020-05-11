@@ -52,6 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context)  {
     return MaterialApp(
+
       locale: _locale,
        localizationsDelegates:[
           AppLocalizations.delegate,
@@ -64,17 +65,20 @@ class _MyAppState extends State<MyApp> {
            const Locale('ar', 'SA'), //Arabic
         ],
         localeResolutionCallback: (Locale locale, Iterable<Locale> supportedLocales) {
-          printLog("locale ${locale.countryCode}");
-          // Check if the current device locale is supported
-          for (var supportedLocale in supportedLocales) {
-            printLog("FOR ${supportedLocale.countryCode}");
-            if (locale.countryCode == supportedLocale.countryCode) {
-              printLog("RETUNR ${supportedLocale.countryCode}");
-              return supportedLocale;
-            }
-            printLog("FOR END ${locale.countryCode}");
+          if (locale == null) {
+            printLog("*language locale is null!!!");
+            return supportedLocales.first;
           }
 
+          for (Locale supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode ||
+                supportedLocale.countryCode == locale.countryCode) {
+              printLog("*language ok $supportedLocale");
+              return supportedLocale;
+            }
+          }
+
+          printLog("*language to fallback ${supportedLocales.first}");
           return supportedLocales.first;
 //          for (var locale in supportedLocales) {
 //
