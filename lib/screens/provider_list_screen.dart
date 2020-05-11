@@ -131,6 +131,7 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(Provider provider) {
+    double rating = (provider.rate == null)? 0.0 : double.parse(provider.rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
 
     return
       new Card(
@@ -140,7 +141,7 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-              print('tap on card')
+              print('tap on card DETAIL')
             },
             leading: Container(
               width: 60,
@@ -163,7 +164,7 @@ class _ProviderListState extends State<ProviderListPage> {
                 SmoothStarRating(
                   allowHalfRating: false,
                   starCount: 5,
-                  rating: 3.0,
+                  rating: rating,
                   size: 20.0,
                   filledIconData: Icons.star,
                   halfFilledIconData: Icons.star,
@@ -173,10 +174,13 @@ class _ProviderListState extends State<ProviderListPage> {
                   spacing:0.0,
                   onRatingChanged: (v) {
 //                    rating = v;
-                    setState(() {});
+                    setState(() {
+                      printLog("RATE :: $v");
+//                      rating = v;
+                    });
                   },
                 ),
-                Text(" 3 Reviews",textAlign: TextAlign.left,
+                Text(provider.reviews.toString() +" Reviews",textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
               ],

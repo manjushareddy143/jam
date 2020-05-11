@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/order_detail_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
@@ -113,11 +114,13 @@ class _OrderUIPageState extends State<OrderUIPage> {
   }
 
   Widget setupCard(Order order) { //Order order
+    double rating = (order.rating == null)? 0.0 : order.rating.floorToDouble();
     String statusString = "";
     var status_color = null;
     var status_icon = null;
 
-    switch(order.status) {
+    switch(order.status)
+    {
       case 1: statusString = 'Order Pending';
       status_color = Colors.blue;
       status_icon = Icons.pan_tool;
@@ -136,92 +139,105 @@ class _OrderUIPageState extends State<OrderUIPage> {
     }
 
     return Container(
-      child: new Card(
-          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          elevation: 5,
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(15),
-                width: 80.0,
-                height: 80.0,
-                decoration: BoxDecoration(
-                  image:
-                  DecorationImage(
-                    image: NetworkImage(
-                        order.provider_image),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(80.0),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textBaseline: TextBaseline.ideographic,
-                  children: <Widget>[
-                    Text(order.provider_first_name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textWidthBasis: TextWidthBasis.parent,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    Container(
-                      width: 150,
-                      child: Text(order.service,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 5),
-                    ),
-                    Text("Order#" + order.id.toString(),),
-                    Row(
-                      children: <Widget>[
-                        Text(order.booking_date,),
-                        SizedBox(width: 10,),
-                        SmoothStarRating(
-                          allowHalfRating: false,
-                          starCount: 5,
-                          rating: 3.0,
-                          size: 20.0,
-                          filledIconData: Icons.star,
-                          halfFilledIconData: Icons.star,
-                          color: Colors.amber,
-                          borderColor: Colors.amber,
-                          //unfilledStar: Icon(Icons., color: Colors.grey),
-                          spacing:0.0,
-                          onRatingChanged: (v) {
-//                    rating = v;
-                            setState(() {});
-                          },
-                        ),
-                      ],
-                    ),
-
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                            onPressed:  () {
-                              print('Call Press');
-                            },
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Text(statusString,
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: status_color)
-                            )
-                        ),
-                        SizedBox(width: MediaQuery. of(context). size. width / 4.5,),
-                        Icon(status_icon, color: status_color, size: 15,)
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
+      child: GestureDetector(
+        onTap: ()=> {
+          print("ONTAP CARD ${order.id}"),
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailUIPage(order: order,)
+              )
           )
-      ),
+        },
+        child: new Card(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            elevation: 5,
+            child: Row(
+              children: <Widget>[
+
+                Container(
+                  margin: EdgeInsets.all(15),
+                  width: 80.0,
+                  height: 80.0,
+                  decoration: BoxDecoration(
+                    image:
+                    DecorationImage(
+                      image: NetworkImage(
+                          order.provider_image),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(80.0),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    textBaseline: TextBaseline.ideographic,
+                    children: <Widget>[
+                      Text(order.provider_first_name,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                        textWidthBasis: TextWidthBasis.parent,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      Container(
+                        width: 150,
+                        child: Text(order.service,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5),
+                      ),
+                      Text("Order#" + order.id.toString(),),
+                      Row(
+                        children: <Widget>[
+                          Text(order.booking_date,),
+                          SizedBox(width: 10,),
+                          SmoothStarRating(
+                            allowHalfRating: false,
+                            starCount: 5,
+                            rating: rating,
+                            size: 20.0,
+                            filledIconData: Icons.star,
+                            halfFilledIconData: Icons.star,
+                            color: Colors.amber,
+                            borderColor: Colors.amber,
+                            //unfilledStar: Icon(Icons., color: Colors.grey),
+                            spacing:0.0,
+                            onRatingChanged: (v) {
+//                    rating = v;
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      ),
+
+                      Row(
+                        children: <Widget>[
+                          FlatButton(
+                              onPressed:  () {
+                                print('Call Press');
+                              },
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              child: Text(statusString,
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: status_color)
+                              )
+                          ),
+                          SizedBox(width: MediaQuery. of(context). size. width / 4.5,),
+                          Icon(status_icon, color: status_color, size: 15,)
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )
+        ),
+      )
+
     );
   }
 

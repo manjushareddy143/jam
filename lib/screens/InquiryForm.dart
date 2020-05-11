@@ -226,7 +226,8 @@ class _InquiryPageState extends State<InquiryPage> {
               validateForm();
             }
         ),
-      ),]
+      ),
+    ]
     ),
     );
   }
