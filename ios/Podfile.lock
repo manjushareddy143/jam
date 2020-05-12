@@ -1,4 +1,6 @@
 PODS:
+  - Firebase (6.23.0):
+    - Firebase/Core (= 6.23.0)
   - Firebase/Analytics (6.23.0):
     - Firebase/Core
   - Firebase/Auth (6.23.0):
@@ -110,6 +112,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - Firebase
   - Firebase/Analytics
   - Firebase/Auth
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -206,6 +209,6 @@ SPEC CHECKSUMS:
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
-PODFILE CHECKSUM: 45f782a624d7e24d9eae8f21e01d5a63a437af34
+PODFILE CHECKSUM: 21e37f8d7505ab07d10b78f0e262ecc114b9a2ba
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.9.1

@@ -1,4 +1,5 @@
-
+import 'package:flutter/material.dart';
+import 'dart:io' show Platform;
 
 import 'dart:collection';
 import 'dart:convert';
@@ -305,8 +306,26 @@ class _SignupPageState extends State<SignupPage> {
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-        Widget_Helper.showLoading(context);
-        getOTP(txtContact.text);
+        printLog(txtContact.text);
+        if (Platform.isAndroid) {
+          Widget_Helper.showLoading(context);
+          getOTP(txtContact.text);
+
+          // Return here any Widget you want to display in Android Device.
+          printLog('Android Device Detected');
+
+        }
+        else if(Platform.isIOS) {
+          callLoginAPI();
+
+
+
+
+          // Return here any Widget you want to display in iOS Device.
+          printLog('iOS Device Detected');
+        }
+       //
+
       } else {
         showInfoAlert(context, 'Please accept terms & conditions');
       }
@@ -327,12 +346,14 @@ class _SignupPageState extends State<SignupPage> {
         verificationFailed: verificationFailed,
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+
   }
 
   static String actualCode;
 
   codeSent (String verificationId, [int forceResendingToken]) async {
     actualCode = verificationId;
+    printLog(txtContact.text);
     setState(() {
       _showOTPField = true;
       _fridgeEdit = false;
@@ -351,6 +372,7 @@ class _SignupPageState extends State<SignupPage> {
 
    verificationFailed (AuthException authException) {
     print("authException.message :${authException.message}");
+    printLog(txtContact.text);
     setState(() {
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
@@ -368,6 +390,7 @@ class _SignupPageState extends State<SignupPage> {
 
   var _authCredential;
   verificationCompleted (AuthCredential auth) {
+    printLog(txtContact.text);
     setState(() {
       status = 'Auto retrieving verification code';
     });

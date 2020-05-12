@@ -89,6 +89,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery,
+            imageQuality: 85,
         );
     setState(() {
       _image = image;
