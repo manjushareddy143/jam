@@ -1,10 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/widget/otp_screen.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 class OrderDetail extends StatelessWidget{
   Widget build(BuildContext context) {
@@ -20,14 +25,13 @@ class DetailUIPage extends StatefulWidget {
 class _DetailUIPageState extends State<DetailUIPage> {
   final Order order;
   _DetailUIPageState({Key key, @required this.order});
- // DateTime selecteDate;
- // DateTime start_time;
- // DateTime end_time;
+  bool isRatingDisplay = true;
 
-  // DateTime _currentDt = new DateTime.now();
-
-
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +49,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
          child: Column(mainAxisSize: MainAxisSize.min,
          //crossAxisAlignment: CrossAxisAlignment.end,
          children: <Widget>[
-//           Container(
-//             child: setOrderInfo(),
-//           ),
            setOrderInfo(),
            setServiceInfo(),
            detailInfo(),
-
 
            ButtonTheme(
              minWidth: 270.0,
@@ -137,6 +137,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
  }
 
  Widget setServiceInfo() {
+    (order.rating == null)? isRatingDisplay = false : isRatingDisplay = true;
+
     return new Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
       elevation: 5,
@@ -158,33 +160,65 @@ class _DetailUIPageState extends State<DetailUIPage> {
             ),
           ),
 
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                child:
-                SmoothStarRating(
-                  allowHalfRating: false,
-                  starCount: 5,
-                  rating: (order.rating == null)? 0.0 : order.rating.floorToDouble(),
-                  size: 20.0,
-                  filledIconData: Icons.star,
-                  halfFilledIconData: Icons.star,
-                  color: Colors.amber,
-                  borderColor: Colors.amber,
-                  spacing:0.0,
-                  onRatingChanged: (v) {
-                    setState(() {
-                      printLog("RATE :: $v");
-                    });
-                  },
+          Visibility(visible: isRatingDisplay,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+//              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                      child:
+                      SmoothStarRating(
+                        allowHalfRating: false,
+                        starCount: 5,
+                        rating: (order.rating == null)? 0.0 : order.rating.floorToDouble(),
+                        size: 20.0,
+                        filledIconData: Icons.star,
+                        halfFilledIconData: Icons.star,
+                        color: Colors.amber,
+                        borderColor: Colors.amber,
+                        spacing:0.0,
+                        onRatingChanged: (v) {
+                          setState(() {
+                            printLog("RATE :: $v");
+                          });
+                        },
+                      ),
+                    ),
+                    Text((order.rating == null) ? "" : order.rating.toString(),textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                  ],
                 ),
-              ),
-              Text((order.rating == null) ? "" : order.rating.toString(),textAlign: TextAlign.left,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
-            ],
+                Text((order.comment == null) ? "" : order.comment,textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+              ],
+            ),
+
           ),
+
+          Visibility(visible: !isRatingDisplay,
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                  child: FlatButton(onPressed: () => {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                          return buildRatingDialog(context);
+
+                      },
+                  )
+                  }, child: Text("Submit Ratting"))
+                ),
+              ],
+            ),
+          ),
+
 
           Padding(
             padding: EdgeInsets.fromLTRB(40, 0, 10,10),
@@ -220,7 +254,22 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
  }
 
+
+
+
  Widget detailInfo() {
+
+   String addressString = order.address.address_line1;
+   if(order.address.address_line2 != "") {
+     addressString += ", " + order.address.address_line2;
+   }
+
+   if(order.address.landmark != "") {
+     addressString += ", " + order.address.landmark;
+   }
+   addressString += ", " + order.address.district
+       + ", " + order.address.city + ", " + order.address.postal_code + ".";
+
     return Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
       elevation: 5,
@@ -248,7 +297,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text("61 Khodiyarnagar, near k k mill Mahuva 364290", )
+                Text(addressString, )
               ],
             ),
           ),
@@ -325,6 +374,149 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
  }
 
+ final txtComment = TextEditingController();
+
+  Widget buildRatingDialog(BuildContext context) {
+    return AlertDialog(
+      content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildHeader(),
+
+            SizedBox(
+              height: 10.0,
+              child: new Center(
+                child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 0.9,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+
+            buildRatingSection(setState),
+
+            TextField(
+              maxLines: null,
+              controller: txtComment,
+              keyboardType: TextInputType.multiline,
+            ),
+
+            okButton(context),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget buildHeader() {
+    return new Padding(
+      padding: const EdgeInsets.only(top: 0.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Rating',
+            style: const TextStyle(fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget okButton(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity, // match_parent
+            child: RaisedButton(
+              color: Colors.black,
+              onPressed: () {
+                if(setRate > 0) {
+                  sendRating();
+                } else {
+                  print(txtComment.text);
+                  print(setRate);
+                }
+//                Navigator.of(context).pop();
+              },
+              child: const Text('OK', style: TextStyle(fontSize: 20,color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void sendRating() async {
+    Map<String, String> data = new Map();
+    data["rating"] = setRate.floor().toString();
+    data["rate_by"] = order.user_id.toString();
+    data["booking_id"] = order.id.toString();
+    data["rate_to"] = order.provider_id.toString();
+    data["comment"] = txtComment.text;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data);
+      processLoginResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  processLoginResponse(Response res)  {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        Navigator.of(context).pop();
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    } else {
+      showInfoAlert(context, "Unknown error from server");
+    }
+  }
+
+
+  var setRate = 0.0;
+
+  Widget buildRatingSection(StateSetter setState) {
+    printLog("SETRATE::: $setRate");
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        new SmoothStarRating(
+          allowHalfRating: false,
+          starCount: 5,
+          rating: setRate,
+          size: 30.0,
+          filledIconData: Icons.star,
+          halfFilledIconData: Icons.star_half,
+          color: Colors.amber,
+          borderColor: Colors.amber,
+          spacing:0.0,
+          onRatingChanged: (value) {
+            setState(() {
+              printLog("RATE :: $value");
+              setRate = value;
+
+            });
+          },
+        ),
+      ],
+    );
+  }
 
 
   final format = DateFormat("dd-MM-yyyy");

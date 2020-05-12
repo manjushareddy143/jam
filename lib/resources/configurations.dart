@@ -16,6 +16,8 @@ class Configurations {
 
   static const String PROVIDER_SERVICES_URL = BASE_URL + APP_URL + API_VERSION + "/providers/service";
   static const String SERVICES_ALL_URL = BASE_URL + APP_URL + API_VERSION +"/all_services";
+  static const String BOOKING_RATING_URL = BASE_URL + APP_URL + API_VERSION +"/experience";
+
 
   static Color themColor = Hexcolor('#0ca798');
   //IN SECONDS
