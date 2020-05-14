@@ -44,10 +44,34 @@
   "profile_txt_district" : "Please enter District!!",
   "profile_txt_city" : "Please enter City!!",
   "profile_txt_postalcode" : "Please enter Postal Code!!",
-  "profile_txt_selectimg" : "Please select Profile Picture"
-
-
-
-
+  "profile_txt_selectimg" : "Please select Profile Picture",
+  "home_txt_location" : "Your Location",
+  "home_txt_why" : "Why We Are?",
+  "home_txt_we" : "We value our customers",
+  "home_txt_verified" : "Verified Professionals",
+  "home_txt_insured" : "Insured Work",
+  "home_txt_professional" : "Professional Support",
+  "inquiry_txt_primary" : "Primary Service",
+  "inquiry_txt_secondary" : "Secondary Service",
+  "inquiry_txt_firstname" : "First Name",
+  "inquiry_txt_email" : "Email",
+  "inquiry_txt_phone" : "Phone",
+  "inquiry_txt_date" : "Date",
+  "inquiry_txt_remark" : "Remark",
+  "inquiry_btn_booking" : "Booking",
+  "home_list" : "Home Cleaning Services",
+  "home_list1" : "Exclusive Offers",
+  "home_list2" : "50 % off",
+  "home_list3" : "Home Repair & Maintenance",
+  "inquiry_time" : "Invalid time!!",
+  "loading" : "Loading....",
+  "tab_home" : "Home",
+  "tab_categories" : "Categories",
+  "tab_account" : "My Account",
+  "tab_orders" : "Orders",
+  "terms" : "Please accept terms & conditions",
+  "alert_pleasewait" : "Please wait",
+  "alert_nointernet" : "No Internet",
+  "server_error" : "'Unknown error from server, code:"
 
 }

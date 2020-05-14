@@ -44,8 +44,31 @@
   "profile_txt_district" : "الرجاء إدخال المنطقة !!",
   "profile_txt_city" : "الرجاء إدخال المدينة !!",
   "profile_txt_postalcode" : "الرجاء إدخال الرمز البريدي !!",
-  "profile_txt_selectimg" : "يرجى تحديد صورة الملف الشخصي"
-
+  "profile_txt_selectimg" : "يرجى تحديد صورة الملف الشخصي",
+  "home_txt_location" : "موقعك",
+  "home_txt_why" : "لماذا نحن؟",
+  "home_txt_we" : "نحن نقدر عملائنا",
+  "home_txt_verified" : "التحقق من المهنيين",
+  "home_txt_insured" : "عمل مؤمن عليه",
+  "home_txt_professional" : "الدعم المهني",
+  "inquiry_txt_primary" : "الخدمة الأولية",
+  "inquiry_txt_secondary" : "الخدمة الثانوية",
+  "inquiry_txt_firstname" : "الاسم الاول",
+  "inquiry_txt_email" : "البريد الإلكتروني",
+  "inquiry_txt_phone" : "هاتف",
+  "inquiry_txt_date" : "تاريخ",
+  "inquiry_txt_remark" : "ملاحظة",
+  "inquiry_btn_booking" : "الحجز",
+  "inquiry_time" : "الوقت غير صالح !!",
+  "loading" : "جار التحميل....",
+  "tab_home" : "الصفحة الرئيسية",
+  "tab_categories" : "التصنيفات",
+  "tab_account" : "حسابي",
+  "tab_orders" : "عملية الشراء",
+  "terms" : "يرجى قبول الشروط والأحكام",
+  "alert_pleasewait" : "ارجوك انتظر",
+  "alert_nointernet" : "بدون انترنت",
+  "server_error" : "خطأ غير معروف من الخادم ، الرمز:"
 
 
 

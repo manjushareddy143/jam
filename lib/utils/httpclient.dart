@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 //import 'package:pulse/resources/my_colors.dart';
 //import 'package:pulse/resources/my_strings.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/app_localizations.dart';
 
 class HttpClient {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
@@ -208,7 +209,7 @@ class HttpClient {
                     child: new CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.tealAccent),
                     )),
-                new Text("Please wait"),
+                new Text(AppLocalizations.of(context).translate('alert_pleasewait')),
               ],
             ),
           );
@@ -229,7 +230,7 @@ class HttpClient {
     //we show loading before checking the internet connection, so close this if we don't have internet
     dismissLoading(context);
     if (shouldShowError) {
-      showInfoAlert(context, "No Internet");
+      showInfoAlert(context, AppLocalizations.of(context).translate('alert_nointernet'));
     }
   }
 }

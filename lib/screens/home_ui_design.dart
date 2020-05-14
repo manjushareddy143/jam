@@ -14,6 +14,7 @@ import 'package:jam/screens/provider_list_screen.dart';
 import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/app_localizations.dart';
 
 class HomeUIDesign extends StatelessWidget {
   @override
@@ -89,7 +90,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
       return new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
-          title: new Text("Loading..."),
+          title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {
@@ -185,7 +186,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'Why We Are?',
+                              AppLocalizations.of(context).translate('home_txt_why'),
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -194,7 +195,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                               ),
                             ),
                             Text(
-                              'We value our customers',
+                              AppLocalizations.of(context).translate('home_txt_we'),
                               textAlign: TextAlign.center,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -216,7 +217,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                       Icon(Icons.account_box,
                                           color: Colors.teal, size: 40.0),
                                       Text(
-                                        'Verified Professionals',
+                                        AppLocalizations.of(context).translate('home_txt_verified'),
                                         maxLines: 2,
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
@@ -233,7 +234,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                       Icon(Icons.assignment,
                                           color: Colors.teal, size: 40.0),
                                       Text(
-                                        'Insured Work',
+                                        AppLocalizations.of(context).translate('home_txt_insured'),
                                         maxLines: 2,
                                         textAlign: TextAlign.center,
                                         overflow: TextOverflow.ellipsis,
@@ -248,7 +249,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                         Icon(MaterialIcons.person,
                                             color: Colors.teal, size: 40.0),
                                         Text(
-                                          'Professional Support',
+                                          AppLocalizations.of(context).translate('home_txt_professional'),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                           textAlign: TextAlign.center,

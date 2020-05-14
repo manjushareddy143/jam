@@ -13,6 +13,7 @@ import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/app_localizations.dart';
 
 //class InquiryScreen extends StatelessWidget {
 //
@@ -140,9 +141,9 @@ class _InquiryPageState extends State<InquiryPage> {
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
           decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ),),
-            labelText: 'First Name',),
+            labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname')),
           controller: (txtName == "") ? txtName : txtName..text = firstName,
           //txtName,//..text = 'KAR-MT30',
           validator: (value){
@@ -158,9 +159,9 @@ class _InquiryPageState extends State<InquiryPage> {
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
           decoration: InputDecoration( suffixIcon: Icon(Icons.email),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-            labelText: 'Email',),
+            labelText: AppLocalizations.of(context).translate('inquiry_txt_email')),
           controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
           //txtEmail,//..text = 'KAR-MT30',
           keyboardType: TextInputType.emailAddress,
@@ -181,9 +182,9 @@ class _InquiryPageState extends State<InquiryPage> {
         child: TextFormField(
 
           decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-            labelText: 'Phone',),
+            labelText: AppLocalizations.of(context).translate('inquiry_txt_phone')),
           controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
           //txtContact,//..text = 'KAR-MT30',
           keyboardType: TextInputType.phone,
@@ -209,7 +210,7 @@ class _InquiryPageState extends State<InquiryPage> {
             maxLines: 5,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-            hintText: 'Remark', contentPadding: EdgeInsets.only(left:10,top: 15) ),
+            hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'), contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
       ),),
       SizedBox(height: 30,),
 
@@ -218,8 +219,8 @@ class _InquiryPageState extends State<InquiryPage> {
         child:  RaisedButton(
             color: Colors.teal,
             textColor: Colors.white,
-            child: const Text(
-                'Booking',
+            child:  Text(
+                AppLocalizations.of(context).translate('inquiry_btn_booking'),
                 style: TextStyle(fontSize: 16.5)
             ),
             onPressed: () {
@@ -295,7 +296,7 @@ class _InquiryPageState extends State<InquiryPage> {
         padding: const EdgeInsets.fromLTRB(10,0,0,0),
         child: Row(
           children:[
-            Text("Primary Service" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+            Text(AppLocalizations.of(context).translate('inquiry_txt_primary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
             SizedBox(width: 20,),
             Expanded(child: DropdownButton(
                 underline: SizedBox(),
@@ -334,7 +335,7 @@ class _InquiryPageState extends State<InquiryPage> {
         padding: const EdgeInsets.fromLTRB(10,0,0,0),
         child: Row(
           children:[
-            Text("Secondary Service" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+            Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
             SizedBox(width: 20,),
             Expanded(child: DropdownButton(
                 underline: SizedBox(),
@@ -381,7 +382,7 @@ final formatt= DateFormat("HH:mm");
             format: format,
             decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-              labelText: 'Date',),
+              labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
                  onShowPicker: (context, currentValue) {
                  return showDatePicker(
                   context: context,
@@ -439,7 +440,7 @@ final formatt= DateFormat("HH:mm");
                   },
                   validator:  (value){
                     if (value.isAfter(end_time)) {
-                      return 'Invalid time!!';
+                      return AppLocalizations.of(context).translate('inquiry_time');
                     }
                     return null;
                   },

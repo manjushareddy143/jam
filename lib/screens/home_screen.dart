@@ -11,6 +11,7 @@ import 'package:jam/screens/user_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -62,7 +63,7 @@ class _HomePageState extends State<HomePage> {
           children: <Widget>[
             if (_currentIndex == 0)
               Text(
-                'Your Location',
+                AppLocalizations.of(context).translate('home_txt_location'),
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 14.0,
@@ -96,11 +97,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             if (_currentIndex == 1)
-              setHeader("Categories"),
+              setHeader(AppLocalizations.of(context).translate('tab_categories')),
             if (_currentIndex == 2)
-              setHeader("My Account"),
+              setHeader(AppLocalizations.of(context).translate('tab_account')),
             if (_currentIndex == 3)
-              setHeader("Orders"),
+              setHeader(AppLocalizations.of(context).translate('tab_orders')),
 
           ],
         ),
@@ -163,19 +164,19 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(
                 Icons.home,
               ),
-              title: new Text("Home")),
+              title: new Text(AppLocalizations.of(context).translate('tab_home'))),
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.category,
               ),
-              title: new Text("Categories")),
+              title: new Text(AppLocalizations.of(context).translate('tab_categories'))),
           BottomNavigationBarItem(
-              icon: Icon(Icons.perm_identity), title: new Text("My Account")),
+              icon: Icon(Icons.perm_identity), title: new Text(AppLocalizations.of(context).translate('tab_account'))),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.train,
             ),
-            title: new Text("Orders"),
+            title: new Text(AppLocalizations.of(context).translate('tab_orders')),
           ),
         ],
       ),

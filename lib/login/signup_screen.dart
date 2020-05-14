@@ -329,7 +329,7 @@ class _SignupPageState extends State<SignupPage> {
        //
 
       } else {
-        showInfoAlert(context, 'Please accept terms & conditions');
+        showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
       }
     } else {
       setState(() {

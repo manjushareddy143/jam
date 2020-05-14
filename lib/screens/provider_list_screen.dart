@@ -11,7 +11,7 @@ import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
-
+import 'package:jam/app_localizations.dart';
 //class ProviderListScreen extends StatelessWidget {
 //  @override
 //  Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class _ProviderListState extends State<ProviderListPage> {
       return new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
-          title: new Text("Loading..."),
+          title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {

@@ -11,6 +11,7 @@ import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 //import 'package:image_picker/image_picker.dart';
+import 'package:jam/app_localizations.dart';
 
 class Profile extends StatelessWidget{
 
@@ -87,7 +88,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       return new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
-          title: new Text("Loading..."),
+          title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {
