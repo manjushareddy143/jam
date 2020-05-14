@@ -66,6 +66,7 @@ class _user extends State<UserLogin>{
       break;
       default: _temp = Locale(language.languageCode, 'US');
     }
+   // Preferences.saveObject('lang', json.encode(_temp));
     MyApp.setLocale(context, _temp);
   }
 
@@ -111,6 +112,7 @@ class _user extends State<UserLogin>{
                       items: Language.languageList()
                           .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
                         value:  lang,
+
                         child: Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[Text(lang.flag),
                             Text(lang.name)],
@@ -129,7 +131,7 @@ class _user extends State<UserLogin>{
                          style: TextStyle(fontWeight: FontWeight.bold,background: paint ,  color: Colors.white, fontSize: 40.0, ),
                        ), */
                   new Text(
-                    AppLocalizations.of(context).translate('Text1'),
+                    AppLocalizations.of(context).translate('txt_loginuser'),
                     textAlign: TextAlign.center,
 
                     overflow: TextOverflow.ellipsis,
@@ -150,7 +152,7 @@ class _user extends State<UserLogin>{
                         ,
                         validator: (value){
                           if (value.isEmpty) {
-                            return 'Please enter username!!';
+                            return AppLocalizations.of(context).translate('login_txt_user');
                           }
                           return validateEmail(value);
                         },
@@ -159,7 +161,7 @@ class _user extends State<UserLogin>{
                         decoration: InputDecoration( suffixIcon: Icon(Icons.face),
                           border: OutlineInputBorder(),
                           labelText: //"Email or Username"
-                           AppLocalizations.of(context).translate('textbox1'),
+                           AppLocalizations.of(context).translate('email_placeholder'),
                         ),
 
                       ),
@@ -169,7 +171,7 @@ class _user extends State<UserLogin>{
                         controller: txtPass,
                         validator: (value){
                           if (value.isEmpty) {
-                            return 'Please enter password!!';
+                            return AppLocalizations.of(context).translate('login_txt_pwd');
                           }
                           return null;
                         },
@@ -177,7 +179,7 @@ class _user extends State<UserLogin>{
                         obscureText: true,
                         decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
                           border: OutlineInputBorder(),
-                          labelText:  AppLocalizations.of(context).translate('textbox2'),
+                          labelText:  AppLocalizations.of(context).translate('pwd_placeholder'),
                         ),
                       ),
                     ],
@@ -187,9 +189,9 @@ class _user extends State<UserLogin>{
                   Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
                     children: <Widget>[
                       Checkbox(value: _value1, onChanged: _value1Changed),
-                      Text(AppLocalizations.of(context).translate('checkbox'), ),
+                      Text(AppLocalizations.of(context).translate('txt_remember'), ),
                       Spacer(),
-                      Text(AppLocalizations.of(context).translate('Text2'),  style: TextStyle( color: Colors.teal),),
+                      Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Colors.teal),),
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
@@ -203,7 +205,7 @@ class _user extends State<UserLogin>{
                         padding: EdgeInsets.fromLTRB(150,10,150,10),
                         //invokes _authUser function which validate data entered as well does the api call
                         child:  Text(
-                            AppLocalizations.of(context).translate('Button1'),
+                            AppLocalizations.of(context).translate('btn_login'),
                             style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
                         ),
                         onPressed: () {
@@ -215,7 +217,7 @@ class _user extends State<UserLogin>{
 
                   Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('Text3')),
+                      Text(AppLocalizations.of(context).translate('txt_dont')),
 
                       FlatButton( onPressed:(){
 
@@ -227,14 +229,14 @@ class _user extends State<UserLogin>{
 //                          builder: (context)=> SignupScreen()));
                         },
                         child:
-                        Text(AppLocalizations.of(context).translate('Button2'), textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
+                        Text(AppLocalizations.of(context).translate('btn_signin'), textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
                   SizedBox(height: 30,),
 
 
-                  Text(AppLocalizations.of(context).translate('Text4'),
+                  Text(AppLocalizations.of(context).translate('txt_skip'),
                       textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
 
 
@@ -357,7 +359,7 @@ class _user extends State<UserLogin>{
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
+      return AppLocalizations.of(context).translate('login_txt_validuser');
     else
       return null;
   }

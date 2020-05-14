@@ -14,6 +14,7 @@ import 'package:jam/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:http/http.dart' as http;
+import 'package:jam/app_localizations.dart';
 
 class InitialProfileScreen extends StatelessWidget {
 
@@ -21,7 +22,7 @@ class InitialProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: InitialProfilePage(title: "Complete your Profile"),
+      body: InitialProfilePage(title:  AppLocalizations.of(context).translate('profile_txt_title'),),
     );
   }
 }
@@ -43,7 +44,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   List<DropdownMenuItem<String>> _dropDownTypes;
-  List _lstType = ["Male","Female"];
+  List _lstType = ["Male"
+    ,"Female"];
   String dropdownvalue;
   File _image;
   String user_id;
@@ -89,7 +91,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery,
-            imageQuality: 85,
+            imageQuality: 50,
         );
     setState(() {
       _image = image;
@@ -106,8 +108,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           SizedBox(height: 30),
           _buildProfileImage(),
           SizedBox(height: 10),
-          Text("Image format jpeg or png", style: TextStyle(color: Colors.white70),),
-          Text("Image size upto 3MB", style: TextStyle(color: Colors.white70)),
+          Text(AppLocalizations.of(context).translate('profile_txt_img'), style: TextStyle(color: Colors.white70),),
+          Text(AppLocalizations.of(context).translate('profile_txt_img2'), style: TextStyle(color: Colors.white70)),
         ],
       ),
       decoration: BoxDecoration(
@@ -158,7 +160,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         children: <Widget>[
           Padding (padding: EdgeInsets.fromLTRB(15, 30, 0, 10),
           child:
-          Text("Complete your Profile", style: TextStyle(color: Colors.black, fontSize: 20),)
+          Text( AppLocalizations.of(context).translate('profile_txt_title'), style: TextStyle(color: Colors.black, fontSize: 20),)
             ,),
 
           _buildCoverImage(MediaQuery.of(context).size),
@@ -178,12 +180,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   prefixIcon: Icon(Icons.person, textDirection: TextDirection.rtl,),
 //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: "First name",
+                    labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder'),
                     hasFloatingPlaceholder: false
                   ),
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter first name!!';
+                      return AppLocalizations.of(context).translate('profile_txt_enterfirstname');
                     }
                     return null;
                   },
@@ -202,6 +204,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     prefixIcon: Icon(Icons.phone,textDirection: TextDirection.rtl),
 //                    contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),
                   hasFloatingPlaceholder: false,
                     ),
                 ),
@@ -217,12 +220,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     prefixIcon: Icon(Icons.email,),
 //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: "Email",
+                    labelText: AppLocalizations.of(context).translate('profile_email_placeholder'),
                     hasFloatingPlaceholder: false,
                   ),
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter email!!';
+                      return AppLocalizations.of(context).translate('profile_txt_enteremail');
                     }
                     return validateEmail(value);
                   },
@@ -247,7 +250,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 ListTile(
                  onTap: addressEnter,
                   leading: Icon(Icons.location_on),
-                  title: Text((adrs_name.text == "") ? "Enter Address" : adrs_name.text),
+                  title: Text((adrs_name.text == "") ?  AppLocalizations.of(context).translate('address') : adrs_name.text),
                   subtitle: Text(addressString),
                 ),
                 ButtonBar(
@@ -257,7 +260,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         children: <Widget>[
                           Icon(Icons.my_location, color: Configurations.themColor, size: 15,),
                           SizedBox(width: 10,),
-                          Text('Set your Location', style: TextStyle(color: Configurations.themColor),)
+                          Text(AppLocalizations.of(context).translate('profile_txt_location'), style: TextStyle(color: Configurations.themColor),)
                         ],
                       ),
                       onPressed: () {
@@ -279,8 +282,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             child:  RaisedButton(
                 color: Colors.teal,
                 textColor: Colors.white,
-                child: const Text(
-                    'Save',
+                child:  Text(
+                    AppLocalizations.of(context).translate('btn_save'),
                     style: TextStyle(fontSize: 16.5)
                 ),
                 onPressed: () {
@@ -302,7 +305,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       addressEnter();
     } else {
       if(_image == null) {
-        showInfoAlert(context, "Please select Profile Picture");
+        showInfoAlert(context, AppLocalizations.of(context).translate('profile_txt_selectimg'));
       } else {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
@@ -394,7 +397,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         title: Row(
           children: <Widget>[
             Icon(Icons.location_on),
-    Text('Enter Address', ),
+    Text(AppLocalizations.of(context).translate('address'), ),
           ],
         ),
         content: SingleChildScrollView(
@@ -405,12 +408,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               // Name
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: "Address Name",
+                  labelText: AppLocalizations.of(context).translate('address_placeholder'),
                 ),
                 controller: adrs_name,
                 validator: (value){
                   if (value.isEmpty) {
-                    return 'Please enter Address name!!';
+                    return AppLocalizations.of(context).translate('profile_txt_address');
                   }
                   return null;
                 },
@@ -423,12 +426,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     width: 100.0,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: "Address 1",
+                        labelText: AppLocalizations.of(context).translate('address1_placeholder'),
                       ),
                       controller: adrs_line1,
                       validator: (value){
                         if (value.isEmpty) {
-                          return 'Enter Address!!';
+                          return AppLocalizations.of(context).translate('profile_txt_address1');
                         }
                         return null;
                       },
@@ -442,7 +445,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     child:
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: "Address 2",
+                        labelText: AppLocalizations.of(context).translate('address2_placeholder'),
                       ),
                       controller: adrs_line2,
                     ),
@@ -459,7 +462,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     width: 100.0,
                     child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: "Landmark",
+                          labelText: AppLocalizations.of(context).translate('landmark_placeholder'),
                         ),
                         controller: adrs_landmark
                     ),
@@ -472,12 +475,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     width: 100.0,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: "District",
+                        labelText: AppLocalizations.of(context).translate('district_placeholder'),
                       ),
                       controller: adrs_disctric,
                       validator: (value){
                         if (value.isEmpty) {
-                          return 'Please enter District!!';
+                          return AppLocalizations.of(context).translate('profile_txt_district');
                         }
                         return null;
                       },
@@ -494,12 +497,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     width: 100.0,
                     child: TextFormField(
                       decoration: InputDecoration(
-                        labelText: "City",
+                        labelText: AppLocalizations.of(context).translate('city_placeholder'),
                       ),
                       controller: adrs_city,
                       validator: (value){
                         if (value.isEmpty) {
-                          return 'Please enter City!!';
+                          return AppLocalizations.of(context).translate('profile_txt_city');
                         }
                         return null;
                       },
@@ -514,12 +517,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     child:
                     TextFormField(
                       decoration: InputDecoration(
-                        labelText: "Postal Code",
+                        labelText: AppLocalizations.of(context).translate('postalcode_placeholder'),
                       ),
                       controller: adrs_postalcode,
                       validator: (value){
                         if (value.isEmpty) {
-                          return 'Please enter postal code!!';
+                          return AppLocalizations.of(context).translate('profile_txt_postalcode');
                         }
                         return null;
                       },
@@ -533,8 +536,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 child:  RaisedButton(
                     color: Colors.teal,
                     textColor: Colors.white,
-                    child: const Text(
-                        'Save',
+                    child:  Text(
+                        AppLocalizations.of(context).translate('btn_save'),
                         style: TextStyle(fontSize: 16.5)
                     ),
                     onPressed: () {

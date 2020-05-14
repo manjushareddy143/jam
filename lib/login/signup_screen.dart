@@ -21,6 +21,8 @@ import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/widget_helper.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:jam/app_localizations.dart';
+
 
 enum GenderEnum {  Male, Female  }
 
@@ -98,8 +100,8 @@ class _SignupPageState extends State<SignupPage> {
 
           SizedBox(height: 5,),
 
-          Text(
-            'SIGN UP',
+          Text(AppLocalizations.of(context).translate('signin_txt_signup'),
+            //'SIGN UP',
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
@@ -114,13 +116,13 @@ class _SignupPageState extends State<SignupPage> {
                 child: TextFormField(
                   enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                      labelText: 'First Name',),
+                      labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder'),),
                   controller: txtName,//..text = 'KAR-MT30',
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter name!!';
+                      return AppLocalizations.of(context).translate('signup_txt_enteruser');
                     }
                     return null;
                   },
@@ -132,13 +134,13 @@ class _SignupPageState extends State<SignupPage> {
                  child: TextFormField(
                    enabled: _fridgeEdit,
                    decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-                     contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                   labelText: 'Last Name',),
+                   labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder'),),
                    controller: txtLname,//..text = 'KAR-MT30',
                    validator: (value){
                      if (value.isEmpty) {
-                       return 'Please enter last name!!';
+                       return AppLocalizations.of(context).translate('signup_txt_enterlast');
                      }
                      return null;
                    },
@@ -149,14 +151,14 @@ class _SignupPageState extends State<SignupPage> {
                 child: TextFormField(
                   enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: 'Phone',),
+                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),),
                   controller: txtContact,//..text = 'KAR-MT30',
                   keyboardType: TextInputType.phone,
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter contact number!!';
+                      return AppLocalizations.of(context).translate('signup_txt_enterno');
                     }
                     return null;
                   },
@@ -169,13 +171,13 @@ class _SignupPageState extends State<SignupPage> {
                   enabled: _fridgeEdit,
                   obscureText: true,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.security),
-                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                    labelText: 'Password',),
+                    labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder'),),
                   controller: txtPass,//..text = 'KAR-MT30',
                   validator: (value){
                     if (value.isEmpty) {
-                      return 'Please enter password!!';
+                      return AppLocalizations.of(context).translate('signup_txt_enterpwd');
                     }
                     return null;
                   },
@@ -187,10 +189,10 @@ class _SignupPageState extends State<SignupPage> {
              Row(
                children: <Widget>[
                 Checkbox(value: _value1, onChanged: _value1Changed),
-                 Text("Agree With ", style: TextStyle(color: Colors.grey),),
+                 Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
                  InkWell(
                    child: Text(
-                     "Terms And Condition",
+                     AppLocalizations.of(context).translate('signin_txt_terms'),
                      style: TextStyle(decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
                    ),
                    onTap: _launchURL,
@@ -214,8 +216,8 @@ class _SignupPageState extends State<SignupPage> {
           child:  RaisedButton(
               color: Colors.teal,
               textColor: Colors.white,
-              child: const Text(
-                  'Sign Up',
+              child:  Text(
+                  AppLocalizations.of(context).translate('signin_btn_signup'),
                   style: TextStyle(fontSize: 16.5)
               ),
               onPressed: () {
