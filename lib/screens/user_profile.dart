@@ -143,7 +143,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
              showInfoAlert(context, "Please enable edit mode");
            }
          },
-           child: Text("Upload Photo", textAlign: TextAlign.center,
+           child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
                style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
                    color: Colors.teal)
            )

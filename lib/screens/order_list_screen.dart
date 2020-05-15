@@ -189,7 +189,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5),
                       ),
-                      Text("Order#" + order.id.toString(),),
+                      Text(AppLocalizations.of(context).translate('order') + order.id.toString(),),
                       Row(
                         children: <Widget>[
                           Text(order.booking_date,),

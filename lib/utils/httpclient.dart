@@ -182,7 +182,7 @@ class HttpClient {
 //      print('error');
 //      print(data['error']);
 
-          showInfoAlert(context, 'Unknown error from server, code: ${response.statusCode}');
+          showInfoAlert(context, AppLocalizations.of(context).translate('server_error')+ '${response.statusCode}');
 
 
 //      }

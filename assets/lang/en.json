@@ -72,6 +72,13 @@
   "terms" : "Please accept terms & conditions",
   "alert_pleasewait" : "Please wait",
   "alert_nointernet" : "No Internet",
-  "server_error" : "'Unknown error from server, code:"
+  "server_error" : "'Unknown error from server, code:",
+  "experience" : "Experience",
+  "reviews" : "Reviews",
+  "quotes" : "Get Quotes",
+  "call" : "Call",
+  "order" : "Order#",
+  "about" : "About",
+  "upload" : "Upload Photo"
 
 }

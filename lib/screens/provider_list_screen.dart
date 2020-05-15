@@ -155,7 +155,7 @@ class _ProviderListState extends State<ProviderListPage> {
                   )),
             ),
             title: Text(provider.first_name),
-            subtitle:   Text('Experience: 2 Years'),
+            subtitle:   Text(AppLocalizations.of(context).translate('experience') +'2 Years'),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
@@ -180,7 +180,7 @@ class _ProviderListState extends State<ProviderListPage> {
                     });
                   },
                 ),
-                Text(provider.reviews.toString() +" Reviews",textAlign: TextAlign.left,
+                Text(provider.reviews.toString() +AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
               ],
@@ -194,7 +194,7 @@ class _ProviderListState extends State<ProviderListPage> {
                       child: FlatButton.icon(
 //                          color: Colors.red,
                         icon: Icon(Icons.monetization_on, color: Colors.teal), //`Icon` to display
-                        label: Text('Get Quotes', style: TextStyle(
+                        label: Text(AppLocalizations.of(context).translate('quotes'), style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.teal)), //`Text` to display
@@ -212,7 +212,7 @@ class _ProviderListState extends State<ProviderListPage> {
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                     child: FlatButton.icon(
                       icon: Icon(Icons.call, color: Colors.teal),
-                      label: Text('Call', style: TextStyle(
+                      label: Text(AppLocalizations.of(context).translate('call'), style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400,
                           color: Colors.teal)), //`Text` to display
