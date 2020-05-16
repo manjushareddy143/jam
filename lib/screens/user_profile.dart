@@ -42,16 +42,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   FocusNode focus_email, focus_no, focus_address;
 
 
-  @override
-  void dispose() {
-    // Clean up the focus node when the Form is disposed.
-    focus_email.dispose();
-    focus_no.dispose();
-    focus_address.dispose();
 
-
-    super.dispose();
-  }
 
 
   @override
@@ -64,6 +55,16 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_no = FocusNode();
     focus_address = FocusNode();
     getProfile();
+  }
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    focus_email.dispose();
+    focus_no.dispose();
+    focus_address.dispose();
+
+
+    super.dispose();
   }
 
   void validateform() {
@@ -102,6 +103,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget build(BuildContext context) {
     // TODO: implement build
     if(user == null) {
+      return new Scaffold(
+        appBar: new AppBar(
+          automaticallyImplyLeading: false,
+          title: new Text(AppLocalizations.of(context).translate('loading')),
+        ),
+      );
+    } else {
       return GestureDetector(
         onTap: (){
           FocusScopeNode currentFocus = FocusScope.of(context);
@@ -110,22 +118,15 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             currentFocus.unfocus();
           }
         },
-        child: new Scaffold(
-          appBar: new AppBar(
-            automaticallyImplyLeading: false,
-            title: new Text(AppLocalizations.of(context).translate('loading')),
-          ),
+        child: Scaffold(
+            body: SingleChildScrollView(
+              child: new Form(
+                key: _formKey,
+                autovalidate: _autoValidate,
+                child: myProfileUI(),
+              ),
+            )
         ),
-      );
-    } else {
-      return Scaffold(
-          body: SingleChildScrollView(
-            child: new Form(
-              key: _formKey,
-              autovalidate: _autoValidate,
-              child: myProfileUI(),
-            ),
-          )
       );
     }
   }
