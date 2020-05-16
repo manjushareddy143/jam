@@ -39,21 +39,21 @@ class _user extends State<UserLogin>{
   final txtPass = TextEditingController();
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
-  FocusNode myFocusNode, myFocusNode2;
+  FocusNode focus_email, focus_pwd;
 
   @override
   void initState() {
     super.initState();
 
-    myFocusNode = FocusNode();
-    myFocusNode2 = FocusNode();
+    focus_email = FocusNode();
+    focus_pwd = FocusNode();
   }
 
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
-    myFocusNode.dispose();
-    myFocusNode2.dispose();
+    focus_email.dispose();
+    focus_pwd.dispose();
 
     super.dispose();
   }
@@ -75,6 +75,8 @@ class _user extends State<UserLogin>{
     Paint paint = Paint();
     paint.color= Colors.teal;
     return  GestureDetector(
+
+
       onTap: (){
         FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -147,7 +149,7 @@ class _user extends State<UserLogin>{
                     Column(children: <Widget>[
 
                       new TextFormField(
-                        focusNode: myFocusNode2,
+                        focusNode: focus_email,
                         controller: txtUser
                         ,
                         validator: (value){
@@ -167,7 +169,7 @@ class _user extends State<UserLogin>{
                       ),
                       SizedBox(height: 20),
                       new TextFormField(
-                        focusNode: myFocusNode,
+                        focusNode: focus_pwd,
                         controller: txtPass,
                         validator: (value){
                           if (value.isEmpty) {

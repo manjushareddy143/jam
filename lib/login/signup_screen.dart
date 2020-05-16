@@ -64,21 +64,50 @@ class _SignupPageState extends State<SignupPage> {
   final txtContact = TextEditingController();
   bool _value1 = false;
   void _value1Changed(bool value) => setState(() => _value1 = value);
-
+  FocusNode focus_firstname, focus_lastname, focus_phone, focus_pwd;
   @override
   void initState() {
     super.initState();
+
+    focus_firstname = FocusNode();
+    focus_lastname = FocusNode();
+    focus_phone = FocusNode();
+    focus_pwd = FocusNode();
   }
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    focus_lastname.dispose();
+    focus_firstname.dispose();
+    focus_phone.dispose();
+    focus_pwd.dispose();
+
+    super.dispose();
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(resizeToAvoidBottomPadding: false,
-      body: SingleChildScrollView(
-        child: new Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child: signupScreenUI(),
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(resizeToAvoidBottomPadding: false,
+        body: SingleChildScrollView(
+          child: new Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: signupScreenUI(),
+          ),
         ),
       ),
     );
@@ -114,6 +143,7 @@ class _SignupPageState extends State<SignupPage> {
             children:  <Widget>[
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
+                  focusNode: focus_firstname,
                   enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -132,6 +162,7 @@ class _SignupPageState extends State<SignupPage> {
                SizedBox(height: 10,),
                Material(elevation: 10.0,shadowColor: Colors.grey,
                  child: TextFormField(
+                   focusNode: focus_lastname,
                    enabled: _fridgeEdit,
                    decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -149,6 +180,7 @@ class _SignupPageState extends State<SignupPage> {
               SizedBox(height: 10,),
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
+                  focusNode: focus_phone,
                   enabled: _fridgeEdit,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -168,6 +200,7 @@ class _SignupPageState extends State<SignupPage> {
               SizedBox(height: 10,),
               Material(elevation: 10.0,shadowColor: Colors.grey,
                 child: TextFormField(
+                  focusNode: focus_pwd,
                   enabled: _fridgeEdit,
                   obscureText: true,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.security),

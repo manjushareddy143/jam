@@ -39,6 +39,20 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
  List<Tab> tabList = List();
   TabController _tabController;
   User user;
+  FocusNode focus_email, focus_no, focus_address;
+
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    focus_email.dispose();
+    focus_no.dispose();
+    focus_address.dispose();
+
+
+    super.dispose();
+  }
+
 
   @override
   void initState(){
@@ -46,6 +60,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     _tabController= TabController(vsync: this, length: tabList.length);
 
     super.initState();
+    focus_email = FocusNode();
+    focus_no = FocusNode();
+    focus_address = FocusNode();
     getProfile();
   }
 
@@ -85,10 +102,19 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget build(BuildContext context) {
     // TODO: implement build
     if(user == null) {
-      return new Scaffold(
-        appBar: new AppBar(
-          automaticallyImplyLeading: false,
-          title: new Text(AppLocalizations.of(context).translate('loading')),
+      return GestureDetector(
+        onTap: (){
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: new Scaffold(
+          appBar: new AppBar(
+            automaticallyImplyLeading: false,
+            title: new Text(AppLocalizations.of(context).translate('loading')),
+          ),
         ),
       );
     } else {
@@ -239,14 +265,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         TextField(
+
           decoration: InputDecoration(
               hintText: user.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
           ),
         ),
         TextField(
+          focusNode: focus_email,
           decoration: InputDecoration(hintText: user.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
         ),
         TextField(
+          focusNode: focus_no,
           decoration: InputDecoration(hintText: user.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
         ),
 
@@ -255,6 +284,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           decoration: InputDecoration(hintText: (user.languages == null) ? "NOT SELECTED" : user.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
         ),
         TextField(
+          focusNode: focus_address,
           decoration: InputDecoration(hintText: addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
           helperMaxLines: 5, hintMaxLines: 5),
         ),

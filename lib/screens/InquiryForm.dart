@@ -64,12 +64,32 @@ class _InquiryPageState extends State<InquiryPage> {
 
   String selectedSubCategory;
   List<DropdownMenuItem<String>> _dropDownSubCategory;
+  FocusNode focus_name,focus_mail,focus_no,  focus_remark;
+
+
+
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    focus_name.dispose();
+    focus_mail.dispose();
+    focus_no.dispose();
+
+    focus_remark.dispose();
+
+    super.dispose();
+  }
 
 
 
   @override
   void initState() {
     super.initState();
+    focus_name = FocusNode();
+    focus_mail = FocusNode();
+    focus_no = FocusNode();
+
+    focus_remark = FocusNode();
     _lstServices.add(this.service);
     _lstSubCategory.addAll(this.service.categories);
     _dropDownService = buildServicesMenuItems(_lstServices);
@@ -111,15 +131,25 @@ class _InquiryPageState extends State<InquiryPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      appBar: new AppBar(leading: BackButton(color:Colors.black),title: Text("Inquiry Form", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-        ),
-      body: SingleChildScrollView(
-        child: new Form(
-          key: _formKey,
-          child: inquiryScreenUI(),
-          autovalidate: _autoValidate,
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+
+      child: Scaffold(
+        appBar: new AppBar(leading: BackButton(color:Colors.black),title: Text("Inquiry Form", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,
+
+          ),
+        body: SingleChildScrollView(
+          child: new Form(
+            key: _formKey,
+            child: inquiryScreenUI(),
+            autovalidate: _autoValidate,
+          ),
         ),
       ),
     );
@@ -140,6 +170,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
+          focusNode: focus_name,
           decoration: InputDecoration( suffixIcon: Icon(Icons.person),
             contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ),),
@@ -158,6 +189,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
+          focusNode: focus_mail,
           decoration: InputDecoration( suffixIcon: Icon(Icons.email),
             contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -180,6 +212,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
+          focusNode: focus_no,
 
           decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
             contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -206,6 +239,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextField(
+          focusNode: focus_remark,
           controller: txtRemark,
             maxLines: 5,
           keyboardType: TextInputType.multiline,
@@ -367,10 +401,10 @@ class _InquiryPageState extends State<InquiryPage> {
     });
   }
 
-
-
 final format = DateFormat("dd-MM-yyyy");
-final formatt= DateFormat("HH:mm");
+final formatt= DateFormat("h:mm a");
+
+
 
   Widget setDate(){
     return Material(elevation: 5.0,shadowColor: Colors.grey,
@@ -378,6 +412,7 @@ final formatt= DateFormat("HH:mm");
         padding: EdgeInsets.fromLTRB(0,0,0,0),
           height: 50,
           child: DateTimeField(
+
             initialValue: _currentDt,
             format: format,
             decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
@@ -411,6 +446,7 @@ final formatt= DateFormat("HH:mm");
               flex: 4,
               child: Material(elevation: 5.0,shadowColor: Colors.grey,
                 child: DateTimeField(
+
                   initialValue: _currentDt,
                   format: formatt,
                   decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
@@ -431,11 +467,18 @@ final formatt= DateFormat("HH:mm");
                   onShowPicker: (context, currentValue) async {
                     final time = await showTimePicker(
                       context: context,
+                     // initialTime: TimeOfDay(hour: 12, minute: 00),
                       initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+
                     );
                     return DateTimeField.convert(time);
+
+
+
                   },
+
                   onChanged: (val) => {
+                    printLog(val),
                     start_time = val// TimeOfDay.fromDateTime(val ?? DateTime.now()).toString(),
                   },
                   validator:  (value){
@@ -458,11 +501,15 @@ final formatt= DateFormat("HH:mm");
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
                   ),
                   onShowPicker: (context, currentValue) async {
+
                     final time = await showTimePicker(
                       context: context,
-                      initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                      //initialTime: TimeOfDay(hour: 12, minute: 00),
+                     initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
                     );
                     return DateTimeField.convert(time);
+
+                      //DateTimeField.convert(time);
                   },
                   onChanged: (val) => {
                     end_time = val //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
