@@ -193,11 +193,11 @@ class _ProviderListState extends State<ProviderListPage> {
                   Expanded(
                       child: FlatButton.icon(
 //                          color: Colors.red,
-                        icon: Icon(Icons.monetization_on, color: Colors.teal), //`Icon` to display
+                        icon: Icon(Icons.monetization_on, color: Configurations.themColor), //`Icon` to display
                         label: Text(AppLocalizations.of(context).translate('quotes'), style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.teal)), //`Text` to display
+                                color: Configurations.themColor)), //`Text` to display
                         onPressed: () {
                           printLog('provider::: ${provider}');
                           Navigator.push(
@@ -211,15 +211,19 @@ class _ProviderListState extends State<ProviderListPage> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                     child: FlatButton.icon(
-                      icon: Icon(Icons.call, color: Colors.teal),
-                      label: Text(AppLocalizations.of(context).translate('call'), style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.teal)), //`Text` to display
+                      icon: Icon(
+                          Icons.call, color: Configurations.themColor
+                      ),
+                      label: Text(
+                          AppLocalizations.of(context).translate('call'),
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                              color: Configurations.themColor
+                          )
+                      ),
                       onPressed: () {
                         print('Call Press');
-                        //Code to execute when Floating Action Button is clicked
-                        //...
                       },
                     ),
                   )

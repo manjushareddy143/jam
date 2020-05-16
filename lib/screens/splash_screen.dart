@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:jam/home_widget.dart';
 import 'package:jam/login/login.dart';
+import 'package:jam/main.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/screens/initial_profile.dart';
@@ -28,7 +28,22 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    getLanguage();
     loadData();
+  }
+
+  void getLanguage() async {
+    await Preferences.readObject("lang").then((onValue) async {
+      printLog('userdata');
+      printLog(onValue);
+      setState(() {
+        if(onValue == 'SA') {
+          MyApp.setLocale(context, Locale('ar' , 'SA'));
+        } else {
+          MyApp.setLocale(context, Locale('en', 'US'));
+        }
+      });
+    });
   }
 
   @override

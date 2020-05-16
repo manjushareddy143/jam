@@ -215,7 +215,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                   child: Column(
                                     children: <Widget>[
                                       Icon(Icons.account_box,
-                                          color: Colors.teal, size: 40.0),
+                                          color: Configurations.themColor, size: 40.0),
                                       Text(
                                         AppLocalizations.of(context).translate('home_txt_verified'),
                                         maxLines: 2,
@@ -232,7 +232,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                   child: Column(
                                     children: <Widget>[
                                       Icon(Icons.assignment,
-                                          color: Colors.teal, size: 40.0),
+                                          color: Configurations.themColor, size: 40.0),
                                       Text(
                                         AppLocalizations.of(context).translate('home_txt_insured'),
                                         maxLines: 2,
@@ -247,7 +247,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     child: Column(
                                       children: <Widget>[
                                         Icon(MaterialIcons.person,
-                                            color: Colors.teal, size: 40.0),
+                                            color: Configurations.themColor, size: 40.0),
                                         Text(
                                           AppLocalizations.of(context).translate('home_txt_professional'),
                                           overflow: TextOverflow.ellipsis,

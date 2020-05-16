@@ -4,6 +4,7 @@ import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/placeholder_widget.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
 import 'package:jam/screens/order_list_screen.dart';
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Icon(
                         Icons.arrow_drop_down,
-                        color: Colors.teal,
+                        color: Configurations.themColor,
                       )
                     ],
                   ),

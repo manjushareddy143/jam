@@ -247,7 +247,7 @@ class _SignupPageState extends State<SignupPage> {
         ButtonTheme(
           minWidth: 300.0,
           child:  RaisedButton(
-              color: Colors.teal,
+              color: Configurations.themColor,
               textColor: Colors.white,
               child:  Text(
                   AppLocalizations.of(context).translate('signin_btn_signup'),
@@ -285,7 +285,7 @@ class _SignupPageState extends State<SignupPage> {
               ButtonTheme(
                 minWidth: 300.0,
                 child:  RaisedButton(
-                    color: Colors.teal,
+                    color: Configurations.themColor,
                     textColor: Colors.white,
                     child: const Text(
                         'Next',

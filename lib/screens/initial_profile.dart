@@ -280,7 +280,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           ButtonTheme(
             minWidth: MediaQuery.of(context).size.width - 20,
             child:  RaisedButton(
-                color: Colors.teal,
+                color: Configurations.themColor,
                 textColor: Colors.white,
                 child:  Text(
                     AppLocalizations.of(context).translate('btn_save'),
@@ -534,7 +534,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ButtonTheme(
                 minWidth: 300.0,
                 child:  RaisedButton(
-                    color: Colors.teal,
+                    color: Configurations.themColor,
                     textColor: Colors.white,
                     child:  Text(
                         AppLocalizations.of(context).translate('btn_save'),
@@ -618,7 +618,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 underline: SizedBox(),
                 isExpanded: true,
                 value: dropdownvalue,
-                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
+                icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
                 items: _dropDownTypes,
                 onChanged: changedDropDownItem),
             ),

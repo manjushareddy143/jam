@@ -14,7 +14,6 @@ import 'package:jam/screens/home_screen.dart';
 import 'package:jam/screens/initial_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/api/network.dart';
-import 'package:jam/home_widget.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
@@ -66,14 +65,15 @@ class _user extends State<UserLogin>{
       break;
       default: _temp = Locale(language.languageCode, 'US');
     }
-   // Preferences.saveObject('lang', json.encode(_temp));
+    printLog("testet"+_temp.languageCode);
+    Preferences.saveObject('lang', _temp.countryCode);
     MyApp.setLocale(context, _temp);
   }
 
   @override
   Widget build(BuildContext context) {
     Paint paint = Paint();
-    paint.color= Colors.teal;
+    paint.color= Configurations.themColor;
     return  GestureDetector(
 
 
@@ -110,7 +110,7 @@ class _user extends State<UserLogin>{
                       onChanged: ( Language language){
                         _changeLanguage(language);
                       },
-                      icon: Icon(Icons.language, color: Colors.teal,),
+                      icon: Icon(Icons.language, color: Configurations.themColor,),
                       items: Language.languageList()
                           .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
                         value:  lang,
@@ -193,7 +193,7 @@ class _user extends State<UserLogin>{
                       Checkbox(value: _value1, onChanged: _value1Changed),
                       Text(AppLocalizations.of(context).translate('txt_remember'), ),
                       Spacer(),
-                      Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Colors.teal),),
+                      Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),),
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
@@ -202,7 +202,7 @@ class _user extends State<UserLogin>{
                     minWidth: 350,
                     child: new  RaisedButton(
 
-                        color: Colors.teal,
+                        color: Configurations.themColor,
                         textColor: Colors.white,
                         padding: EdgeInsets.fromLTRB(150,10,150,10),
                         //invokes _authUser function which validate data entered as well does the api call
@@ -221,18 +221,20 @@ class _user extends State<UserLogin>{
                     children: <Widget>[
                       Text(AppLocalizations.of(context).translate('txt_dont')),
 
-                      FlatButton( onPressed:(){
-
-                        Navigator.push(context, new MaterialPageRoute(
+                      FlatButton( onPressed:() {
+                        Navigator.push(
+                            context, new MaterialPageRoute(
                           builder: (BuildContext context) => SignupScreen(),
-//                        fullscreenDialog: false,
-                        ));
-//                      Navigator.push(context,MaterialPageRoute(
-//                          builder: (context)=> SignupScreen()));
+                        )
+                        );
                         },
-                        child:
-                        Text(AppLocalizations.of(context).translate('btn_signin'), textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, color: Colors.teal)),)
-                      // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
+                        child: Text(
+                            AppLocalizations.of(context).translate('btn_signin'),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.bold,
+                                color: Configurations.themColor)
+                        ),
+                      )
                     ],
                   ),),
                   SizedBox(height: 30,),
