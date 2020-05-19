@@ -104,6 +104,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     // TODO: implement build
     if(user == null) {
       return new Scaffold(
+
         appBar: new AppBar(
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
@@ -151,31 +152,33 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height /3.6,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 20),
-          _buildProfileImage(),
-          SizedBox(height: 10),
-      Text(this.user.first_name,
-        textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
-        style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
-            color: Colors.white),
-      ),
-          SizedBox(height: 5),
-       GestureDetector(
-         onTap: () {
-           if(isEditProfile) {
-             getImage();
-           } else {
-             showInfoAlert(context, "Please enable edit mode");
-           }
-         },
-           child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
-               style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
-                   color: Colors.teal)
-           )
-       )
-        ],
+      child: Padding( padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+        child: Column(
+          children: <Widget>[
+            //SizedBox(height: 20),
+            _buildProfileImage(),
+           // SizedBox(height: 10),
+        Text(this.user.first_name,
+          textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
+          style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
+              color: Colors.white),
+        ),
+            //SizedBox(height: 5),
+         GestureDetector(
+           onTap: () {
+             if(isEditProfile) {
+               getImage();
+             } else {
+               showInfoAlert(context, "Please enable edit mode");
+             }
+           },
+             child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
+                 style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
+                     color: Colors.teal)
+             )
+         )
+          ],
+        ),
       ),
       decoration: BoxDecoration(
         color: Colors.black,
@@ -186,32 +189,34 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget _buildProfileImage() {
     if(user.image == null) {
-      return Center(
-        child: Container(
-          child: GestureDetector(
-            onTap: () {
-              print("object");
-              if(isEditProfile) {
-                getImage();
-              }else {
-                showInfoAlert(context, "Please enable edit mode");
-              }
+      return Expanded(
+        child: Center(
+          child: Container(
+            child: GestureDetector(
+              onTap: () {
+                print("object");
+                if(isEditProfile) {
+                  getImage();
+                }else {
+                  showInfoAlert(context, "Please enable edit mode");
+                }
 
-            }, // handle your image tap here
-          ),
-          width: 120.0,
-          height: 120.0,
-          decoration: BoxDecoration(
-            image:
-            DecorationImage(
-              image:
-              (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
-              fit: BoxFit.cover,
+              }, // handle your image tap here
             ),
-            borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 5.0,
+            width: 120.0,
+            height: 120.0,
+            decoration: BoxDecoration(
+              image:
+              DecorationImage(
+                image:
+                (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(80.0),
+              border: Border.all(
+                color: Colors.white,
+                width: 5.0,
+              ),
             ),
           ),
         ),

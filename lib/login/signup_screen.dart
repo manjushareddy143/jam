@@ -344,7 +344,8 @@ class _SignupPageState extends State<SignupPage> {
         printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-          getOTP(txtContact.text);
+         // getOTP(txtContact.text);
+          callLoginAPI();
 
           // Return here any Widget you want to display in Android Device.
           printLog('Android Device Detected');
@@ -374,6 +375,7 @@ class _SignupPageState extends State<SignupPage> {
   var firebaseAuth;
   Future getOTP(String phone) async{
     firebaseAuth = await FirebaseAuth.instance;
+  //  printLog("hello");
     firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 120),
@@ -511,11 +513,12 @@ class _SignupPageState extends State<SignupPage> {
         print(user.contact);
         Preferences.saveObject("user", jsonEncode(user.toJson()));
         Preferences.saveObject("profile", "1");
-        Navigator.pushReplacement(
+
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => InitialProfileScreen(),
-            ));
+              builder: (BuildContext context) => InitialProfileScreen()
+            ),ModalRoute.withName('/'));
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);

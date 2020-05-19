@@ -34,7 +34,7 @@ class SplashScreenState extends State<SplashScreen> {
 
   void getLanguage() async {
     await Preferences.readObject("lang").then((onValue) async {
-      printLog('userdata');
+     // printLog('userdata');
       printLog(onValue);
       setState(() {
         if(onValue == 'SA') {

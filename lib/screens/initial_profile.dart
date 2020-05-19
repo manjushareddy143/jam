@@ -54,6 +54,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void initState() {
     super.initState();
     setProfile();
+    printLog("come here after reload");
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
   }
@@ -66,9 +67,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       User user = User.fromJson(userdata);
       user_id = user.id.toString();
       setState(() {
+        printLog(user.first_name);
         firstName = user.first_name;
         phoneNumber = user.contact;
         email = user.email;
+        printLog(firstName);
       });
     });
   }
@@ -76,10 +79,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     // resizeToAvoidBottomPadding: ,
       body: SingleChildScrollView(
         child: new Form(
           key: _formKey,
           autovalidate: _autoValidate,
+
           child: profileUI(),
         ),
       ),
@@ -103,14 +108,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height /3.6,
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 30),
-          _buildProfileImage(),
-          SizedBox(height: 10),
-          Text(AppLocalizations.of(context).translate('profile_txt_img'), style: TextStyle(color: Colors.white70),),
-          Text(AppLocalizations.of(context).translate('profile_txt_img2'), style: TextStyle(color: Colors.white70)),
-        ],
+      child: Padding( padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
+        child: Column(
+          children: <Widget>[
+           // SizedBox(height: 30),
+            _buildProfileImage(),
+           // SizedBox(height: 10),
+            Text(AppLocalizations.of(context).translate('profile_txt_img'), style: TextStyle(color: Colors.white70),),
+            Text(AppLocalizations.of(context).translate('profile_txt_img2'), style: TextStyle(color: Colors.white70)),
+          ],
+        ),
       ),
       decoration: BoxDecoration(
         color: Configurations.themColor,
