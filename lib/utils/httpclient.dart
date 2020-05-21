@@ -153,7 +153,7 @@ class HttpClient {
   http.Response  handleResponse(BuildContext context, http.Response response, bool hideLoad) {
     dismissLoading(context);
     printLog(response.statusCode);
-    printLog(response.body);
+    printLog("RES ::: ${response.body}");
     if (response.statusCode == 400) {
       return null;
     } else if (response.statusCode == 204) {

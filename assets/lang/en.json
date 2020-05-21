@@ -7,7 +7,7 @@
   "txt_dont" : "Don't have an account?",
   "txt_skip" : "Skip for Now",
   "btn_login" : "Login",
-  "btn_signin" : "Sign Up",
+  "btn_signup": "Sign Up",
   "signin_txt_signup" : "SIGN UP",
   "signin_firstname_placeholder" : "First Name",
   "signin_lastname_placeholder" : "Last Name",

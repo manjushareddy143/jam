@@ -5,10 +5,14 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:firebase_auth/firebase_auth.dart';
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+//import 'package:flutter_signin_button/button_list.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart';
 import 'package:jam/models/user.dart';
@@ -22,6 +26,10 @@ import 'package:jam/widget/widget_helper.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:jam/app_localizations.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 enum GenderEnum {  Male, Female  }
@@ -65,15 +73,26 @@ class _SignupPageState extends State<SignupPage> {
   bool _value1 = false;
   void _value1Changed(bool value) => setState(() => _value1 = value);
   FocusNode focus_firstname, focus_lastname, focus_phone, focus_pwd;
+
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+
+
   @override
   void initState() {
     super.initState();
+//    _googleSignIn = GoogleSignIn();
 
     focus_firstname = FocusNode();
     focus_lastname = FocusNode();
     focus_phone = FocusNode();
     focus_pwd = FocusNode();
   }
+
+
+
 
   @override
   void dispose() {
@@ -127,7 +146,7 @@ class _SignupPageState extends State<SignupPage> {
           Image.asset("assets/images/jamLogo.png",
             height: 60.0, width: 120.0 , fit: BoxFit.fill, ),
 
-          SizedBox(height: 5,),
+          SizedBox(height: 8,),
 
           Text(AppLocalizations.of(context).translate('signin_txt_signup'),
             //'SIGN UP',
@@ -230,13 +249,6 @@ class _SignupPageState extends State<SignupPage> {
                    ),
                    onTap: _launchURL,
                  ),
-//                InkWell(
-//                    child: Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),
-//                    onTap: () async {
-//                      _launchURL();
-//                    }
-//                ),
-//                Text("Agree With Terms And Condition", style: TextStyle(color: Colors.grey),),
                ]
              )
             ],
@@ -258,6 +270,43 @@ class _SignupPageState extends State<SignupPage> {
               }
           ),
         ),
+
+          SizedBox(height: 20,
+            child: Text("------------------------ OR ------------------------"),
+          ),
+
+          SignInButton(
+            Buttons.Google,
+          text: "Sign in with Google",
+            onPressed: () {
+              signinWithGmail();
+            },
+          ),
+          SizedBox(height: 10),
+//          SignInButton(
+//            Buttons.Google,
+//            text: "LOGOUT",
+//            onPressed: () {
+//              signOutGoogle();
+//            },
+//          ),
+
+          SignInButton(
+            Buttons.Facebook,
+            text: "Sign in with Facebook",
+            onPressed: () {
+              signinWithFacebook();
+            },
+          ),
+
+//          SignInButton(
+//            Buttons.Facebook,
+//          text: "LOGOUT",
+//            onPressed: () {
+//              _logOut();
+//            },
+//          ),
+
 
 
 
@@ -301,7 +350,14 @@ class _SignupPageState extends State<SignupPage> {
                   Text("Resend OTP"),
                   IconButton(icon: Icon(Icons.refresh),
                     onPressed: () {
-                    callLoginAPI();
+                      Map<String, String> data = new Map();
+                      data["first_name"] = txtName.text;
+                      data["last_name"] = txtLname.text;
+                      data["password"] = txtPass.text;
+                      data["contact"] = txtContact.text;
+                      data["type_id"] = "4";
+                      data["term_id"] = "1";
+                      callLoginAPI(data);
                     },
                   ),
 
@@ -310,12 +366,133 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ],
           ),
-
           )
         ],
       ),
     );
   }
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  void signinWithFacebook() async {
+    final FacebookLoginResult result =
+    await facebookSignIn.logIn(['email']);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        await FirebaseAuth.instance
+            .signInWithCredential( FacebookAuthProvider.getCredential(
+                accessToken: result.accessToken.token))
+            .then((AuthResult authResult) async {
+              _createUserFromFacebookLogin(
+                  result, authResult.user.uid);
+            });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+//        _showMessage('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+//        _showMessage('Something went wrong with the login process.\n'
+//            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  void _createUserFromFacebookLogin(
+      FacebookLoginResult result, String userID) async {
+    final token = result.accessToken.token;
+    final graphResponse = await http.get('https://graph.facebook.com/v2'
+        '.12/me?fields=name,first_name,last_name,email,picture.type(large)&access_token=$token');
+    final profile = json.decode(graphResponse.body);
+    Map<String, String> data = new Map();
+    data["first_name"] = profile['first_name'];
+    data["last_name"] = profile['last_name'];
+    data["email"] = profile['email'];
+    data["image"] = profile['picture']['data']['url'];
+    data["type_id"] = "4";
+    data["term_id"] = "1";
+    data["social_signin"] = "facebook";
+    callLoginAPI(data);
+  }
+
+
+  Future<Null> _logOut() async {
+    await facebookSignIn.logOut();
+//    _showMessage('Logged out.');
+  }
+
+//  void _showMessage(String message) {
+//    setState(() {
+//      _message = message;
+//      print("message $_message");
+//    });
+//  }
+
+
+
+  void signinWithGmail() {
+    signInWithGoogle()
+        .whenComplete(() {
+
+      printLog("FINSH ");
+    }).then((onValue) {
+      if(onValue != null) {
+        GoogleSignInAccount g_user = onValue[0];
+        FirebaseUser  f_user = onValue[1];
+        Map<String, String> data = new Map();
+        data["first_name"] = g_user.displayName.split(" ")[0];
+        if(g_user.displayName.split(" ")[1] != null){
+          data["last_name"] = g_user.displayName.split(" ")[1];
+        }
+
+        data["email"] = g_user.email;
+        data["image"] = g_user.photoUrl;
+        data["type_id"] = "4";
+        data["term_id"] = "1";
+        data["social_signin"] = "gmail";
+        callLoginAPI(data);
+      }
+
+    }).catchError((onError) {
+    });
+  }
+
+  Future<List> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+
+    if(googleSignInAccount.id != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+
+      List  obj = new List();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      obj.add(googleSignInAccount);
+      obj.add(user);
+      return obj;
+    } else {
+      print("NO DATA");
+      return null;
+    }
+    //'signInWithGoogle succeeded: $user';
+  }
+
+  void signOutGoogle() async{
+    await googleSignIn.signOut();
+    print("User Sign Out");
+  }
+
 
   _launchURL() async {
     const url = "http://www.savitriya.com/privacy-policy/";
@@ -344,19 +521,21 @@ class _SignupPageState extends State<SignupPage> {
         printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-         // getOTP(txtContact.text);
-          callLoginAPI();
+          getOTP(txtContact.text);
 
           // Return here any Widget you want to display in Android Device.
           printLog('Android Device Detected');
 
         }
         else if(Platform.isIOS) {
-          callLoginAPI();
-
-
-
-
+          Map<String, String> data = new Map();
+          data["first_name"] = txtName.text;
+          data["last_name"] = txtLname.text;
+          data["password"] = txtPass.text;
+          data["contact"] = txtContact.text;
+          data["type_id"] = "4";
+          data["term_id"] = "1";
+          callLoginAPI(data);
           // Return here any Widget you want to display in iOS Device.
           printLog('iOS Device Detected');
         }
@@ -375,7 +554,6 @@ class _SignupPageState extends State<SignupPage> {
   var firebaseAuth;
   Future getOTP(String phone) async{
     firebaseAuth = await FirebaseAuth.instance;
-  //  printLog("hello");
     firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
         timeout: Duration(seconds: 120),
@@ -465,7 +643,14 @@ class _SignupPageState extends State<SignupPage> {
         .then((AuthResult value) {
       if (value.user != null) {
         setState(() {
-          callLoginAPI();
+          Map<String, String> data = new Map();
+          data["first_name"] = txtName.text;
+          data["last_name"] = txtLname.text;
+          data["password"] = txtPass.text;
+          data["contact"] = txtContact.text;
+          data["type_id"] = "4";
+          data["term_id"] = "1";
+          callLoginAPI(data);
         });
       } else {
         setState(() {
@@ -481,14 +666,7 @@ class _SignupPageState extends State<SignupPage> {
     });
   }
 
-  Future callLoginAPI() async {
-    Map<String, String> data = new Map();
-    data["first_name"] = txtName.text;
-    data["last_name"] = txtLname.text;
-    data["password"] = txtPass.text;
-    data["contact"] = txtContact.text;
-    data["type_id"] = "4";
-    data["term_id"] = "1";
+  Future callLoginAPI(Map<String, String> data) async {
     printLog(data);
     try {
       HttpClient httpClient = new HttpClient();
@@ -512,13 +690,33 @@ class _SignupPageState extends State<SignupPage> {
         printLog(user.first_name);
         print(user.contact);
         Preferences.saveObject("user", jsonEncode(user.toJson()));
-        Preferences.saveObject("profile", "1");
+        if(data['existing_user'] == 1) {
+          Preferences.saveObject("profile", "0");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+//          Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => HomeScreen(),
+//              )
+//          );
+        } else {
+          Preferences.saveObject("profile", "1");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+//          Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => InitialProfileScreen(),
+//              ));
+        }
 
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => InitialProfileScreen()
-            ),ModalRoute.withName('/'));
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);

@@ -54,7 +54,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void initState() {
     super.initState();
     setProfile();
-    printLog("come here after reload");
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
   }
@@ -67,11 +66,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       User user = User.fromJson(userdata);
       user_id = user.id.toString();
       setState(() {
-        printLog(user.first_name);
         firstName = user.first_name;
         phoneNumber = user.contact;
         email = user.email;
-        printLog(firstName);
+        imageUrl =  user.image;
       });
     });
   }
@@ -79,12 +77,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // resizeToAvoidBottomPadding: ,
       body: SingleChildScrollView(
         child: new Form(
           key: _formKey,
           autovalidate: _autoValidate,
-
           child: profileUI(),
         ),
       ),
@@ -99,6 +95,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             imageQuality: 50,
         );
     setState(() {
+      if(image != null) {
+        imageUrl = null;
+      }
       _image = image;
       print("IMAGE:::::::::: $_image");
     });
@@ -108,16 +107,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height /3.6,
-      child: Padding( padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
-        child: Column(
-          children: <Widget>[
-           // SizedBox(height: 30),
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 30),
+          if(imageUrl == null)
             _buildProfileImage(),
-           // SizedBox(height: 10),
-            Text(AppLocalizations.of(context).translate('profile_txt_img'), style: TextStyle(color: Colors.white70),),
-            Text(AppLocalizations.of(context).translate('profile_txt_img2'), style: TextStyle(color: Colors.white70)),
-          ],
-        ),
+          if(imageUrl != null)
+            _buildProfileImageForSocial(),
+
+          SizedBox(height: 10),
+          Text(AppLocalizations.of(context).translate('profile_txt_img'), style: TextStyle(color: Colors.white70),),
+          Text(AppLocalizations.of(context).translate('profile_txt_img2'), style: TextStyle(color: Colors.white70)),
+        ],
       ),
       decoration: BoxDecoration(
         color: Configurations.themColor,
@@ -125,7 +126,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
-  Widget _buildProfileImage() {
+  Widget _buildProfileImageForSocial() {
+    print("IMG");
     return Center(
       child: Container(
         child: GestureDetector(
@@ -136,10 +138,42 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
         width: 120.0,
         height: 120.0,
-        decoration: BoxDecoration(
-          image:
-          DecorationImage(
-            image: (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+        decoration:
+        BoxDecoration(
+          image: DecorationImage(
+            image: (imageUrl == null) ? setImgPlaceholder() : NetworkImage(imageUrl),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Colors.white,
+            width: 5.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  AssetImage setImgPlaceholder() {
+    return AssetImage("assets/images/BG-1x.jpg");
+  }
+
+  Widget _buildProfileImage() {
+    print("NO DATA");
+    return Center(
+      child: Container(
+        child: GestureDetector(
+          onTap: () {
+            print("object");
+            getImage();
+          }, // handle your image tap here
+        ),
+        width: 120.0,
+        height: 120.0,
+        decoration:
+        BoxDecoration(
+          image: DecorationImage(
+            image: (_image == null) ? setImgPlaceholder() : FileImage(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -156,6 +190,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   String firstName = "";
   String phoneNumber = "";
   String email = "";
+  String imageUrl = "";
 
   final prfl_fname =TextEditingController();
   final prfl_email =TextEditingController();
@@ -311,7 +346,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     if(_autoValidateAddress) {
       addressEnter();
     } else {
-      if(_image == null) {
+      if(_image == null && imageUrl == null) { //||
         showInfoAlert(context, AppLocalizations.of(context).translate('profile_txt_selectimg'));
       } else {
       if (_formKey.currentState.validate()) {
@@ -352,17 +387,20 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   void apiCall(Map data) async {
-
-    print('COME FOR API CALL');
     List<http.MultipartFile> files = new List<http.MultipartFile>();
+
+    if(_image != null) {
+      print('COME FOR API IMAGE');
 //    files.add(await http.MultipartFile.fromPath('profile_photo', _image.path));
-    files.add(
-        http.MultipartFile.fromBytes('profile_photo',
-            _image.readAsBytesSync(),
-            filename: _image.path.split("/").last
-        )
-    );
-    printLog(files);
+      files.add(
+          http.MultipartFile.fromBytes('profile_photo',
+              _image.readAsBytesSync(),
+              filename: _image.path.split("/").last
+          )
+      );
+      printLog(files);
+    }
+
 
     HttpClient httpClient = new HttpClient();
     Map responseData =
