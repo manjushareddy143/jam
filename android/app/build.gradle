@@ -51,6 +51,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Enabling multidex support.
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -80,9 +83,12 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:multidex:1.0.3'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

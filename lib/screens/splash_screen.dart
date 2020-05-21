@@ -29,7 +29,6 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     getLanguage();
-    loadData();
   }
 
   void getLanguage() async {
@@ -42,6 +41,7 @@ class SplashScreenState extends State<SplashScreen> {
         } else {
           MyApp.setLocale(context, Locale('en', 'US'));
         }
+        loadData();
       });
     });
   }
@@ -55,16 +55,6 @@ class SplashScreenState extends State<SplashScreen> {
             fit: BoxFit.fill),
       ),
     );
-//    return Scaffold(
-//      body: new Center(
-//        child: new Image.asset(
-//          "assets/images/Splash-1x.jpg",
-//          fit: BoxFit.fill,
-//          height: double.infinity,
-//          width: double.infinity,
-//        ),
-//      ),
-//    );
   }
 
   Future<Timer> loadData() async {
@@ -73,12 +63,14 @@ class SplashScreenState extends State<SplashScreen> {
 
   onDoneLoading() async {
     Preferences.readObject("profile").then((val) {
+      printLog("PROFILE $val");
       if (val == null) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>UserLogin(),
-            ));
+              builder: (context) => UserLogin(),
+            )
+        );
       } else if (val == "1") {
         Navigator.pushReplacement(
             context,
@@ -86,7 +78,6 @@ class SplashScreenState extends State<SplashScreen> {
               builder: (context) => InitialProfileScreen(),
             ));
       } else {
-//        getServices();
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -95,40 +86,4 @@ class SplashScreenState extends State<SplashScreen> {
       }
     });
   }
-
-//  void getServices() async {
-//    try {
-//      Map<String, String> data = new HashMap();
-//      HttpClient httpClient = new HttpClient();
-//      var syncReportResponse =
-//      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
-//      processReportResponse(syncReportResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
-
-//  void processReportResponse(Response res) {
-//    print('get daily format');
-//    if (res != null) {
-//      if (res.statusCode == 200) {
-//        var data = json.decode(res.body);
-//        print(data);
-//        List roles = data;
-//        List<Service> listofRoles = Service.processServices(roles);
-//        // Preferences.saveObject('reportformate', jsonEncode(listofRoles));
-//        Navigator.pushReplacement(
-//            context,
-//            MaterialPageRoute(
-//              builder: (context) => HomeScreen(),
-//            ));
-//      } else {
-//        printLog("login response code is not 200");
-//      }
-//    } else {
-//      print('no data');
-//    }
-//  }
 }

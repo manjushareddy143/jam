@@ -43,7 +43,6 @@ class _user extends State<UserLogin>{
   @override
   void initState() {
     super.initState();
-
     focus_email = FocusNode();
     focus_pwd = FocusNode();
   }
@@ -74,9 +73,7 @@ class _user extends State<UserLogin>{
   Widget build(BuildContext context) {
     Paint paint = Paint();
     paint.color= Configurations.themColor;
-    return  GestureDetector(
-
-
+    return GestureDetector(
       onTap: (){
         FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -97,11 +94,8 @@ class _user extends State<UserLogin>{
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
 
-
-
                   new Image.asset("assets/images/BG-1x.jpg",
                     height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-
 
                  // SizedBox(height: 30),
                   Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
@@ -114,13 +108,11 @@ class _user extends State<UserLogin>{
                       items: Language.languageList()
                           .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
                         value:  lang,
-
                         child: Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[Text(lang.flag),
                             Text(lang.name)],
                         ) ,
                       )).toList(),
-
                     ),
                    // SizedBox(width: 30)
                   ],),
@@ -229,7 +221,7 @@ class _user extends State<UserLogin>{
                         );
                         },
                         child: Text(
-                            AppLocalizations.of(context).translate('btn_signin'),
+                            AppLocalizations.of(context).translate('btn_signup'),
                             textAlign: TextAlign.center,
                             style: TextStyle(fontWeight: FontWeight.bold,
                                 color: Configurations.themColor)

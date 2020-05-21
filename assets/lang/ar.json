@@ -7,7 +7,7 @@
   "txt_dont" : "لا تملك حساب؟",
   "txt_skip" : "تخطي في الوقت الراهن",
   "btn_login" : "تسجيل الدخول",
-  "btn_signin" : "تسجيل الدخول",
+  "btn_signup": "سجل",
   "signin_txt_signup" : "سجل",
   "signin_firstname_placeholder" : "الاسم الاول",
   "signin_lastname_placeholder" : "الكنية",
