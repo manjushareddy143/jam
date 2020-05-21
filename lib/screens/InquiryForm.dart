@@ -491,7 +491,7 @@ final formatt= DateFormat("h:mm a");
                 ),
               ),
             ),
-            Flexible(flex: 3,child: Text("To")),
+            Flexible(flex: 1,child: Text("To")),
             Flexible(flex: 4,
               child: Material(elevation: 5.0,shadowColor: Colors.grey,
                 child: DateTimeField(

@@ -692,19 +692,29 @@ class _SignupPageState extends State<SignupPage> {
         Preferences.saveObject("user", jsonEncode(user.toJson()));
         if(data['existing_user'] == 1) {
           Preferences.saveObject("profile", "0");
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeScreen(),
-              )
-          );
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+//          Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => HomeScreen(),
+//              )
+//          );
         } else {
           Preferences.saveObject("profile", "1");
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (context) => InitialProfileScreen(),
-              ));
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+//          Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(
+//                builder: (context) => InitialProfileScreen(),
+//              ));
         }
 
       } else {
