@@ -124,7 +124,7 @@ class _user extends State<UserLogin>{
                     ),
                    // SizedBox(width: 30)
                   ],),
-                  new Image.asset("assets/images/Logo-1x.png",
+                  new Image.asset("assets/images/jamLogo.png",
                     height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
                   /*new Text(
                          'JAM    ',
@@ -199,12 +199,12 @@ class _user extends State<UserLogin>{
                   ),),
                   SizedBox(height: 10),
                   ButtonTheme(
-                    minWidth: 350,
+                    minWidth: 300,
                     child: new  RaisedButton(
 
                         color: Configurations.themColor,
                         textColor: Colors.white,
-                        padding: EdgeInsets.fromLTRB(150,10,150,10),
+                        padding: EdgeInsets.fromLTRB(120,10,120,10),
                         //invokes _authUser function which validate data entered as well does the api call
                         child:  Text(
                             AppLocalizations.of(context).translate('btn_login'),

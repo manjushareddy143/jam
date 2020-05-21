@@ -39,6 +39,9 @@ class SplashScreenState extends State<SplashScreen> {
       setState(() {
         if(onValue == 'SA') {
           MyApp.setLocale(context, Locale('ar' , 'SA'));
+          //Directionality.of(context) == TextDirection.rtl;
+         // Directionality(textDirection: TextDirection.rtl,);
+          //printlog("rtl please");
         } else {
           MyApp.setLocale(context, Locale('en', 'US'));
         }

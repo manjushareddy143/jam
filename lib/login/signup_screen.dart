@@ -124,7 +124,7 @@ class _SignupPageState extends State<SignupPage> {
         children: <Widget>[
           SizedBox(height: 50),
 
-          Image.asset("assets/images/Logo-1x.png",
+          Image.asset("assets/images/jamLogo.png",
             height: 60.0, width: 120.0 , fit: BoxFit.fill, ),
 
           SizedBox(height: 5,),
