@@ -21,6 +21,7 @@ import 'package:jam/widget/otp_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:jam/main.dart';
+import 'package:jam/login/masterSignupScreen.dart';
 
 
 class UserLogin extends StatefulWidget {
@@ -216,7 +217,7 @@ class _user extends State<UserLogin>{
                       FlatButton( onPressed:() {
                         Navigator.push(
                             context, new MaterialPageRoute(
-                          builder: (BuildContext context) => SignupScreen(),
+                          builder: (BuildContext context) => masterSignup(),
                         )
                         );
                         },
