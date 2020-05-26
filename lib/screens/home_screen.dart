@@ -13,7 +13,7 @@ import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/app_localizations.dart';
-import 'package:jam/login/service_provider_web_signup.dart';
+import 'package:jam/login/masterSignupScreen.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -197,8 +197,8 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _children = [
     HomeUIDesign(),
-   // NewPage(),
-    serviceProviderSignupUIPage(),
+   NewPage(),
+   // serviceProviderSignupUIPage(),
 //    Profile(),
     ProfileUIPage(key: key),
     OrderUIPage(),
