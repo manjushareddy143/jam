@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jam/login/customerSignup.dart';
+import 'package:jam/login/vendorSignup.dart';
 class masterSignup extends StatelessWidget{
   Widget build(BuildContext context) {
     return Center(child: masterSignupUIPage());
@@ -73,14 +74,14 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     ),
                   ),
                   Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
-                    child: Container(height: 500,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
+                    child: Container(height: 600,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                       child: TabBarView(controller:_tabController,
 
 
                         children: <Widget>[
-                          Signup(),
-                          Workouts(),
+                          customer(),
+                          vendor(),
                         ],),
                     ),
                   ),]
@@ -89,17 +90,6 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
         ),
       ),);
   }
-  Widget _getPage(Tab tab){
-    switch(tab.text){
-      case 'Individual': return OverView();
-      case 'Organisation': return Workouts();
-    }
-  }
-  Widget OverView(){
-    return Text("Individual");
-  }
-  Widget Workouts(){
-    return Text("organisation");
-  }
+
 
 }

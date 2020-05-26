@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/home_screen.dart';
@@ -31,7 +32,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class Signup extends StatelessWidget {
+class customer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -229,10 +230,10 @@ class _customerSignup extends State<CustomerSignup>{
     return Form(
       key: _formKey,
       autovalidate: _autoValidate,
-      child: signupScreenUI(),
+      child: customerScreenUI(),
     );
   }
-  Widget signupScreenUI(){
+  Widget customerScreenUI(){
     return Container(margin: EdgeInsets.all(20),
       child: Column( children: <Widget>[
 
@@ -322,20 +323,20 @@ class _customerSignup extends State<CustomerSignup>{
           ),
         ),
         SizedBox(height: 10,),
-        Row(
+        Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
               Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
               InkWell(
                 child: Text(
                   AppLocalizations.of(context).translate('signin_txt_terms'),
-                  style: TextStyle(decoration: TextDecoration.underline, color: Colors.lightBlueAccent),
+                  style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent),
                 ),
                 //onTap: _launchURL,
               ),
             ]
         ),
-        SizedBox(height: 10,),
+       // SizedBox(height: 10,),
 
 
 
@@ -360,6 +361,27 @@ class _customerSignup extends State<CustomerSignup>{
 
           ),
         ),
+        Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text("Already have an account?"),
+
+            FlatButton( onPressed:() {
+              Navigator.push(
+                  context, new MaterialPageRoute(
+                builder: (BuildContext context) => UserLogin(),
+              )
+              );
+            },
+              child: Text(
+                  AppLocalizations.of(context).translate('btn_login'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      color: Colors.orangeAccent)
+              ),
+            )
+          ],
+        ),),
+
 
 
         /// OTP ENTERY
