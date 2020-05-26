@@ -7,7 +7,7 @@ class Order {
   final int provider_id;
   final int service_id;
   final int category_id;
-  final int status;
+  int status;
   final String provider_first_name;
   final String provider_last_name;
   final String provider_image;

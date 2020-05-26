@@ -23,7 +23,7 @@ import 'package:jam/app_localizations.dart';
 import 'package:jam/main.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:jam/login/masterSignupScreen.dart';
-
+import 'dart:io' show Platform;
 
 class UserLogin extends StatefulWidget {
   _user createState() => new _user();
@@ -36,6 +36,7 @@ class _user extends State<UserLogin>{
   //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
   bool _value1 = false;
+  String fcmToken;
   final txtUser = TextEditingController();
   final txtPass = TextEditingController();
 
@@ -48,6 +49,13 @@ class _user extends State<UserLogin>{
     focus_email = FocusNode();
     focus_pwd = FocusNode();
     globals.context = context;
+    getFCMToken();
+  }
+
+  void getFCMToken() async  {
+    await Preferences.readObject("fcm_token").then((onValue) async {
+      fcmToken = onValue;
+    });
   }
 
   @override
@@ -256,7 +264,14 @@ class _user extends State<UserLogin>{
 
     data["email"] = txtUser.text;
     data["password"] = txtPass.text;
-//    data["access_type"] = 'api';
+    data["token"] = fcmToken;
+    if(Platform.isAndroid) {
+      data["device"] = "Android";
+    } else if(Platform.isIOS) {
+      data["device"] = "IOS";
+    }
+
+    //    data["access_type"] = 'api';
 
     try {
       HttpClient httpClient = new HttpClient();

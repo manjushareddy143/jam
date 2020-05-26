@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart';
@@ -12,6 +13,7 @@ import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
 class Orders extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -35,6 +37,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
     // TODO: implement initState
     super.initState();
     getProfile();
+    globals.context = context;
 //    getOrders();
   }
   void getProfile() async  {
@@ -126,11 +129,15 @@ class _OrderUIPageState extends State<OrderUIPage> {
       status_color = Colors.blue;
       status_icon = Icons.pan_tool;
       break;
-      case 2: statusString = 'Order Completed';
+      case 2: statusString = 'Order Accept';
       status_color = Colors.green;
       status_icon = Icons.check_circle;
       break;
-      case 3: statusString = 'Order Decline';
+      case 3: statusString = 'Order Cancel By ' + order.provider_first_name;
+      status_color = Colors.red;
+      status_icon = Icons.cancel;
+      break;
+      case 4: statusString = 'Order Cancel By You';
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
@@ -143,6 +150,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
       child: GestureDetector(
         onTap: ()=> {
           print("ONTAP CARD ${order.id}"),
+          globals.order = order,
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -216,19 +224,22 @@ class _OrderUIPageState extends State<OrderUIPage> {
                       Row(
                         children: <Widget>[
                           FlatButton(
-                              onPressed:  () {
-                                print('Call Press');
-                              },
+//                              onPressed:  () {
+//                                print('Call Press');
+//                              },
                               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                               child: Text(statusString,
                                   style: TextStyle(
                                       fontSize: 12.0,
                                       fontWeight: FontWeight.bold,
-                                      color: status_color)
+                                      color: status_color),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 5,
                               )
                           ),
-                          SizedBox(width: MediaQuery. of(context). size. width / 4.5,),
-                          Icon(status_icon, color: status_color, size: 15,)
+                          SizedBox(width: MediaQuery. of(context). size. width / 6.5,),
+                          Icon(status_icon, color: status_color, size: 15,),
+
                         ],
                       ),
                     ],

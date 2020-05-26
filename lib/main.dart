@@ -48,6 +48,10 @@ class _MyAppState extends State<MyApp> {
           print("onMessage 11: $message");
 
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
+          setState(() {
+            globals.orderStatus = message['data']['order'];
+            globals.order.status = int.parse(message['data']['order']);
+          });
           // something else you wanna execute
         };
         msgCount++;
@@ -71,6 +75,7 @@ class _MyAppState extends State<MyApp> {
       print("Settings registered: $settings");
     });
     _firebaseMessaging.getToken().then((String token) {
+      Preferences.saveObject("fcm_token", token);
       print("token: $token");
     });
 

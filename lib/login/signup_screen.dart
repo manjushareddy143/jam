@@ -27,7 +27,7 @@ import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
+import 'package:jam/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -83,6 +83,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
+    globals.context = context;
 //    _googleSignIn = GoogleSignIn();
 
     focus_firstname = FocusNode();

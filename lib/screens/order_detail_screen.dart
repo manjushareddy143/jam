@@ -11,6 +11,8 @@ import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/otp_screen.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:jam/globals.dart' as globals;
+
 class OrderDetail extends StatelessWidget{
   Widget build(BuildContext context) {
     return Center(child: DetailUIPage());
@@ -39,7 +41,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     return Scaffold(
         appBar: new AppBar(leading: BackButton(color:Colors.black),
     backgroundColor: Colors.white,
-    title: Text("My Profile", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),),),
+    title: Text("Order Detail", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),),),
       body: detailUI(),
 
     );
@@ -89,7 +91,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 children: <Widget>[
                   Text("Order: ",
                       style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20)),
-                  Text("#" + this.order.id.toString(),
+                  Text("#" + globals.order.id.toString(),
                       style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 20)),
                 ],
               ),
@@ -108,7 +110,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Date", style: TextStyle(fontSize: 12, color: Colors.grey),),
-                    Text(order.booking_date)
+                    Text(globals.order.booking_date)
 
                   ],
                 ),
@@ -124,7 +126,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text("Date", style: TextStyle(fontSize: 12, color: Colors.grey),),
-                    Text(order.end_time)
+                    Text(globals.order.end_time)
 
                   ],
                 ),
@@ -137,7 +139,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
  }
 
  Widget setServiceInfo() {
-    (order.rating == null)? isRatingDisplay = false : isRatingDisplay = true;
+    (globals.order.rating == null)? isRatingDisplay = false : isRatingDisplay = true;
 
     return new Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
@@ -154,7 +156,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 Icon(Octicons.person, color: Configurations.themColor,),
                 Text("Vendor: ",
                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20)),
-                Text(this.order.provider_first_name,
+                Text(globals.order.provider_first_name,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 20)),
               ],
             ),
@@ -173,7 +175,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       SmoothStarRating(
                         allowHalfRating: false,
                         starCount: 5,
-                        rating: (order.rating == null)? 0.0 : order.rating.floorToDouble(),
+                        rating: (globals.order.rating == null)? 0.0 : globals.order.rating.floorToDouble(),
                         size: 20.0,
                         filledIconData: Icons.star,
                         halfFilledIconData: Icons.star,
@@ -187,12 +189,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         },
                       ),
                     ),
-                    Text((order.rating == null) ? "" : order.rating.toString(),textAlign: TextAlign.left,
+                    Text((globals.order.rating == null) ? "" : globals.order.rating.toString(),textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
                   ],
                 ),
-                Text((order.comment == null) ? "" : order.comment,textAlign: TextAlign.left,
+                Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
               ],
@@ -221,33 +223,33 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
           Padding(
-            padding: EdgeInsets.fromLTRB(40, 0, 10,10),
+            padding: EdgeInsets.fromLTRB(40, 0, 10,20),
             child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text("Service", style: TextStyle(fontSize: 12, color: Colors.grey),),
               SizedBox(height: 5,),
-              Text(order.service)
+              Text(globals.order.service)
             ],
           ),
           ),
 
-          Padding(padding: EdgeInsets.fromLTRB(30, 0, 30,0),
-          child: Divider(
-            color: Colors.black,
-          ),
-          ),
+//          Padding(padding: EdgeInsets.fromLTRB(30, 0, 30,0),
+//          child: Divider(
+//            color: Colors.black,
+//          ),
+//          ),
 
-          Padding(padding: EdgeInsets.fromLTRB(40, 10, 0, 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Category", style: TextStyle(fontSize: 12, color: Colors.grey),),
-                SizedBox(height: 5,),
-                Text(order.category)
-              ],
-            ),
-          ),
+//          Padding(padding: EdgeInsets.fromLTRB(40, 10, 0, 15),
+//            child: Column(
+//              crossAxisAlignment: CrossAxisAlignment.start,
+//              children: <Widget>[
+//                Text("Category", style: TextStyle(fontSize: 12, color: Colors.grey),),
+//                SizedBox(height: 5,),
+//                Text(order.category)
+//              ],
+//            ),
+//          ),
 
         ],
       )
@@ -259,16 +261,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
  Widget detailInfo() {
 
-   String addressString = order.address.address_line1;
-   if(order.address.address_line2 != "") {
-     addressString += ", " + order.address.address_line2;
+   String addressString = globals.order.address.address_line1;
+   if(globals.order.address.address_line2 != "") {
+     addressString += ", " + globals.order.address.address_line2;
    }
 
-   if(order.address.landmark != "") {
-     addressString += ", " + order.address.landmark;
+   if(globals.order.address.landmark != "") {
+     addressString += ", " + globals.order.address.landmark;
    }
-   addressString += ", " + order.address.district
-       + ", " + order.address.city + ", " + order.address.postal_code + ".";
+   addressString += ", " + globals.order.address.district
+       + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
 
     return Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
@@ -329,7 +331,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text(order.email)
+                Text(globals.order.email)
               ],
             ),
           ),
@@ -362,7 +364,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text(order.contact)
+                Text(globals.order.contact)
               ],
             ),
           ),
@@ -456,9 +458,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
   void sendRating() async {
     Map<String, String> data = new Map();
     data["rating"] = setRate.floor().toString();
-    data["rate_by"] = order.user_id.toString();
-    data["booking_id"] = order.id.toString();
-    data["rate_to"] = order.provider_id.toString();
+    data["rate_by"] = globals.order.user_id.toString();
+    data["booking_id"] = globals.order.id.toString();
+    data["rate_to"] = globals.order.provider_id.toString();
     data["comment"] = txtComment.text;
     printLog(data);
     try {
