@@ -97,6 +97,30 @@ void processLogout(BuildContext context) {
 //  navigateToOtherScreen(context, LoginScreen());
 }
 
+void pushInfoAlert(BuildContext context, String title ,String message) {
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      // return object of type Dialog
+      return AlertDialog(
+        key: _keyLoader,
+        title: new Text(title),
+        content: new Text(message),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("OK"),
+            onPressed: () {
+              Navigator.of(_keyLoader.currentContext, rootNavigator: true)
+                  .pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 //info alert,with ok button
 void showInfoAlert(BuildContext context, String message) {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();

@@ -21,6 +21,7 @@ import 'package:jam/widget/otp_screen.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:jam/main.dart';
+import 'package:jam/globals.dart' as globals;
 
 
 class UserLogin extends StatefulWidget {
@@ -45,6 +46,7 @@ class _user extends State<UserLogin>{
     super.initState();
     focus_email = FocusNode();
     focus_pwd = FocusNode();
+    globals.context = context;
   }
 
   @override

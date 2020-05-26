@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 //import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
@@ -9,6 +10,7 @@ import 'package:jam/screens/splash_screen.dart';
 import 'package:jam/services.dart';
 
 import 'package:flutter/material.dart';
+import 'globals.dart' as globals;
 import 'package:jam/utils/preferences.dart';
 //import 'package:jam/api/network.dart';
 //import 'package:jam/utils/httpclient.dart';
@@ -33,11 +35,44 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale;
-
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  static int msgCount = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        if(msgCount%2==0) {
+          print("onMessage 11: $message");
+
+          pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
+          // something else you wanna execute
+        };
+        msgCount++;
+
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch 22: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+//      onBackgroundMessage:(Map<String, dynamic> message) async {
+//        print("onBackground: $message");
+//      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
+    _firebaseMessaging.getToken().then((String token) {
+      print("token: $token");
+    });
 
   }
 
