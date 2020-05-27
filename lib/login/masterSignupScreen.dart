@@ -43,6 +43,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 30,),
                   new Image.asset("assets/images/jamLogo.png",
                     height: 40.0, width: 95.0 , fit: BoxFit.fill, ),
                   Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
@@ -74,7 +75,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     ),
                   ),
                   Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
-                    child: Container(height: 600,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
+                    child: Container(height: 630,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
                         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
                       child: TabBarView(controller:_tabController,
 
