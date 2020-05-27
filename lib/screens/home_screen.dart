@@ -198,8 +198,6 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _children = [
     HomeUIDesign(),
-  // NewPage(),
-   // serviceProviderSignupUIPage(),
     CategoryScreen(),
     ProfileUIPage(key: key),
     OrderUIPage(),

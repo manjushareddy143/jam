@@ -79,6 +79,32 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
  Widget setOrderInfo(){
+   String statusString = "";
+   var status_color = null;
+   var status_icon = null;
+
+   switch(order.status)
+   {
+     case 1: statusString = 'Order Pending';
+     status_color = Colors.blue;
+     status_icon = Icons.pan_tool;
+     break;
+     case 2: statusString = 'Order Accept';
+     status_color = Colors.green;
+     status_icon = Icons.check_circle;
+     break;
+     case 3: statusString = 'Order Cancel by ' + order.provider_first_name;
+     status_color = Colors.red;
+     status_icon = Icons.cancel;
+     break;
+     case 4: statusString = 'Order Cancel by You';
+     status_color = Colors.red;
+     status_icon = Icons.cancel;
+     break;
+     default : statusString = 'Order Completed';
+     status_color = Colors.green;
+     status_icon = Icons.check_circle;
+   }
     return new Card(
         margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
         elevation: 5,
@@ -133,6 +159,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
                   flex: 8,),
               ],
             ),),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 10, 10,10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(statusString,
+                      style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 12)),
+                  SizedBox(width: 10,),
+                  Icon(status_icon, color: status_color, size: 15,),
+                ],
+              ),
+            ),
+
           ],
         )
     );
@@ -260,17 +300,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
  Widget detailInfo() {
+   String addressString = "";
+    if(globals.order.address != null) {
+      addressString = globals.order.address.address_line1;
+      if(globals.order.address.address_line2 != "") {
+        addressString += ", " + globals.order.address.address_line2;
+      }
 
-   String addressString = globals.order.address.address_line1;
-   if(globals.order.address.address_line2 != "") {
-     addressString += ", " + globals.order.address.address_line2;
-   }
+      if(globals.order.address.landmark != "") {
+        addressString += ", " + globals.order.address.landmark;
+      }
+      addressString += ", " + globals.order.address.district
+          + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
+    }
 
-   if(globals.order.address.landmark != "") {
-     addressString += ", " + globals.order.address.landmark;
-   }
-   addressString += ", " + globals.order.address.district
-       + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
 
     return Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),

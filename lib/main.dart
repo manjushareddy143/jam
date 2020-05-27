@@ -7,6 +7,8 @@ import 'package:http/http.dart';
 //import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/screens/order_detail_screen.dart';
+import 'package:jam/screens/order_list_screen.dart';
 import 'package:jam/screens/splash_screen.dart';
 import 'package:jam/services.dart';
 
@@ -55,9 +57,12 @@ class _MyAppState extends State<MyApp> {
       onMessage: (Map<String, dynamic> message) async {
         if(msgCount%2==0) {
           print("onMessage 11: $message");
-
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           setState(() {
+            OrderDetail detail = new OrderDetail();
+            detail.build(globals.context);
+            Orders orderList = new Orders();
+            orderList.build(globals.context);
             globals.orderStatus = message['data']['order'];
             globals.order.status = int.parse(message['data']['order']);
           });

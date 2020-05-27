@@ -192,6 +192,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
       ]
     );
   }
+
   Widget _getPage(Tab tab){
     switch(tab.text){
       case 'About' : return setRichText();

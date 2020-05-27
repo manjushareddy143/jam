@@ -132,7 +132,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
-
   Widget myProfileUI() {
     return Container(
       margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -147,7 +146,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       ),
     );
   }
-
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -185,7 +183,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       ),
     );
   }
-
 
   Widget _buildProfileImage() {
     if(user.image == null) {
