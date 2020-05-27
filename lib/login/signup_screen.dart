@@ -313,7 +313,8 @@ class _SignupPageState extends State<SignupPage> {
 
           /// OTP ENTERY
           Visibility(
-            visible: _showOTPField,
+            //visible: _showOTPField,
+            visible: true,
             child:
           Column(
             children: <Widget>[

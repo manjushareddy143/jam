@@ -234,7 +234,7 @@ class _customerSignup extends State<CustomerSignup>{
     );
   }
   Widget customerScreenUI(){
-    return Container(margin: EdgeInsets.all(20),
+    return Container(margin: EdgeInsets.all(13),
       child: Column( children: <Widget>[
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
@@ -387,8 +387,9 @@ class _customerSignup extends State<CustomerSignup>{
         /// OTP ENTERY
         Visibility(
           visible: _showOTPField,
+          //visible:true,
           child:
-          Column(
+          Column(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: 30),
               Text(
@@ -397,10 +398,12 @@ class _customerSignup extends State<CustomerSignup>{
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
               ),
-              PinEntryTextField(
-                  showFieldAsBox: false,
-                  fields: 6,
-                  onSubmit: submitPin
+              Container(padding: const EdgeInsets.all(1.0),
+                child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
+                    showFieldAsBox: false,
+                    fields: 6,
+                    onSubmit: submitPin
+                ),
               ),
 
               SizedBox(height: 10),
