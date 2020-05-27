@@ -227,7 +227,8 @@ class _user extends State<UserLogin>{
                       FlatButton( onPressed:() {
                         Navigator.push(
                             context, new MaterialPageRoute(
-                          builder: (BuildContext context) => masterSignup(),
+                            builder: (BuildContext context) => SignupScreen()
+                          //masterSignup(),
                         )
                         );
                         },

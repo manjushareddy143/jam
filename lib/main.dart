@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
 //import 'package:jam/api/detail.dart';
@@ -20,7 +21,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_localizations.dart';
 main() {
-  runApp(MyApp());
+  Crashlytics.instance.enableInDevMode = true;
+
+  // Pass all uncaught errors to Crashlytics.
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+
+  runZoned(() {
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
+//  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {

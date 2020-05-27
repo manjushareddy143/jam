@@ -60,7 +60,7 @@ class _InquiryPageState extends State<InquiryPage> {
   String selectedService;
   List<DropdownMenuItem<String>> _dropDownService;
   List<Service> _lstServices = new List<Service>();
-  List<SubCategory> _lstSubCategory = new List<SubCategory>();
+//  List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
   String selectedSubCategory;
   List<DropdownMenuItem<String>> _dropDownSubCategory;
@@ -91,11 +91,11 @@ class _InquiryPageState extends State<InquiryPage> {
 
     focus_remark = FocusNode();
     _lstServices.add(this.service);
-    _lstSubCategory.addAll(this.service.categories);
+//    _lstSubCategory.addAll(this.service.categories);
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
-    _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
-    selectedSubCategory = _dropDownSubCategory[0].value;
+//    _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
+//    selectedSubCategory = _dropDownSubCategory[0].value;
     setProfile();
     print(this.service.name);
     selecteDate = _currentDt;//format.format(_currentDt);
@@ -165,8 +165,8 @@ class _InquiryPageState extends State<InquiryPage> {
       setDropDown(),
       SizedBox(height: 10,),
 
-      setDropDown1(),
-      SizedBox(height: 10,),
+//      setDropDown1(),
+//      SizedBox(height: 10,),
 
       Material(elevation: 5.0,shadowColor: Colors.grey,
         child: TextFormField(
@@ -244,7 +244,8 @@ class _InquiryPageState extends State<InquiryPage> {
             maxLines: 5,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'), contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
+            hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'),
+              contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
       ),),
       SizedBox(height: 30,),
 
@@ -276,7 +277,7 @@ class _InquiryPageState extends State<InquiryPage> {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
         data["service_id"] = selectedService;
-        data["category_id"] = selectedSubCategory;
+//        data["category_id"] = selectedSubCategory;
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
         data["booking_date"] = format.format(selecteDate);
@@ -363,28 +364,28 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
 
-  Widget setDropDown1() {
-    return Material(elevation: 5.0,shadowColor: Colors.grey,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(10,0,0,0),
-        child: Row(
-          children:[
-            Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-            SizedBox(width: 20,),
-            Expanded(child: DropdownButton(
-                underline: SizedBox(),
-                isExpanded: true,
-                value: selectedSubCategory.toUpperCase(),
-                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
-                items: _dropDownSubCategory,
-                onChanged: changedDropDownItem1),
-            ),
-
-          ],
-        ),
-      ),
-    );
-  }
+//  Widget setDropDown1() {
+//    return Material(elevation: 5.0,shadowColor: Colors.grey,
+//      child: Container(
+//        padding: const EdgeInsets.fromLTRB(10,0,0,0),
+//        child: Row(
+//          children:[
+//            Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+//            SizedBox(width: 20,),
+//            Expanded(child: DropdownButton(
+//                underline: SizedBox(),
+//                isExpanded: true,
+//                value: selectedSubCategory.toUpperCase(),
+//                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
+//                items: _dropDownSubCategory,
+//                onChanged: changedDropDownItem1),
+//            ),
+//
+//          ],
+//        ),
+//      ),
+//    );
+//  }
 
   List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
     List<DropdownMenuItem<String>> items = List();
