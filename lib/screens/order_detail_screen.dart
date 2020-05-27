@@ -28,11 +28,34 @@ class _DetailUIPageState extends State<DetailUIPage> {
   final Order order;
   _DetailUIPageState({Key key, @required this.order});
   bool isRatingDisplay = true;
+  List<DropdownMenuItem<String>> _dropDownTypes;
+  List _lstType = ["","Too Slow","Vendor not responding",
+  "Last minute plans"];
+  String ddownvalue;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
+   ddownvalue = _dropDownTypes[0].value;
+  }
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
+    List<DropdownMenuItem<String>> items = List();
+    reportForlist.forEach((key) {
+
+      items.add(DropdownMenuItem(value:key , child: Text(key)
+      ));
+    });
+    return items;
+  }
+
+  void changedDropDownItem(String selectedItem) {
+    printLog(selectedItem);
+    setState(() {
+      printLog(selectedItem);
+      ddownvalue = selectedItem;
+    });
   }
 
   @override
@@ -69,7 +92,26 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  }
              ),
            ),
+           ButtonTheme(
+             minWidth: 270.0,
+             child:  RaisedButton(
+                 color: Colors.teal,
+                 textColor: Colors.white,
+                 child: const Text(
+                     'Cancel',
+                     style: TextStyle(fontSize: 16.5)
+                 ),
+                 onPressed: () => {
+                   showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return buildCancelDialog(context);
 
+                     },
+                   )
+                 }
+             ),
+           ),
 
 
          ]),
@@ -125,7 +167,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("Date", style: TextStyle(fontSize: 12, color: Colors.grey),),
+                    Text("Time", style: TextStyle(fontSize: 12, color: Colors.grey),),
                     Text(globals.order.end_time)
 
                   ],
@@ -215,7 +257,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                       },
                   )
-                  }, child: Text("Submit Ratting"))
+                  }, child: Text("Submit Rating"))
                 ),
               ],
             ),
@@ -495,74 +537,136 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   Widget buildRatingSection(StateSetter setState) {
     printLog("SETRATE::: $setRate");
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        new SmoothStarRating(
-          allowHalfRating: false,
-          starCount: 5,
-          rating: setRate,
-          size: 30.0,
-          filledIconData: Icons.star,
-          halfFilledIconData: Icons.star_half,
-          color: Colors.amber,
-          borderColor: Colors.amber,
-          spacing:0.0,
-          onRatingChanged: (value) {
-            setState(() {
-              printLog("RATE :: $value");
-              setRate = value;
+    return Container(padding: const EdgeInsets.fromLTRB(10,5,10,5),
+      child: new Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          new SmoothStarRating(
+            allowHalfRating: false,
+            starCount: 5,
+            rating: setRate,
+            size: 30.0,
+            filledIconData: Icons.star,
+            halfFilledIconData: Icons.star_half,
+            color: Colors.amber,
+            borderColor: Colors.amber,
+            spacing:0.0,
+            onRatingChanged: (value) {
+              setState(() {
+                printLog("RATE :: $value");
+                setRate = value;
 
-            });
-          },
-        ),
-      ],
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 
 
   final format = DateFormat("dd-MM-yyyy");
   final formatt= DateFormat("HH:mm");
+  final txtCancel = TextEditingController();
 
- /* Widget setDate(){
-    return DateTimeField(
-      initialValue: _currentDt,
-      format: format,
-      decoration: InputDecoration( prefixIcon: Icon(Icons.calendar_today, color: Colors.teal,),
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-        labelText: 'Date',),
-      onShowPicker: (context, currentValue) {
-        return showDatePicker(
-            context: context,
-            firstDate: _currentDt.add(Duration(days: -365)),
-            initialDate: currentValue ?? DateTime.now(),
-            lastDate: DateTime(2021)
+  Widget buildCancelDialog(BuildContext context) {
+    return AlertDialog(
+      content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildCancelHeader(),
+
+            SizedBox(
+              height: 10.0,
+              child: new Center(
+                child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 0.9,
+                  color: Colors.teal,
+                ),
+              ),
+            ),
+
+            buildDropDownSection(setState),
+
+            TextField(
+              maxLines: null,
+              controller: txtCancel,
+              keyboardType: TextInputType.multiline,
+            ),
+
+            CancelButton(context),
+          ],
         );
-      },
-      onChanged: (val) => {
-        selecteDate = val
-      },
-
+      }),
     );
   }
-   Widget setTime(){
-    return  DateTimeField(
-      initialValue: _currentDt,
-      format: formatt,
-      decoration: InputDecoration( prefixIcon: Icon(Icons.timer, color: Colors.teal),
-        hasFloatingPlaceholder: false,
-        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+  Widget buildCancelHeader() {
+    return new Padding(
+      padding: const EdgeInsets.only(top: 0.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            'Service Cancellation Request',
+            style: const TextStyle(fontSize: 17.0, color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+          ),
+        ],
       ),
-      onShowPicker: (context, currentValue) async {
-        final time = await showTimePicker(
-          context: context,
-          initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-        );
-        return DateTimeField.convert(time);
-      },
-
-
     );
+  }
+  Widget buildDropDownSection(StateSetter setState) {
 
-   } */
+    return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("Reason :", style:TextStyle(color: Colors.teal) ,),
+
+
+       // SizedBox(width: 5,),
+        Expanded(child: DropdownButton(
+
+
+
+            underline: SizedBox(),
+            isExpanded: true,
+            value: ddownvalue,
+            icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+            items: _dropDownTypes,
+            onChanged:  (value) {
+    setState(() {
+    printLog("RATE :: $value");
+    ddownvalue = value;
+
+    });
+    },),
+        ),
+
+      ],
+    );
+  }
+  Widget CancelButton(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity, // match_parent
+            child: RaisedButton(
+              color: Colors.black,
+              onPressed: () {
+
+              },
+              child: const Text('OK', style: TextStyle(fontSize: 20,color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
 }
