@@ -21,18 +21,22 @@ class Orders extends StatelessWidget{
   }
 }
 class OrderUIPage extends StatefulWidget {
-  OrderUIPage({Key key, @required user,}) : super(key: key);
+  final String url;
+  OrderUIPage({Key key, @required user, this.url}) : super(key: key);
   @override
-  _OrderUIPageState createState() => _OrderUIPageState();
+  _OrderUIPageState createState() => _OrderUIPageState(key: key, url: this.url);
 }
 class _OrderUIPageState extends State<OrderUIPage> {
-
+  final String url;
   int oIndex = 0;
   List<Order> listofOrders;
   User user;
 
+  _OrderUIPageState({Key key, this.url});
+
   @override
   void initState() {
+    printLog("CUSTMMER ${this.url}");
 //    printLog(this.user.first_name);
     // TODO: implement initState
     super.initState();
@@ -55,9 +59,10 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
   getOrders() async {
     try {
+      print("CUST");
       HttpClient httpClient = new HttpClient();
       var syncProviderResponse = await httpClient.getRequest(context,
-          Configurations.BOOKING_URL + "?id=" + user.id.toString(), null, null, true, false);
+          this.url + "?id=" + user.id.toString(), null, null, true, false);
       processOrdersResponse(syncProviderResponse);
     } on Exception catch (e) {
       if (e is Exception) {

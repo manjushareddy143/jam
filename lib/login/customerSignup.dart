@@ -31,35 +31,37 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:jam/globals.dart' as globals;
 
 class customer extends StatelessWidget {
 
+  final String fcm_token;
+
+  const customer({Key key, this.fcm_token}) : super(key: key);
+
   Widget build(BuildContext context) {
     // TODO: implement build
-    return CustomerSignup();
+    print("test == ${this.fcm_token}");
+    return CustomerSignup(fcm_token: this.fcm_token,);
   }
 }
 class CustomerSignup extends StatefulWidget {
   //SignupPage({Key key, this.title}) : super(key: key);
+  final String fcm_token;
 
+  
+  CustomerSignup({Key key, this.fcm_token}) : super(key: key);
   @override
-  _customerSignup createState() => _customerSignup();
+  _customerSignup createState() => _customerSignup(fcm_token: this.fcm_token, key: key);
 }
+
 class _customerSignup extends State<CustomerSignup>{
+  final String fcm_token;
 
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    globals.context = context;
-  }
-
-
+  _customerSignup({Key key, @required this.fcm_token});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _showOTPField = false;
+  bool _hideSocialSignin = true;
   bool _fridgeEdit = true;
   String pinCode = "";
   final txtLname=TextEditingController();
@@ -69,11 +71,15 @@ class _customerSignup extends State<CustomerSignup>{
   final txtConfPass = TextEditingController();
   final txtContact = TextEditingController();
   bool _value1 = false;
+
+
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
   var _authCredential;
   static String status;
   var firebaseAuth;
+
+
   Future getOTP(String phone) async{
     firebaseAuth = await FirebaseAuth.instance;
     firebaseAuth.verifyPhoneNumber(
@@ -110,7 +116,14 @@ class _customerSignup extends State<CustomerSignup>{
           data["first_name"] = txtName.text;
           data["last_name"] = txtLname.text;
           data["password"] = txtPass.text;
+          data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
+          data["token"] = fcm_token;
+          if(Platform.isAndroid) {
+            data["device"] = "Android";
+          } else if (Platform.isIOS) {
+            data["device"] = "IOS";
+          }
           data["type_id"] = "4";
           data["term_id"] = "1";
           callLoginAPI(data);
@@ -131,7 +144,7 @@ class _customerSignup extends State<CustomerSignup>{
 
 
   void _validateInputs() {
-
+    printLog("FCM ++ ${this.fcm_token}");
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
@@ -139,17 +152,22 @@ class _customerSignup extends State<CustomerSignup>{
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
           getOTP(txtContact.text);
-
           // Return here any Widget you want to display in Android Device.
           printLog('Android Device Detected');
-
         }
         else if(Platform.isIOS) {
           Map<String, String> data = new Map();
           data["first_name"] = txtName.text;
           data["last_name"] = txtLname.text;
           data["password"] = txtPass.text;
+          data["token"] = fcm_token;
+          data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
+          if(Platform.isAndroid) {
+            data["device"] = "Android";
+          } else if (Platform.isIOS) {
+            data["device"] = "IOS";
+          }
           data["type_id"] = "4";
           data["term_id"] = "1";
           callLoginAPI(data);
@@ -168,8 +186,6 @@ class _customerSignup extends State<CustomerSignup>{
     }
   }
 
-
-
   Future callLoginAPI(Map<String, String> data) async {
     printLog(data);
     try {
@@ -184,8 +200,6 @@ class _customerSignup extends State<CustomerSignup>{
       }
     }
   }
-
-
 
   void processLoginResponse(Response res) {
     print("come for response");
@@ -231,10 +245,6 @@ class _customerSignup extends State<CustomerSignup>{
     }
   }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -245,7 +255,8 @@ class _customerSignup extends State<CustomerSignup>{
     );
   }
   Widget customerScreenUI(){
-    return Container(margin: EdgeInsets.all(13),
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
       child: Column( children: <Widget>[
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
@@ -290,6 +301,25 @@ class _customerSignup extends State<CustomerSignup>{
         ),
         SizedBox(height: 10,),
 
+        Material(elevation: 10.0,shadowColor: Colors.grey,
+          child: TextFormField(
+
+
+            decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                labelText: AppLocalizations.of(context).translate('profile_email_placeholder')
+            ),
+            controller: txtEmail,//..text = 'KAR-MT30',
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('profile_txt_enteremail');
+              }
+              return null;
+            },
+          ),
+        ),
+        SizedBox(height: 10,),
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
@@ -356,7 +386,7 @@ class _customerSignup extends State<CustomerSignup>{
         ButtonTheme(
           minWidth: 300.0,
           child:  RaisedButton(
-              color: Colors.teal,
+              color: Configurations.themColor,
 
 
               textColor: Colors.white,
@@ -377,7 +407,6 @@ class _customerSignup extends State<CustomerSignup>{
             Text("Already have an account?"),
 
             FlatButton( onPressed:() {
-
               Navigator.push(
                   context, new MaterialPageRoute(
                 builder: (BuildContext context) => UserLogin(),
@@ -393,6 +422,36 @@ class _customerSignup extends State<CustomerSignup>{
             )
           ],
         ),),
+
+        Visibility(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 20,
+              child: Text("------------------------ OR ------------------------"),
+            ),
+
+            SignInButton(
+              Buttons.Google,
+              text: "Sign in with Google",
+              onPressed: () {
+                signinWithGmail();
+              },
+            ),
+            SizedBox(height: 10),
+
+            SignInButton(
+              Buttons.Facebook,
+              text: "Sign in with Facebook",
+              onPressed: () {
+//            signinWithFacebook();
+              },
+            ),
+          ],
+        ),
+        visible: _hideSocialSignin,),
+
+
+
 
 
 
@@ -410,11 +469,16 @@ class _customerSignup extends State<CustomerSignup>{
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
               ),
-              Container(padding: const EdgeInsets.all(1.0),
+              Container(padding: EdgeInsets.all(0),
+                width: 320,
+                height: 50,
                 child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
                     showFieldAsBox: false,
                     fields: 6,
-                    onSubmit: submitPin
+                    onSubmit: submitPin,
+//                  fieldWidth: 300.0,
+//                  fontSize: 10,
+
                 ),
               ),
 
@@ -439,14 +503,15 @@ class _customerSignup extends State<CustomerSignup>{
                   Text("Resend OTP"),
                   IconButton(icon: Icon(Icons.refresh),
                     onPressed: () {
-                      Map<String, String> data = new Map();
-                      data["first_name"] = txtName.text;
-                      data["last_name"] = txtLname.text;
-                      data["password"] = txtPass.text;
-                      data["contact"] = txtContact.text;
-                      data["type_id"] = "4";
-                      data["term_id"] = "1";
-                      callLoginAPI(data);
+                    getOTP(txtContact.text);
+//                      Map<String, String> data = new Map();
+//                      data["first_name"] = txtName.text;
+//                      data["last_name"] = txtLname.text;
+//                      data["password"] = txtPass.text;
+//                      data["contact"] = txtContact.text;
+//                      data["type_id"] = "4";
+//                      data["term_id"] = "1";
+//                      callLoginAPI(data);
                     },
                   ),
 
@@ -465,8 +530,81 @@ class _customerSignup extends State<CustomerSignup>{
       ,);
   }
 
+  void signinWithGmail() {
+    signInWithGoogle()
+        .whenComplete(() {
+
+      printLog("FINSH ");
+    }).then((onValue) {
+      if(onValue != null) {
+        GoogleSignInAccount g_user = onValue[0];
+        FirebaseUser  f_user = onValue[1];
+        Map<String, String> data = new Map();
+        data["first_name"] = g_user.displayName.split(" ")[0];
+        if(g_user.displayName.split(" ")[1] != null){
+          data["last_name"] = g_user.displayName.split(" ")[1];
+        }
+        data["token"] = fcm_token;
+        data["password"] = g_user.id;
+        data["email"] = g_user.email;
+        data["image"] = g_user.photoUrl;
+        if(Platform.isAndroid) {
+          data["device"] = "Android";
+        } else if (Platform.isIOS) {
+          data["device"] = "IOS";
+        }
+        data["type_id"] = "4";
+        data["term_id"] = "1";
+        data["social_signin"] = "gmail";
+        print(data);
+        callLoginAPI(data);
+      }
+
+    }).catchError((onError) {
+    });
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<List> signInWithGoogle() async {
+    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+
+    if(googleSignInAccount.id != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+
+      List  obj = new List();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      print("GMAIL == ${googleSignInAccount}");
+      print("GMAIL == ${currentUser.uid}");
+      print("GMAIL == ${user}");
+      obj.add(googleSignInAccount);
+      obj.add(user);
+      return obj;
+    } else {
+      print("NO DATA");
+      return null;
+    }
+    //'signInWithGoogle succeeded: $user';
+  }
+
   verificationCompleted (AuthCredential auth) {
     printLog(txtContact.text);
+    printLog(auth.toString());
     setState(() {
       status = 'Auto retrieving verification code';
     });
@@ -475,6 +613,7 @@ class _customerSignup extends State<CustomerSignup>{
   verificationFailed (AuthException authException) {
     print("authException.message :${authException.message}");
     printLog(txtContact.text);
+    printLog(authException.message);
     setState(() {
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
@@ -493,8 +632,10 @@ class _customerSignup extends State<CustomerSignup>{
   codeSent (String verificationId, [int forceResendingToken]) async {
     actualCode = verificationId;
     printLog(txtContact.text);
+    printLog(actualCode);
     setState(() {
       _showOTPField = true;
+      _hideSocialSignin = false;
       _fridgeEdit = false;
       Widget_Helper.dismissLoading(context);
     });
@@ -502,6 +643,7 @@ class _customerSignup extends State<CustomerSignup>{
 
   codeAutoRetrievalTimeout(String verificationId) {
     actualCode = verificationId;
+    printLog(actualCode);
     setState(() {
       status = "\nAuto retrieval time out:: $actualCode";
       Widget_Helper.dismissLoading(context);

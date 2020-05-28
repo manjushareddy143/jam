@@ -13,6 +13,7 @@ class Configurations {
   static const String PROFILE_URL = BASE_URL + APP_URL + API_VERSION + "/init_profile";
   static const String LOGIN_URL = BASE_URL + APP_URL + API_VERSION + "/login";
   static const String BOOKING_URL = BASE_URL + APP_URL + API_VERSION + "/booking";
+  static const String PROVIDER_BOOKING_URL = BASE_URL + APP_URL + API_VERSION + "/booking/provider";
 
   static const String PROVIDER_SERVICES_URL = BASE_URL + APP_URL + API_VERSION + "/providers/service";
   static const String SERVICES_ALL_URL = BASE_URL + APP_URL + API_VERSION +"/all_services";

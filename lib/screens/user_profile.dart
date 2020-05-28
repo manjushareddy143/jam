@@ -172,7 +172,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
            },
              child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
                  style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
-                     color: Colors.teal)
+                     color: Configurations.themColor)
              )
          )
           ],
@@ -254,16 +254,19 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget setDetails(){
 
-    String addressString = user.address.address_line1;
-    if(user.address.address_line2 != "") {
-      addressString += ", " + user.address.address_line2;
-    }
+    String addressString = "";
+    if(user.address != null) {
+      addressString = user.address.address_line1;
+      if(user.address.address_line2 != "") {
+        addressString += ", " + user.address.address_line2;
+      }
 
-    if(user.address.landmark != "") {
-      addressString += ", " + user.address.landmark;
+      if(user.address.landmark != "") {
+        addressString += ", " + user.address.landmark;
+      }
+      addressString += ", " + user.address.district
+          + ", " + user.address.city + ", " + user.address.postal_code + ".";
     }
-    addressString += ", " + user.address.district
-        + ", " + user.address.city + ", " + user.address.postal_code + ".";
 
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -347,14 +350,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
                     width: 2,
-                    color: Colors.teal,
+                    color: Configurations.themColor,
                   ),
                   insets: EdgeInsets.only(
                       left: 15,
                       right: 8,
                       bottom: 0)),
             isScrollable: true,
-            labelColor: Colors.teal,
+            labelColor: Configurations.themColor,
             //indicatorColor: Colors.teal,
             indicatorSize: TabBarIndicatorSize.tab,
             tabs : tabList

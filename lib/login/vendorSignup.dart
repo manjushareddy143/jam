@@ -3,44 +3,42 @@ import 'package:jam/app_localizations.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/resources/configurations.dart';
-import 'package:jam/globals.dart' as globals;
-class vendor extends StatelessWidget {
 
+class vendor extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return VendorSignup();
   }
 }
+
 class VendorSignup extends StatefulWidget {
   //SignupPage({Key key, this.title}) : super(key: key);
 
   @override
   _vendorSignup createState() => _vendorSignup();
 }
-class _vendorSignup extends State<VendorSignup>{
+
+class _vendorSignup extends State<VendorSignup> {
   List<DropdownMenuItem<String>> _dropDownTypes;
-  List _lstType = ["",
-    "India"
-    ,"Qatar"];
+  List _lstType = ["", "India", "Qatar"];
   String dropdownvalue;
   bool _value1 = false;
-  void _value1Changed(bool value) => setState(() => _value1 = value);
 
+  void _value1Changed(bool value) => setState(() => _value1 = value);
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
   }
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(
+      List reportForlist) {
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
-
-      items.add(DropdownMenuItem(value:key , child: Text(key)
-      ));
+      items.add(DropdownMenuItem(value: key, child: Text(key)));
     });
     return items;
   }
@@ -57,14 +55,13 @@ class _vendorSignup extends State<VendorSignup>{
     super.dispose();
   }
 
+  final txtLname=TextEditingController();
+  final txtName = TextEditingController();
+  final txtEmail = TextEditingController();
+  final txtPass = TextEditingController();
+  final txtConfPass = TextEditingController();
+  final txtContact = TextEditingController();
 
-
-
-  final txtCompanyName=TextEditingController();
-  final txtAdminName=TextEditingController();
-  final txtContact=TextEditingController();
-  final txtEmail=TextEditingController();
-  final txtPass=TextEditingController();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -72,199 +69,207 @@ class _vendorSignup extends State<VendorSignup>{
       child: vendorScreenUI(),
     );
   }
-  Widget vendorScreenUI(){
-    return Container(margin: EdgeInsets.all(20),
-    child: Column(children: <Widget>[
-      Material(elevation: 10.0,shadowColor: Colors.grey,
-        child: TextFormField(
+
+  Widget vendorScreenUI() {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
+      child: Column(
+        children: <Widget>[
+          Material(elevation: 10.0,shadowColor: Colors.grey,
+            child: TextFormField(
 
 
-          decoration: InputDecoration( suffixIcon: Icon(Icons.place),
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-              labelText: "Company Name"
+              decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder')
+              ),
+              controller: txtName,//..text = 'KAR-MT30',
+              validator: (value){
+                if (value.isEmpty) {
+                  return AppLocalizations.of(context).translate('signup_txt_enteruser');
+                }
+                return null;
+              },
+              //..text = 'KAR-MT30',
+
+            ),
           ),
-          controller: txtCompanyName,//..text = 'KAR-MT30',
-          validator: (value){
-            if (value.isEmpty) {
-              return "Please enter the company name";
-            }
-            return null;
-          },
-          //..text = 'KAR-MT30',
-
-        ),
-      ),
-      SizedBox(height: 10,),
-      Material(elevation: 10.0,shadowColor: Colors.grey,
-        child: TextFormField(
+          SizedBox(height: 10,),
 
 
-          decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-              labelText: "Admin Name"
+          Material(elevation: 10.0,shadowColor: Colors.grey,
+            child: TextFormField(
+
+              decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder')),
+              controller: txtLname,//..text = 'KAR-MT30',
+              validator: (value){
+                if (value.isEmpty) {
+                  return AppLocalizations.of(context).translate('signup_txt_enterlast');
+                }
+                return null;
+              },
+
+            ),
           ),
-          controller: txtAdminName,//..text = 'KAR-MT30',
-          validator: (value){
-            if (value.isEmpty) {
-              return "Please enter the admin name";
-            }
-            return null;
-          },
-          //..text = 'KAR-MT30',
+          SizedBox(height: 10,),
 
-        ),
-      ),
-      SizedBox(height: 10,),
-      Material(elevation: 10.0,shadowColor: Colors.grey,
-        child: TextFormField(
+          Material(elevation: 10.0,shadowColor: Colors.grey,
+            child: TextFormField(
 
 
-          decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-              labelText: "Phone"),
+              decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  labelText: AppLocalizations.of(context).translate('profile_email_placeholder')
+              ),
+              controller: txtEmail,//..text = 'KAR-MT30',
+              validator: (value){
+                if (value.isEmpty) {
+                  return AppLocalizations.of(context).translate('profile_txt_enteremail');
+                }
+                return null;
+              },
+            ),
+          ),
+          SizedBox(height: 10,),
 
-          keyboardType: TextInputType.phone,
-          controller: txtContact,//..text = 'KAR-MT30',
-
-          validator: (value){
-            if (value.isEmpty) {
-              return "Please the enter phone number";
-            }
-            return null;
-          },
-
-        ),
-      ),
-      SizedBox(height: 10,),
-    Material(elevation: 10.0,shadowColor: Colors.grey,
-    child: TextFormField(
+          Material(elevation: 10.0,shadowColor: Colors.grey,
+            child: TextFormField(
 
 
-    decoration: InputDecoration( suffixIcon: Icon(Icons.email),
-    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-    labelText: "Email Address"),
+              decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
 
-    controller: txtEmail,//..text = 'KAR-MT30',
+              keyboardType: TextInputType.phone,
+              controller: txtContact,//..text = 'KAR-MT30',
 
-    validator: (value){
-    if (value.isEmpty) {
-    return "Please the enter email address";
-    }
-    return validateEmail(value);
-    },
+              validator: (value){
+                if (value.isEmpty) {
+                  return AppLocalizations.of(context).translate('signup_txt_enterno');
+                }
+                return null;
+              },
 
-    ),
-    ),
-    SizedBox(height: 10,),
-    Material(elevation: 10.0,shadowColor: Colors.grey,
-    child: TextFormField(
+            ),
+          ),
+          SizedBox(height: 10,),
 
-    obscureText: true,
-    decoration: InputDecoration( suffixIcon: Icon(Icons.security),
-    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-    labelText: "Password"),
-    controller: txtPass,//..text = 'KAR-MT30',
-    validator: (value){
-    if (value.isEmpty) {
-    return "Please enter your password";
-    }
-    return null;
-    },
-    ),
-    ),
-      SizedBox(height: 10,),
-      setCountry(),
-      SizedBox(height: 10,),
-      Row(
-          children: <Widget>[
+          Material(elevation: 10.0,shadowColor: Colors.grey,
+            child: TextFormField(
+
+              obscureText: true,
+              decoration: InputDecoration( suffixIcon: Icon(Icons.security),
+                  contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                  labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder')),
+              controller: txtPass,//..text = 'KAR-MT30',
+              validator: (value){
+                if (value.isEmpty) {
+                  return AppLocalizations.of(context).translate('signup_txt_enterpwd');
+                }
+                return null;
+              },
+
+
+            ),
+          ),
+          SizedBox(height: 10,),
+
+          setCountry(),
+          SizedBox(
+            height: 10,
+          ),
+          Row(children: <Widget>[
             Checkbox(value: _value1, onChanged: _value1Changed),
-            Text("Agree With ", style: TextStyle(color: Colors.grey),),
+            Text(
+              "Agree With ",
+              style: TextStyle(color: Colors.grey),
+            ),
             InkWell(
               child: Text(
-                AppLocalizations.of(context).translate('signin_txt_terms'),
-                style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent,)
-
-              ),
+                  AppLocalizations.of(context).translate('signin_txt_terms'),
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.orangeAccent,
+                  )),
               //onTap: _launchURL,
             ),
-          ]
-      ),
-      //SizedBox(height: 10,),
-            ButtonTheme(
-              minWidth: 300.0,
-              child:  RaisedButton(
-                  color: Colors.teal,
-
-
-                  textColor: Colors.white,
-                  child:  Text(
-
-                      AppLocalizations.of(context).translate('signin_btn_signup'),
-                      style: TextStyle(fontSize: 16.5)
-                  ),
-                  onPressed: () {
-                    globals.isVendor = true;
+          ]),
+          //SizedBox(height: 10,),
+          ButtonTheme(
+            minWidth: 300.0,
+            child: RaisedButton(
+                color: Configurations.themColor,
+                textColor: Colors.white,
+                child: Text(
+                    AppLocalizations.of(context).translate('signin_btn_signup'),
+                    style: TextStyle(fontSize: 16.5)),
+                onPressed: () {
                   //  _validateInputs();
-                  }
-
-
-              ),
+                }),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Already have an account?"),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                          builder: (BuildContext context) => UserLogin(),
+                        ));
+                  },
+                  child: Text(
+                      AppLocalizations.of(context).translate('btn_login'),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orangeAccent)),
+                )
+              ],
             ),
-      Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Already have an account?"),
-
-          FlatButton( onPressed:() {
-            Navigator.push(
-                context, new MaterialPageRoute(
-              builder: (BuildContext context) => UserLogin(),
-            )
-            );
-          },
-            child: Text(
-                AppLocalizations.of(context).translate('btn_login'),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    color: Colors.orangeAccent)
-            ),
-          )
+          ),
         ],
-      ),),
-
-
-
-
-
-
-    ],),);
+      ),
+    );
   }
-  Widget setCountry(){
-    return Material(elevation: 5.0,shadowColor: Colors.grey,
+
+  Widget setCountry() {
+    return Material(
+      elevation: 5.0,
+      shadowColor: Colors.grey,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(10,5,10,5),
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
         child: Row(
-          children:[
-            Text("Select Country", style:TextStyle(color: Colors.grey) ,),
-
-
-            SizedBox(width: 20,),
-            Expanded(child: DropdownButton(
-              hint: Text('Select Country'),
-
-
-                underline: SizedBox(),
-                isExpanded: true,
-                value: dropdownvalue,
-                icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
-                items: _dropDownTypes,
-                onChanged: changedDropDownItem),
+          children: [
+            Text(
+              "Select Country",
+              style: TextStyle(color: Colors.grey),
             ),
-
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: DropdownButton(
+                  hint: Text('Select Country'),
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  value: dropdownvalue,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Configurations.themColor,
+                  ),
+                  items: _dropDownTypes,
+                  onChanged: changedDropDownItem),
+            ),
           ],
         ),
       ),

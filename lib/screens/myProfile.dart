@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 //import 'package:image_picker/image_picker.dart';
 
@@ -47,7 +48,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
           ),
         ],
           iconTheme: IconThemeData(
-            color: Colors.teal,
+            color: Configurations.themColor,
           ),),
         body: myProfileUI()
     );
@@ -79,7 +80,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
 
                     FlatButton(
                       child:
-                      Text("Upload Photo", textAlign: TextAlign.center,style: TextStyle(fontSize: 10 ,fontWeight: FontWeight.w300, color: Colors.teal)),
+                      Text("Upload Photo", textAlign: TextAlign.center,style: TextStyle(fontSize: 10 ,fontWeight: FontWeight.w300, color: Configurations.themColor)),
                       onPressed:getimage,
                     )
 
@@ -159,7 +160,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
               indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(
                     width: 2,
-                    color: Colors.teal,
+                    color: Configurations.themColor,
 
                   ),
                   insets: EdgeInsets.only(
@@ -167,7 +168,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
                       right: 8,
                       bottom: 0)),
             isScrollable: true,
-            labelColor: Colors.teal,
+            labelColor: Configurations.themColor,
 
 
 
