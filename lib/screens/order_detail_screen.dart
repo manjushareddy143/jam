@@ -81,7 +81,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
            ButtonTheme(
              minWidth: 270.0,
              child:  RaisedButton(
-                 color: Colors.teal,
+                 color: Configurations.themColor,
                  textColor: Colors.white,
                  child: const Text(
                      'Download Invoice',
@@ -95,7 +95,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
            ButtonTheme(
              minWidth: 270.0,
              child:  RaisedButton(
-                 color: Colors.teal,
+                 color: Configurations.themColor,
                  textColor: Colors.white,
                  child: const Text(
                      'Cancel',
@@ -627,7 +627,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 child: new Container(
                   margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
                   height: 0.9,
-                  color: Colors.teal,
+                  color: Configurations.themColor,
                 ),
               ),
             ),
@@ -666,7 +666,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text("Reason :", style:TextStyle(color: Colors.teal) ,),
+        Text("Reason :", style:TextStyle(color: Configurations.themColor) ,),
 
 
        // SizedBox(width: 5,),

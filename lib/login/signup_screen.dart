@@ -259,7 +259,7 @@ class _SignupPageState extends State<SignupPage> {
 
         ButtonTheme(
           minWidth: 300.0,
-          child:  RaisedButton(
+          child: RaisedButton(
               color: Configurations.themColor,
               textColor: Colors.white,
               child:  Text(

@@ -252,7 +252,7 @@ class _InquiryPageState extends State<InquiryPage> {
       ButtonTheme(
         minWidth: 400.0,
         child:  RaisedButton(
-            color: Colors.teal,
+            color: Configurations.themColor,
             textColor: Colors.white,
             child:  Text(
                 AppLocalizations.of(context).translate('inquiry_btn_booking'),
@@ -337,7 +337,7 @@ class _InquiryPageState extends State<InquiryPage> {
                 underline: SizedBox(),
                 isExpanded: true,
                 value: selectedService,
-                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
+                icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
                 items: _dropDownService,
                 onChanged: changedDropDownItem),
             ),
