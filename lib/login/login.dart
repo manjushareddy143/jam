@@ -291,10 +291,11 @@ class _user extends State<UserLogin>{
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        User user = User.fromJson(data);
-        if(user.address == null) {
+        print("data::::::::$data");
+        globals.currentUser = User.fromJson(data);
+        if(globals.currentUser.address == null) {
           print('NO ADDRESS');
-          Preferences.saveObject("user", jsonEncode(user.toJson()));
+          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
           Preferences.saveObject("profile", "1");
           Navigator.pushReplacement(
               context,
@@ -303,7 +304,7 @@ class _user extends State<UserLogin>{
               ));
         } else {
           print('HMMM ADDRESS');
-          Preferences.saveObject("user", jsonEncode(user.toJson()));
+          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
           Preferences.saveObject("profile", "0");
           Navigator.pushReplacement(
               context,

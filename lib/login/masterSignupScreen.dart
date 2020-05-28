@@ -5,6 +5,8 @@ import 'package:jam/login/customerSignup.dart';
 import 'package:jam/login/vendorSignup.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
+import 'package:jam/globals.dart' as globals;
+
 class masterSignup extends StatelessWidget{
   Widget build(BuildContext context) {
     return Center(child: masterSignupUIPage());
@@ -31,7 +33,12 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
 
   void getFCMToken() async  {
     await Preferences.readObject("fcm_token").then((onValue) async {
-      fcmToken = onValue;
+      setState(() {
+        fcmToken = onValue;
+      });
+
+
+      print("fcmToken $fcmToken");
     });
   }
   @override
@@ -45,7 +52,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
   String headerTitle = "CUSTOMER SIGN-UP";
 
 
-  double viewHeight= 730;
+  double viewHeight= 750;
 
   @override
   Widget build(BuildContext context){
@@ -87,12 +94,23 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     ),
                   ),
                   Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
-                    child: Container(height: viewHeight,decoration: BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
-                        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10))),
-                      child: TabBarView(controller:_tabController,
+                    child: Container(
+                      height: viewHeight,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Configurations.themColor, width: 1
+                          ),
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10)
+                          )
+                      ),
+                      child: TabBarView(
+                        controller:_tabController,
                         children: <Widget>[
                           CustomerSignup(fcm_token: fcmToken,),
-                          vendor(),
+                          CustomerSignup(fcm_token: fcmToken,),
+//                          vendor(),
                         ],
                       ),
                     ),
@@ -111,9 +129,11 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
       if(val == 0) {
         headerTitle= "CUSTOMER SIGN-UP";
         viewHeight = 730;
+        globals.isCustomer = true;
       } else {
         headerTitle= "SERVICE PROVIDER SIGN-UP";
-        viewHeight = 630;
+        viewHeight = 800;
+        globals.isCustomer = false;
       }
     });
   }

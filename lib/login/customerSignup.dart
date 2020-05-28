@@ -28,7 +28,7 @@ import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-
+import 'package:jam/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -51,7 +51,7 @@ class CustomerSignup extends StatefulWidget {
   
   CustomerSignup({Key key, this.fcm_token}) : super(key: key);
   @override
-  _customerSignup createState() => _customerSignup(fcm_token: this.fcm_token, key: key);
+  _customerSignup createState() => _customerSignup(fcm_token: fcm_token, key: key);
 }
 
 class _customerSignup extends State<CustomerSignup>{
@@ -71,13 +71,23 @@ class _customerSignup extends State<CustomerSignup>{
   final txtConfPass = TextEditingController();
   final txtContact = TextEditingController();
   bool _value1 = false;
-
+  List<DropdownMenuItem<String>> _dropDownTypes;
+  String selectedCountry;
+  List _lstType = ["India", "Qatar"];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
+    selectedCountry = _dropDownTypes[0].value;
+  }
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
   var _authCredential;
   static String status;
   var firebaseAuth;
+
 
 
   Future getOTP(String phone) async{
@@ -118,14 +128,20 @@ class _customerSignup extends State<CustomerSignup>{
           data["password"] = txtPass.text;
           data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
-          data["token"] = fcm_token;
+          data["token"] = globals.fcmToken;
           if(Platform.isAndroid) {
             data["device"] = "Android";
           } else if (Platform.isIOS) {
             data["device"] = "IOS";
           }
-          data["type_id"] = "4";
-          data["term_id"] = "1";
+          if(globals.isCustomer == true) {
+            data["type_id"] = "4";
+            data["term_id"] = "1";
+          } else {
+            data["type_id"] = "3";
+            data["term_id"] = "2";
+            data["resident_country"] = selectedCountry;
+          }
           callLoginAPI(data);
         });
       } else {
@@ -160,7 +176,7 @@ class _customerSignup extends State<CustomerSignup>{
           data["first_name"] = txtName.text;
           data["last_name"] = txtLname.text;
           data["password"] = txtPass.text;
-          data["token"] = fcm_token;
+          data["token"] = globals.fcmToken;
           data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
           if(Platform.isAndroid) {
@@ -168,8 +184,14 @@ class _customerSignup extends State<CustomerSignup>{
           } else if (Platform.isIOS) {
             data["device"] = "IOS";
           }
-          data["type_id"] = "4";
-          data["term_id"] = "1";
+          if(globals.isCustomer == true) {
+            data["type_id"] = "4";
+            data["term_id"] = "1";
+          } else {
+            data["type_id"] = "3";
+            data["term_id"] = "2";
+            data["resident_country"] = selectedCountry;
+          }
           callLoginAPI(data);
           // Return here any Widget you want to display in iOS Device.
           printLog('iOS Device Detected');
@@ -191,9 +213,17 @@ class _customerSignup extends State<CustomerSignup>{
     try {
       HttpClient httpClient = new HttpClient();
       print('api call start signup');
-      var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
-      processLoginResponse(syncUserResponse);
+      if(globals.isCustomer ==true) {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
+        processLoginResponse(syncUserResponse);
+      } else {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_PROVIDER_URL, data);
+        processLoginResponse(syncUserResponse);
+
+      }
+
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -202,10 +232,11 @@ class _customerSignup extends State<CustomerSignup>{
   }
 
   void processLoginResponse(Response res) {
-    print("come for response");
+    print("come for response ${res.statusCode}");
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
+        print("come for data ${data}");
         User user = User.fromJson(data);
         printLog(user.first_name);
         print(user.contact);
@@ -253,6 +284,21 @@ class _customerSignup extends State<CustomerSignup>{
       autovalidate: _autoValidate,
       child: customerScreenUI(),
     );
+  }
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
+    List<DropdownMenuItem<String>> items = List();
+    reportForlist.forEach((key) {
+      items.add(DropdownMenuItem(value: key, child: Text(key)));
+    });
+    return items;
+  }
+
+  void changedDropDownItem(String selectedItem) {
+    setState(() {
+      selectedCountry = selectedItem;
+      printLog(selectedCountry);
+    });
   }
   Widget customerScreenUI(){
     return Container(
@@ -364,17 +410,39 @@ class _customerSignup extends State<CustomerSignup>{
           ),
         ),
         SizedBox(height: 10,),
+
+        if(globals.isCustomer == false)
+        setCountry(),
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
+              if(globals.isCustomer ==true)
               Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
-              InkWell(
+              if(globals.isCustomer ==true)
+                InkWell(
                 child: Text(
                   AppLocalizations.of(context).translate('signin_txt_terms'),
                   style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent),
                 ),
                 //onTap: _launchURL,
               ),
+
+              if(globals.isCustomer ==false)
+                Text(
+                  "Agree With ",
+                  style: TextStyle(color: Colors.grey),
+              ),
+              if(globals.isCustomer ==false)
+                InkWell(
+                child: Text(
+                    AppLocalizations.of(context).translate('signin_txt_terms'),
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      color: Colors.orangeAccent,
+                    )),
+                //onTap: _launchURL,
+              ),
+
             ]
         ),
        // SizedBox(height: 10,),
@@ -503,15 +571,28 @@ class _customerSignup extends State<CustomerSignup>{
                   Text("Resend OTP"),
                   IconButton(icon: Icon(Icons.refresh),
                     onPressed: () {
-                    getOTP(txtContact.text);
-//                      Map<String, String> data = new Map();
-//                      data["first_name"] = txtName.text;
-//                      data["last_name"] = txtLname.text;
-//                      data["password"] = txtPass.text;
-//                      data["contact"] = txtContact.text;
-//                      data["type_id"] = "4";
-//                      data["term_id"] = "1";
-//                      callLoginAPI(data);
+//                    getOTP(txtContact.text);
+                      Map<String, String> data = new Map();
+                      data["first_name"] = txtName.text;
+                      data["last_name"] = txtLname.text;
+                      data["password"] = txtPass.text;
+                      data["token"] = globals.fcmToken;
+                      data["email"] = txtEmail.text;
+                      data["contact"] = txtContact.text;
+                      if(Platform.isAndroid) {
+                        data["device"] = "Android";
+                      } else if (Platform.isIOS) {
+                        data["device"] = "IOS";
+                      }
+                      if(globals.isCustomer == true) {
+                        data["type_id"] = "4";
+                        data["term_id"] = "1";
+                      } else {
+                        data["type_id"] = "3";
+                        data["term_id"] = "2";
+                        data["resident_country"] = selectedCountry;
+                      }
+                      callLoginAPI(data);
                     },
                   ),
 
@@ -530,6 +611,42 @@ class _customerSignup extends State<CustomerSignup>{
       ,);
   }
 
+
+
+  Widget setCountry() {
+    return Material(
+      elevation: 5.0,
+      shadowColor: Colors.grey,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+        child: Row(
+          children: [
+            Text(
+              "Select Country",
+              style: TextStyle(color: Colors.grey),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: DropdownButton(
+                  hint: Text('Select Country'),
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  value: selectedCountry,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Configurations.themColor,
+                  ),
+                  items: _dropDownTypes,
+                  onChanged: changedDropDownItem),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void signinWithGmail() {
     signInWithGoogle()
         .whenComplete(() {
@@ -544,7 +661,7 @@ class _customerSignup extends State<CustomerSignup>{
         if(g_user.displayName.split(" ")[1] != null){
           data["last_name"] = g_user.displayName.split(" ")[1];
         }
-        data["token"] = fcm_token;
+        data["token"] = globals.fcmToken;
         data["password"] = g_user.id;
         data["email"] = g_user.email;
         data["image"] = g_user.photoUrl;
@@ -553,8 +670,14 @@ class _customerSignup extends State<CustomerSignup>{
         } else if (Platform.isIOS) {
           data["device"] = "IOS";
         }
-        data["type_id"] = "4";
-        data["term_id"] = "1";
+        if(globals.isCustomer == true) {
+          data["type_id"] = "4";
+          data["term_id"] = "1";
+        } else {
+          data["type_id"] = "3";
+          data["term_id"] = "2";
+        }
+
         data["social_signin"] = "gmail";
         print(data);
         callLoginAPI(data);

@@ -15,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
 
 class InitialProfileScreen extends StatelessWidget {
 
@@ -413,8 +414,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     print("come for response");
     print(res);
     if(res != null) {
-      User user = User.fromJson(res);
-      Preferences.saveObject("user", jsonEncode(user.toJson()));
+      globals.currentUser = User.fromJson(res);
+      Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
       Navigator.pushReplacement(
           context,

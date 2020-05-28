@@ -90,6 +90,7 @@ class _MyAppState extends State<MyApp> {
     });
     _firebaseMessaging.getToken().then((String token) {
       Preferences.saveObject("fcm_token", token);
+      globals.fcmToken = token;
       print("token: $token");
     });
 

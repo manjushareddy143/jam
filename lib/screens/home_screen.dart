@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -47,20 +49,14 @@ class _HomePageState extends State<HomePage> {
 
   final _formKey = GlobalKey<FormState>();
 
-
-
-
-
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
-
+    print(globals.currentUser.roles[0].slug);
   }
+
+
 
 
 
@@ -219,9 +215,9 @@ class _HomePageState extends State<HomePage> {
     HomeUIDesign(),
     CategoryScreen(),
     ProfileUIPage(key: key),
-    if(globals.isVendor == false)
+    if(globals.currentUser.roles[0].slug == 'customer')
     OrderUIPage(url: Configurations.BOOKING_URL,),
-    if(globals.isVendor == true)
+    if(globals.currentUser.roles[0].slug == 'provider')
       VendorOrderUIPage(),
 
   ];

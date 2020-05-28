@@ -9,11 +9,13 @@ import 'package:http/http.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/main.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/screens/initial_profile.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/globals.dart' as globals;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -81,12 +83,25 @@ class SplashScreenState extends State<SplashScreen> {
               builder: (context) => InitialProfileScreen(),
             ));
       } else {
+        setProfile();
+      }
+    });
+  }
+
+  void setProfile() async  {
+    await Preferences.readObject("user").then((onValue) async {
+      var userdata = json.decode(onValue);
+      printLog('userdata');
+      printLog(userdata);
+      setState(() {
+        globals.currentUser = User.fromJson(userdata);
+        print(globals.currentUser.roles[0].slug);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => HomeScreen(),
             ));
-      }
+      });
     });
   }
 }

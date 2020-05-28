@@ -42,7 +42,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
-          child:Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
+          child:Padding(padding: EdgeInsets.fromLTRB(5, 10, 5,10),
           child: Column( crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),

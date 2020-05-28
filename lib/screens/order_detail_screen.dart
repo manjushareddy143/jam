@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:http/http.dart';
@@ -29,16 +30,22 @@ class _DetailUIPageState extends State<DetailUIPage> {
   _DetailUIPageState({Key key, @required this.order});
   bool isRatingDisplay = true;
   List<DropdownMenuItem<String>> _dropDownTypes;
-  List _lstType = ["","Too Slow","Vendor not responding",
-  "Last minute plans"];
-  String ddownvalue;
+  List _customerCancelReasonList = ["Too Slow","Vendor not responding", "Last minute plans"];
+  List _vendorCancelReasonList = ["Too Far","Customer not reachable", "Address not available"];
+  String cancelReason;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
-   ddownvalue = _dropDownTypes[0].value;
+    if(globals.currentUser.roles[0].slug == "customer") {
+      _dropDownTypes = buildAndGetDropDownMenuItems(_customerCancelReasonList);
+    } else {
+      _dropDownTypes = buildAndGetDropDownMenuItems(_vendorCancelReasonList);
+    }
+
+   cancelReason = _dropDownTypes[0].value;
+
   }
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
     List<DropdownMenuItem<String>> items = List();
@@ -54,7 +61,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     printLog(selectedItem);
     setState(() {
       printLog(selectedItem);
-      ddownvalue = selectedItem;
+      cancelReason = selectedItem;
     });
   }
 
@@ -78,6 +85,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
            setServiceInfo(),
            detailInfo(),
 
+           if(order.status == 5)
            ButtonTheme(
              minWidth: 270.0,
              child:  RaisedButton(
@@ -92,28 +100,81 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  }
              ),
            ),
-           ButtonTheme(
-             minWidth: 270.0,
-             child:  RaisedButton(
-                 color: Configurations.themColor,
-                 textColor: Colors.white,
-                 child: const Text(
-                     'Cancel',
-                     style: TextStyle(fontSize: 16.5)
+
+           Row(
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: <Widget>[
+               if(order.status == 1)
+               ButtonTheme(
+                 child:  RaisedButton(
+                     color: Configurations.themColor,
+                     textColor: Colors.white,
+                     child: Row(
+                       children: <Widget>[
+                         Icon(Icons.check_circle, color: Colors.white, size: 20,),
+                         SizedBox(width: 10,),
+                         Text(
+                             'Accept',
+                             style: TextStyle(fontSize: 14)
+                         ),
+                       ],
+                     ),
+                     onPressed: () => {
+                       print("Accept")
+                     }
                  ),
-                 onPressed: () => {
-                   showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                       return buildCancelDialog(context);
+               ),
 
-                     },
-                   )
-                 }
-             ),
+               if(order.status == 2)
+                 ButtonTheme(
+                   child:  RaisedButton(
+                       color: Configurations.themColor,
+                       textColor: Colors.white,
+                       child: Row(
+                         children: <Widget>[
+                           Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+                           SizedBox(width: 8,),
+                           Text(
+                               'Complete',
+                               style: TextStyle(fontSize: 14)
+                           ),
+                         ],
+                       ),
+                       onPressed: () => {
+                         print("Accept")
+                       }
+                   ),
+                 ),
+
+               SizedBox(width: 50,),
+               if(order.status != 5)
+               ButtonTheme(
+                 child:  RaisedButton(
+                     color: Configurations.themColor,
+                     textColor: Colors.white,
+                     child: Row(
+                       children: <Widget>[
+                         Icon(Icons.cancel, color: Colors.white, size: 20,),
+                         SizedBox(width: 10,),
+                         Text(
+                             'Cancel',
+                             style: TextStyle(fontSize: 14)
+                         ),
+                       ],
+                     ),
+                     onPressed: () => {
+                       showDialog(
+                         context: context,
+                         builder: (BuildContext context) {
+                           return buildCancelDialog(context);
+
+                         },
+                       )
+                     }
+                 ),
+               ),
+             ],
            ),
-
-
          ]),
      );
 
@@ -315,23 +376,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
             ],
           ),
           ),
-
-//          Padding(padding: EdgeInsets.fromLTRB(30, 0, 30,0),
-//          child: Divider(
-//            color: Colors.black,
-//          ),
-//          ),
-
-//          Padding(padding: EdgeInsets.fromLTRB(40, 10, 0, 15),
-//            child: Column(
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              children: <Widget>[
-//                Text("Category", style: TextStyle(fontSize: 12, color: Colors.grey),),
-//                SizedBox(height: 5,),
-//                Text(order.category)
-//              ],
-//            ),
-//          ),
 
         ],
       )
@@ -676,15 +720,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
             underline: SizedBox(),
             isExpanded: true,
-            value: ddownvalue,
+            value: cancelReason,
             icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
             items: _dropDownTypes,
             onChanged:  (value) {
-    setState(() {
-    printLog("RATE :: $value");
-    ddownvalue = value;
-
-    });
+              setState(() {
+                printLog("RATE :: $value");
+                cancelReason = value;
+              });
     },),
         ),
 

@@ -10,6 +10,7 @@ class Configurations {
   static const String API_VERSION = "/api/v1";
 //  static const String About_Account_URL = "https://mybms.in/a/droetker";
   static const String REGISTER_URL = BASE_URL + APP_URL + API_VERSION + "/register";
+  static const String REGISTER_PROVIDER_URL = BASE_URL + APP_URL + API_VERSION + "/register_provider";
   static const String PROFILE_URL = BASE_URL + APP_URL + API_VERSION + "/init_profile";
   static const String LOGIN_URL = BASE_URL + APP_URL + API_VERSION + "/login";
   static const String BOOKING_URL = BASE_URL + APP_URL + API_VERSION + "/booking";
