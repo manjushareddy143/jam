@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/order_detail_screen.dart';
-import 'package:jam/screens/order_list_screen.dart';
+import 'package:jam/screens/customer_order_list.dart';
 import 'package:jam/screens/splash_screen.dart';
 import 'package:jam/services.dart';
 

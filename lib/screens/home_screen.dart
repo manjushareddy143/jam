@@ -8,7 +8,7 @@ import 'package:jam/placeholder_widget.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
-import 'package:jam/screens/order_list_screen.dart';
+import 'package:jam/screens/customer_order_list.dart';
 import 'package:jam/screens/user_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
@@ -16,6 +16,8 @@ import 'package:jam/utils/utils.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:jam/login/masterSignupScreen.dart';
 import 'package:jam/screens/category_screen.dart';
+import 'package:jam/globals.dart' as globals;
+import 'package:jam/screens/vendor_order_list.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -50,10 +52,18 @@ class _HomePageState extends State<HomePage> {
 
 
 
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
+
+
+
   }
+
+
+
 
   var editIcon = Icons.mode_edit;
 
@@ -146,6 +156,9 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => UserLogin()));
             },
           ),
+
+
+
         ],
         iconTheme: IconThemeData(
           color: Colors.grey,
@@ -206,7 +219,13 @@ class _HomePageState extends State<HomePage> {
     HomeUIDesign(),
     CategoryScreen(),
     ProfileUIPage(key: key),
-    OrderUIPage(),
+    if(globals.isVendor == false)
+      OrderUIPage(),
+    if(globals.isVendor == true)
+      VendorOrderUIPage(),
+
+
+
   ];
 
   void onTabTapped(int index) {
