@@ -3,6 +3,7 @@ import 'package:jam/app_localizations.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/globals.dart' as globals;
 class vendor extends StatelessWidget {
 
   Widget build(BuildContext context) {
@@ -30,6 +31,7 @@ class _vendorSignup extends State<VendorSignup>{
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
   }
@@ -206,6 +208,7 @@ class _vendorSignup extends State<VendorSignup>{
                       style: TextStyle(fontSize: 16.5)
                   ),
                   onPressed: () {
+                    globals.isVendor = true;
                   //  _validateInputs();
                   }
 

@@ -31,6 +31,7 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:jam/globals.dart' as globals;
 
 class customer extends StatelessWidget {
 
@@ -46,6 +47,16 @@ class CustomerSignup extends StatefulWidget {
   _customerSignup createState() => _customerSignup();
 }
 class _customerSignup extends State<CustomerSignup>{
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    globals.context = context;
+  }
+
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _showOTPField = false;
@@ -366,6 +377,7 @@ class _customerSignup extends State<CustomerSignup>{
             Text("Already have an account?"),
 
             FlatButton( onPressed:() {
+
               Navigator.push(
                   context, new MaterialPageRoute(
                 builder: (BuildContext context) => UserLogin(),
