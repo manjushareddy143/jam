@@ -220,11 +220,9 @@ class _HomePageState extends State<HomePage> {
     CategoryScreen(),
     ProfileUIPage(key: key),
     if(globals.isVendor == false)
-      OrderUIPage(),
+    OrderUIPage(url: Configurations.BOOKING_URL,),
     if(globals.isVendor == true)
       VendorOrderUIPage(),
-
-
 
   ];
 

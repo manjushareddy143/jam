@@ -31,6 +31,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
   TabController _tabController;
   @override
   void initState() {
+    printLog("VENDOR");
     // TODO: implement initState
     super.initState();
     _tabController = new TabController(vsync: this, length:2);
@@ -69,8 +70,8 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
 
 
                 children: <Widget>[
-                  OrderUIPage(),
-                  OrderUIPage(),
+                  OrderUIPage(url: Configurations.BOOKING_URL,),
+                  OrderUIPage(url: Configurations.PROVIDER_BOOKING_URL,),
                 ],),
             ),),
 

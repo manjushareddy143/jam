@@ -9,4 +9,4 @@ import 'package:jam/screens/home_screen.dart';
 BuildContext context;
 String orderStatus;
 Order order;
-bool isVendor;
+bool isVendor = false;
