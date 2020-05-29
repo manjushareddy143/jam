@@ -67,7 +67,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
             ),
           Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
             child: Container(
-              height: 500,
+                height: 500,
               child: TabBarView(controller:_tabController,
 
 

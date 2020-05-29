@@ -676,6 +676,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         Navigator.of(context).pop();
+        getOrderDetail();
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);
@@ -948,7 +949,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     HttpClient httpClient = new HttpClient();
     print('api call start signup');
     var syncUserResponse =
-    await httpClient.getRequest(context, Configurations.BOOKING_URL + globals.order.id.toString(), null,
+    await httpClient.getRequest(context, Configurations.BOOKING_URL + "/" + globals.order.id.toString(), null,
         null, true, false);
     processOrderResponse(syncUserResponse);
   }
@@ -957,8 +958,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
+        print("data ::: $data");
+
         setState(() {
           globals.order = Order.fromJson(data);
+          print("rating ::: ${globals.order.rating}");
+          build(context);
         });
 
       } else {

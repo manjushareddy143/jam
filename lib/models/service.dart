@@ -23,7 +23,6 @@ class Service {
 
 
   static List<Service> processServices(List services) {
-    print("ervice = $services");
     return services.map<Service>((json) => new Service.fromJson(json)).toList();
   }
 }

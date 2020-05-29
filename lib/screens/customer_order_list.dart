@@ -75,15 +75,17 @@ class _OrderUIPageState extends State<OrderUIPage> {
     }
   }
 
-  void processOrdersResponse(Response res) {
+  void processOrdersResponse(Response res) async {
     print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print('providers=== $data');
+//        print('ORDERSSS === $data');
         List orders = data;
         setState(() {
+          printLog("MYDDDDDAARA");
           listofOrders = Order.processOrders(orders);
+          printLog("LISTSSS :: ${listofOrders.length}");
 //          build(context);
         });
       } else {
