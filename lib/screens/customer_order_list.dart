@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart';
 import 'package:jam/models/order.dart';
@@ -22,21 +23,24 @@ class Orders extends StatelessWidget{
 }
 class OrderUIPage extends StatefulWidget {
   final String url;
-  OrderUIPage({Key key, @required user, this.url}) : super(key: key);
+  final bool isCustomer;
+  OrderUIPage({Key key, @required user, this.url, this.isCustomer}) : super(key: key);
   @override
-  _OrderUIPageState createState() => _OrderUIPageState(key: key, url: this.url);
+  _OrderUIPageState createState() => _OrderUIPageState(key: key, url: this.url, isCustomer: this.isCustomer);
 }
 class _OrderUIPageState extends State<OrderUIPage> {
   final String url;
+  final bool isCustomer;
   int oIndex = 0;
   List<Order> listofOrders;
   User user;
 
-  _OrderUIPageState({Key key, this.url});
+  _OrderUIPageState({Key key, this.url, this.isCustomer});
 
   @override
   void initState() {
     printLog("CUSTMMER ${this.url}");
+    printLog("isCustomer ${this.isCustomer}");
 //    printLog(this.user.first_name);
     // TODO: implement initState
     super.initState();
@@ -105,7 +109,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
           body:
           SingleChildScrollView(
             child: Column(
-                mainAxisSize: MainAxisSize.min,
+              mainAxisSize: MainAxisSize.max,
+//                mainAxisSize: MainAxisSize.min,
                 children: listOfCards()
             ),
           )
@@ -147,8 +152,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
       status_icon = Icons.cancel;
       break;
       default : statusString = 'Order Completed';
-      status_color = Colors.green;
-      status_icon = Icons.check_circle;
+      status_color = Configurations.themColor;
+      status_icon = Icons.thumb_up;
     }
 
     return Container(
@@ -156,10 +161,11 @@ class _OrderUIPageState extends State<OrderUIPage> {
         onTap: ()=> {
           print("ONTAP CARD ${order.id}"),
           globals.order = order,
+        printLog("this.isCustomer ${this.isCustomer}"),
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailUIPage(order: order,)
+                  builder: (context) => DetailUIPage(order: order, isCustomer: this.isCustomer,)
               )
           )
         },
@@ -228,22 +234,28 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
                       Row(
                         children: <Widget>[
-                          FlatButton(
+                          SizedBox(child: Row(
+                            children: <Widget>[
+                              FlatButton(
 //                              onPressed:  () {
 //                                print('Call Press');
 //                              },
-                              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                              child: Text(statusString,
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: status_color),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 5,
-                              )
+                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                  child: Text(statusString,
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: status_color),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 5,
+                                  )
+                              ),
+                              SizedBox(width: MediaQuery. of(context). size. width / 6.5,),
+                              Icon(status_icon, color: status_color, size: 15,),
+                            ],
                           ),
-                          SizedBox(width: MediaQuery. of(context). size. width / 6.5,),
-                          Icon(status_icon, color: status_color, size: 15,),
+                          ),
+
 
                         ],
                       ),

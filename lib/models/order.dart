@@ -21,6 +21,7 @@ class Order {
   final String end_time;
   final String remark;
   final int rating;
+  final int otp;
   final String comment;
   final Address address;
 
@@ -30,7 +31,7 @@ class Order {
       this.end_time, this.remark, this.status, this.booking_date,
       this.service, this.category, this.provider_first_name,
       this.provider_image, this.provider_last_name,
-      this.rating, this.comment,this.user_id,this.address);
+      this.rating, this.comment,this.user_id,this.address, this.otp);
 
 
   Order.fromJson(Map<String, dynamic> json)
@@ -45,6 +46,7 @@ class Order {
         provider_image = json['provider_image'],
         provider_last_name = json['provider_last_name'],
         rating = json['rating'], comment = json['comment'], user_id = json['user_id'],
+        otp = json['otp'],
         address = ((json.containsKey('address') && json['address'] != null ) ? Address.fromJson(json['address']) : null);
 
 

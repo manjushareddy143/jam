@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
     CategoryScreen(),
     ProfileUIPage(key: key),
     if(globals.currentUser.roles[0].slug == 'customer')
-    OrderUIPage(url: Configurations.BOOKING_URL,),
+    OrderUIPage(url: Configurations.BOOKING_URL, isCustomer: true,),
     if(globals.currentUser.roles[0].slug == 'provider')
       VendorOrderUIPage(),
 

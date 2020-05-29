@@ -11,6 +11,7 @@ import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/otp_screen.dart';
+import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
 
@@ -21,14 +22,17 @@ class OrderDetail extends StatelessWidget{
 }
 class DetailUIPage extends StatefulWidget {
   final Order order;
-  DetailUIPage({Key key, @required this.order}) : super(key: key);
+  final bool isCustomer;
+  DetailUIPage({Key key, @required this.order, @required this.isCustomer}) : super(key: key);
   @override
-  _DetailUIPageState createState() => _DetailUIPageState(order: this.order);
+  _DetailUIPageState createState() => _DetailUIPageState(order: this.order, isCustomer: this.isCustomer);
 }
 class _DetailUIPageState extends State<DetailUIPage> {
   final Order order;
-  _DetailUIPageState({Key key, @required this.order});
+  final bool isCustomer;
+  _DetailUIPageState({Key key, @required this.order, @required this.isCustomer});
   bool isRatingDisplay = true;
+  bool showOTP = false;
   List<DropdownMenuItem<String>> _dropDownTypes;
   List _customerCancelReasonList = ["Too Slow","Vendor not responding", "Last minute plans"];
   List _vendorCancelReasonList = ["Too Far","Customer not reachable", "Address not available"];
@@ -38,15 +42,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(globals.currentUser.roles[0].slug == "customer") {
+    if(this.isCustomer == true) {
       _dropDownTypes = buildAndGetDropDownMenuItems(_customerCancelReasonList);
     } else {
       _dropDownTypes = buildAndGetDropDownMenuItems(_vendorCancelReasonList);
     }
-
    cancelReason = _dropDownTypes[0].value;
 
+    printLog("this.isCustomer mayur ${this.isCustomer}");
   }
+
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
@@ -76,6 +81,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
     );
   }
+
   Widget detailUI(){
      return SingleChildScrollView(
          child: Column(mainAxisSize: MainAxisSize.min,
@@ -104,7 +110,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
            Row(
              mainAxisAlignment: MainAxisAlignment.center,
              children: <Widget>[
-               if(order.status == 1)
+               if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
                ButtonTheme(
                  child:  RaisedButton(
                      color: Configurations.themColor,
@@ -120,12 +126,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
                        ],
                      ),
                      onPressed: () => {
-                       print("Accept")
+                       print("Accept"),
+                       orderAccept()
                      }
                  ),
                ),
 
-               if(order.status == 2)
+               if(order.status == 2 && this.isCustomer == false)
                  ButtonTheme(
                    child:  RaisedButton(
                        color: Configurations.themColor,
@@ -141,13 +148,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          ],
                        ),
                        onPressed: () => {
-                         print("Accept")
+                         print("COmplete"),
+                         showDialog(
+                           context: context,
+                           builder: (BuildContext context) {
+                             return buildCompleteDialog(context);
+
+                           },
+                         )
                        }
                    ),
                  ),
-
+               if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
                SizedBox(width: 50,),
-               if(order.status != 5)
+               if(order.status != 5 && order.status != 4 && order.status != 3)
                ButtonTheme(
                  child:  RaisedButton(
                      color: Configurations.themColor,
@@ -177,7 +191,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
            ),
          ]),
      );
-
   }
 
 
@@ -196,11 +209,23 @@ class _DetailUIPageState extends State<DetailUIPage> {
      status_color = Colors.green;
      status_icon = Icons.check_circle;
      break;
-     case 3: statusString = 'Order Cancel by ' + order.provider_first_name;
+     case 3:
+       if(globals.currentUser.roles[0].slug == "customer") {
+         statusString = 'Order Cancel by You';
+       } else {
+         statusString = 'Order Cancel by ' + globals.order.orderer_name;
+       }
+
      status_color = Colors.red;
      status_icon = Icons.cancel;
      break;
-     case 4: statusString = 'Order Cancel by You';
+     case 4:
+       if(globals.currentUser.roles[0].slug == "customer") {
+         statusString = 'Order Cancel by You';
+       } else {
+         statusString = 'Order Cancel by ' + globals.order.orderer_name;
+       }
+
      status_color = Colors.red;
      status_icon = Icons.cancel;
      break;
@@ -297,9 +322,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(Octicons.person, color: Configurations.themColor,),
-                Text("Vendor: ",
+                Text((this.isCustomer == true) ?"Vendor: " : "Customer: ",
                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20)),
-                Text(globals.order.provider_first_name,
+                Text((this.isCustomer == true) ? globals.order.provider_first_name : globals.order.orderer_name,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 20)),
               ],
             ),
@@ -345,6 +370,42 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
           ),
 
+
+
+
+
+          /// SHOW OTP
+          if(order.status == 2 && this.isCustomer == true)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Visibility(child: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 0,0),
+                  child: OutlineButton(onPressed: () => {
+                    showBookingOTP()
+                  }, child: Text("GET OTP"),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                      borderSide: BorderSide(color: Configurations.themColor)
+                  )
+              ),
+                visible: !showOTP,
+              ),
+
+              Visibility(child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 50,),
+                  Text("OTP: ", style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(globals.order.otp.toString(),  style: TextStyle(fontWeight: FontWeight.w400)),
+                ],
+              ),
+              visible: showOTP,),
+
+
+            ],
+          ),
+
+          if(order.status == 5 && this.isCustomer == true)
           Visibility(visible: !isRatingDisplay,
             child: Row(
               children: <Widget>[
@@ -382,6 +443,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
  }
 
+ void showBookingOTP() {
+    setState(() {
+      showOTP = true;
+    });
+
+ }
 
 
 
@@ -597,7 +664,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       print('api call start signup');
       var syncUserResponse =
           await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data);
-      processLoginResponse(syncUserResponse);
+      processRatingResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -605,7 +672,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
   }
 
-  processLoginResponse(Response res)  {
+  processRatingResponse(Response res)  {
     if (res != null) {
       if (res.statusCode == 200) {
         Navigator.of(context).pop();
@@ -651,11 +718,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
   }
 
-
-  final format = DateFormat("dd-MM-yyyy");
-  final formatt= DateFormat("HH:mm");
-  final txtCancel = TextEditingController();
-
   Widget buildCancelDialog(BuildContext context) {
     return AlertDialog(
       content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
@@ -663,7 +725,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildCancelHeader(),
+            buildCancelHeader("Service Cancellation Request"),
 
             SizedBox(
               height: 10.0,
@@ -690,7 +752,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
       }),
     );
   }
-  Widget buildCancelHeader() {
+
+  final format = DateFormat("dd-MM-yyyy");
+  final formatt= DateFormat("HH:mm");
+  final txtCancel = TextEditingController();
+
+  Widget buildCancelHeader(String title) {
     return new Padding(
       padding: const EdgeInsets.only(top: 0.0),
       child: new Row(
@@ -698,8 +765,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Service Cancellation Request',
-            style: const TextStyle(fontSize: 17.0, color: Colors.orangeAccent, fontWeight: FontWeight.bold),
+            title,
+            style: TextStyle(fontSize: 17.0, color: Configurations.themColor, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -711,8 +778,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text("Reason :", style:TextStyle(color: Configurations.themColor) ,),
-
-
        // SizedBox(width: 5,),
         Expanded(child: DropdownButton(
 
@@ -744,7 +809,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
             child: RaisedButton(
               color: Colors.black,
               onPressed: () {
-
+                Map<String, String> data = new Map();
+                data["reason"] = cancelReason;
+                data["comment"] = txtCancel.text;
+                data["booking_id"] = globals.order.id.toString();
+                if(globals.currentUser.roles[0].slug == "customer") {
+                  data["status"] = "4";
+                } else {
+                  data["status"] = "3";
+                }
+                orderStatusUpdate(data);
               },
               child: const Text('OK', style: TextStyle(fontSize: 20,color: Colors.white)),
             ),
@@ -754,5 +828,147 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
   }
 
+  Widget buildCompleteDialog(BuildContext context) {
+    return AlertDialog(
+      content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildCancelHeader("ENTER OTP"),
+
+            SizedBox(
+              height: 10.0,
+              child: new Center(
+                child: new Container(
+                  margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                  height: 0.9,
+                  color: Configurations.themColor,
+                ),
+              ),
+            ),
+
+            Column(mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 10),
+                Container(padding: EdgeInsets.all(0),
+                  width: 230,
+                  height: 40,
+                  child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
+                    showFieldAsBox: true,
+                    fields: 4,
+                    onSubmit: submitPin,
+//                  fieldWidth: 300.0,
+//                  fontSize: 10,
+
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(height: 10),
+            SubmitButton(context),
+
+          ],
+        );
+      }),
+    );
+  }
+
+  String otp = "";
+
+  submitPin(String pin) {
+    print(pin);
+    otp = pin;
+  }
+
+  Widget SubmitButton(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            width: double.infinity, // match_parent
+            child: RaisedButton(
+              color: Configurations.themColor,
+              onPressed: () {
+                Map<String, String> data = new Map();
+                data["booking_id"] = globals.order.id.toString();
+                data["status"] = "5";
+                data["otp"] = otp;
+                orderStatusUpdate(data);
+              },
+              child: Text('SUBMIT', style: TextStyle(fontSize: 20,color: Colors.white)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  void orderAccept() {
+    Map<String, String> data = new Map();
+    data["booking_id"] = globals.order.id.toString();
+    data["status"] = "2";
+    orderStatusUpdate(data);
+  }
+
+  void  orderStatusUpdate(Map<String, String> data) async {
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.BOOKING_STATUS_URL, data);
+      processCancelOrderResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  processCancelOrderResponse(Response res)  {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        Navigator.of(context).pop();
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    } else {
+      showInfoAlert(context, "Unknown error from server");
+    }
+  }
+
+  void getOrderDetail() async {
+    HttpClient httpClient = new HttpClient();
+    print('api call start signup');
+    var syncUserResponse =
+    await httpClient.getRequest(context, Configurations.BOOKING_URL + globals.order.id.toString(), null,
+        null, true, false);
+    processOrderResponse(syncUserResponse);
+  }
+
+  processOrderResponse(Response res)  {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        setState(() {
+          globals.order = Order.fromJson(data);
+        });
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    } else {
+      showInfoAlert(context, "Unknown error from server");
+    }
+  }
 
 }

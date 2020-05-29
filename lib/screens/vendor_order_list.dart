@@ -49,6 +49,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
               child: Container(height:70,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                 child: TabBar(
+                  onTap:  onTap,
                   controller: _tabController,
                   indicatorColor: Colors.teal,
                   labelColor: Colors.black,
@@ -57,21 +58,22 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
                       topLeft: Radius.circular(10))),
 
                   tabs:  <Widget>[
-                    Tab(icon: Icon(Icons.home), text: "Orders- By Me"),
-                    Tab(icon: Icon(Icons.work), text: "Orders- For Me"),
+                    Tab(icon: Icon(Icons.home), text: "Your Bookings"),
+                    Tab(icon: Icon(Icons.work), text: "Customer Bookings"),
 
                   ],
                 ),
               ),
             ),
           Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
-            child: Container(height: 600,
+            child: Container(
+              height: 500,
               child: TabBarView(controller:_tabController,
 
 
                 children: <Widget>[
-                  OrderUIPage(url: Configurations.BOOKING_URL,),
-                  OrderUIPage(url: Configurations.PROVIDER_BOOKING_URL,),
+                  OrderUIPage(url: Configurations.BOOKING_URL, isCustomer: true,),
+                  OrderUIPage(url: Configurations.PROVIDER_BOOKING_URL, isCustomer: false,),
                 ],),
             ),),
 
@@ -80,5 +82,16 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
         ),
       ),
     );
+  }
+
+  void onTap(val) {
+    print(val);
+    setState(() {
+      if(val == 0) {
+        globals.isVendor = false;
+      } else {
+        globals.isVendor = true;
+      }
+    });
   }
 }
