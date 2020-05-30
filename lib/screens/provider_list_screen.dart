@@ -117,7 +117,9 @@ class _ProviderListState extends State<ProviderListPage> {
 
     list.add(Image.network(
       this.service.banner_image,
-      fit: BoxFit.contain,
+      fit: BoxFit.fill,
+      width: MediaQuery. of(context). size. width,
+      height: 100,
     ));
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
