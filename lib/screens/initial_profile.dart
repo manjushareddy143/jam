@@ -107,7 +107,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
-      height: screenSize.height /3.6,
+      height: screenSize.height /3.4,
       child: Column(
         children: <Widget>[
           SizedBox(height: 30),
@@ -281,6 +281,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             ],
           ),
           ),
+        /*setServiceListVendor(),
+          Padding(padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+            child: Card(
+              elevation: 5.0,
+              child: ListTile(
+                onTap: enterServices,
+                leading: Icon(Icons.work),
+                title: Text((adrs_name.text == "") ?  "Click to select SERVICES" : adrs_name.text),
+                subtitle: Text(addressString),
+              ),
+            ),
+          ), */
 
 
           // ADDRESS
@@ -689,4 +701,70 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       dropdownvalue = selectedItem;
     });
   }
+  /* void enterServices() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => setServiceListVendor(context),
+    );
+  }
+  bool _value1 = false;
+  void _value1Changed(bool value) => setState(() => _value1 = value);
+  Widget setServiceListVendor(BuildContext contest){
+    return AlertDialog(
+      title: Row(
+        children: <Widget>[
+          Icon(Icons.work),
+          Text("SERVICES",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orangeAccent,), ),
+        ],
+      ),
+    content: SingleChildScrollView(
+      child: Card(margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+
+        child: Row(
+          children: <Widget>[
+            Checkbox(value: _value1, onChanged: _value1Changed),
+            Container(padding: EdgeInsets.all(10),
+              child:   new Image.asset("assets/images/jamLogo.png",
+                height: 40.0, width: 80.0 , fit: BoxFit.contain, ),
+            ),
+
+            Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
+              child: Text("Carpenter",maxLines: 2,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.justify,
+
+              ),
+            ),
+          ],
+        ),
+
+      ),
+    )
+
+    );
+    Card(margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+
+      child: Row(
+        children: <Widget>[
+          Checkbox(value: _value1, onChanged: _value1Changed),
+          Container(padding: EdgeInsets.all(10),
+            child:   new Image.asset("assets/images/jamLogo.png",
+              height: 40.0, width: 80.0 , fit: BoxFit.contain, ),
+          ),
+
+          Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
+            child: Text("Carpenter",maxLines: 2,
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.justify,
+
+            ),
+          ),
+        ],
+      ),
+
+    )
+
+  } */
 }

@@ -111,7 +111,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
           body:
           SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
 //                mainAxisSize: MainAxisSize.min,
                 children: listOfCards()
             ),
@@ -172,7 +172,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
           )
         },
         child: new Card(
-            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            margin: EdgeInsets.fromLTRB(1, 10, 1, 10),
             elevation: 5,
             child: Row(
               children: <Widget>[
@@ -192,7 +192,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 10, 0, 0),
+                  padding: EdgeInsets.fromLTRB(0.5, 10, 0.5, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     textBaseline: TextBaseline.ideographic,
@@ -245,15 +245,15 @@ class _OrderUIPageState extends State<OrderUIPage> {
                                   padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                   child: Text(statusString,
                                     style: TextStyle(
-                                        fontSize: 12.0,
+                                        fontSize: 11.0,
                                         fontWeight: FontWeight.bold,
                                         color: status_color),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 5,
                                   )
                               ),
-                              SizedBox(width: MediaQuery. of(context). size. width / 6.5,),
-                              Icon(status_icon, color: status_color, size: 15,),
+                              SizedBox(width: MediaQuery. of(context). size. width / 7.8,),
+                              Icon(status_icon, color: status_color, size: 14,),
                             ],
                           ),
                           ),
