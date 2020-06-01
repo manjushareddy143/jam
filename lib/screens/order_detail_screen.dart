@@ -663,7 +663,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       HttpClient httpClient = new HttpClient();
       print('api call start signup');
       var syncUserResponse =
-          await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data);
+          await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data, true);
       processRatingResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -921,7 +921,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       HttpClient httpClient = new HttpClient();
       print('api call start signup');
       var syncUserResponse =
-          await httpClient.postRequest(context, Configurations.BOOKING_STATUS_URL, data);
+          await httpClient.postRequest(context, Configurations.BOOKING_STATUS_URL, data, true);
       processCancelOrderResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {

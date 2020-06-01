@@ -5,12 +5,9 @@ import 'package:hexcolor/hexcolor.dart';
 class Configurations {
   //URLS
   // droetker_staging / droetker
-
-  static const String BASE_URL = "https://staging.jam-app.com";
-
+  static const String BASE_URL =  "https://staging.jam-app.com";
   static const String APP_URL = "";
   static const String API_VERSION = "/api/v1";
-//  static const String About_Account_URL = "https://mybms.in/a/droetker";
   static const String REGISTER_URL = BASE_URL + APP_URL + API_VERSION + "/register";
   static const String REGISTER_PROVIDER_URL = BASE_URL + APP_URL + API_VERSION + "/register_provider";
   static const String PROFILE_URL = BASE_URL + APP_URL + API_VERSION + "/init_profile";

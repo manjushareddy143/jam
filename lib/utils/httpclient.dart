@@ -64,8 +64,13 @@ class HttpClient {
   }
 
   Future<http.Response> postRequest(
-      BuildContext context, String apiUrl, Map data) async {
-    showLoading(context);
+      BuildContext context, String apiUrl, Map data, bool isShowLoading) async {
+     if(isShowLoading) {
+       showLoading(context);
+     }
+
+
+
     bool isNetworkAvailable = await checkInternetConnection();
 
     if (isNetworkAvailable) {
