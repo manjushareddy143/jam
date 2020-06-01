@@ -293,7 +293,7 @@ class _user extends State<UserLogin>{
         var data = json.decode(res.body);
         print("data::::::::$data");
         globals.currentUser = User.fromJson(data);
-        if(globals.currentUser.address == null) {
+        if(globals.currentUser.address.length == 0) {
           print('NO ADDRESS');
           Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
           Preferences.saveObject("profile", "1");
