@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/login/customerSignup.dart';
-import 'package:jam/login/vendorSignup.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/globals.dart' as globals;
@@ -78,11 +78,15 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     child: Container(height:60, decoration:BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                       child: TabBar(
+                        dragStartBehavior: DragStartBehavior.start,
+//                        isScrollable: true,
                         controller: _tabController,
                         onTap:  onTap,
+                        isScrollable: false,
                         indicatorColor: Configurations.themColor,
                         labelColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
+//                        indicatorPadding: EdgeInsets.all(5.0),
                         indicator: BoxDecoration(color: Configurations.themColor, borderRadius:BorderRadius.only(topRight: Radius.circular(10),
                             topLeft: Radius.circular(10))
                         ),
@@ -106,6 +110,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                           )
                       ),
                       child: TabBarView(
+                        physics: NeverScrollableScrollPhysics(),
                         controller:_tabController,
                         children: <Widget>[
                           CustomerSignup(fcm_token: fcmToken,),
@@ -127,6 +132,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
     print(val);
     setState(() {
       if(val == 0) {
+
         headerTitle= "CUSTOMER SIGN-UP";
         viewHeight = 730;
         globals.isCustomer = true;

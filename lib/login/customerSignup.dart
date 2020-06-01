@@ -78,202 +78,9 @@ class _customerSignup extends State<CustomerSignup>{
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.isCustomer == true;
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     selectedCountry = _dropDownTypes[0].value;
-  }
-
-  void _value1Changed(bool value) => setState(() => _value1 = value);
-
-  var _authCredential;
-  static String status;
-  var firebaseAuth;
-
-
-
-  Future getOTP(String phone) async{
-    firebaseAuth = await FirebaseAuth.instance;
-    firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 120),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-
-  }
-
-  submitPin(String pin) {
-    print(pin);
-    pinCode = pin;
-  }
-
-  void otpVerification() async {
-    await _signInWithPhoneNumber(pinCode);
-  }
-
-
-  Future _signInWithPhoneNumber(String smsCode) async {
-    _authCredential = PhoneAuthProvider.getCredential(
-      verificationId: actualCode,
-      smsCode: smsCode,
-    );
-
-    firebaseAuth.signInWithCredential(_authCredential)
-        .then((AuthResult value) {
-      if (value.user != null) {
-        setState(() {
-          Map<String, String> data = new Map();
-          data["first_name"] = txtName.text;
-          data["last_name"] = txtLname.text;
-          data["password"] = txtPass.text;
-          data["email"] = txtEmail.text;
-          data["contact"] = txtContact.text;
-          data["token"] = globals.fcmToken;
-          if(Platform.isAndroid) {
-            data["device"] = "Android";
-          } else if (Platform.isIOS) {
-            data["device"] = "IOS";
-          }
-          if(globals.isCustomer == true) {
-            data["type_id"] = "4";
-            data["term_id"] = "1";
-          } else {
-            data["type_id"] = "3";
-            data["term_id"] = "2";
-            data["resident_country"] = selectedCountry;
-          }
-          callLoginAPI(data);
-        });
-      } else {
-        setState(() {
-          status = 'Invalid code/invalid authentication';
-          showInfoAlert(context, status);
-        });
-      }
-    }).catchError((error) {
-      setState(() {
-        status = 'Something has gone wrong, please try later';
-        showInfoAlert(context, status);
-      });
-    });
-  }
-
-
-  void _validateInputs() {
-    printLog("FCM ++ ${this.fcm_token}");
-    if (_formKey.currentState.validate()) {
-      if(_value1) {
-        _formKey.currentState.save();
-        printLog(txtContact.text);
-        if (Platform.isAndroid) {
-          Widget_Helper.showLoading(context);
-          getOTP(txtContact.text);
-          // Return here any Widget you want to display in Android Device.
-          printLog('Android Device Detected');
-        }
-        else if(Platform.isIOS) {
-          Map<String, String> data = new Map();
-          data["first_name"] = txtName.text;
-          data["last_name"] = txtLname.text;
-          data["password"] = txtPass.text;
-          data["token"] = globals.fcmToken;
-          data["email"] = txtEmail.text;
-          data["contact"] = txtContact.text;
-          if(Platform.isAndroid) {
-            data["device"] = "Android";
-          } else if (Platform.isIOS) {
-            data["device"] = "IOS";
-          }
-          if(globals.isCustomer == true) {
-            data["type_id"] = "4";
-            data["term_id"] = "1";
-          } else {
-            data["type_id"] = "3";
-            data["term_id"] = "2";
-            data["resident_country"] = selectedCountry;
-          }
-          callLoginAPI(data);
-          // Return here any Widget you want to display in iOS Device.
-          printLog('iOS Device Detected');
-        }
-        //
-
-      } else {
-        showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
-      }
-    } else {
-      setState(() {
-        _autoValidate = true;
-      });
-    }
-  }
-
-  Future callLoginAPI(Map<String, String> data) async {
-    printLog(data);
-    try {
-      HttpClient httpClient = new HttpClient();
-      print('api call start signup');
-      if(globals.isCustomer ==true) {
-        var syncUserResponse =
-        await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
-        processLoginResponse(syncUserResponse);
-      } else {
-        var syncUserResponse =
-        await httpClient.postRequest(context, Configurations.REGISTER_PROVIDER_URL, data);
-        processLoginResponse(syncUserResponse);
-
-      }
-
-    } on Exception catch (e) {
-      if (e is Exception) {
-        printExceptionLog(e);
-      }
-    }
-  }
-
-  void processLoginResponse(Response res) {
-    print("come for response ${res.statusCode}");
-    if (res != null) {
-      if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        print("come for data ${data}");
-        User user = User.fromJson(data);
-        printLog(user.first_name);
-        print(user.contact);
-        Preferences.saveObject("user", jsonEncode(user.toJson()));
-        if(data['existing_user'] == 1) {
-          Preferences.saveObject("profile", "0");
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => HomeScreen()
-              ),ModalRoute.withName('/'));
-//          Navigator.pushReplacement(
-//              context,
-//              MaterialPageRoute(
-//                builder: (context) => HomeScreen(),
-//              )
-//          );
-        } else {
-          Preferences.saveObject("profile", "1");
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => InitialProfileScreen()
-              ),ModalRoute.withName('/'));
-//          Navigator.pushReplacement(
-//              context,
-//              MaterialPageRoute(
-//                builder: (context) => InitialProfileScreen(),
-//              ));
-        }
-
-      } else {
-        printLog("login response code is not 200");
-        var data = json.decode(res.body);
-        showInfoAlert(context, "ERROR");
-      }
-    }
   }
 
   @override
@@ -286,20 +93,6 @@ class _customerSignup extends State<CustomerSignup>{
     );
   }
 
-  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
-    List<DropdownMenuItem<String>> items = List();
-    reportForlist.forEach((key) {
-      items.add(DropdownMenuItem(value: key, child: Text(key)));
-    });
-    return items;
-  }
-
-  void changedDropDownItem(String selectedItem) {
-    setState(() {
-      selectedCountry = selectedItem;
-      printLog(selectedCountry);
-    });
-  }
   Widget customerScreenUI(){
     return Container(
       margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
@@ -412,40 +205,40 @@ class _customerSignup extends State<CustomerSignup>{
         SizedBox(height: 10,),
 
         if(globals.isCustomer == false)
-        setCountry(),
+          setCountry(),
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
               if(globals.isCustomer ==true)
-              Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
+                Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
               if(globals.isCustomer ==true)
                 InkWell(
-                child: Text(
-                  AppLocalizations.of(context).translate('signin_txt_terms'),
-                  style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent),
+                  child: Text(
+                    AppLocalizations.of(context).translate('signin_txt_terms'),
+                    style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent),
+                  ),
+                  onTap: _launchURL,
                 ),
-                //onTap: _launchURL,
-              ),
 
               if(globals.isCustomer ==false)
                 Text(
                   "Agree With ",
                   style: TextStyle(color: Colors.grey),
-              ),
+                ),
               if(globals.isCustomer ==false)
                 InkWell(
-                child: Text(
-                    AppLocalizations.of(context).translate('signin_txt_terms'),
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Colors.orangeAccent,
-                    )),
-                //onTap: _launchURL,
-              ),
+                  child: Text(
+                      AppLocalizations.of(context).translate('signin_txt_terms'),
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.orangeAccent,
+                      )),
+                  onTap: _launchURL,
+                ),
 
             ]
         ),
-       // SizedBox(height: 10,),
+        // SizedBox(height: 10,),
 
 
 
@@ -470,6 +263,7 @@ class _customerSignup extends State<CustomerSignup>{
 
           ),
         ),
+
         Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Already have an account?"),
@@ -498,25 +292,25 @@ class _customerSignup extends State<CustomerSignup>{
               child: Text("------------------------ OR ------------------------"),
             ),
 
-            SignInButton(
-              Buttons.Google,
-              text: "Sign in with Google",
-              onPressed: () {
-                signinWithGmail();
-              },
-            ),
-            SizedBox(height: 10),
+//            SignInButton(
+//              Buttons.Google,
+//              text: "Sign in with Google",
+//              onPressed: () {
+//                signinWithGmail();
+//              },
+//            ),
+//            SizedBox(height: 10),
 
             SignInButton(
               Buttons.Facebook,
               text: "Sign in with Facebook",
               onPressed: () {
-//            signinWithFacebook();
+                signinWithFacebook();
               },
             ),
           ],
         ),
-        visible: _hideSocialSignin,),
+          visible: _hideSocialSignin,),
 
 
 
@@ -541,9 +335,9 @@ class _customerSignup extends State<CustomerSignup>{
                 width: 320,
                 height: 50,
                 child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
-                    showFieldAsBox: false,
-                    fields: 6,
-                    onSubmit: submitPin,
+                  showFieldAsBox: false,
+                  fields: 6,
+                  onSubmit: submitPin,
 //                  fieldWidth: 300.0,
 //                  fontSize: 10,
 
@@ -576,22 +370,9 @@ class _customerSignup extends State<CustomerSignup>{
                       data["first_name"] = txtName.text;
                       data["last_name"] = txtLname.text;
                       data["password"] = txtPass.text;
-                      data["token"] = globals.fcmToken;
+
                       data["email"] = txtEmail.text;
                       data["contact"] = txtContact.text;
-                      if(Platform.isAndroid) {
-                        data["device"] = "Android";
-                      } else if (Platform.isIOS) {
-                        data["device"] = "IOS";
-                      }
-                      if(globals.isCustomer == true) {
-                        data["type_id"] = "4";
-                        data["term_id"] = "1";
-                      } else {
-                        data["type_id"] = "3";
-                        data["term_id"] = "2";
-                        data["resident_country"] = selectedCountry;
-                      }
                       callLoginAPI(data);
                     },
                   ),
@@ -610,6 +391,227 @@ class _customerSignup extends State<CustomerSignup>{
       ],)
       ,);
   }
+
+  _launchURL() async {
+    const url = "http://www.savitriya.com/privacy-policy/";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  void _value1Changed(bool value) => setState(() => _value1 = value);
+
+  var _authCredential;
+  static String status;
+  var firebaseAuth;
+
+
+
+  Future getOTP(String phone) async{
+    firebaseAuth = await FirebaseAuth.instance;
+    firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 120),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+
+  }
+
+  submitPin(String pin) {
+    print(pin);
+    pinCode = pin;
+  }
+
+  void otpVerification() async {
+    await _signInWithPhoneNumber(pinCode);
+  }
+
+
+  Future _signInWithPhoneNumber(String smsCode) async {
+    _authCredential = PhoneAuthProvider.getCredential(
+      verificationId: actualCode,
+      smsCode: smsCode,
+    );
+
+    firebaseAuth.signInWithCredential(_authCredential)
+        .then((AuthResult value) {
+      if (value.user != null) {
+        setState(() {
+          Map<String, String> data = new Map();
+          data["first_name"] = txtName.text;
+          data["last_name"] = txtLname.text;
+          data["password"] = txtPass.text;
+          data["email"] = txtEmail.text;
+          data["contact"] = txtContact.text;
+          if(globals.isCustomer == true) {
+            data["type_id"] = "4";
+            data["term_id"] = "1";
+          } else {
+            data["type_id"] = "3";
+            data["term_id"] = "2";
+            data["resident_country"] = selectedCountry;
+          }
+          callLoginAPI(data);
+        });
+      } else {
+        setState(() {
+          status = 'Invalid code/invalid authentication';
+          showInfoAlert(context, status);
+        });
+      }
+    }).catchError((error) {
+      setState(() {
+        status = 'Something has gone wrong, please try later';
+        showInfoAlert(context, status);
+      });
+    });
+  }
+
+
+  void _validateInputs() {
+    printLog("FCM ++ ${this.fcm_token}");
+    if (_formKey.currentState.validate()) {
+      if(_value1) {
+        _formKey.currentState.save();
+        printLog(txtContact.text);
+        if (Platform.isAndroid) {
+          Widget_Helper.showLoading(context);
+          getOTP(txtContact.text);
+          // Return here any Widget you want to display in Android Device.
+          printLog('Android Device Detected');
+        }
+        else if(Platform.isIOS) {
+          Map<String, String> data = new Map();
+          data["first_name"] = txtName.text;
+          data["last_name"] = txtLname.text;
+          data["password"] = txtPass.text;
+
+          data["email"] = txtEmail.text;
+          data["contact"] = txtContact.text;
+          if(globals.isCustomer == true) {
+            data["type_id"] = "4";
+            data["term_id"] = "1";
+          } else {
+            data["type_id"] = "3";
+            data["term_id"] = "2";
+            data["resident_country"] = selectedCountry;
+          }
+          callLoginAPI(data);
+          // Return here any Widget you want to display in iOS Device.
+          printLog('iOS Device Detected');
+        }
+        //
+
+      } else {
+        showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
+      }
+    } else {
+      setState(() {
+        _autoValidate = true;
+      });
+    }
+  }
+
+  Future callLoginAPI(Map<String, String> data) async {
+    data["token"] = globals.fcmToken;
+    if(globals.isCustomer == true) {
+      data["type_id"] = "4";
+      data["term_id"] = "1";
+    } else {
+      data["type_id"] = "3";
+      data["term_id"] = "2";
+
+      if(data.containsKey("social_signin")) {
+
+      } else {
+        data["resident_country"] = selectedCountry;
+      }
+
+    }
+    if(Platform.isAndroid) {
+      data["device"] = "Android";
+    } else if (Platform.isIOS) {
+      data["device"] = "IOS";
+    }
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      if(globals.isCustomer ==true) {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        processLoginResponse(syncUserResponse);
+      } else {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        processLoginResponse(syncUserResponse);
+      }
+
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processLoginResponse(Response res) {
+    print("come for response ${res.statusCode}");
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("come for data ${data}");
+        globals.currentUser = User.fromJson(data);
+        printLog(globals.currentUser.first_name);
+        print(globals.currentUser.contact);
+        Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+        if(data['existing_user'] == 1) {
+          print("COME INSIDE");
+          Preferences.saveObject("profile", "0");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+        } else {
+          Preferences.saveObject("profile", "1");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+        }
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    }
+  }
+
+
+
+
+  List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
+    List<DropdownMenuItem<String>> items = List();
+    reportForlist.forEach((key) {
+      items.add(DropdownMenuItem(value: key, child: Text(key)));
+    });
+    return items;
+  }
+
+  void changedDropDownItem(String selectedItem) {
+    setState(() {
+      selectedCountry = selectedItem;
+      printLog(selectedCountry);
+    });
+  }
+
+
 
 
 
@@ -653,6 +655,7 @@ class _customerSignup extends State<CustomerSignup>{
 
       printLog("FINSH ");
     }).then((onValue) {
+      print("RES === $onValue");
       if(onValue != null) {
         GoogleSignInAccount g_user = onValue[0];
         FirebaseUser  f_user = onValue[1];
@@ -661,22 +664,10 @@ class _customerSignup extends State<CustomerSignup>{
         if(g_user.displayName.split(" ")[1] != null){
           data["last_name"] = g_user.displayName.split(" ")[1];
         }
-        data["token"] = globals.fcmToken;
+
         data["password"] = g_user.id;
         data["email"] = g_user.email;
         data["image"] = g_user.photoUrl;
-        if(Platform.isAndroid) {
-          data["device"] = "Android";
-        } else if (Platform.isIOS) {
-          data["device"] = "IOS";
-        }
-        if(globals.isCustomer == true) {
-          data["type_id"] = "4";
-          data["term_id"] = "1";
-        } else {
-          data["type_id"] = "3";
-          data["term_id"] = "2";
-        }
 
         data["social_signin"] = "gmail";
         print(data);
@@ -684,6 +675,7 @@ class _customerSignup extends State<CustomerSignup>{
       }
 
     }).catchError((onError) {
+      print("onError === $onError");
     });
   }
 
@@ -723,6 +715,54 @@ class _customerSignup extends State<CustomerSignup>{
       return null;
     }
     //'signInWithGoogle succeeded: $user';
+  }
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  void signinWithFacebook() async {
+    Widget_Helper.showLoading(context);
+    final FacebookLoginResult result =
+    await facebookSignIn.logIn(['email']);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        await FirebaseAuth.instance
+            .signInWithCredential( FacebookAuthProvider.getCredential(
+            accessToken: result.accessToken.token))
+            .then((AuthResult authResult) async {
+              print(authResult.user);
+          _createUserFromFacebookLogin(
+              result, authResult.user.uid);
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  void _createUserFromFacebookLogin(
+      FacebookLoginResult result, String userID) async {
+    final token = result.accessToken.token;
+    final graphResponse = await http.get('https://graph.facebook.com/v2'
+        '.12/me?fields=name,first_name,last_name,email,picture.type(large)&access_token=$token');
+    final profile = json.decode(graphResponse.body);
+    print("profile :: $profile");
+    Map<String, String> data = new Map();
+    data["first_name"] = profile['first_name'];
+    data["last_name"] = profile['last_name'];
+    data["email"] = profile['email'];
+    data["image"] = profile['picture']['data']['url'];
+    data["password"] = profile['id'];
+    data["type_id"] = "4";
+    data["term_id"] = "1";
+    data["social_signin"] = "facebook";
+//    Widget_Helper.dismissLoading(context);
+    callLoginAPI(data);
   }
 
   verificationCompleted (AuthCredential auth) {

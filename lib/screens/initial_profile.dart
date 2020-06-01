@@ -280,7 +280,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               Material(
                 elevation: 5.0,shadowColor: Colors.grey,
                 child: TextFormField(
-                  enabled: false,
                   controller: TextEditingController()..text = phoneNumber,
                   decoration: InputDecoration(
 //                    isDense: true,
@@ -399,9 +398,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     if(_autoValidateAddress) {
       addressEnter();
     } else {
-      if(_image == null && imageUrl == null) { //||
-        showInfoAlert(context, AppLocalizations.of(context).translate('profile_txt_selectimg'));
-      } else {
+//      if(_image == null && imageUrl == null) { //||
+//        showInfoAlert(context, AppLocalizations.of(context).translate('profile_txt_selectimg'));
+//      } else {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         _autoValidate = false;
@@ -434,7 +433,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           _autoValidate = true;
         });
       }
-      }
+//      }
 
     }
   }

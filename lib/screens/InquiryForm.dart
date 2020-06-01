@@ -301,7 +301,7 @@ class _InquiryPageState extends State<InquiryPage> {
       HttpClient httpClient = new HttpClient();
       print('api call start signup');
       var syncOrderResponse =
-          await httpClient.postRequest(context, Configurations.BOOKING_URL, data);
+          await httpClient.postRequest(context, Configurations.BOOKING_URL, data, true);
       processOrderResponse(syncOrderResponse);
     } on Exception catch (e) {
       if (e is Exception) {

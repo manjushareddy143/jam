@@ -15,7 +15,7 @@ import 'package:jam/resources/configurations.dart';
 //import 'package:pulse/screens/settings_screen.dart';
 //import 'package:pulse/screens/splash_screen.dart';
 import 'package:jam/utils/preferences.dart';
-
+import 'package:jam/globals.dart' as globals;
 //import 'package:pulse/models/helper.dart' as helper;
 
 
@@ -92,6 +92,8 @@ void processAbout(BuildContext context) {
 void processLogout(BuildContext context) {
   Preferences.setAppToken("");
   Preferences.setLoggedIn(false);
+
+
   printLog("user will be logged out");
   //redirect back to login
 //  navigateToOtherScreen(context, LoginScreen());

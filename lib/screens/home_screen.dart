@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
@@ -53,7 +54,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(globals.currentUser.roles[0].slug);
+//    print(globals.currentUser.roles[0].slug);
   }
 
 
@@ -146,8 +147,14 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Preferences.removePreference("user");
               Preferences.removePreference("profile");
+              globals.isCustomer = true;
+              if(globals.currentUser.social_signin == "facebook") {
+                logoutFacebook();
+              } else if(globals.currentUser.social_signin == "gmail") {
+                signOutGoogle();
+              }
 
-              signOutGoogle();
+              globals.currentUser = null;
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => UserLogin()));
             },
@@ -197,7 +204,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget setHeader(String title) {
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  Future<Null> logoutFacebook() async {
+    await facebookSignIn.logOut();
+//    _showMessage('Logged out.');
+  }
+
+
+    Widget setHeader(String title) {
     return Container(
       child: Center(
           child: Text(title,

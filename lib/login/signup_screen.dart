@@ -276,14 +276,14 @@ class _SignupPageState extends State<SignupPage> {
             child: Text("------------------------ OR ------------------------"),
           ),
 
-          SignInButton(
-            Buttons.Google,
-          text: "Sign in with Google",
-            onPressed: () {
-              signinWithGmail();
-            },
-          ),
-          SizedBox(height: 10),
+//          SignInButton(
+//            Buttons.Google,
+//          text: "Sign in with Google",
+//            onPressed: () {
+//              signinWithGmail();
+//            },
+//          ),
+//          SizedBox(height: 10),
 //          SignInButton(
 //            Buttons.Google,
 //            text: "LOGOUT",
@@ -455,6 +455,7 @@ class _SignupPageState extends State<SignupPage> {
       }
 
     }).catchError((onError) {
+      print("onError === $onError");
     });
   }
 
@@ -670,11 +671,12 @@ class _SignupPageState extends State<SignupPage> {
 
   Future callLoginAPI(Map<String, String> data) async {
     printLog(data);
+
     try {
       HttpClient httpClient = new HttpClient();
       print('api call start signup');
       var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.REGISTER_URL, data);
+      await httpClient.postRequest(context, Configurations.REGISTER_URL, data, true);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -688,10 +690,10 @@ class _SignupPageState extends State<SignupPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        User user = User.fromJson(data);
-        printLog(user.first_name);
-        print(user.contact);
-        Preferences.saveObject("user", jsonEncode(user.toJson()));
+        globals.currentUser = User.fromJson(data);
+        printLog(globals.currentUser.first_name);
+        print(globals.currentUser.contact);
+        Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
           Preferences.saveObject("profile", "0");
           Navigator.pushAndRemoveUntil(

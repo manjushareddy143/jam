@@ -256,16 +256,16 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     String addressString = "";
     if(user.address != null) {
-      addressString = user.address.address_line1;
-      if(user.address.address_line2 != "") {
-        addressString += ", " + user.address.address_line2;
+      addressString = user.address[0].address_line1;
+      if(user.address[0].address_line2 != "") {
+        addressString += ", " + user.address[0].address_line2;
       }
 
-      if(user.address.landmark != "") {
-        addressString += ", " + user.address.landmark;
+      if(user.address[0].landmark != "") {
+        addressString += ", " + user.address[0].landmark;
       }
-      addressString += ", " + user.address.district
-          + ", " + user.address.city + ", " + user.address.postal_code + ".";
+      addressString += ", " + user.address[0].district
+          + ", " + user.address[0].city + ", " + user.address[0].postal_code + ".";
     }
 
     return Column( crossAxisAlignment: CrossAxisAlignment.center,

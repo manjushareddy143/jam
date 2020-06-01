@@ -278,7 +278,7 @@ class _user extends State<UserLogin>{
     try {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.LOGIN_URL, data);
+      await httpClient.postRequest(context, Configurations.LOGIN_URL, data, true);
       processLoginResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
