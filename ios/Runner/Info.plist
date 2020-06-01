@@ -34,19 +34,19 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>303296274013390</string>
 	<key>FacebookDisplayName</key>
 	<string>JAM</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-	       <string>fbapi</string>
-	       <string>fb-messenger-share-api</string>
-	       <string>fbauth2</string>
-	       <string>fbshareextension</string>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
-	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
