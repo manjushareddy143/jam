@@ -145,11 +145,11 @@ class _OrderUIPageState extends State<OrderUIPage> {
       status_color = Colors.green;
       status_icon = Icons.check_circle;
       break;
-      case 3: statusString = 'Order Cancel By ' + order.provider_first_name;
+      case 3: statusString = 'Order Cancel'; //By + order.provider_first_name;
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
-      case 4: statusString = 'Order Cancel By You';
+      case 4: statusString = 'Order Cancel'; // By You
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;

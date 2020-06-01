@@ -211,9 +211,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
      break;
      case 3:
        if(globals.currentUser.roles[0].slug == "customer") {
-         statusString = 'Order Cancel by You';
+         statusString = 'Order Cancel'; // You
        } else {
-         statusString = 'Order Cancel by ' + globals.order.orderer_name;
+         statusString = 'Order Cancel';// + globals.order.orderer_name;
        }
 
      status_color = Colors.red;
