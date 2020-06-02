@@ -60,8 +60,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     setProfile();
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
-    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+    new Future<String>.delayed(new Duration(seconds: 1), () => null)
         .then((String value) {
+          printLog("now");
       getServices();
     });
   }
@@ -792,6 +793,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
     return list;
   }
+ // resultHolder = 'Checkbox is UN-CHECKED';
+  List<int> selectedListOfService;
 Widget SetupCard(Service service){
 
     return Card(margin: EdgeInsets.fromLTRB(0.5, 10, 0.5, 10),
@@ -799,6 +802,15 @@ Widget SetupCard(Service service){
   child: Row(
     children: <Widget>[
       Checkbox(value: _value1, onChanged: (bool value) {
+setState(() {
+  if (_value1 == true){
+    _value1== false;
+
+  }
+  else{
+    _value1==true;
+  }
+});
     printLog(value);
   }),
       Container(padding: EdgeInsets.all(6),
