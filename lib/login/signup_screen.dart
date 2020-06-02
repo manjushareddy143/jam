@@ -347,26 +347,27 @@ class _SignupPageState extends State<SignupPage> {
                     }
                 ),
               ),
-              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Resend OTP"),
-                  IconButton(icon: Icon(Icons.refresh),
-                    onPressed: () {
-                    getOTP(txtContact.text);
-//                      Map<String, String> data = new Map();
-//                      data["first_name"] = txtName.text;
-//                      data["last_name"] = txtLname.text;
-//                      data["password"] = txtPass.text;
-//                      data["contact"] = txtContact.text;
-//                      data["type_id"] = "4";
-//                      data["term_id"] = "1";
-//                      callLoginAPI(data);
-                    },
-                  ),
 
-                ],
-              ),
-              ),
+//              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  Text("Resend OTP"),
+//                  IconButton(icon: Icon(Icons.refresh),
+//                    onPressed: () {
+//                    getOTP(txtContact.text);
+////                      Map<String, String> data = new Map();
+////                      data["first_name"] = txtName.text;
+////                      data["last_name"] = txtLname.text;
+////                      data["password"] = txtPass.text;
+////                      data["contact"] = txtContact.text;
+////                      data["type_id"] = "4";
+////                      data["term_id"] = "1";
+////                      callLoginAPI(data);
+//                    },
+//                  ),
+//
+//                ],
+//              ),
+//              ),
             ],
           ),
           )
