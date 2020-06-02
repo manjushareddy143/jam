@@ -606,6 +606,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           ],
         );
       }),
+
     );
   }
 
