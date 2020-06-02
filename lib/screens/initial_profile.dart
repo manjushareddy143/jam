@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'package:jam/models/service.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   String dropdownvalue;
   File _image;
   String user_id;
+  List<Service> listofServices;
+  bool isLoadin = true;
 
   @override
   void initState() {
@@ -57,8 +60,45 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     setProfile();
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
+    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+        .then((String value) {
+      getServices();
+    });
   }
+  getServices() async {
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncServicesResponse = await httpClient.getRequest(context,
+          Configurations.SERVICES_ALL_URL, null, null, true, false);
 
+      processServiceResponse(syncServicesResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+  void processServiceResponse(Response res) {
+    print('get daily format');
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print(data);
+        List roles = data;
+        setState(() {
+          listofServices = Service.processServices(roles);
+          isLoadin = false;
+        });
+      } else {
+        printLog("login response code is not 200");
+        setState(() {
+          isLoadin = false;
+        });
+      }
+    } else {
+      print('no data');
+    }
+  }
   void setProfile() async  {
     await Preferences.readObject("user").then((onValue) async {
       var userdata = json.decode(onValue);
@@ -280,7 +320,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             ],
           ),
           ),
-        /*setServiceListVendor(),
+
           Padding(padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
             child: Card(
               elevation: 5.0,
@@ -291,7 +331,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 subtitle: Text(addressString),
               ),
             ),
-          ), */
+          ),
 
 
           // ADDRESS
@@ -700,7 +740,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       dropdownvalue = selectedItem;
     });
   }
-  /* void enterServices() {
+   void enterServices() {
     showDialog(
       context: context,
       builder: (BuildContext context) => setServiceListVendor(context),
@@ -708,62 +748,80 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
   bool _value1 = false;
   void _value1Changed(bool value) => setState(() => _value1 = value);
-  Widget setServiceListVendor(BuildContext contest){
+  Widget setServiceListVendor(BuildContext context){
+    if(! isLoadin)
     return AlertDialog(
-      title: Row(
+      title: Row(mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Icon(Icons.work),
           Text("SERVICES",style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orangeAccent,), ),
         ],
       ),
     content: SingleChildScrollView(
-      child: Card(margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Column(
+        children: <Widget> [Column(
+          children: listOfCards(),
 
-        child: Row(
-          children: <Widget>[
-            Checkbox(value: _value1, onChanged: _value1Changed),
-            Container(padding: EdgeInsets.all(10),
-              child:   new Image.asset("assets/images/jamLogo.png",
-                height: 40.0, width: 80.0 , fit: BoxFit.contain, ),
-            ),
-
-            Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
-              child: Text("Carpenter",maxLines: 2,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.justify,
-
-              ),
-            ),
-          ],
         ),
-
-      ),
+          SizedBox(height: 20,),
+          ButtonTheme(
+            minWidth: 300.0,
+            child:  RaisedButton(
+                color: Configurations.themColor,
+                textColor: Colors.white,
+                child:  Text(
+                    AppLocalizations.of(context).translate('btn_save'),
+                    style: TextStyle(fontSize: 16.5)
+                ),
+                onPressed: () {
+                  addressSave();
+                }
+            ),
+          ),]
+      )
     )
 
     );
-    Card(margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
 
-      child: Row(
-        children: <Widget>[
-          Checkbox(value: _value1, onChanged: _value1Changed),
-          Container(padding: EdgeInsets.all(10),
-            child:   new Image.asset("assets/images/jamLogo.png",
-              height: 40.0, width: 80.0 , fit: BoxFit.contain, ),
-          ),
 
-          Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
-            child: Text("Carpenter",maxLines: 2,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.justify,
+  }
+  List<Widget> listOfCards() {
+    List<Widget> list = new List();
+    for(int orderCount = 0; orderCount< listofServices.length; orderCount++) {
+      list.add(SetupCard(listofServices[orderCount]));
+    }
+    return list;
+  }
+Widget SetupCard(Service service){
 
-            ),
-          ),
-        ],
+    return Card(margin: EdgeInsets.fromLTRB(0.5, 10, 0.5, 10),
+
+  child: Row(
+    children: <Widget>[
+      Checkbox(value: _value1, onChanged: (bool value) {
+    printLog(value);
+  }),
+      Container(padding: EdgeInsets.all(6),
+        child:   Image.network(
+          service.icon_image,
+          height: 40.0, width: 80.0, fit: BoxFit.contain,),
       ),
 
-    )
+      Flexible(
+        child: Padding(padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+          child: Text(service.name,maxLines: 3,
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.justify,
 
-  } */
+
+          ),
+        ),
+      ),
+
+    ],
+  ),
+
+);}
+/*  */
 }
