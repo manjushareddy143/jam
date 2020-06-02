@@ -401,6 +401,8 @@ class _customerSignup extends State<CustomerSignup>{
     }
   }
 
+
+
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
   var _authCredential;
