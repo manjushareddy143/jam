@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jam/api/detailStart.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/user.dart';
@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
               if(globals.currentUser.social_signin == "facebook") {
                 logoutFacebook();
               } else if(globals.currentUser.social_signin == "gmail") {
-                signOutGoogle();
+//                signOutGoogle();
               }
 
               globals.currentUser = null;
@@ -220,11 +220,11 @@ class _HomePageState extends State<HomePage> {
               textAlign: TextAlign.center)),
     );
   }
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  void signOutGoogle() async{
-    await googleSignIn.signOut();
-    print("User Sign Out");
-  }
+//  final GoogleSignIn googleSignIn = GoogleSignIn();
+//  void signOutGoogle() async{
+//    await googleSignIn.signOut();
+//    print("User Sign Out");
+//  }
 
   final List<Widget> _children = [
     HomeUIDesign(),
