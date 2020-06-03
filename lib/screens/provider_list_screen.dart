@@ -12,6 +12,7 @@ import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
 import 'package:jam/app_localizations.dart';
+import 'package:jam/screens/vendor_profile.dart';
 //class ProviderListScreen extends StatelessWidget {
 //  @override
 //  Widget build(BuildContext context) {
@@ -143,6 +144,12 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) =>
+            VendorProfileUIPage())),
+
               print('tap on card DETAIL')
             },
             leading: Container(
