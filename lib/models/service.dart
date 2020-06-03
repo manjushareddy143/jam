@@ -1,6 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:jam/models/sub_category.dart';
+import 'package:jam/utils/utils.dart';
 
 class Service {
   final int id;
@@ -25,6 +26,7 @@ class Service {
 
 
   static List<Service> processServices(List services) {
+    printLog("reached here");
     return services.map<Service>((json) => new Service.fromJson(json)).toList();
   }
 }

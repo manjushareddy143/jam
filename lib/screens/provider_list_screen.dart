@@ -33,7 +33,7 @@ class _ProviderListState extends State<ProviderListPage> {
   _ProviderListState({Key key, @required this.service});
 
   List<Provider> listofProviders;
-
+  String image = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -131,6 +131,9 @@ class _ProviderListState extends State<ProviderListPage> {
 
     return list;
   }
+  AssetImage setImgPlaceholder() {
+    return AssetImage("assets/images/BG-1x.jpg");
+  }
 
 
   Widget setupCard(Provider provider) {
@@ -144,11 +147,11 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-            Navigator.push(
+           /* Navigator.push(
             context,
             MaterialPageRoute(
             builder: (context) =>
-            VendorProfileUIPage())),
+            VendorProfileUIPage())), */
 
               print('tap on card DETAIL')
             },
@@ -158,8 +161,8 @@ class _ProviderListState extends State<ProviderListPage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: NetworkImage(
-                        provider.image),
+                    image: (image != null)?
+                    NetworkImage(provider.image):setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
             ),

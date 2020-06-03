@@ -70,7 +70,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
             children: <Widget>[
               setupVendor(MediaQuery.of(context).size),
               setupVendorDetails(),
-             setupVendorTab(),
+            // setupVendorTab(),
             ],
           ),
         ),
@@ -390,11 +390,11 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
                       color: Configurations.themColor)), //`Text` to display
                   onPressed: () {
                    // printLog('provider::: ${provider}');
-                    Navigator.push(
+                  /*  Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                InquiryPage()));
+                                InquiryPage())); */
                   },
                 ),
               ),
