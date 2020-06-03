@@ -38,3 +38,6 @@ lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+android/app/debug/app-debug.apk
+android/app/debug/output.json
+android/app/release/JAM.apk

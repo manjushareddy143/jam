@@ -29,7 +29,7 @@ import 'package:jam/app_localizations.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 
 
 enum GenderEnum {  Male, Female  }
@@ -76,7 +76,7 @@ class _SignupPageState extends State<SignupPage> {
 
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+//  final GoogleSignIn googleSignIn = GoogleSignIn();
 
 
 
@@ -347,25 +347,27 @@ class _SignupPageState extends State<SignupPage> {
                     }
                 ),
               ),
-              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Resend OTP"),
-                  IconButton(icon: Icon(Icons.refresh),
-                    onPressed: () {
-                      Map<String, String> data = new Map();
-                      data["first_name"] = txtName.text;
-                      data["last_name"] = txtLname.text;
-                      data["password"] = txtPass.text;
-                      data["contact"] = txtContact.text;
-                      data["type_id"] = "4";
-                      data["term_id"] = "1";
-                      callLoginAPI(data);
-                    },
-                  ),
 
-                ],
-              ),
-              ),
+//              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  Text("Resend OTP"),
+//                  IconButton(icon: Icon(Icons.refresh),
+//                    onPressed: () {
+//                    getOTP(txtContact.text);
+////                      Map<String, String> data = new Map();
+////                      data["first_name"] = txtName.text;
+////                      data["last_name"] = txtLname.text;
+////                      data["password"] = txtPass.text;
+////                      data["contact"] = txtContact.text;
+////                      data["type_id"] = "4";
+////                      data["term_id"] = "1";
+////                      callLoginAPI(data);
+//                    },
+//                  ),
+//
+//                ],
+//              ),
+//              ),
             ],
           ),
           )
@@ -431,70 +433,70 @@ class _SignupPageState extends State<SignupPage> {
 
 
 
-  void signinWithGmail() {
-    signInWithGoogle()
-        .whenComplete(() {
+//  void signinWithGmail() {
+//    signInWithGoogle()
+//        .whenComplete(() {
+//
+//      printLog("FINSH ");
+//    }).then((onValue) {
+//      if(onValue != null) {
+//        GoogleSignInAccount g_user = onValue[0];
+//        FirebaseUser  f_user = onValue[1];
+//        Map<String, String> data = new Map();
+//        data["first_name"] = g_user.displayName.split(" ")[0];
+//        if(g_user.displayName.split(" ")[1] != null){
+//          data["last_name"] = g_user.displayName.split(" ")[1];
+//        }
+//
+//        data["email"] = g_user.email;
+//        data["image"] = g_user.photoUrl;
+//        data["type_id"] = "4";
+//        data["term_id"] = "1";
+//        data["social_signin"] = "gmail";
+//        callLoginAPI(data);
+//      }
+//
+//    }).catchError((onError) {
+//      print("onError === $onError");
+//    });
+//  }
+//
+//  Future<List> signInWithGoogle() async {
+//    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+//
+//    if(googleSignInAccount.id != null) {
+//      final GoogleSignInAuthentication googleSignInAuthentication =
+//      await googleSignInAccount.authentication;
+//
+//
+//      List  obj = new List();
+//      final AuthCredential credential = GoogleAuthProvider.getCredential(
+//        accessToken: googleSignInAuthentication.accessToken,
+//        idToken: googleSignInAuthentication.idToken,
+//      );
+//
+//      final AuthResult authResult = await _auth.signInWithCredential(credential);
+//      final FirebaseUser user = authResult.user;
+//
+//      assert(!user.isAnonymous);
+//      assert(await user.getIdToken() != null);
+//
+//      final FirebaseUser currentUser = await _auth.currentUser();
+//      assert(user.uid == currentUser.uid);
+//      obj.add(googleSignInAccount);
+//      obj.add(user);
+//      return obj;
+//    } else {
+//      print("NO DATA");
+//      return null;
+//    }
+//    //'signInWithGoogle succeeded: $user';
+//  }
 
-      printLog("FINSH ");
-    }).then((onValue) {
-      if(onValue != null) {
-        GoogleSignInAccount g_user = onValue[0];
-        FirebaseUser  f_user = onValue[1];
-        Map<String, String> data = new Map();
-        data["first_name"] = g_user.displayName.split(" ")[0];
-        if(g_user.displayName.split(" ")[1] != null){
-          data["last_name"] = g_user.displayName.split(" ")[1];
-        }
-
-        data["email"] = g_user.email;
-        data["image"] = g_user.photoUrl;
-        data["type_id"] = "4";
-        data["term_id"] = "1";
-        data["social_signin"] = "gmail";
-        callLoginAPI(data);
-      }
-
-    }).catchError((onError) {
-      print("onError === $onError");
-    });
-  }
-
-  Future<List> signInWithGoogle() async {
-    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-
-    if(googleSignInAccount.id != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
-
-
-      List  obj = new List();
-      final AuthCredential credential = GoogleAuthProvider.getCredential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
-
-      final AuthResult authResult = await _auth.signInWithCredential(credential);
-      final FirebaseUser user = authResult.user;
-
-      assert(!user.isAnonymous);
-      assert(await user.getIdToken() != null);
-
-      final FirebaseUser currentUser = await _auth.currentUser();
-      assert(user.uid == currentUser.uid);
-      obj.add(googleSignInAccount);
-      obj.add(user);
-      return obj;
-    } else {
-      print("NO DATA");
-      return null;
-    }
-    //'signInWithGoogle succeeded: $user';
-  }
-
-  void signOutGoogle() async{
-    await googleSignIn.signOut();
-    print("User Sign Out");
-  }
+//  void signOutGoogle() async{
+//    await googleSignIn.signOut();
+//    print("User Sign Out");
+//  }
 
 
   _launchURL() async {
