@@ -5,7 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 class Configurations {
   //URLS
   // droetker_staging / droetker
-  static const String BASE_URL =  "https://staging.jam-app.com";
+  static const String BASE_URL =   "http://192.168.43.40"; // "https://staging.jam-app.com";
   static const String APP_URL = "";
   static const String API_VERSION = "/api/v1";
   static const String REGISTER_URL = BASE_URL + APP_URL + API_VERSION + "/register";

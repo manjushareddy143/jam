@@ -1,3 +1,5 @@
+import 'package:country_list_pick/country_list_pick.dart';
+import 'package:country_list_pick/support/code_country.dart';
 import 'package:flutter/material.dart';
 import 'dart:io' show Platform;
 
@@ -205,7 +207,19 @@ class _customerSignup extends State<CustomerSignup>{
         SizedBox(height: 10,),
 
         if(globals.isCustomer == false)
-          setCountry(),
+          CountryListPick(
+            isShowFlag: true,
+            isShowTitle: true,
+            isShowCode: true,
+            initialSelection: '+62',
+            onChanged: (CountryCode code) {
+              print(code.name);
+              print(code.code);
+              print(code.dialCode);
+              print(code.flagUri);
+            },
+          ),
+//          setCountry(),
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),

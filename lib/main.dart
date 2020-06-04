@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart';
+import 'package:jam/api/i18n.dart';
 //import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/service.dart';
@@ -22,6 +23,10 @@ import 'package:jam/utils/utils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'app_localizations.dart';
+import 'package:jam/api//i18n.dart' as location_picker;
+//import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+//import 'package:flutter_geofence/geofence.dart';
+
 main() {
   Crashlytics.instance.enableInDevMode = true;
 
@@ -48,11 +53,11 @@ class _MyAppState extends State<MyApp> {
   Locale _locale;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   static int msgCount = 0;
+//  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         if(msgCount%2==0) {
@@ -93,9 +98,7 @@ class _MyAppState extends State<MyApp> {
       globals.fcmToken = token;
       print("token: $token");
     });
-
   }
-
 
 
   void setLocale(Locale locale) {
@@ -111,6 +114,8 @@ class _MyAppState extends State<MyApp> {
 
       locale: _locale,
        localizationsDelegates:[
+         location_picker.S.delegate,
+         S.delegate,
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

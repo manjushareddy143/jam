@@ -5,6 +5,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+//import 'package:flutter_geofence/geofence.dart';
 import 'package:http/http.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/main.dart';
@@ -16,6 +18,9 @@ import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:geopoint/geopoint.dart';
+import 'package:geopoint_location/geopoint_location.dart';
+
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -31,9 +36,47 @@ class SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     getLanguage();
+    getcordinates();
   }
 
+  Future getcordinates() async {
+
+    GeoPoint geoPoint = await geoPointFromLocation(
+        name: "Current position", withAddress: true);
+    globals.longitude = geoPoint.longitude;
+    globals.latitude = geoPoint.latitude;
+    globals.location = LatLng(geoPoint.latitude, geoPoint.longitude);
+    print("geoPoint:::: ${geoPoint.address}");
+    print("geoPoint:::: ${geoPoint.point}");
+    print("geoPoint:::: ${geoPoint.postalCode}");
+    print("geoPoint:::: ${geoPoint.name}");
+    print("geoPoint:::: ${geoPoint.slug}");
+    print("geoPoint:::: ${geoPoint.number}");
+    print("geoPoint:::: ${geoPoint.country}");
+    print("geoPoint:::: ${geoPoint.street}");
+    print("geoPoint:::: ${geoPoint.region}");
+    print("geoPoint:::: ${geoPoint.sublocality}");
+    print("geoPoint:::: ${geoPoint.subregion}");
+    print("geoPoint:::: ${geoPoint.locality}");
+    print("geoPoint:::: ${geoPoint.details()}");
+
+//    final position = await Geolocator().getCurrentPosition();
+//    final GeoPoint geoPoint = await geoPointFromPosition(
+//        position: position,
+//        name: "Current position");
+
+//    Geofence.getCurrentLocation().then((coordinate) {
+//      print("Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
+//    }).catchError((onError) {
+//      print("ERPPPR  ${onError}");
+//    }).whenComplete(() {
+//      getLanguage();
+//    });
+  }
   void getLanguage() async {
+
+
+
     await Preferences.readObject("lang").then((onValue) async {
      // printLog('userdata');
       printLog(onValue);
