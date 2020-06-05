@@ -1,8 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:jam/classes/language.dart';
@@ -24,6 +27,9 @@ import 'package:jam/main.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:jam/login/masterSignupScreen.dart';
 import 'dart:io' show Platform;
+import 'package:http/http.dart' as http;
+
+import 'package:jam/widget/widget_helper.dart';
 
 class UserLogin extends StatefulWidget {
   _user createState() => new _user();
@@ -242,9 +248,31 @@ class _user extends State<UserLogin>{
                       )
                     ],
                   ),),
+                  SizedBox(height: 10,),
+
+                  SizedBox(height: 20,
+                    child: Text("------------------------ OR ------------------------"),
+                  ),
+
+                  SignInButton(
+                    Buttons.Google,
+                    text: "Sign in with Google",
+                    onPressed: () {
+      //                signinWithGmail();
+                    },
+                  ),
+
+                  SizedBox(height: 10,),
+
+                  SignInButton(
+                    Buttons.Facebook,
+                    text: "Sign in with Facebook",
+                    onPressed: () {
+//                      signinWithFacebook();
+                    },
+                  ),
+
                   SizedBox(height: 30,),
-
-
                   Text(AppLocalizations.of(context).translate('txt_skip'),
                       textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
 
@@ -257,9 +285,98 @@ class _user extends State<UserLogin>{
         ),
       ),
     );
-
-
   }
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  void signinWithFacebook() async {
+    Widget_Helper.showLoading(context);
+    final FacebookLoginResult result =
+    await facebookSignIn.logIn(['email']);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        final FacebookAccessToken accessToken = result.accessToken;
+        await FirebaseAuth.instance
+            .signInWithCredential( FacebookAuthProvider.getCredential(
+            accessToken: result.accessToken.token))
+            .then((AuthResult authResult) async {
+          print(authResult.user);
+          _createUserFromFacebookLogin(
+              result, authResult.user.uid);
+        });
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('Login cancelled by the user.');
+        break;
+      case FacebookLoginStatus.error:
+        print('Something went wrong with the login process.\n'
+            'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        break;
+    }
+  }
+
+  void _createUserFromFacebookLogin(
+      FacebookLoginResult result, String userID) async {
+    final token = result.accessToken.token;
+    final graphResponse = await http.get('https://graph.facebook.com/v2'
+        '.12/me?fields=name,first_name,last_name,email,picture.type(large)&access_token=$token');
+    final profile = json.decode(graphResponse.body);
+    print("profile :: $profile");
+    Map<String, String> data = new Map();
+    data["first_name"] = profile['first_name'];
+    data["last_name"] = profile['last_name'];
+    data["email"] = profile['email'];
+    data["image"] = profile['picture']['data']['url'];
+    data["password"] = profile['id'];
+    data["type_id"] = "4";
+    data["term_id"] = "1";
+    data["social_signin"] = "facebook";
+//    Widget_Helper.dismissLoading(context);
+//    callLoginAPI(data);
+  }
+
+//  Future callLoginAPI(Map<String, String> data) async {
+//    data["token"] = globals.fcmToken;
+//    if(globals.isCustomer == true) {
+//      data["type_id"] = "4";
+//      data["term_id"] = "1";
+//    } else {
+//      data["type_id"] = "3";
+//      data["term_id"] = "2";
+//
+//      if(data.containsKey("social_signin")) {
+//
+//      } else {
+//        data["resident_country"] = selectedCountry;
+//      }
+//
+//    }
+//    if(Platform.isAndroid) {
+//      data["device"] = "Android";
+//    } else if (Platform.isIOS) {
+//      data["device"] = "IOS";
+//    }
+//    printLog(data);
+//    try {
+//      HttpClient httpClient = new HttpClient();
+//      print('api call start signup');
+//      if(globals.isCustomer ==true) {
+//        var syncUserResponse =
+//        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+//        processLoginResponse(syncUserResponse);
+//      } else {
+//        var syncUserResponse =
+//        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+//        processLoginResponse(syncUserResponse);
+//      }
+//
+//    } on Exception catch (e) {
+//      if (e is Exception) {
+//        printExceptionLog(e);
+//      }
+//    }
+//  }
+
 
   Future callLoginAPI() async {
     Map<String, String> data = new Map();
