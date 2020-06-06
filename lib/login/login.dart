@@ -257,13 +257,13 @@ class _user extends State<UserLogin>{
                     child: Text("------------------------ OR ------------------------"),
                   ),
 
-                  SignInButton(
-                    Buttons.Google,
-                    text: "Sign in with Google",
-                    onPressed: () {
-      //                signinWithGmail();
-                    },
-                  ),
+//                  SignInButton(
+//                    Buttons.Google,
+//                    text: "Sign in with Google",
+//                    onPressed: () {
+//      //                signinWithGmail();
+//                    },
+//                  ),
 
                   SizedBox(height: 10,),
 
@@ -271,7 +271,7 @@ class _user extends State<UserLogin>{
                     Buttons.Facebook,
                     text: "Sign in with Facebook",
                     onPressed: () {
-//                      signinWithFacebook();
+                      signinWithFacebook();
                     },
                   ),
 
@@ -331,55 +331,74 @@ class _user extends State<UserLogin>{
     data["email"] = profile['email'];
     data["image"] = profile['picture']['data']['url'];
     data["password"] = profile['id'];
-    data["type_id"] = "4";
-    data["term_id"] = "1";
     data["social_signin"] = "facebook";
-//    Widget_Helper.dismissLoading(context);
-//    callLoginAPI(data);
+    Widget_Helper.dismissLoading(context);
+    callSocialSignIn(data);
   }
 
 
-//  Future callLoginAPI(Map<String, String> data) async {
-//    data["token"] = globals.fcmToken;
-//    if(globals.isCustomer == true) {
-//      data["type_id"] = "4";
-//      data["term_id"] = "1";
-//    } else {
-//      data["type_id"] = "3";
-//      data["term_id"] = "2";
-//
-//      if(data.containsKey("social_signin")) {
-//
-//      } else {
-//        data["resident_country"] = selectedCountry;
-//      }
-//
-//    }
-//    if(Platform.isAndroid) {
-//      data["device"] = "Android";
-//    } else if (Platform.isIOS) {
-//      data["device"] = "IOS";
-//    }
-//    printLog(data);
-//    try {
-//      HttpClient httpClient = new HttpClient();
-//      print('api call start signup');
-//      if(globals.isCustomer ==true) {
-//        var syncUserResponse =
-//        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
-//        processLoginResponse(syncUserResponse);
-//      } else {
-//        var syncUserResponse =
-//        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
-//        processLoginResponse(syncUserResponse);
-//      }
-//
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
+  Future callSocialSignIn(Map<String, String> data) async {
+    data["token"] = globals.fcmToken;
+    if(globals.isCustomer == true) {
+      data["type_id"] = "4";
+      data["term_id"] = "1";
+    } else {
+      data["type_id"] = "3";
+      data["term_id"] = "2";
+    }
+    if(Platform.isAndroid) {
+      data["device"] = "Android";
+    } else if (Platform.isIOS) {
+      data["device"] = "IOS";
+    }
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+      processSocialResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processSocialResponse(Response res) {
+    print("come for response ${res.statusCode}");
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("come for data ${data}");
+        globals.currentUser = User.fromJson(data);
+        printLog(globals.currentUser.first_name);
+        print(globals.currentUser.contact);
+        Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+        if(data['existing_user'] == 1) {
+          print("COME INSIDE");
+          Preferences.saveObject("profile", "0");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+        } else {
+          Preferences.saveObject("profile", "1");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+        }
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    }
+  }
 
 
   Future callLoginAPI() async {

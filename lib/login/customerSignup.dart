@@ -75,13 +75,13 @@ class _customerSignup extends State<CustomerSignup>{
   bool _value1 = false;
   List<DropdownMenuItem<String>> _dropDownTypes;
   String selectedCountry;
-  List _lstType = ["India", "Qatar"];
+//  List _lstType = ["India", "Qatar"];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     globals.isCustomer == true;
-    _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
+    _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[0].value;
   }
 
@@ -99,11 +99,10 @@ class _customerSignup extends State<CustomerSignup>{
     return Container(
       margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
       child: Column( children: <Widget>[
-
+        if(globals.isCustomer == false)
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
-
-
+            enabled: _fridgeEdit,
             decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -122,10 +121,10 @@ class _customerSignup extends State<CustomerSignup>{
         ),
         SizedBox(height: 10,),
 
-
+        if(globals.isCustomer == false)
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
-
+            enabled: _fridgeEdit,
             decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -142,10 +141,10 @@ class _customerSignup extends State<CustomerSignup>{
         ),
         SizedBox(height: 10,),
 
+        if(globals.isCustomer == false)
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
-
-
+            enabled: _fridgeEdit,
             decoration: InputDecoration( suffixIcon: Icon(Icons.person),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -164,8 +163,7 @@ class _customerSignup extends State<CustomerSignup>{
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
-
-
+            enabled: _fridgeEdit,
             decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
@@ -187,7 +185,7 @@ class _customerSignup extends State<CustomerSignup>{
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
-
+            enabled: _fridgeEdit,
             obscureText: true,
             decoration: InputDecoration( suffixIcon: Icon(Icons.security),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -206,20 +204,43 @@ class _customerSignup extends State<CustomerSignup>{
         ),
         SizedBox(height: 10,),
 
-        if(globals.isCustomer == false)
-          CountryListPick(
-            isShowFlag: true,
-            isShowTitle: true,
-            isShowCode: true,
-            initialSelection: '+62',
-            onChanged: (CountryCode code) {
-              print(code.name);
-              print(code.code);
-              print(code.dialCode);
-              print(code.flagUri);
+        Material(elevation: 10.0,shadowColor: Colors.grey,
+          child: TextFormField(
+            enabled: _fridgeEdit,
+            obscureText: true,
+            decoration: InputDecoration(
+              suffixIcon: Icon(Icons.security, ),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                labelText: "Confirm Password",
+            ),
+            validator: (value){
+              if (value != txtPass.text) {
+                return "Confirm password mismatch";
+              }
+              return null;
             },
+
+
           ),
-//          setCountry(),
+        ),
+        SizedBox(height: 10,),
+
+        if(globals.isCustomer == false)
+          setCountry(),
+//          CountryListPick(
+//            isShowFlag: true,
+//            isShowTitle: true,
+//            isShowCode: true,
+//            initialSelection: '+62',
+//            onChanged: (CountryCode code) {
+//              print(code.name);
+//              print(code.code);
+//              print(code.dialCode);
+//              print(code.flagUri);
+//            },
+//          ),
+//
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
@@ -374,26 +395,27 @@ class _customerSignup extends State<CustomerSignup>{
                     }
                 ),
               ),
-              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Resend OTP"),
-                  IconButton(icon: Icon(Icons.refresh),
-                    onPressed: () {
+
+//              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  Text("Resend OTP"),
+//                  IconButton(icon: Icon(Icons.refresh),
+//                    onPressed: () {
 //                    getOTP(txtContact.text);
-                      Map<String, String> data = new Map();
-                      data["first_name"] = txtName.text;
-                      data["last_name"] = txtLname.text;
-                      data["password"] = txtPass.text;
-
-                      data["email"] = txtEmail.text;
-                      data["contact"] = txtContact.text;
-                      callLoginAPI(data);
-                    },
-                  ),
-
-                ],
-              ),
-              ),
+////                      Map<String, String> data = new Map();
+////                      data["first_name"] = txtName.text;
+////                      data["last_name"] = txtLname.text;
+////                      data["password"] = txtPass.text;
+////
+////                      data["email"] = txtEmail.text;
+////                      data["contact"] = txtContact.text;
+////                      callLoginAPI(data);
+//                    },
+//                  ),
+//
+//                ],
+//              ),
+//              ),
             ],
           ),
         )
@@ -425,17 +447,7 @@ class _customerSignup extends State<CustomerSignup>{
 
 
 
-  Future getOTP(String phone) async{
-    firebaseAuth = await FirebaseAuth.instance;
-    firebaseAuth.verifyPhoneNumber(
-        phoneNumber: phone,
-        timeout: Duration(seconds: 120),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
 
-  }
 
   submitPin(String pin) {
     print(pin);
@@ -496,22 +508,35 @@ class _customerSignup extends State<CustomerSignup>{
         printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-          getOTP(txtContact.text);
+//          getOTP(txtContact.text);
           // Return here any Widget you want to display in Android Device.
-          printLog('Android Device Detected');
-        }
-        else if(Platform.isIOS) {
           Map<String, String> data = new Map();
-          data["first_name"] = txtName.text;
-          data["last_name"] = txtLname.text;
-          data["password"] = txtPass.text;
-
-          data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
+          data["password"] = txtPass.text;
           if(globals.isCustomer == true) {
             data["type_id"] = "4";
             data["term_id"] = "1";
           } else {
+            data["first_name"] = txtName.text;
+            data["last_name"] = txtLname.text;
+            data["email"] = txtEmail.text;
+            data["type_id"] = "3";
+            data["term_id"] = "2";
+            data["resident_country"] = selectedCountry;
+          }
+          callLoginAPI(data);
+        }
+        else if(Platform.isIOS) {
+          Map<String, String> data = new Map();
+          data["contact"] = txtContact.text;
+          data["password"] = txtPass.text;
+          if(globals.isCustomer == true) {
+            data["type_id"] = "4";
+            data["term_id"] = "1";
+          } else {
+            data["first_name"] = txtName.text;
+            data["last_name"] = txtLname.text;
+            data["email"] = txtEmail.text;
             data["type_id"] = "3";
             data["term_id"] = "2";
             data["resident_country"] = selectedCountry;
@@ -784,10 +809,22 @@ class _customerSignup extends State<CustomerSignup>{
     callLoginAPI(data);
   }
 
+  Future getOTP(String phone) async{
+    firebaseAuth = await FirebaseAuth.instance;
+    firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  }
+
   verificationCompleted (AuthCredential auth) {
     printLog(txtContact.text);
-    printLog(auth.toString());
     setState(() {
+      printLog("verificationCompleted ${auth.toString()}");
+      printLog("verificationCompleted ${auth}");
       status = 'Auto retrieving verification code';
     });
     _authCredential = auth;
@@ -799,7 +836,7 @@ class _customerSignup extends State<CustomerSignup>{
     setState(() {
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
-//      print("Error message: " + status);
+      print("verificationFailed: " + status);
       if (authException.message.contains('not authorized'))
         status = 'Something has gone wrong, please try later';
       else if (authException.message.contains('Network'))
@@ -811,10 +848,11 @@ class _customerSignup extends State<CustomerSignup>{
     });
   }
   static String actualCode;
+
   codeSent (String verificationId, [int forceResendingToken]) async {
     actualCode = verificationId;
     printLog(txtContact.text);
-    printLog(actualCode);
+    printLog("codeSent::: $actualCode");
     setState(() {
       _showOTPField = true;
       _hideSocialSignin = false;
@@ -825,7 +863,7 @@ class _customerSignup extends State<CustomerSignup>{
 
   codeAutoRetrievalTimeout(String verificationId) {
     actualCode = verificationId;
-    printLog(actualCode);
+    printLog("codeAutoRetrievalTimeout $actualCode");
     setState(() {
       status = "\nAuto retrieval time out:: $actualCode";
       Widget_Helper.dismissLoading(context);

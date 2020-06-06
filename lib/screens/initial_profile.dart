@@ -250,11 +250,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   String addressString = "";
   String serviceNamesString = "";
   String firstName = "";
+  String lastName = "";
   String phoneNumber = "";
   String email = "";
   String imageUrl = "";
 
   final prfl_fname = TextEditingController();
+  final prfl_lname = TextEditingController();
   final prfl_email = TextEditingController();
 
   Widget profileUI() {
@@ -301,6 +303,41 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                           ),
                           labelText: AppLocalizations.of(context)
                               .translate('signin_firstname_placeholder'),
+                          hasFloatingPlaceholder: false),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return AppLocalizations.of(context)
+                              .translate('signup_txt_enterlast');
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  // Last Name
+                  Material(
+                    elevation: 5.0,
+                    shadowColor: Colors.grey,
+                    child: TextFormField(
+                      controller: (lastName == "") ? prfl_lname : prfl_lname
+                        ..text = lastName,
+                      decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.person,
+                            textDirection: TextDirection.rtl,
+                          ),
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                          labelText: AppLocalizations.of(context)
+                              .translate('signin_lastname_placeholder'),
                           hasFloatingPlaceholder: false),
                       validator: (value) {
                         if (value.isEmpty) {
@@ -379,6 +416,32 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
                   // Gender
                   setDropDown(),
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  Material(
+                    elevation: 5.0,
+                    shadowColor: Colors.grey,
+                    child: Padding(padding: EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Icon(Icons.language),
+                        SizedBox(width: 20,),
+                        Text("English"),
+                        Checkbox(value: _english, onChanged: _selecteEnglish),
+                        SizedBox(width: 20,),
+                        Text("Arabic"),
+                        Checkbox(value: _arabic, onChanged: _selecteArabic),
+                      ],
+                    ),)
+
+                  ),
+
+
+
+
                 ],
               ),
             ),
@@ -473,44 +536,73 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //    } else {
 //
 //    }
+
+
+
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
       addressEnter();
     } else {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        _autoValidate = false;
-        setState(() {
-          var data = new Map<String, String>();
-          data["id"] = globals.currentUser.id.toString();
-          data["first_name"] = prfl_fname.text;
-          data["gender"] = dropdownvalue;
-          data["email"] = prfl_email.text;
 
-          var addressData = new Map<String, dynamic>();
-          addressData["name"] = adrs_name.text;
-          addressData["address_line1"] = adrs_line1.text;
-          addressData["address_line2"] = adrs_line2.text;
-          addressData["landmark"] = adrs_landmark.text;
-          addressData["district"] = adrs_disctric.text;
-          addressData["city"] = adrs_city.text;
-          addressData["postal_code"] = adrs_postalcode.text;
-          data["address"] = jsonEncode(addressData);
-
-          if(globals.currentUser.roles[0].slug == "provider") {
-            String commaSeparated = selectedListOfId.join(', ');
-            print(commaSeparated);
-            data["services"] = commaSeparated;
-          }
-          printLog(data);
-          apiCall(data);
-        });
+      if(!_english || !_arabic) {
+        showInfoAlert(context, "Please selecte language");
       } else {
-        setState(() {
-          _autoValidate = true;
-        });
+        if (_formKey.currentState.validate()) {
+          _formKey.currentState.save();
+          _autoValidate = false;
+          setState(() {
+            var data = new Map<String, String>();
+            data["id"] = globals.currentUser.id.toString();
+            data["first_name"] = prfl_fname.text;
+            data["last_name"] = prfl_lname.text;
+            data["gender"] = dropdownvalue;
+            data["email"] = prfl_email.text;
+
+            String language = "";
+            if(_english) {
+              if(language.isEmpty) {
+                language = "English";
+              } else {
+                language += ", English";
+              }
+            }
+
+            if(_arabic) {
+              if(language.isEmpty) {
+                language = "Arabic";
+              } else {
+                language += ", Arabic";
+              }
+            }
+            data["languages"] = language;
+            var addressData = new Map<String, dynamic>();
+            addressData["name"] = adrs_name.text;
+            addressData["address_line1"] = adrs_line1.text;
+            addressData["address_line2"] = adrs_line2.text;
+            addressData["landmark"] = adrs_landmark.text;
+            addressData["district"] = adrs_disctric.text;
+            addressData["city"] = adrs_city.text;
+            addressData["postal_code"] = adrs_postalcode.text;
+            data["address"] = jsonEncode(addressData);
+
+            if(globals.currentUser.roles[0].slug == "provider") {
+              String commaSeparated = selectedListOfId.join(', ');
+              print(commaSeparated);
+              data["services"] = commaSeparated;
+            }
+            printLog(data);
+//            apiCall(data);
+          });
+        }
+        else {
+          setState(() {
+            _autoValidate = true;
+          });
+        }
       }
+
+
 //      }
 
     }
@@ -975,8 +1067,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   bool _value1 = false;
+  bool _english = false;
+  bool _arabic = false;
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
+  void _selecteEnglish(bool value) => setState(() => _english = value);
+  void _selecteArabic(bool value) => setState(() => _arabic = value);
 
   Widget setServiceListVendor(BuildContext context) {
     if (!isLoadin)
