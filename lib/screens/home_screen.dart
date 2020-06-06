@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       // Middle Body
-      body: _children[_currentIndex],
+      body: (globals.guest == true) ? _guestChildren[_currentIndex] : _children[_currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
@@ -226,7 +226,15 @@ class _HomePageState extends State<HomePage> {
 //    print("User Sign Out");
 //  }
 
+
+  final List<Widget> _guestChildren = [
+
+    HomeUIDesign(),
+    CategoryScreen(),
+  ];
+
   final List<Widget> _children = [
+
     HomeUIDesign(),
     CategoryScreen(),
     ProfileUIPage(key: key),

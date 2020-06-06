@@ -20,4 +20,7 @@ double latitude;
 //GeoPoint location;
 dynamic addressLocation;
 
+
+
 bool isVendor = false;
+bool guest = false;

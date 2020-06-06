@@ -161,7 +161,7 @@ class _user extends State<UserLogin>{
                         focusNode: focus_email,
                         controller: txtUser
                         ,
-                        validator: (value){
+                        validator: (value) {
                           if (value.isEmpty) {
                             return AppLocalizations.of(context).translate('login_txt_user');
                           }
