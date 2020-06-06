@@ -202,7 +202,10 @@ class _user extends State<UserLogin>{
                       Checkbox(value: _value1, onChanged: _value1Changed),
                       Text(AppLocalizations.of(context).translate('txt_remember'), ),
                       Spacer(),
-                      Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),),
+                      FlatButton(onPressed:(){
+                        showDialog(context:  context,
+                          builder: (BuildContext context) => setPasswordAgain(context),);
+                      },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
                       // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
@@ -334,6 +337,7 @@ class _user extends State<UserLogin>{
 //    Widget_Helper.dismissLoading(context);
 //    callLoginAPI(data);
   }
+
 
 //  Future callLoginAPI(Map<String, String> data) async {
 //    data["token"] = globals.fcmToken;
@@ -493,8 +497,99 @@ class _user extends State<UserLogin>{
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return AppLocalizations.of(context).translate('login_txt_validuser');
+      return "am i reaching here";
+      //return AppLocalizations.of(context).translate('login_txt_validuser');
     else
       return null;
+  }
+  String email;
+  String no;
+  final txtemail= TextEditingController();
+  final txtno = TextEditingController();
+  Widget setPasswordAgain(BuildContext context){
+    return AlertDialog(
+      title: Center(
+        child: Text(
+          "Find Your Account",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.orangeAccent,
+          ),
+        ),
+      ),
+      content: Container( height: 250,
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: TextFormField(controller: txtemail,
+               /*  validator: (value) {
+                    if (value.isEmpty) {
+                      return AppLocalizations.of(context)
+                          .translate('profile_txt_city');
+                    }
+                    return null;
+                  }, */
+
+                  obscureText: false, decoration: InputDecoration(suffixIcon: Icon(Icons.email),
+              border: OutlineInputBorder( borderRadius: BorderRadius.all(Radius.circular(10.0)),),
+                      labelText: "Enter your email") ),
+
+            ),
+            Text("OR",style: TextStyle(
+              fontWeight: FontWeight.bold,
+
+            ),),
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              child: TextFormField(controller: txtno,
+
+
+                  obscureText: false,
+                  decoration: InputDecoration(suffixIcon: Icon(Icons.phone),
+
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),),
+                      labelText: "Enter your number"), keyboardType: TextInputType.phone, ),
+            ),
+            SizedBox(height: 10,),
+            ButtonTheme(minWidth: 300,
+            child: RaisedButton(
+              color: Configurations.themColor,
+              textColor: Colors.white,
+              child: Text("Submit"),
+              onPressed: (){
+                validateer();
+              },
+
+            ),)
+          ],
+        ),
+        key: _formKey,
+      ),
+    );
+  }
+  void validateer(){
+   // _formKey.currentState.validate()
+
+    if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty) ) {
+      showInfoAlert(context, "please enter any one of the given!!");
+      print(email);
+      print(no);
+
+    }
+    else{
+      if((txtemail.text.isNotEmpty) && (txtno.text.isEmpty)){
+        email = txtemail.text;
+        print("email validation");
+        print(email);
+        validateEmail(email);
+
+      }
+      else{
+        print("number validation");
+      }
+
+    }
   }
 }
