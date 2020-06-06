@@ -880,6 +880,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
 
   void addressSave() {
+    showMap = false;
     if (_formAddressKey.currentState.validate()) {
       _formAddressKey.currentState.save();
       _autoValidateAddress = false;

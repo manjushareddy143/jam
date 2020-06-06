@@ -66,16 +66,15 @@ class SplashScreenState extends State<SplashScreen> {
   void getLanguage() async {
     await Preferences.readObject("lang").then((onValue) async {
      // printLog('userdata');
-      printLog(onValue);
+      printLog("getLanguage::: $onValue");
       setState(() {
         if(onValue == 'SA') {
           MyApp.setLocale(context, Locale('ar' , 'SA'));
         } else {
           MyApp.setLocale(context, Locale('en', 'US'));
         }
+        setProfile();
       });
-    }).whenComplete(() {
-      setProfile();
     });
   }
 
@@ -121,20 +120,27 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   void setProfile() async  {
+    printLog('setProfile');
     await Preferences.readObject("user").then((onValue) async {
-      var userdata = json.decode(onValue);
       printLog('userdata');
-      printLog(userdata);
-      setState(() {
-        globals.currentUser = User.fromJson(userdata);
-        print(globals.currentUser.roles);
+      printLog(onValue);
+      if(onValue == null) {
         loadData();
+      } else {
+        var userdata = json.decode(onValue);
+
+        setState(() {
+          globals.currentUser = User.fromJson(userdata);
+          print(globals.currentUser.roles);
+          loadData();
 //        Navigator.pushReplacement(
 //            context,
 //            MaterialPageRoute(
 //              builder: (context) => HomeScreen(),
 //            ));
-      });
+        });
+      }
+
     });
   }
 }
