@@ -563,6 +563,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final adrs_disctric = TextEditingController();
   final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
+
+
+  String mapAddressTitle = "Set Location Map";
 //  number + street + sublocality + locality(city) + region(state) + postal_code + country
   Widget _buildAddressDialog(BuildContext context) {
 
@@ -603,24 +606,25 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 width: 10,
                               ),
                               Text(
-                                "Set Location Map",
+                                mapAddressTitle,
                                 style:
                                 TextStyle(color: Configurations.themColor),
                               )
                             ],
                           ),
                           onPressed: () {
-                            /* ... */
                             setState(() {
                               if(showMap == true) {
                                 showMap = false;
+                                _markers.clear();
+                                mapAddressTitle = "Set Location Map";
+                              } else {
+
+                                showMap = true;
+                                mapAddressTitle = "Enter Location";
                                 setCustomMapPin(pinLocationIcon).then((onValue) {
                                   pinLocationIcon = onValue;
                                 });
-                              } else {
-                                _markers.clear();
-
-                                showMap = true;
                               }
                               print("showMap === $showMap");
                             });
@@ -661,9 +665,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                               .translate('address1_placeholder'),
                                         ),
                                         controller: (globals.addressLocation.featureName == ""
-                                            || globals.addressLocation.thoroughfare == "") ? adrs_line1 : adrs_line1
-                                          ..text = globals.addressLocation.featureName + " " + globals.addressLocation.thoroughfare,
-                                        //adrs_line1,
+                                            || globals.addressLocation.thoroughfare == "")
+                                            ? adrs_line1 : adrs_line1
+                                          ..text = globals.addressLocation.featureName
+                                              + " " + globals.addressLocation.thoroughfare,
                                         validator: (value) {
                                           if (value.isEmpty) {
                                             return AppLocalizations.of(context)
@@ -686,7 +691,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                           ),
                                           controller: (globals.addressLocation.subLocality == "") ? adrs_line2 : adrs_line2
                                             ..text = globals.addressLocation.subLocality
-                                        //adrs_line2,
                                       ),
                                     ),
                                   ],
@@ -721,14 +725,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                         controller: (globals.addressLocation.subAdminArea == "") ?
                                         adrs_disctric : adrs_disctric
                                           ..text = globals.addressLocation.subAdminArea,
-                                        //adrs_disctric,
-                                        //                      validator: (value) {
-                                        //                        if (value.isEmpty) {
-                                        //                          return AppLocalizations.of(context)
-                                        //                              .translate('profile_txt_district');
-                                        //                        }
-                                        //                        return null;
-                                        //                      },
                                       ),
                                     )
                                   ],
@@ -864,19 +860,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           setState(() {
 
             getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
-              print("ADDDRESS ::: ${onValue.featureName}");
-
               globals.addressLocation = onValue;
-//
-//              String number = (onValue.featureName == "") ? "" : onValue.featureName +", " ;
-//              String street = (globals.location.street == "") ? "" : globals.location.street +", " ;
-//              String subLocality = (globals.location.sublocality == "") ? "" : globals.location.sublocality +", " ;
-//              String region = (globals.location.region == "") ? "" : globals.location.region +", " ;
-//              String locality = (globals.location.locality == "") ? "" : globals.location.locality +", " ;
               addressString = globals.addressLocation.addressLine;
-//                  number + street + subLocality + locality
-//                  + region+ ", " + globals.location.postalCode
-//                  + ", " + globals.location.country;
             });
 
             _markers.add(

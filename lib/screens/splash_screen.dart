@@ -35,16 +35,16 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getLanguage();
     getcordinates();
   }
 
   Future getcordinates() async {
+    printLog("getcordinates");
 
     GeoPoint geoPoint = await geoPointFromLocation(
         name: "Current position", withAddress: true, verbose: true);
 
-
+    getLanguage();
     globals.longitude = geoPoint.longitude;
     globals.latitude = geoPoint.latitude;
     getAddress(LatLng(geoPoint.latitude, geoPoint.longitude)).then((onValue) {

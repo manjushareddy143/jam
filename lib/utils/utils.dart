@@ -118,7 +118,7 @@ Future<dynamic> getAddress(LatLng latLng) async {
 
 void pushInfoAlert(BuildContext context, String title ,String message) {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-  showDialog(
+  showDialog( 
     context: context,
     builder: (BuildContext context) {
       // return object of type Dialog
