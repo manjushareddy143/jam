@@ -6,6 +6,8 @@ import 'package:jam/models/order.dart';
 import 'package:jam/login/customerSignup.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:geopoint/geopoint.dart';
+import 'package:geopoint_location/geopoint_location.dart';
 
 BuildContext context;
 String orderStatus;
@@ -15,5 +17,7 @@ Order order;
 User currentUser;
 double longitude;
 double latitude;
-LatLng location;
+//GeoPoint location;
+dynamic addressLocation;
+
 bool isVendor = false;

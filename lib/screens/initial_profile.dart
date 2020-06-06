@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:geopoint_location/geopoint_location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/service.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -31,6 +34,8 @@ class InitialProfileScreen extends StatelessWidget {
   }
 }
 
+
+
 class InitialProfilePage extends StatefulWidget {
   InitialProfilePage({Key key, this.title}) : super(key: key);
   final String title;
@@ -46,18 +51,48 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List _lstType = ["Male", "Female"];
   String dropdownvalue;
   File _image;
-  String user_id;
+//  String user_id;
   List<Service> listofServices;
   bool isLoadin = true;
+
+//  String addressLine = "";
 
   @override
   void initState() {
     super.initState();
-    setProfile();
+    setState(() {
+      firstName = globals.currentUser.first_name;
+      phoneNumber = globals.currentUser.contact;
+      email = globals.currentUser.email;
+      imageUrl = globals.currentUser.image;
+
+      print("PROFLE VUEW");
+      //  number + street + sublocality + locality(city) + region(state) + postal_code + country
+//      String hourNumber = (globals.location.number == "") ? "" : globals.location.number +", " ;
+//      String street = (globals.location.street == "") ? "" : globals.location.street +", " ;
+//      String subLocality = (globals.location.sublocality == "") ? "" : globals.location.sublocality +", " ;
+//      String region = (globals.location.region == "") ? "" : globals.location.region +", " ;
+//      String locality = (globals.location.locality == "") ? "" : globals.location.locality +", " ;
+      print(globals.addressLocation.addressLine);
+      addressString = globals.addressLocation.addressLine.toString();
+//          hourNumber + street + subLocality + locality
+//          + region+ ", " + globals.location.postalCode
+//          + ", " + globals.location.country;
+
+    });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
+    printLog("globals addressLine :::::: ${globals.addressLocation.toMap()}");
+//    getAddress(LatLng(globals.location.latitude, globals.location.longitude)).then((onValue) {
+//      setState(() {
+//        addressLine = onValue;
+//        printLog("addressLine :::::: $addressLine");
+//
+//      });
+//    });
     new Future<String>.delayed(new Duration(seconds: 1), () => null)
         .then((String value) {
+
       printLog("now");
       getServices();
     });
@@ -99,21 +134,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
   }
 
-  void setProfile() async {
-    await Preferences.readObject("user").then((onValue) async {
-      var userdata = json.decode(onValue);
-      printLog('userdata');
-      printLog(userdata);
-      User user = User.fromJson(userdata);
-      user_id = user.id.toString();
-      setState(() {
-        firstName = user.first_name;
-        phoneNumber = user.contact;
-        email = user.email;
-        imageUrl = user.image;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +258,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final prfl_email = TextEditingController();
 
   Widget profileUI() {
+
     return Container(
         margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
         child: Column(
@@ -462,7 +483,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         _autoValidate = false;
         setState(() {
           var data = new Map<String, String>();
-          data["id"] = user_id;
+          data["id"] = globals.currentUser.id.toString();
           data["first_name"] = prfl_fname.text;
           data["gender"] = dropdownvalue;
           data["email"] = prfl_email.text;
@@ -533,6 +554,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
   bool _autoValidateService = true;
+  bool showMap = false;
 
   final adrs_name = TextEditingController();
   final adrs_line1 = TextEditingController();
@@ -541,192 +563,335 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final adrs_disctric = TextEditingController();
   final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
-
+//  number + street + sublocality + locality(city) + region(state) + postal_code + country
   Widget _buildAddressDialog(BuildContext context) {
-    return new AlertDialog(
-      title: Row(
-        children: <Widget>[
-          Icon(Icons.location_on),
-          Text(
-            AppLocalizations.of(context).translate('address'),
-          ),
-        ],
-      ),
-      content: SingleChildScrollView(
-        child: Form(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // Name
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)
-                      .translate('address_placeholder'),
-                ),
-                controller: adrs_name,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return AppLocalizations.of(context)
-                        .translate('profile_txt_address');
-                  }
-                  return null;
-                },
+
+
+    return AlertDialog(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.work),
+            Text(
+              "SERVICES",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.orangeAccent,
               ),
-
-              Row(
-                children: <Widget>[
-                  // Address Line 1
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)
-                            .translate('address1_placeholder'),
-                      ),
-                      controller: adrs_line1,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate('profile_txt_address1');
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  // Address Line 2
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)
-                            .translate('address2_placeholder'),
-                      ),
-                      controller: adrs_line2,
-                    ),
-                  ),
-                ],
-              ),
-
-              Row(
-                children: <Widget>[
-                  // Landmark
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)
-                              .translate('landmark_placeholder'),
-                        ),
-                        controller: adrs_landmark),
-                  ),
-
-                  SizedBox(
-                    width: 10,
-                  ),
-
-                  // District
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)
-                            .translate('district_placeholder'),
-                      ),
-                      controller: adrs_disctric,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate('profile_txt_district');
-                        }
-                        return null;
-                      },
-                    ),
-                  )
-                ],
-              ),
-
-              Row(
-                children: <Widget>[
-                  // City
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)
-                            .translate('city_placeholder'),
-                      ),
-                      controller: adrs_city,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate('profile_txt_city');
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-
-                  SizedBox(
-                    width: 10,
-                  ),
-
-                  // postal Code
-                  Container(
-                    width: 100.0,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)
-                            .translate('postalcode_placeholder'),
-                      ),
-                      controller: adrs_postalcode,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return AppLocalizations.of(context)
-                              .translate('profile_txt_postalcode');
-                        }
-                        return null;
-                      },
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              ButtonTheme(
-                minWidth: 300.0,
-                child: RaisedButton(
-                    color: Configurations.themColor,
-                    textColor: Colors.white,
-                    child: Text(
-                        AppLocalizations.of(context).translate('btn_save'),
-                        style: TextStyle(fontSize: 16.5)),
-                    onPressed: () {
-                      addressSave();
-                    }),
-              ),
-            ],
-          ),
-          key: _formAddressKey,
-          autovalidate: _autoValidateAddress,
+            ),
+          ],
         ),
+        content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Container(
+                child: SingleChildScrollView(
+                  child: Form(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+
+                        FlatButton(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.my_location,
+                                color: Configurations.themColor,
+                                size: 15,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "Set Location Map",
+                                style:
+                                TextStyle(color: Configurations.themColor),
+                              )
+                            ],
+                          ),
+                          onPressed: () {
+                            /* ... */
+                            setState(() {
+                              if(showMap == true) {
+                                showMap = false;
+                                setCustomMapPin(pinLocationIcon).then((onValue) {
+                                  pinLocationIcon = onValue;
+                                });
+                              } else {
+                                _markers.clear();
+
+                                showMap = true;
+                              }
+                              print("showMap === $showMap");
+                            });
+                          },
+                        ),
+
+                        Visibility(child: mapBuild(setState),
+                          visible: showMap,),
+
+                        Visibility(
+                            visible: !showMap,
+                            child: Column(
+                              children: <Widget>[
+                                // Name
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('address_placeholder'),
+                                  ),
+                                  controller: adrs_name,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return AppLocalizations.of(context)
+                                          .translate('profile_txt_address');
+                                    }
+                                    return null;
+                                  },
+                                ),
+
+                                Row(
+                                  children: <Widget>[
+                                    // Address Line 1
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          labelText: AppLocalizations.of(context)
+                                              .translate('address1_placeholder'),
+                                        ),
+                                        controller: (globals.addressLocation.featureName == ""
+                                            || globals.addressLocation.thoroughfare == "") ? adrs_line1 : adrs_line1
+                                          ..text = globals.addressLocation.featureName + " " + globals.addressLocation.thoroughfare,
+                                        //adrs_line1,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return AppLocalizations.of(context)
+                                                .translate('profile_txt_address1');
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    // Address Line 2
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                          decoration: InputDecoration(
+                                            labelText: AppLocalizations.of(context)
+                                                .translate('address2_placeholder'),
+                                          ),
+                                          controller: (globals.addressLocation.subLocality == "") ? adrs_line2 : adrs_line2
+                                            ..text = globals.addressLocation.subLocality
+                                        //adrs_line2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                Row(
+                                  children: <Widget>[
+                                    // Landmark
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                          decoration: InputDecoration(
+                                            labelText: AppLocalizations.of(context)
+                                                .translate('landmark_placeholder'),
+                                          ),
+                                          controller: adrs_landmark
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    // District
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          labelText: AppLocalizations.of(context)
+                                              .translate('district_placeholder'),
+                                        ),
+                                        controller: (globals.addressLocation.subAdminArea == "") ?
+                                        adrs_disctric : adrs_disctric
+                                          ..text = globals.addressLocation.subAdminArea,
+                                        //adrs_disctric,
+                                        //                      validator: (value) {
+                                        //                        if (value.isEmpty) {
+                                        //                          return AppLocalizations.of(context)
+                                        //                              .translate('profile_txt_district');
+                                        //                        }
+                                        //                        return null;
+                                        //                      },
+                                      ),
+                                    )
+                                  ],
+                                ),
+
+                                Row(
+                                  children: <Widget>[
+                                    // City
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          labelText: AppLocalizations.of(context)
+                                              .translate('city_placeholder'),
+                                        ),
+                                        controller: (globals.addressLocation.locality == "") ?
+                                        adrs_city : adrs_city
+                                          ..text = globals.addressLocation.locality,
+                                        //adrs_city,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return AppLocalizations.of(context)
+                                                .translate('profile_txt_city');
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    // postal Code
+                                    Container(
+                                      width: 100.0,
+                                      child: TextFormField(
+                                        decoration: InputDecoration(
+                                          labelText: AppLocalizations.of(context)
+                                              .translate('postalcode_placeholder'),
+                                        ),
+                                        controller: (globals.addressLocation.postalCode == "") ?
+                                        adrs_postalcode : adrs_postalcode
+                                          ..text = globals.addressLocation.postalCode,
+                                        //adrs_postalcode,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return AppLocalizations.of(context)
+                                                .translate('profile_txt_postalcode');
+                                          }
+                                          return null;
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            )),
+
+
+
+                        ButtonTheme(
+                          minWidth: 300.0,
+                          child: RaisedButton(
+                              color: Configurations.themColor,
+                              textColor: Colors.white,
+                              child: Text(
+                                  AppLocalizations.of(context).translate('btn_save'),
+                                  style: TextStyle(fontSize: 16.5)),
+                              onPressed: () {
+                                addressSave();
+                              }),
+                        ),
+                      ],
+                    ),
+                    key: _formAddressKey,
+                    autovalidate: _autoValidateAddress,
+                  ),
+                ),
+              );
+            }));
+  }
+  Set<Marker> _markers = {};
+  BitmapDescriptor pinLocationIcon;
+  static LatLng pinPosition = LatLng(globals.latitude, globals.longitude);
+
+  // these are the minimum required values to set
+  // the camera position
+  CameraPosition initialLocation = CameraPosition(
+      zoom: 16,
+      bearing: 30,
+      target: pinPosition
+  );
+
+  Completer<GoogleMapController> _controller = Completer();
+
+  Widget  mapBuild(StateSetter setState) {
+    setCustomMapPin(pinLocationIcon).then((onValue) {
+      pinLocationIcon = onValue;
+    });
+    return Container(
+      height: 400,
+      width: 250,
+      child: GoogleMap(
+        myLocationButtonEnabled: true,
+        myLocationEnabled: true,
+//        mapType: MapType.hybrid,
+        markers: _markers,
+        initialCameraPosition: initialLocation,
+        onMapCreated: (GoogleMapController controller) {
+          print("ADDDRESS::: ${controller}");
+          _controller.complete(controller);
+
+//          getAddress(globals.location);
+        setState(() {
+            _markers.add(
+                Marker(
+                    markerId: MarkerId("User"),
+                    position: pinPosition,
+                    icon: pinLocationIcon
+                )
+            );
+          });
+        },
+
+        onTap: (latLogn) {
+
+          print("latLogn::: $latLogn");
+
+          setState(() {
+
+            getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
+              print("ADDDRESS ::: ${onValue.featureName}");
+
+              globals.addressLocation = onValue;
+//
+//              String number = (onValue.featureName == "") ? "" : onValue.featureName +", " ;
+//              String street = (globals.location.street == "") ? "" : globals.location.street +", " ;
+//              String subLocality = (globals.location.sublocality == "") ? "" : globals.location.sublocality +", " ;
+//              String region = (globals.location.region == "") ? "" : globals.location.region +", " ;
+//              String locality = (globals.location.locality == "") ? "" : globals.location.locality +", " ;
+              addressString = globals.addressLocation.addressLine;
+//                  number + street + subLocality + locality
+//                  + region+ ", " + globals.location.postalCode
+//                  + ", " + globals.location.country;
+            });
+
+            _markers.add(
+                Marker(
+                    markerId: MarkerId("User"),
+                    position: latLogn,
+                    icon: pinLocationIcon
+                )
+            );
+          });
+        },
+
       ),
-//      actions: <Widget>[
-//          new FlatButton(
-//            onPressed: () {
-//              addressSave();
-//              },
-////            textColor: Theme.of(context).primaryColor,
-//            child: Text('Save'),
-//          ),
-//        ],
     );
   }
-
 
 
   void addressSave() {

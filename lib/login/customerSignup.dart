@@ -753,10 +753,12 @@ class _customerSignup extends State<CustomerSignup>{
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
+        Widget_Helper.dismissLoading(context);
         break;
       case FacebookLoginStatus.error:
         print('Something went wrong with the login process.\n'
             'Here\'s the error Facebook gave us: ${result.errorMessage}');
+        Widget_Helper.dismissLoading(context);
         break;
     }
   }
