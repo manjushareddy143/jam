@@ -34,7 +34,7 @@ class User {
         org_id = json['org_id'], term_id = json['term_id'],
         type_id = json['type_id'],resident_country = json['resident_country'],
         social_signin = json['social_signin'],existing_user = json['existing_user'],
-        roles =json['roles'].map<UserRole>((json) => new UserRole.fromJson(json)).toList(),
+        roles = ((json.containsKey('roles') && json['roles'] != null ) ? json['roles'].map<UserRole>((json) => new UserRole.fromJson(json)).toList() : null),
         address = ((json.containsKey('address') && json['address'] != null ) ?
         json['address'].map<Address>((json) => new Address.fromJson(json)).toList() :
         null);

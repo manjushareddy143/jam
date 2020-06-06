@@ -42,55 +42,40 @@ class SplashScreenState extends State<SplashScreen> {
   Future getcordinates() async {
 
     GeoPoint geoPoint = await geoPointFromLocation(
-        name: "Current position", withAddress: true);
+        name: "Current position", withAddress: true, verbose: true);
+
+
     globals.longitude = geoPoint.longitude;
     globals.latitude = geoPoint.latitude;
-    globals.location = LatLng(geoPoint.latitude, geoPoint.longitude);
-    print("geoPoint:::: ${geoPoint.address}");
-    print("geoPoint:::: ${geoPoint.point}");
-    print("geoPoint:::: ${geoPoint.postalCode}");
-    print("geoPoint:::: ${geoPoint.name}");
-    print("geoPoint:::: ${geoPoint.slug}");
-    print("geoPoint:::: ${geoPoint.number}");
-    print("geoPoint:::: ${geoPoint.country}");
-    print("geoPoint:::: ${geoPoint.street}");
-    print("geoPoint:::: ${geoPoint.region}");
-    print("geoPoint:::: ${geoPoint.sublocality}");
-    print("geoPoint:::: ${geoPoint.subregion}");
-    print("geoPoint:::: ${geoPoint.locality}");
-    print("geoPoint:::: ${geoPoint.details()}");
-
-//    final position = await Geolocator().getCurrentPosition();
-//    final GeoPoint geoPoint = await geoPointFromPosition(
-//        position: position,
-//        name: "Current position");
-
-//    Geofence.getCurrentLocation().then((coordinate) {
-//      print("Your latitude is ${coordinate.latitude} and longitude ${coordinate.longitude}");
-//    }).catchError((onError) {
-//      print("ERPPPR  ${onError}");
-//    }).whenComplete(() {
-//      getLanguage();
-//    });
+    getAddress(LatLng(geoPoint.latitude, geoPoint.longitude)).then((onValue) {
+      print("getAddress ${onValue.toMap()}");
+      globals.addressLocation = onValue;
+    });
+//    globals.location = geoPoint;
+//    print("geoPoint:::: ${jsonEncode(geoPoint)}");
+    print("street:::: ${geoPoint.street}");
+    print("region:::: ${geoPoint.region}");
+    print("postalCode:::: ${geoPoint.postalCode}");
+    print("number:::: ${geoPoint.number}");
+    print("sublocality:::: ${geoPoint.sublocality}");
+    print("locality:::: ${geoPoint.locality}");
+    print("country:::: ${geoPoint.country}");
+    print("accuracy:::: ${geoPoint.accuracy}");
+    print("timestamp:::: ${geoPoint.timestamp}");
   }
   void getLanguage() async {
-
-
-
     await Preferences.readObject("lang").then((onValue) async {
      // printLog('userdata');
       printLog(onValue);
       setState(() {
         if(onValue == 'SA') {
           MyApp.setLocale(context, Locale('ar' , 'SA'));
-          //Directionality.of(context) == TextDirection.rtl;
-         // Directionality(textDirection: TextDirection.rtl,);
-          //printlog("rtl please");
         } else {
           MyApp.setLocale(context, Locale('en', 'US'));
         }
-        loadData();
       });
+    }).whenComplete(() {
+      setProfile();
     });
   }
 
@@ -125,8 +110,12 @@ class SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(
               builder: (context) => InitialProfileScreen(),
             ));
-      } else {
-        setProfile();
+      } else if (val == "0"){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ));
       }
     });
   }
@@ -138,12 +127,13 @@ class SplashScreenState extends State<SplashScreen> {
       printLog(userdata);
       setState(() {
         globals.currentUser = User.fromJson(userdata);
-        print(globals.currentUser.roles[0].slug);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ));
+        print(globals.currentUser.roles);
+        loadData();
+//        Navigator.pushReplacement(
+//            context,
+//            MaterialPageRoute(
+//              builder: (context) => HomeScreen(),
+//            ));
       });
     });
   }

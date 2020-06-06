@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:package_info/package_info.dart';
 //import 'package:pulse/components/widget_helper.dart';
 //import 'package:pulse/resources/about_screen.dart';
@@ -97,6 +100,20 @@ void processLogout(BuildContext context) {
   printLog("user will be logged out");
   //redirect back to login
 //  navigateToOtherScreen(context, LoginScreen());
+}
+
+Future<BitmapDescriptor> setCustomMapPin(BitmapDescriptor pinLocationIcon) async {
+  pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(devicePixelRatio: 2.5),
+      'assets/icons/mappin.png');
+  return pinLocationIcon;
+}
+
+Future<dynamic> getAddress(LatLng latLng) async {
+  final coordinates = new Coordinates(latLng.latitude, latLng.longitude);
+  var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  print("addresses::: ${addresses.first.toMap()}");
+  return addresses.first;
 }
 
 void pushInfoAlert(BuildContext context, String title ,String message) {

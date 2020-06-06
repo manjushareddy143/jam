@@ -86,6 +86,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:jam/api/i18n.dart';
 
 import 'package:jam/globals.dart' as globals;
+import 'package:jam/utils/utils.dart';
 
 class NewPage extends StatelessWidget {
   LocationResult _pickedLocation;
@@ -114,21 +115,13 @@ class _LocationPageState extends State<LocationPage> {
 
   void initState() {
     super.initState();
-    setCustomMapPin();
-
-//    BitmapDescriptor.fromAssetImage(
-//        ImageConfiguration(devicePixelRatio: 2.5),
-//        'assets/destination_map_marker.png').then((onValue) {
-//      pinLocationIcon = onValue;
-//    });
+    setCustomMapPin(pinLocationIcon).then((onValue) {
+      pinLocationIcon = onValue;
+    });
   }
 
 
-  void setCustomMapPin() async {
-    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5),
-        'assets/images/ac.jpeg');
-  }
+
 
   Completer<GoogleMapController> _controller = Completer();
 
@@ -147,8 +140,7 @@ class _LocationPageState extends State<LocationPage> {
   @override
   Widget build(BuildContext context) {
 
-    LatLng pinPosition = globals.location;
-    //LatLng(37.3797536, -122.1017334);
+    LatLng pinPosition = LatLng(globals.latitude, globals.longitude);
 
     // these are the minimum required values to set
     // the camera position
@@ -160,7 +152,8 @@ class _LocationPageState extends State<LocationPage> {
 
     // TODO: implement build
     return Scaffold(
-      body: GoogleMap(
+      body:
+      GoogleMap(
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
 //        mapType: MapType.hybrid,
@@ -170,7 +163,7 @@ class _LocationPageState extends State<LocationPage> {
           print("ADDDRESS::: ${controller}");
           _controller.complete(controller);
 
-          getAddress(globals.location);
+//          getAddress(globals.location);
           setState(() {
             _markers.add(
                 Marker(
