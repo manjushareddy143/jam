@@ -385,7 +385,11 @@ class _user extends State<UserLogin>{
   Future callLoginAPI() async {
     Map<String, String> data = new Map();
 
-    data["email"] = txtUser.text;
+    if(isNumeric(txtUser.text)) {
+      data["contact"] = txtUser.text;
+    } else {
+      data["email"] = txtUser.text;
+    }
     data["password"] = txtPass.text;
     data["token"] = fcmToken;
     if(Platform.isAndroid) {
@@ -394,7 +398,7 @@ class _user extends State<UserLogin>{
       data["device"] = "IOS";
     }
 
-    //    data["access_type"] = 'api';
+    printLog(data);
 
     try {
       HttpClient httpClient = new HttpClient();
@@ -431,7 +435,8 @@ class _user extends State<UserLogin>{
               context,
               MaterialPageRoute(
                 builder: (context) => HomePage(),
-              ));
+              )
+          );
         }
       } else {
         printLog("login response code is not 200");
@@ -493,14 +498,27 @@ class _user extends State<UserLogin>{
   }
 
   String validateEmail(String value) {
-    Pattern pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value))
-      return "am i reaching here";
+
+    if(isNumeric(value)) {
+      Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+      RegExp regex = new RegExp(pattern);
+      if (!regex.hasMatch(value))
+        return "Invalid Phone Number";
       //return AppLocalizations.of(context).translate('login_txt_validuser');
-    else
-      return null;
+      else
+        return null;
+    } else {
+      Pattern pattern =
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+      RegExp regex = new RegExp(pattern);
+      if (!regex.hasMatch(value))
+        return "Invalid Email Address";
+      //return AppLocalizations.of(context).translate('login_txt_validuser');
+      else
+        return null;
+    }
+
+
   }
   String email;
   String no;

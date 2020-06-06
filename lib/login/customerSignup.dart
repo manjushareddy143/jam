@@ -156,7 +156,7 @@ class _customerSignup extends State<CustomerSignup>{
               if (value.isEmpty) {
                 return AppLocalizations.of(context).translate('profile_txt_enteremail');
               }
-              return null;
+              return validateEmail(value);
             },
           ),
         ),
@@ -178,7 +178,7 @@ class _customerSignup extends State<CustomerSignup>{
               if (value.isEmpty) {
                 return AppLocalizations.of(context).translate('signup_txt_enterno');
               }
-              return null;
+              return validatePhoneNumber(value);
             },
 
           ),
@@ -626,6 +626,7 @@ class _customerSignup extends State<CustomerSignup>{
       printLog(selectedCountry);
     });
   }
+
 
 
 

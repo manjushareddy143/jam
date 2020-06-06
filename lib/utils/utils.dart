@@ -40,12 +40,25 @@ Future<bool> checkInternetConnection() async {
   }
 }
 
+String validatePhoneNumber(String value) {
+  Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+  RegExp regex = new RegExp(pattern);
+  if(!value.contains(new RegExp(r'[+]?[0-9]'), 0)) {
+    return "Invalid Phone Number +XXX";
+  }
+  if (!regex.hasMatch(value))
+    return "Invalid Phone Number";
+  //return AppLocalizations.of(context).translate('login_txt_validuser');
+  else
+    return null;
+}
+
 String validateEmail(String value) {
   Pattern pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(value))
-    return 'Enter Valid Email';
+    return 'Invalid Email';
   else
     return null;
 }
@@ -100,6 +113,13 @@ void processLogout(BuildContext context) {
   printLog("user will be logged out");
   //redirect back to login
 //  navigateToOtherScreen(context, LoginScreen());
+}
+
+bool isNumeric(String s) {
+  if(s == null) {
+    return false;
+  }
+  return double.parse(s, (e) => null) != null;
 }
 
 Future<BitmapDescriptor> setCustomMapPin(BitmapDescriptor pinLocationIcon) async {

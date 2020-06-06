@@ -159,7 +159,10 @@ class HttpClient {
     dismissLoading(context);
     printLog(response.statusCode);
     printLog("RES ::: ${response.body}");
-    if (response.statusCode == 400) {
+    if (response.statusCode == 401) {
+      showInfoAlert(context, "Invalid Email or Phone and Password");
+      return null;
+    } else if (response.statusCode == 400) {
       return null;
     } else if (response.statusCode == 204) {
       return response;
