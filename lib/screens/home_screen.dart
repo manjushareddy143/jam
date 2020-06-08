@@ -231,6 +231,9 @@ class _HomePageState extends State<HomePage> {
 
     HomeUIDesign(),
     CategoryScreen(),
+
+
+
   ];
 
   final List<Widget> _children = [
@@ -238,8 +241,10 @@ class _HomePageState extends State<HomePage> {
     HomeUIDesign(),
     CategoryScreen(),
     ProfileUIPage(key: key),
+    if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'customer')
     OrderUIPage(url: Configurations.BOOKING_URL, isCustomer: true,),
+    if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'provider')
       VendorOrderUIPage(),
 

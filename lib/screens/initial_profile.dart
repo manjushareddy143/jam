@@ -147,9 +147,50 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       ),
     );
   }
+ Future getImage() async{
 
-  Future getImage() async {
+     final imageSrc = await showDialog<ImageSource>(context: context, builder: (context) =>
+         AlertDialog(title: Text("Select the image source"),
+           actions: <Widget>[
+             MaterialButton(
+               child: Text("Camera"),
+               onPressed: ()=>Navigator.pop(context, ImageSource.camera,),),
+             MaterialButton(
+               child: Text("Gallery"),
+               onPressed: ()=>Navigator.pop(context, ImageSource.gallery,),),
+           ],),);
+     if(imageSrc != null){
+       print("Image Src is not null!!");
+       printLog(imageSrc);
+       final image = await ImagePicker.pickImage(
+         source: imageSrc,
+         imageQuality: 50,
+       );
+       if (image != null){
+         setState(() {
+           imageUrl = null;
+           _image = image;
+         });
+         print("IMAGE:::::::::: $_image");
+       }
+       /* setState(() {
+         if (image != null) {
+
+           imageUrl = null;
+         }
+         _image = image;
+         print("IMAGE:::::::::: $_image");
+       }); */
+
+     }
+
+
+     }
+
+
+ /* Future getImage() async {
 //    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
 
     var image = await ImagePicker.pickImage(
       source: ImageSource.gallery,
@@ -162,7 +203,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       _image = image;
       print("IMAGE:::::::::: $_image");
     });
-  }
+  } */
+
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -171,6 +213,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         children: <Widget>[
           SizedBox(height: 30),
           if (imageUrl == null) _buildProfileImage(),
+
+
           if (imageUrl != null) _buildProfileImageForSocial(),
           SizedBox(height: 10),
           Text(
@@ -187,13 +231,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
+
   Widget _buildProfileImageForSocial() {
     print("IMG");
+    if(globals.isCustomer == true)
     return Center(
       child: Container(
         child: GestureDetector(
           onTap: () {
             print("object");
+
             getImage();
           }, // handle your image tap here
         ),
@@ -201,6 +248,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         height: 120.0,
         decoration: BoxDecoration(
           image: DecorationImage(
+
             image: (imageUrl == null)
                 ? setImgPlaceholder()
                 : NetworkImage(imageUrl),
@@ -214,6 +262,35 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
+    if(globals.isVendor == true)
+      return Center(
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              print("object");
+
+              getImage();
+            }, // handle your image tap here
+          ),
+          width: 120.0,
+          height: 120.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+
+              image: (imageUrl == null)
+                  ? getImage()
+                  : NetworkImage(imageUrl),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            ),
+          ),
+        ),
+      );
+
   }
 
   AssetImage setImgPlaceholder() {
@@ -222,16 +299,22 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   Widget _buildProfileImage() {
     print("NO DATA");
+    if(globals.isCustomer == true)
     return Center(
+
       child: Container(
         child: GestureDetector(
           onTap: () {
             print("object");
-            getImage();
+           // if(globals.isCustomer == true)
+           getImage();
+           // if(globals.isVendor == true)
+              // pickImage();
           }, // handle your image tap here
         ),
         width: 120.0,
         height: 120.0,
+
         decoration: BoxDecoration(
           image: DecorationImage(
             image: (_image == null) ? setImgPlaceholder() : FileImage(_image),
@@ -245,6 +328,36 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
+    if(globals.isVendor== true)
+      return Center(
+
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              print("object");
+              // if(globals.isCustomer == true)
+               getImage();
+              // if(globals.isVendor == true)
+            //  pickImage();
+            }, // handle your image tap here
+          ),
+          width: 120.0,
+          height: 120.0,
+
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: (_image == null) ? Text("Try again!!") : FileImage(_image),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            ),
+          ),
+        ),
+      );
+
   }
 
   String addressString = "";
@@ -272,7 +385,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ),
             ),
 
-            _buildCoverImage(MediaQuery.of(context).size),
+              _buildCoverImage(MediaQuery.of(context).size),
+
+
+
+
+
 
 //          SizedBox(height: 10),
 
@@ -473,6 +591,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //    } else {
 //
 //    }
+  if(globals.isVendor == true)
+  if (_image == null )
+   _buildCoverImage(MediaQuery.of(context).size);
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {

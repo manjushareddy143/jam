@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/resources/configurations.dart';
@@ -13,6 +14,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/screens/vendor_profile.dart';
+import 'package:jam/globals.dart' as globals;
 //class ProviderListScreen extends StatelessWidget {
 //  @override
 //  Widget build(BuildContext context) {
@@ -147,11 +149,11 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-           /* Navigator.push(
+            Navigator.push(
             context,
             MaterialPageRoute(
             builder: (context) =>
-            VendorProfileUIPage())), */
+            VendorProfileUIPage())),
 
               print('tap on card DETAIL')
             },
@@ -161,12 +163,16 @@ class _ProviderListState extends State<ProviderListPage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: (image != null)?
-                    NetworkImage(provider.image):setImgPlaceholder(),
+                    image: AssetImage("assets/images/BG-1x.jpg"),
+                    //image: (image == null)?
+                    //setImgPlaceholder():NetworkImage(provider.image),
+                   // NetworkImage(provider.image):setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
             ),
-            title: Text(provider.first_name),
+
+            title: Text("Himanshu Malik"),
+            // Text(provider.first_name),
             subtitle:   Text(AppLocalizations.of(context).translate('experience') +'2 Years'),
           ),
           Container(
@@ -211,12 +217,21 @@ class _ProviderListState extends State<ProviderListPage> {
                                 fontWeight: FontWeight.w400,
                                 color: Configurations.themColor)), //`Text` to display
                         onPressed: () {
-                          printLog('provider::: ${provider}');
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                          builder: (context) =>
-                              InquiryPage(service: this.service, provider: provider,)));
+                         // show();
+                         if(globals.guest == true){
+                           print("i am a guest so need to login first");
+                            show();
+
+                          }
+                          else{
+                            printLog('provider::: ${provider}');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InquiryPage(service: this.service, provider: provider,)));
+                          }
+
                         },
                       ),
                   ),
@@ -249,5 +264,25 @@ class _ProviderListState extends State<ProviderListPage> {
 
   _ratingChange(int rate) {
     printLog('rating change $rate');
+  }
+  void show(){
+    showDialog(context: context,
+    builder: (BuildContext context){
+      return AlertDialog(
+        content: Text("You cant place order, Login first!!!", style: TextStyle(color: Colors.teal),),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("OK", style: TextStyle(color: Colors.orangeAccent),),
+            onPressed: () {
+              Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
+
+            },
+          ),
+        ],
+
+      );
+    }
+    );
   }
 }
