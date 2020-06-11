@@ -66,7 +66,7 @@ class _ProviderListState extends State<ProviderListPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print('providers=== $data');
-        List providers = data;
+        List providers = data['user'];
         setState(() {
           listofProviders = Provider.processProviders(providers);
 //          build(context);
@@ -137,7 +137,10 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(Provider provider) {
-    double rating = (provider.rate == null)? 0.0 : double.parse(provider.rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
+    printLog("RATE ::: ${provider.rate} ");
+    double rating = (provider.rate.length == 0)? 0.0 : double.parse(provider.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
+    String review = (provider.rate.length == 0)? "0" : provider.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
+
 
     return
       new Card(
@@ -161,7 +164,7 @@ class _ProviderListState extends State<ProviderListPage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: (image != null)?
+                    image: (provider.image != null)?
                     NetworkImage(provider.image):setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
@@ -192,7 +195,7 @@ class _ProviderListState extends State<ProviderListPage> {
                     });
                   },
                 ),
-                Text(provider.reviews.toString() +AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
+                Text( " " + review + " " + AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
               ],

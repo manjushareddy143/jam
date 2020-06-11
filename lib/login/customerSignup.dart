@@ -81,8 +81,9 @@ class _customerSignup extends State<CustomerSignup>{
     // TODO: implement initState
     super.initState();
     globals.isCustomer == true;
+    print("listCountry :: ${listCountry[0]["name"]}");
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
-    selectedCountry = _dropDownTypes[0].value;
+    selectedCountry = _dropDownTypes[177].value;
   }
 
   @override
@@ -119,6 +120,7 @@ class _customerSignup extends State<CustomerSignup>{
 
           ),
         ),
+        if(globals.isCustomer == false)
         SizedBox(height: 10,),
 
         if(globals.isCustomer == false)
@@ -139,6 +141,7 @@ class _customerSignup extends State<CustomerSignup>{
 
           ),
         ),
+        if(globals.isCustomer == false)
         SizedBox(height: 10,),
 
         if(globals.isCustomer == false)
@@ -159,6 +162,7 @@ class _customerSignup extends State<CustomerSignup>{
             },
           ),
         ),
+        if(globals.isCustomer == false)
         SizedBox(height: 10,),
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
@@ -228,19 +232,7 @@ class _customerSignup extends State<CustomerSignup>{
 
         if(globals.isCustomer == false)
           setCountry(),
-//          CountryListPick(
-//            isShowFlag: true,
-//            isShowTitle: true,
-//            isShowCode: true,
-//            initialSelection: '+62',
-//            onChanged: (CountryCode code) {
-//              print(code.name);
-//              print(code.code);
-//              print(code.dialCode);
-//              print(code.flagUri);
-//            },
-//          ),
-//
+
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
@@ -274,10 +266,6 @@ class _customerSignup extends State<CustomerSignup>{
             ]
         ),
         // SizedBox(height: 10,),
-
-
-
-
 
         ButtonTheme(
           minWidth: 300.0,
@@ -470,15 +458,16 @@ class _customerSignup extends State<CustomerSignup>{
       if (value.user != null) {
         setState(() {
           Map<String, String> data = new Map();
-          data["first_name"] = txtName.text;
-          data["last_name"] = txtLname.text;
+
           data["password"] = txtPass.text;
-          data["email"] = txtEmail.text;
           data["contact"] = txtContact.text;
           if(globals.isCustomer == true) {
             data["type_id"] = "4";
             data["term_id"] = "1";
           } else {
+            data["email"] = txtEmail.text;
+            data["first_name"] = txtName.text;
+            data["last_name"] = txtLname.text;
             data["type_id"] = "3";
             data["term_id"] = "2";
             data["resident_country"] = selectedCountry;
@@ -508,23 +497,23 @@ class _customerSignup extends State<CustomerSignup>{
         printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-//          getOTP(txtContact.text);
+          getOTP(txtContact.text);
           // Return here any Widget you want to display in Android Device.
-          Map<String, String> data = new Map();
-          data["contact"] = txtContact.text;
-          data["password"] = txtPass.text;
-          if(globals.isCustomer == true) {
-            data["type_id"] = "4";
-            data["term_id"] = "1";
-          } else {
-            data["first_name"] = txtName.text;
-            data["last_name"] = txtLname.text;
-            data["email"] = txtEmail.text;
-            data["type_id"] = "3";
-            data["term_id"] = "2";
-            data["resident_country"] = selectedCountry;
-          }
-          callLoginAPI(data);
+//          Map<String, String> data = new Map();
+//          data["contact"] = txtContact.text;
+//          data["password"] = txtPass.text;
+//          if(globals.isCustomer == true) {
+//            data["type_id"] = "4";
+//            data["term_id"] = "1";
+//          } else {
+//            data["first_name"] = txtName.text;
+//            data["last_name"] = txtLname.text;
+//            data["email"] = txtEmail.text;
+//            data["type_id"] = "3";
+//            data["term_id"] = "2";
+//            data["resident_country"] = selectedCountry;
+//          }
+//          callLoginAPI(data);
         }
         else if(Platform.isIOS) {
           Map<String, String> data = new Map();
@@ -638,9 +627,10 @@ class _customerSignup extends State<CustomerSignup>{
 
 
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
+    print("reportForlist:: $reportForlist");
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
-      items.add(DropdownMenuItem(value: key, child: Text(key)));
+      items.add(DropdownMenuItem(value: key["name"], child: Text(key["name"])));
     });
     return items;
   }
@@ -841,8 +831,8 @@ class _customerSignup extends State<CustomerSignup>{
         status = 'Something has gone wrong, please try later';
       else if (authException.message.contains('Network'))
         status = 'Please check your internet connection and try again';
-      else
-        status = 'Something has gone wrong, please try later';
+//      else
+//        status = 'Something has gone wrong, please try later';
 
       showInfoAlert(context, status);
     });

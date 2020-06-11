@@ -258,6 +258,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final prfl_fname = TextEditingController();
   final prfl_lname = TextEditingController();
   final prfl_email = TextEditingController();
+  final prfl_phone = TextEditingController();
 
   Widget profileUI() {
 
@@ -325,24 +326,24 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       controller: (lastName == "") ? prfl_lname : prfl_lname
                         ..text = lastName,
                       decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.person,
-                            textDirection: TextDirection.rtl,
-                          ),
+                        prefixIcon: Icon(
+                          Icons.person,
+                        ),
 //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1,
-                            ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 1,
                           ),
-                          labelText: AppLocalizations.of(context)
-                              .translate('signin_lastname_placeholder'),
-                          hasFloatingPlaceholder: false),
+                        ),
+                        labelText: AppLocalizations.of(context)
+                            .translate('signin_lastname_placeholder'),
+                        hasFloatingPlaceholder: false,
+                      ),
                       validator: (value) {
                         if (value.isEmpty) {
                           return AppLocalizations.of(context)
-                              .translate('profile_txt_enterfirstname');
+                              .translate('signup_txt_enterlast');
                         }
                         return null;
                       },
@@ -357,7 +358,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
-                      controller: TextEditingController()..text = phoneNumber,
+                      controller: (phoneNumber == "") ? prfl_phone : prfl_phone
+                        ..text = phoneNumber,
+//                      TextEditingController()..text = phoneNumber,
                       decoration: InputDecoration(
 //                    isDense: true,
                         prefixIcon:
@@ -384,7 +387,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
-                      controller: (prfl_email == "") ? prfl_email : prfl_email
+                      controller: (email == "") ? prfl_email : prfl_email
                         ..text = email,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -420,22 +423,23 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     height: 20,
                   ),
 
+
                   Material(
-                    elevation: 5.0,
-                    shadowColor: Colors.grey,
-                    child: Padding(padding: EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Icon(Icons.language),
-                        SizedBox(width: 20,),
-                        Text("English"),
-                        Checkbox(value: _english, onChanged: _selecteEnglish),
-                        SizedBox(width: 20,),
-                        Text("Arabic"),
-                        Checkbox(value: _arabic, onChanged: _selecteArabic),
-                      ],
-                    ),)
+                      elevation: 5.0,
+                      shadowColor: Colors.grey,
+                      child: Padding(padding: EdgeInsets.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(Icons.language),
+                            SizedBox(width: 20,),
+                            Text("English"),
+                            Checkbox(value: _english, onChanged: _selecteEnglish),
+                            SizedBox(width: 20,),
+                            Text("Arabic"),
+                            Checkbox(value: _arabic, onChanged: _selecteArabic),
+                          ],
+                        ),)
 
                   ),
 
@@ -445,6 +449,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 ],
               ),
             ),
+
 
             // SERVICE
             if(globals.currentUser.roles[0].slug == "provider")
@@ -530,22 +535,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ));
   }
 
+  List<String> language = new List<String>();
   void initialProfileCall() async {
-//    if(globals.currentUser.roles[0].slug == "provider") {
-//
-//    } else {
-//
-//    }
-
-
-
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
       addressEnter();
     } else {
 
-      if(!_english || !_arabic) {
+      if(language.length == 0) {
         showInfoAlert(context, "Please selecte language");
       } else {
         if (_formKey.currentState.validate()) {
@@ -559,23 +557,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["gender"] = dropdownvalue;
             data["email"] = prfl_email.text;
 
-            String language = "";
-            if(_english) {
-              if(language.isEmpty) {
-                language = "English";
-              } else {
-                language += ", English";
-              }
-            }
 
-            if(_arabic) {
-              if(language.isEmpty) {
-                language = "Arabic";
-              } else {
-                language += ", Arabic";
-              }
-            }
-            data["languages"] = language;
+
+
+            String lang = language.join(', ');
+            print(lang);
+
+
+            data["languages"] = lang;
             var addressData = new Map<String, dynamic>();
             addressData["name"] = adrs_name.text;
             addressData["address_line1"] = adrs_line1.text;
@@ -592,7 +581,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               data["services"] = commaSeparated;
             }
             printLog(data);
-//            apiCall(data);
+            apiCall(data);
           });
         }
         else {
@@ -661,14 +650,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //  number + street + sublocality + locality(city) + region(state) + postal_code + country
   Widget _buildAddressDialog(BuildContext context) {
 
-
+    print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
     return AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.work),
+            Icon(Icons.location_on),
             Text(
-              "SERVICES",
+              "Address",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.orangeAccent,
@@ -756,11 +745,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                           labelText: AppLocalizations.of(context)
                                               .translate('address1_placeholder'),
                                         ),
-                                        controller: (globals.addressLocation.featureName == ""
-                                            || globals.addressLocation.thoroughfare == "")
-                                            ? adrs_line1 : adrs_line1
-                                          ..text = globals.addressLocation.featureName
-                                              + " " + globals.addressLocation.thoroughfare,
+                                        controller: (globals.addressLocation.featureName == "")
+                                            ? adrs_line1 : adrs_line1 ..text = globals.addressLocation.featureName,
                                         validator: (value) {
                                           if (value.isEmpty) {
                                             return AppLocalizations.of(context)
@@ -1071,8 +1057,32 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   bool _arabic = false;
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
-  void _selecteEnglish(bool value) => setState(() => _english = value);
-  void _selecteArabic(bool value) => setState(() => _arabic = value);
+  void _selecteEnglish(bool value) {
+    setState(() {
+      lastName = prfl_lname.text;
+      firstName = prfl_fname.text;
+      _english = value;
+
+      if(language.contains("English")) {
+        language.remove("English");
+      } else {
+        language.add("English");
+      }
+      print("language :: $language $value");
+    });
+  } // => setState(() => );
+  void _selecteArabic(bool value) {
+   setState(() {
+     _arabic = value;
+     lastName = prfl_lname.text;
+     firstName = prfl_fname.text;
+     if(language.contains("Arabic")) {
+       language.remove("Arabic");
+     } else {
+       language.add("Arabic");
+     }
+   });
+  }
 
   Widget setServiceListVendor(BuildContext context) {
     if (!isLoadin)

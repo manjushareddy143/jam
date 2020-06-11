@@ -1,4 +1,7 @@
 
+import 'package:jam/models/provider_detail.dart';
+import 'package:jam/models/rate.dart';
+
 class Provider {
   final int id;
   final String first_name;
@@ -14,12 +17,14 @@ class Provider {
   final String resident_country;
   final String doc;
   final String document_image;
-  final String rate;
+//  final String rate;
   final int reviews;
+  final ProviderDetail provider;
+  final List<Rate> rate;
 
   Provider(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
       this.doc, this.document_image, this.email, this.gender, this.org_id,
-  this.resident_country,this.term_id, this.type_id, this.rate, this.reviews);
+  this.resident_country,this.term_id, this.type_id, this.rate, this.reviews, this.provider);
 
 
   Provider.fromJson(Map<String, dynamic> json)
@@ -29,7 +34,11 @@ class Provider {
         email = json['email'], gender = json['gender'],
         org_id = json['org_id'], resident_country = json['resident_country'],
         term_id = json['term_id'], type_id = json['type_id'],
-        rate = json['rate'], reviews = json['reviews'];
+        reviews = json['reviews'],
+        rate = ((json.containsKey('rate') && json['rate'] != null ) ?
+        json['rate'].map<Rate>((json) => new Rate.fromJson(json)).toList() : null),
+        provider = ((json.containsKey('provider') && json['provider'] != null )
+            ? ProviderDetail.fromJson(json['provider']) : null);
 
 
   static List<Provider> processProviders(List providers) {

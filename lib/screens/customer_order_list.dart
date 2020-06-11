@@ -129,6 +129,10 @@ class _OrderUIPageState extends State<OrderUIPage> {
     return list;
   }
 
+  AssetImage setImgPlaceholder() {
+    return AssetImage("assets/images/BG-1x.jpg");
+  }
+
   Widget setupCard(Order order) { //Order order
     double rating = (order.rating == null)? 0.0 : order.rating.floorToDouble();
     String statusString = "";
@@ -184,8 +188,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
                   decoration: BoxDecoration(
                     image:
                     DecorationImage(
-                      image: NetworkImage(
-                          order.provider_image),
+                      image: (order.provider_image != null)?
+                      NetworkImage(order.provider_image):setImgPlaceholder(),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(80.0),
