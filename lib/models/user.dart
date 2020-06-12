@@ -1,6 +1,9 @@
 
 import 'package:jam/models/UserRole.dart';
 import 'package:jam/models/address.dart';
+import 'package:jam/models/organisation.dart';
+import 'package:jam/models/provider_detail.dart';
+import 'package:jam/models/rate.dart';
 
 class User {
   final int id;
@@ -21,10 +24,14 @@ class User {
 
   final List<Address> address;
   final List<UserRole> roles;
+  final List<Rate> rate;
+  final ProviderDetail provider;
+  final Organisation organisation;
 
   User(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
-       this.email, this.gender, this.org_id, this.term_id, this.type_id,
-      this.address, this.resident_country, this.roles, this.social_signin, this.existing_user);
+       this.email, this.gender, this.org_id, this.term_id, this.type_id, this.rate,
+      this.address, this.resident_country, this.roles, this.social_signin,
+      this.existing_user, this.provider, this.organisation);
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],  first_name = json['first_name'],
@@ -38,7 +45,12 @@ class User {
         json['roles'].map<UserRole>((json) => new UserRole.fromJson(json)).toList() : null),
         address = ((json.containsKey('address') && json['address'] != null ) ?
         json['address'].map<Address>((json) => new Address.fromJson(json)).toList() :
-        null);
+        null), rate = ((json.containsKey('rate') && json['rate'] != null )
+      ? json['rate'].map<Rate>((json) => new Rate.fromJson(json)).toList() : null),
+        provider = ((json.containsKey('provider') && json['provider'] != null )
+            ? ProviderDetail.fromJson(json['provider']) : null),
+        organisation = ((json.containsKey('organisation') && json['organisation'] != null )
+            ? Organisation.fromJson(json['organisation']) : null);
         //json['address'].map<Address>((json) => new Address.fromJson(json)).toList();
         //((json.containsKey('address') && json['address'] != null ) ? Address.fromJson(json['address']) : null);
 

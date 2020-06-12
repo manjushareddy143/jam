@@ -1,7 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geopoint_location/geopoint_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/service.dart';
@@ -148,8 +155,50 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
-  Future getImage() async {
+  Future getImage() async{
+
+     final imageSrc = await showDialog<ImageSource>(context: context, builder: (context) =>
+         AlertDialog(title: Text("Select the image source"),
+           actions: <Widget>[
+             MaterialButton(
+               child: Text("Camera"),
+               onPressed: ()=>Navigator.pop(context, ImageSource.camera,),),
+             MaterialButton(
+               child: Text("Gallery"),
+               onPressed: ()=>Navigator.pop(context, ImageSource.gallery,),),
+           ],),);
+     if(imageSrc != null){
+       print("Image Src is not null!!");
+       printLog(imageSrc);
+       final image = await ImagePicker.pickImage(
+         source: imageSrc,
+         imageQuality: 50,
+       );
+       if (image != null){
+         setState(() {
+           imageUrl = null;
+           _image = image;
+         });
+         print("IMAGE:::::::::: $_image");
+       }
+       /* setState(() {
+         if (image != null) {
+
+           imageUrl = null;
+         }
+         _image = image;
+         print("IMAGE:::::::::: $_image");
+       }); */
+
+     }
+
+
+     }
+
+
+ /* Future getImage() async {
 //    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
 
     var image = await ImagePicker.pickImage(
       source: ImageSource.gallery,
@@ -162,7 +211,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       _image = image;
       print("IMAGE:::::::::: $_image");
     });
-  }
+  } */
+
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -171,6 +221,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         children: <Widget>[
           SizedBox(height: 30),
           if (imageUrl == null) _buildProfileImage(),
+
+
           if (imageUrl != null) _buildProfileImageForSocial(),
           SizedBox(height: 10),
           Text(
@@ -187,13 +239,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     );
   }
 
+
   Widget _buildProfileImageForSocial() {
     print("IMG");
+    if(globals.isCustomer == true)
     return Center(
       child: Container(
         child: GestureDetector(
           onTap: () {
             print("object");
+
             getImage();
           }, // handle your image tap here
         ),
@@ -201,6 +256,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         height: 120.0,
         decoration: BoxDecoration(
           image: DecorationImage(
+
             image: (imageUrl == null)
                 ? setImgPlaceholder()
                 : NetworkImage(imageUrl),
@@ -214,6 +270,35 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
+    if(globals.isVendor == true)
+      return Center(
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              print("object");
+
+              getImage();
+            }, // handle your image tap here
+          ),
+          width: 120.0,
+          height: 120.0,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+
+              image: (imageUrl == null)
+                  ? getImage()
+                  : NetworkImage(imageUrl),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            ),
+          ),
+        ),
+      );
+
   }
 
   AssetImage setImgPlaceholder() {
@@ -222,16 +307,22 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   Widget _buildProfileImage() {
     print("NO DATA");
+    if(globals.isCustomer == true)
     return Center(
+
       child: Container(
         child: GestureDetector(
           onTap: () {
             print("object");
-            getImage();
+           // if(globals.isCustomer == true)
+           getImage();
+           // if(globals.isVendor == true)
+              // pickImage();
           }, // handle your image tap here
         ),
         width: 120.0,
         height: 120.0,
+
         decoration: BoxDecoration(
           image: DecorationImage(
             image: (_image == null) ? setImgPlaceholder() : FileImage(_image),
@@ -245,6 +336,36 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
+    if(globals.isVendor== true)
+      return Center(
+
+        child: Container(
+          child: GestureDetector(
+            onTap: () {
+              print("object");
+              // if(globals.isCustomer == true)
+               getImage();
+              // if(globals.isVendor == true)
+            //  pickImage();
+            }, // handle your image tap here
+          ),
+          width: 120.0,
+          height: 120.0,
+
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: (_image == null) ? Text("Try again!!") : FileImage(_image),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(80.0),
+            border: Border.all(
+              color: Colors.white,
+              width: 5.0,
+            ),
+          ),
+        ),
+      );
+
   }
 
   String addressString = "";
@@ -256,9 +377,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   String imageUrl = "";
 
   final prfl_fname = TextEditingController();
-  final prfl_lname = TextEditingController();
   final prfl_email = TextEditingController();
+  final prfl_lname = TextEditingController();
   final prfl_phone = TextEditingController();
+
+  bool _english = false;
+  bool _arabic = false;
 
   Widget profileUI() {
 
@@ -266,7 +390,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
+          children: <Widget> [
             Padding(
               padding: EdgeInsets.fromLTRB(15, 30, 0, 10),
               child: Text(
@@ -275,7 +399,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ),
             ),
 
-            _buildCoverImage(MediaQuery.of(context).size),
+              _buildCoverImage(MediaQuery.of(context).size),
 
 //          SizedBox(height: 10),
 
@@ -442,10 +566,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         ),)
 
                   ),
-
-
-
-
                 ],
               ),
             ),
@@ -537,12 +657,19 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   List<String> language = new List<String>();
   void initialProfileCall() async {
+//    if(globals.currentUser.roles[0].slug == "provider") {
+//
+//    } else {
+//
+//    }
+  if(globals.isVendor == true)
+  if (_image == null )
+   _buildCoverImage(MediaQuery.of(context).size);
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
       addressEnter();
     } else {
-
       if(language.length == 0) {
         showInfoAlert(context, "Please selecte language");
       } else {
@@ -556,14 +683,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["last_name"] = prfl_lname.text;
             data["gender"] = dropdownvalue;
             data["email"] = prfl_email.text;
-
-
-
-
             String lang = language.join(', ');
             print(lang);
-
-
             data["languages"] = lang;
             var addressData = new Map<String, dynamic>();
             addressData["name"] = adrs_name.text;
@@ -589,12 +710,44 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             _autoValidate = true;
           });
         }
-      }
-
-
+//      if (_formKey.currentState.validate()) {
+//        _formKey.currentState.save();
+//        _autoValidate = false;
+//        setState(() {
+//          var data = new Map<String, String>();
+//          data["id"] = globals.currentUser.id.toString();
+//          data["first_name"] = prfl_fname.text;
+//          data["gender"] = dropdownvalue;
+//          data["email"] = prfl_email.text;
+//
+//          var addressData = new Map<String, dynamic>();
+//          addressData["name"] = adrs_name.text;
+//          addressData["address_line1"] = adrs_line1.text;
+//          addressData["address_line2"] = adrs_line2.text;
+//          addressData["landmark"] = adrs_landmark.text;
+//          addressData["district"] = adrs_disctric.text;
+//          addressData["city"] = adrs_city.text;
+//          addressData["postal_code"] = adrs_postalcode.text;
+//          data["address"] = jsonEncode(addressData);
+//
+//          if(globals.currentUser.roles[0].slug == "provider") {
+//            String commaSeparated = selectedListOfId.join(', ');
+//            print(commaSeparated);
+//            data["services"] = commaSeparated;
+//          }
+//          printLog(data);
+//          apiCall(data);
+//        });
+//      } else {
+//        setState(() {
+//          _autoValidate = true;
+//        });
+//>>>>>>> 75d1aeec5d4fb6af8aef43f9ad13b397fe264f19
+//      }
 //      }
 
     }
+  }
   }
 
   void apiCall(Map data) async {
@@ -888,6 +1041,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               );
             }));
   }
+
   Set<Marker> _markers = {};
   BitmapDescriptor pinLocationIcon;
   static LatLng pinPosition = LatLng(globals.latitude, globals.longitude);
@@ -1053,10 +1207,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   bool _value1 = false;
-  bool _english = false;
-  bool _arabic = false;
+
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
+
   void _selecteEnglish(bool value) {
     setState(() {
       lastName = prfl_lname.text;
@@ -1242,5 +1396,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       ),
     );
   }
+
 /*  */
 }

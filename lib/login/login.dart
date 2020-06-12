@@ -279,8 +279,18 @@ class _user extends State<UserLogin>{
                   ),
 
                   SizedBox(height: 30,),
-                  Text(AppLocalizations.of(context).translate('txt_skip'),
-                      textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+                  FlatButton( onPressed: (){
+                    globals.guest = true;
+                    globals.isVendor = false;
+                    globals.isCustomer=false;
+                    print("I am a guest :)");
+                    printLog(globals.guest);
+
+                    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+                  },
+                    child: Text(AppLocalizations.of(context).translate('txt_skip'),
+                        textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+                  ),
 
 
 

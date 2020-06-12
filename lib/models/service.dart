@@ -22,7 +22,10 @@ class Service {
         icon_image = json['icon_image'],
         banner_image = json['banner_image'],
         description = json['description'],isSelected = json['isSelected'],
-        categories = json['categories'].map<SubCategory>((json) => new SubCategory.fromJson(json)).toList();
+//        categories = json['categories'].map<SubCategory>((json) => new SubCategory.fromJson(json)).toList(),
+        categories = ((json.containsKey('categories') && json['categories'] != null ) ?
+        json['categories'].map<SubCategory>((json) => new SubCategory.fromJson(json)).toList() :
+        null);
 
 
   static List<Service> processServices(List services) {

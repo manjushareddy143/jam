@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/utils/httpclient.dart';
@@ -13,6 +15,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'dart:math' as math;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/screens/vendor_profile.dart';
+import 'package:jam/globals.dart' as globals;
 //class ProviderListScreen extends StatelessWidget {
 //  @override
 //  Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class _ProviderListState extends State<ProviderListPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print('providers=== $data');
-        List providers = data['user'];
+        List providers = data;
         setState(() {
           listofProviders = Provider.processProviders(providers);
 //          build(context);
@@ -124,8 +127,14 @@ class _ProviderListState extends State<ProviderListPage> {
     ));
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
-      printLog(listofProviders[providerCount].first_name);
-      list.add(setupCard(listofProviders[providerCount]));
+
+      for(int userCount = 0; userCount <listofProviders[providerCount].user.length; userCount++ ) {
+        User user = listofProviders[providerCount].user[userCount];
+        Provider provider = listofProviders[providerCount];
+        Service service = listofProviders[providerCount].service;
+        list.add(setupCard(user, provider, service));
+      }
+
     }
 
 
@@ -136,12 +145,12 @@ class _ProviderListState extends State<ProviderListPage> {
   }
 
 
-  Widget setupCard(Provider provider) {
-    printLog("RATE ::: ${provider.rate} ");
-    double rating = (provider.rate.length == 0)? 0.0 : double.parse(provider.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
-    String review = (provider.rate.length == 0)? "0" : provider.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
+  Widget setupCard(User user, Provider provider, Service service) {
+    double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
+    String review = (user.rate.length == 0)? "0" : user.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
 
-
+    String img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+    printLog("img________  : $img");
     return
       new Card(
       child: Column(
@@ -150,11 +159,11 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-           /* Navigator.push(
+            Navigator.push(
             context,
             MaterialPageRoute(
             builder: (context) =>
-            VendorProfileUIPage())), */
+            VendorProfileUIPage())),
 
               print('tap on card DETAIL')
             },
@@ -164,12 +173,13 @@ class _ProviderListState extends State<ProviderListPage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: (provider.image != null)?
-                    NetworkImage(provider.image):setImgPlaceholder(),
+                    image: (user.image != null)?
+                    NetworkImage(img):setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
             ),
-            title: Text(provider.first_name),
+
+            title: Text(user.first_name),
             subtitle:   Text(AppLocalizations.of(context).translate('experience') +'2 Years'),
           ),
           Container(
@@ -214,12 +224,21 @@ class _ProviderListState extends State<ProviderListPage> {
                                 fontWeight: FontWeight.w400,
                                 color: Configurations.themColor)), //`Text` to display
                         onPressed: () {
-                          printLog('provider::: ${provider}');
-                          Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                          builder: (context) =>
-                              InquiryPage(service: this.service, provider: provider,)));
+                         // show();
+                         if(globals.guest == true){
+                           print("i am a guest so need to login first");
+                            show();
+
+                          }
+                          else{
+                            printLog('provider::: ${provider}');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        InquiryPage(service: this.service, provider: provider,)));
+                          }
+
                         },
                       ),
                   ),
@@ -252,5 +271,25 @@ class _ProviderListState extends State<ProviderListPage> {
 
   _ratingChange(int rate) {
     printLog('rating change $rate');
+  }
+  void show(){
+    showDialog(context: context,
+    builder: (BuildContext context){
+      return AlertDialog(
+        content: Text("You cant place order, Login first!!!", style: TextStyle(color: Colors.teal),),
+        actions: <Widget>[
+          // usually buttons at the bottom of the dialog
+          new FlatButton(
+            child: new Text("OK", style: TextStyle(color: Colors.orangeAccent),),
+            onPressed: () {
+              Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
+
+            },
+          ),
+        ],
+
+      );
+    }
+    );
   }
 }

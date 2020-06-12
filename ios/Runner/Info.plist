@@ -52,6 +52,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We use access to photo library responsibly</string>
+	<key>NSCameraUsageDescription</key>
+    <string>Explanation on why the camera access is needed.</string>
 	<key>Status bar is initially hidden </key>
 	<true/>
 	<key>UIBackgroundModes</key>
