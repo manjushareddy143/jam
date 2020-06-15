@@ -10,7 +10,7 @@ import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:jam/globals.dart' as globals;
 import 'package:jam/app_localizations.dart';
 
 class Profile extends StatelessWidget{
@@ -38,7 +38,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   File _image;
  List<Tab> tabList = List();
   TabController _tabController;
-  User user;
+//  User user;
   FocusNode focus_email, focus_no, focus_address;
 
 
@@ -47,6 +47,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
+
+    print("PROFILE");
+
     tabList.add(new Tab(text: 'About',));
     _tabController= TabController(vsync: this, length: tabList.length);
 
@@ -54,7 +57,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_email = FocusNode();
     focus_no = FocusNode();
     focus_address = FocusNode();
-    getProfile();
+    if(globals.guest == true) {
+
+    } else {
+//      getProfile();
+    }
+
   }
   @override
   void dispose() {
@@ -85,7 +93,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     await Preferences.readObject("user").then((onValue) async {
       var userdata = json.decode(onValue);
       setState(() {
-        user = User.fromJson(userdata);
+        globals.currentUser = User.fromJson(userdata);
       });
     });
   }
@@ -102,7 +110,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if(user == null) {
+    if(globals.currentUser == null) {
       return new Scaffold(
 
         appBar: new AppBar(
@@ -156,7 +164,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             //SizedBox(height: 20),
             _buildProfileImage(),
            // SizedBox(height: 10),
-        Text(this.user.first_name,
+        Text(globals.currentUser.first_name,
           textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
           style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
               color: Colors.white),
@@ -185,7 +193,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
 
   Widget _buildProfileImage() {
-    if(user.image == null) {
+    if(globals.currentUser.image == null) {
       return Expanded(
         child: Center(
           child: Container(
@@ -238,7 +246,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           image:
           DecorationImage(
             image:
-            (user.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(user.image),
+            (globals.currentUser.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(globals.currentUser.image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -255,17 +263,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget setDetails(){
 
     String addressString = "";
-    if(user.address != null) {
-      addressString = user.address[0].address_line1;
-      if(user.address[0].address_line2 != "") {
-        addressString += ", " + user.address[0].address_line2;
+    if(globals.currentUser.address != null) {
+      addressString = globals.currentUser.address[0].address_line1;
+      if(globals.currentUser.address[0].address_line2 != "") {
+        addressString += ", " + globals.currentUser.address[0].address_line2;
       }
 
-      if(user.address[0].landmark != "") {
-        addressString += ", " + user.address[0].landmark;
+      if(globals.currentUser.address[0].landmark != "") {
+        addressString += ", " + globals.currentUser.address[0].landmark;
       }
-      addressString += ", " + user.address[0].district
-          + ", " + user.address[0].city + ", " + user.address[0].postal_code + ".";
+      addressString += ", " + globals.currentUser.address[0].district
+          + ", " + globals.currentUser.address[0].city + ", " + globals.currentUser.address[0].postal_code + ".";
     }
 
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
@@ -273,21 +281,21 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         TextField(
 
           decoration: InputDecoration(
-              hintText: user.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+              hintText: globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
           ),
         ),
         TextField(
           focusNode: focus_email,
-          decoration: InputDecoration(hintText: user.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+          decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
         ),
         TextField(
           focusNode: focus_no,
-          decoration: InputDecoration(hintText: user.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
+          decoration: InputDecoration(hintText: globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
         ),
 
 
         TextField(
-          decoration: InputDecoration(hintText: (user.languages == null) ? "NOT SELECTED" : user.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
+          decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
         ),
         TextField(
           focusNode: focus_address,

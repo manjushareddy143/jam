@@ -191,8 +191,10 @@ class _HomePageState extends State<HomePage> {
                 Icons.category,
               ),
               title: new Text(AppLocalizations.of(context).translate('tab_categories'))),
+          if(globals.guest == false)
           BottomNavigationBarItem(
               icon: Icon(Icons.perm_identity), title: new Text(AppLocalizations.of(context).translate('tab_account'))),
+          if(globals.guest == false)
           BottomNavigationBarItem(
             icon: Icon(
               Icons.train,
@@ -236,10 +238,12 @@ class _HomePageState extends State<HomePage> {
 
   ];
 
+
   final List<Widget> _children = [
 
     HomeUIDesign(),
     CategoryScreen(),
+    if(globals.guest == false)
     ProfileUIPage(key: key),
     if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'customer')

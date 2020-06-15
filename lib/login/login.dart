@@ -387,6 +387,7 @@ class _user extends State<UserLogin>{
         globals.currentUser = User.fromJson(data);
         printLog(globals.currentUser.first_name);
         print(globals.currentUser.contact);
+        globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
           print("COME INSIDE");
@@ -450,6 +451,7 @@ class _user extends State<UserLogin>{
         var data = json.decode(res.body);
         print("data::::::::$data");
         globals.currentUser = User.fromJson(data);
+        globals.guest = false;
         if(globals.currentUser.address.length == 0) {
           print('NO ADDRESS');
           Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));

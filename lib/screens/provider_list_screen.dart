@@ -148,9 +148,20 @@ class _ProviderListState extends State<ProviderListPage> {
   Widget setupCard(User user, Provider provider, Service service) {
     double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
     String review = (user.rate.length == 0)? "0" : user.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
+    String img = "";
+    String name = "";
+    if(user.organisation != null) {
+      img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+      name = user.organisation.name;
+    } else {
+      if(user.image != null) {
+        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+      } else {
+//        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+      }
 
-    String img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
-    printLog("img________  : $img");
+      name = user.first_name;
+    }
     return
       new Card(
       child: Column(
@@ -174,13 +185,18 @@ class _ProviderListState extends State<ProviderListPage> {
                   shape: BoxShape.circle,
                   image: new DecorationImage(
                     image: (user.image != null)?
-                    NetworkImage(img):setImgPlaceholder(),
+                    NetworkImage(img) : setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
             ),
-
-            title: Text(user.first_name),
-            subtitle:   Text(AppLocalizations.of(context).translate('experience') +'2 Years'),
+            title: Text(name),
+//            Column(
+//              crossAxisAlignment: CrossAxisAlignment.start,
+//              children: <Widget>[
+//              Text(user.first_name),
+//              Text(user.first_name)
+//            ],),
+            subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years'),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
@@ -228,7 +244,6 @@ class _ProviderListState extends State<ProviderListPage> {
                          if(globals.guest == true){
                            print("i am a guest so need to login first");
                             show();
-
                           }
                           else{
                             printLog('provider::: ${provider}');
@@ -279,11 +294,10 @@ class _ProviderListState extends State<ProviderListPage> {
         content: Text("You cant place order, Login first!!!", style: TextStyle(color: Colors.teal),),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
-          new FlatButton(
+          new FlatButton (
             child: new Text("OK", style: TextStyle(color: Colors.orangeAccent),),
             onPressed: () {
               Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
-
             },
           ),
         ],

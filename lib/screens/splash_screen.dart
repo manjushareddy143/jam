@@ -104,12 +104,14 @@ class SplashScreenState extends State<SplashScreen> {
             )
         );
       } else if (val == "1") {
+        globals.guest = false;
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => InitialProfileScreen(),
             ));
       } else if (val == "0"){
+        globals.guest = false;
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

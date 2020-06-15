@@ -69,6 +69,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     super.initState();
     setState(() {
       firstName = globals.currentUser.first_name;
+      lastName = globals.currentUser.last_name;
       phoneNumber = globals.currentUser.contact;
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
@@ -306,8 +307,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImage() {
-    print("NO DATA");
-    if(globals.isCustomer == true)
+    print("NO DATA ${globals.isCustomer}");
+//    if(globals.isCustomer == true)
     return Center(
 
       child: Container(
@@ -336,35 +337,35 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
-    if(globals.isVendor== true)
-      return Center(
-
-        child: Container(
-          child: GestureDetector(
-            onTap: () {
-              print("object");
-              // if(globals.isCustomer == true)
-               getImage();
-              // if(globals.isVendor == true)
-            //  pickImage();
-            }, // handle your image tap here
-          ),
-          width: 120.0,
-          height: 120.0,
-
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: (_image == null) ? Text("Try again!!") : FileImage(_image),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 5.0,
-            ),
-          ),
-        ),
-      );
+//    if(globals.isVendor== true)
+//      return Center(
+//
+//        child: Container(
+//          child: GestureDetector(
+//            onTap: () {
+//              print("object");
+//              // if(globals.isCustomer == true)
+//               getImage();
+//              // if(globals.isVendor == true)
+//            //  pickImage();
+//            }, // handle your image tap here
+//          ),
+//          width: 120.0,
+//          height: 120.0,
+//
+//          decoration: BoxDecoration(
+//            image: DecorationImage(
+//              image: (_image == null) ? Text("Try again!!") : FileImage(_image),
+//              fit: BoxFit.cover,
+//            ),
+//            borderRadius: BorderRadius.circular(80.0),
+//            border: Border.all(
+//              color: Colors.white,
+//              width: 5.0,
+//            ),
+//          ),
+//        ),
+//      );
 
   }
 
@@ -650,7 +651,33 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     initialProfileCall();
 //                  _validateInputs();
                   }),
+            ),
+
+            SizedBox(
+              height: 20,
+            ),
+
+            ButtonTheme(
+              minWidth: MediaQuery.of(context).size.width - 20,
+              child: RaisedButton(
+                  color: Configurations.themColor,
+                  textColor: Colors.white,
+                  child: Text(
+                      "Skip",
+                      style: TextStyle(fontSize: 16.5)),
+                  onPressed: () {
+
+                    Preferences.saveObject("profile", "0");
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(),
+                        ));
+
+                  }),
             )
+
+
           ],
         ));
   }

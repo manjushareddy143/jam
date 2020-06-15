@@ -597,6 +597,7 @@ class _customerSignup extends State<CustomerSignup>{
         globals.currentUser = User.fromJson(data);
         printLog(globals.currentUser.first_name);
         print(globals.currentUser.contact);
+        globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
           print("COME INSIDE");
