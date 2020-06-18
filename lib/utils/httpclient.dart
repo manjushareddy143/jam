@@ -46,12 +46,12 @@ class HttpClient {
       request.fields.addAll(data);
 
       if(files != null) {
-        print('files');
+        print('files ${files[0].filename}');
         request.files.addAll(files);
       }
 
       var response = await request.send();
-//      printLog(response.statusCode);
+      printLog(response.statusCode);
       responseData = await handleMultipartResponse(context, response);
       return responseData;
     } else {

@@ -286,11 +286,11 @@ Future<bool> checkInternetConnection() async {
 }
 
 String validatePhoneNumber(String value) {
-  Pattern pattern = r'^\+[1-9]{1}[0-9]{3,14}$'; //'(^(?:[+0]9)?[0-9]{10,12}$)';
+  Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)'; //r'^\+[1-9]{1}[0-9]{3,14}$'; //
   RegExp regex = new RegExp(pattern);
-  if(!value.contains(new RegExp(r'\+[1-9]'), 0)) {
-    return "Invalid Phone Number. +XXX missing";
-  }
+//  if(!value.contains(new RegExp(r'\+[1-9]'), 0)) {
+//    return "Invalid Phone Number. +XXX missing";
+//  }
   if (!regex.hasMatch(value))
     return "Invalid Phone Number";
   //return AppLocalizations.of(context).translate('login_txt_validuser');

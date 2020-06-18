@@ -90,14 +90,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
-    printLog("globals addressLine :::::: ${globals.addressLocation.toMap()}");
-//    getAddress(LatLng(globals.location.latitude, globals.location.longitude)).then((onValue) {
-//      setState(() {
-//        addressLine = onValue;
-//        printLog("addressLine :::::: $addressLine");
-//
-//      });
-//    });
     new Future<String>.delayed(new Duration(seconds: 1), () => null)
         .then((String value) {
 
@@ -173,7 +165,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
        printLog(imageSrc);
        final image = await ImagePicker.pickImage(
          source: imageSrc,
-         imageQuality: 50,
+         imageQuality: 20,
        );
        if (image != null){
          setState(() {
@@ -182,38 +174,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
          });
          print("IMAGE:::::::::: $_image");
        }
-       /* setState(() {
-         if (image != null) {
-
-           imageUrl = null;
-         }
-         _image = image;
-         print("IMAGE:::::::::: $_image");
-       }); */
-
      }
 
 
      }
-
-
- /* Future getImage() async {
-//    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-
-    var image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 50,
-    );
-    setState(() {
-      if (image != null) {
-        imageUrl = null;
-      }
-      _image = image;
-      print("IMAGE:::::::::: $_image");
-    });
-  } */
-
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -239,7 +203,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       ),
     );
   }
-
 
   Widget _buildProfileImageForSocial() {
     print("IMG");
@@ -271,7 +234,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
-    if(globals.isVendor == true)
+    if(globals.isCustomer == false)
       return Center(
         child: Container(
           child: GestureDetector(
@@ -684,11 +647,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   List<String> language = new List<String>();
   void initialProfileCall() async {
-//    if(globals.currentUser.roles[0].slug == "provider") {
-//
-//    } else {
-//
-//    }
   if(globals.isVendor == true)
   if (_image == null )
    _buildCoverImage(MediaQuery.of(context).size);
@@ -737,42 +695,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             _autoValidate = true;
           });
         }
-//      if (_formKey.currentState.validate()) {
-//        _formKey.currentState.save();
-//        _autoValidate = false;
-//        setState(() {
-//          var data = new Map<String, String>();
-//          data["id"] = globals.currentUser.id.toString();
-//          data["first_name"] = prfl_fname.text;
-//          data["gender"] = dropdownvalue;
-//          data["email"] = prfl_email.text;
-//
-//          var addressData = new Map<String, dynamic>();
-//          addressData["name"] = adrs_name.text;
-//          addressData["address_line1"] = adrs_line1.text;
-//          addressData["address_line2"] = adrs_line2.text;
-//          addressData["landmark"] = adrs_landmark.text;
-//          addressData["district"] = adrs_disctric.text;
-//          addressData["city"] = adrs_city.text;
-//          addressData["postal_code"] = adrs_postalcode.text;
-//          data["address"] = jsonEncode(addressData);
-//
-//          if(globals.currentUser.roles[0].slug == "provider") {
-//            String commaSeparated = selectedListOfId.join(', ');
-//            print(commaSeparated);
-//            data["services"] = commaSeparated;
-//          }
-//          printLog(data);
-//          apiCall(data);
-//        });
-//      } else {
-//        setState(() {
-//          _autoValidate = true;
-//        });
-//>>>>>>> 75d1aeec5d4fb6af8aef43f9ad13b397fe264f19
-//      }
-//      }
-
     }
   }
   }
@@ -786,7 +708,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       files.add(http.MultipartFile.fromBytes(
           'profile_photo', _image.readAsBytesSync(),
           filename: _image.path.split("/").last));
-      printLog(files);
+      printLog(files.length);
     }
 
     HttpClient httpClient = new HttpClient();
