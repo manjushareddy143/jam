@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                       Flexible(
                         child: Text(
                           globals.addressLocation.addressLine.toString(), // current location
-                         maxLines: 2,
+                         maxLines: 3,
 
                           style: TextStyle(
                               fontSize: 14.0,

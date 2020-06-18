@@ -67,10 +67,12 @@ class _HomeUIPageState extends State<HomeUIPage> {
         var data = json.decode(res.body);
         print(data);
         List roles = data;
+
         setState(() {
           listofServices = Service.processServices(roles);
           isLoadin = false;
         });
+
       } else {
         printLog("login response code is not 200");
         setState(() {
@@ -141,21 +143,26 @@ class _HomeUIPageState extends State<HomeUIPage> {
                               //crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  width: 100.00,
-                                  height: 100.00,
+                                  width: 70.00,
+                                  height: 70.00,
                                   child: Image.network(
                                     listofServices[serviceIndex].icon_image,
                                     fit: BoxFit.fill,
                                   ),
                                 ), //new Icon(Icons.face),
 
-                                Padding(padding: EdgeInsets.all(1.0)),
+                               Padding(padding: EdgeInsets.all(1.0)),
 
 
-                                Text(listofServices[serviceIndex].name,
-                                  style: TextStyle(fontSize: 10,),
-                                  overflow: TextOverflow.ellipsis,
+                                Flexible(
+                                  child: Text(listofServices[serviceIndex].name,
+                                    maxLines: 2,
+                                    style: TextStyle(fontSize: 13,letterSpacing: 0.8,color: Colors.black.withOpacity(0.6)),
 
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+
+                                  ),
                                 ),
                               ],
                             ),

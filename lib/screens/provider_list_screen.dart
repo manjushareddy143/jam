@@ -48,6 +48,7 @@ class _ProviderListState extends State<ProviderListPage> {
         .then((String value) {
       getProviders();
     });
+   // print("after getprovider!");
   }
 
   getProviders() async {
@@ -73,6 +74,7 @@ class _ProviderListState extends State<ProviderListPage> {
         setState(() {
           listofProviders = Provider.processProviders(providers);
 //          build(context);
+         // print("after process providers!");
         });
       } else {
         printLog("login response code is not 200");
