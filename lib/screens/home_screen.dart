@@ -73,11 +73,14 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (_currentIndex == 0)
+
               Text(
                 AppLocalizations.of(context).translate('home_txt_location'),
                 textAlign: TextAlign.left,
+
                 style: TextStyle(
                   fontSize: 14.0,
+
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
                 ),
@@ -92,12 +95,17 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Row(
                     children: <Widget>[
-                      Text(
-                        globals.addressLocation.addressLine.toString(),
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black),
+                      Flexible(
+                        child: Text(
+                          globals.addressLocation.addressLine.toString(), // current location
+                         maxLines: 2,
+
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              letterSpacing: 0.5,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
                       ),
                       Icon(
                         Icons.arrow_drop_down,
