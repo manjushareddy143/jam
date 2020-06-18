@@ -99,20 +99,17 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Row(
                     children: <Widget>[
-                      Text(
-                        globals.addressLocation.addressLine.toString(),
-//                      "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, 44),
-//                        ("61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".length > 44) ?
-//                        "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".indexOf('...')) :
-//                        "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, 44),
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500,
-                            color: Colors.black),
-                        overflow: TextOverflow.clip,
-                        textAlign: TextAlign.start,
-//                        style: TextStyle(
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.w400,
-//                            color: Colors.black),
+                      Flexible(
+                        child: Text(
+                          globals.addressLocation.addressLine.toString(), // current location
+                          maxLines: 3,
+
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              letterSpacing: 0.5,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black),
+                        ),
                       ),
                       Icon(
                         Icons.arrow_drop_down,
