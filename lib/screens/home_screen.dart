@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: <Widget>[
                       Text(
-                        'B Ring Road, Doha, Qatar',
+                        globals.addressLocation.addressLine.toString(),
                         style: TextStyle(
                             fontSize: 18.0,
                             fontWeight: FontWeight.w400,
