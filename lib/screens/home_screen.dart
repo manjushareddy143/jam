@@ -65,6 +65,13 @@ class _HomePageState extends State<HomePage> {
   var editIcon = Icons.mode_edit;
 
   Widget build(BuildContext context) {
+
+//    String str = ("61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".length > 44) ?
+//    "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".indexOf('...')) :
+//    "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, 44);
+//    print("data ${"61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".indexOf('...'))}");
+
+
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
@@ -94,10 +101,18 @@ class _HomePageState extends State<HomePage> {
                     children: <Widget>[
                       Text(
                         globals.addressLocation.addressLine.toString(),
-                        style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w400,
+//                      "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, 44),
+//                        ("61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".length > 44) ?
+//                        "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".indexOf('...')) :
+//                        "61 khodiyarnagar near k k mill ni chali Mahuva Bhavnagar Gujarat 364290".substring(0, 44),
+                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500,
                             color: Colors.black),
+                        overflow: TextOverflow.clip,
+                        textAlign: TextAlign.start,
+//                        style: TextStyle(
+//                            fontSize: 18.0,
+//                            fontWeight: FontWeight.w400,
+//                            color: Colors.black),
                       ),
                       Icon(
                         Icons.arrow_drop_down,
