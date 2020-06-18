@@ -127,8 +127,16 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           if (_currentIndex == 0)
           new IconButton(
-            icon: new Icon(Icons.shopping_cart),
+            icon: (globals.guest == true) ? Icon(Icons.exit_to_app) : Icon(Icons.shopping_cart),
             onPressed: () {
+
+              if(globals.guest == true) {
+                globals.guest = false;
+                globals.isCustomer = true;
+                globals.currentUser = null;
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => UserLogin()));
+              }
 //              Preferences.removePreference("user");
 //              Navigator.pushReplacement(context,
 //                  MaterialPageRoute(builder: (context) => UserLogin()));
@@ -155,13 +163,14 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               Preferences.removePreference("user");
               Preferences.removePreference("profile");
-              globals.isCustomer = true;
+
               if(globals.currentUser.social_signin == "facebook") {
                 logoutFacebook();
               } else if(globals.currentUser.social_signin == "gmail") {
 //                signOutGoogle();
               }
 
+              globals.isCustomer = true;
               globals.currentUser = null;
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => UserLogin()));

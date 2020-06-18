@@ -41,16 +41,19 @@ class SplashScreenState extends State<SplashScreen> {
   Future getcordinates() async {
     printLog("getcordinates");
 
-    GeoPoint geoPoint = await geoPointFromLocation(
-        name: "Current position", withAddress: true, verbose: true);
 
-    getLanguage();
+
+
+    GeoPoint geoPoint = await geoPointFromLocation(
+        name: "Current position", withAddress: true, verbose: false);
+    printLog("geoPoint === ${geoPoint.country}" );
     globals.longitude = geoPoint.longitude;
     globals.latitude = geoPoint.latitude;
     getAddress(LatLng(geoPoint.latitude, geoPoint.longitude)).then((onValue) {
       print("getAddress ${onValue.toMap()}");
       globals.addressLocation = onValue;
     });
+    getLanguage();
 //    globals.location = geoPoint;
 //    print("geoPoint:::: ${jsonEncode(geoPoint)}");
     print("street:::: ${geoPoint.street}");
@@ -64,6 +67,7 @@ class SplashScreenState extends State<SplashScreen> {
     print("timestamp:::: ${geoPoint.timestamp}");
   }
   void getLanguage() async {
+    printLog("getLanguage");
     await Preferences.readObject("lang").then((onValue) async {
      // printLog('userdata');
       printLog("getLanguage::: $onValue");

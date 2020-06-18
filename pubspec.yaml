@@ -11,12 +11,13 @@ description: A new Flutter application.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  location: ^3.0.1
   google_map_location_picker: ^3.3.1
   google_maps_flutter: ^0.5.27
   geocoder: ^0.2.1
@@ -27,6 +28,7 @@ dependencies:
   flutter_launcher_icons: ^0.7.4
   hexcolor: ^1.0.1
   country_list_pick: ^1.0.0+3
+  country_code_picker: ^1.4.0
 
   pin_entry_text_field: ^0.1.4
 
@@ -44,7 +46,8 @@ dependencies:
   flutter_spinkit: ^4.0.0
   # for shared preferences
   shared_preferences: ^0.5.6
-#  google_sign_in: ^4.5.0
+#  google_sign_in: ^4.5.1
+#  google_sign_in: ^4.5.1
   flutter_facebook_login: ^3.0.0
   flutter_signin_button: ^1.0.0
 

@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_list_pick/country_list_pick.dart';
 import 'package:country_list_pick/support/code_country.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:flutter_signin_button/button_list.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -80,11 +82,25 @@ class _customerSignup extends State<CustomerSignup>{
   void initState() {
     // TODO: implement initState
     super.initState();
+
+//    googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount account) {
+//      setState(() {
+//        googleSignInAccount = account;
+//      });
+//      if (googleSignInAccount != null) {
+//        printLog(googleSignInAccount);
+////        _handleGetContact();
+//      }
+//    });
+//    googleSignIn.signInSilently();
+
     globals.isCustomer == true;
     print("listCountry :: ${listCountry[0]["name"]}");
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,27 +181,80 @@ class _customerSignup extends State<CustomerSignup>{
         if(globals.isCustomer == false)
         SizedBox(height: 10,),
 
-        Material(elevation: 10.0,shadowColor: Colors.grey,
-          child: TextFormField(
-            enabled: _fridgeEdit,
-            decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
 
-            keyboardType: TextInputType.phone,
-            controller: txtContact,//..text = 'KAR-MT30',
 
-            validator: (value){
-              if (value.isEmpty) {
-                return AppLocalizations.of(context).translate('signup_txt_enterno');
-              }
-              return validatePhoneNumber(value);
-            },
+        Row(
+          children: <Widget>[
+            SizedBox(
+              width: 100,
+              child: Material(elevation: 10.0,shadowColor: Colors.grey,
+                child:
+                CountryCodePicker(
+                  onChanged: _onCountryChange,
+                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                  initialSelection: 'QA',
+                  favorite: ['+974','+91'],
+                  // optional. Shows only country name and flag
+                  showCountryOnly: false,
+                  // optional. Shows only country name and flag when popup is closed.
+                  showOnlyCountryWhenClosed: false,
+                  // optional. aligns the flag and the Text left
+                  alignLeft: false,
+                  showFlag: true,
+                  onInit: _initCountryCode,
+                ),
+              ),
+            ),
 
-          ),
+            SizedBox( width: 10,),
+            SizedBox(
+              width: 198,
+              child: Material(elevation: 10.0,shadowColor: Colors.grey,
+                child: TextFormField(
+                  enabled: _fridgeEdit,
+                  decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                      labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
+
+                  keyboardType: TextInputType.phone,
+                  controller: txtContact,//..text = 'KAR-MT30',
+
+                  validator: (value){
+                    if (value.isEmpty) {
+                      return AppLocalizations.of(context).translate('signup_txt_enterno');
+                    }
+                    return validatePhoneNumber(value);
+                  },
+
+                ),
+              ),
+            )
+
+          ],
         ),
         SizedBox(height: 10,),
+//        Material(elevation: 10.0,shadowColor: Colors.grey,
+//          child: TextFormField(
+//            enabled: _fridgeEdit,
+//            decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+//                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+//                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+//                labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
+//
+//            keyboardType: TextInputType.phone,
+//            controller: txtContact,//..text = 'KAR-MT30',
+//
+//            validator: (value){
+//              if (value.isEmpty) {
+//                return AppLocalizations.of(context).translate('signup_txt_enterno');
+//              }
+//              return validatePhoneNumber(value);
+//            },
+//
+//          ),
+//        ),
+//        SizedBox(height: 10,),
 
         Material(elevation: 10.0,shadowColor: Colors.grey,
           child: TextFormField(
@@ -416,6 +485,17 @@ class _customerSignup extends State<CustomerSignup>{
       ,);
   }
 
+  String selecteCode = "";
+  void _initCountryCode(code) {
+    selecteCode = code.toString();
+    print("New Country selected: " + code.toString());
+  }
+  void _onCountryChange(countryCode) {
+    //TODO : manipulate the selected country code here
+    selecteCode = countryCode.toString();
+    print("New Country selected: " + countryCode.toString());
+  }
+
   _launchURL() async {
     const url = "http://www.savitriya.com/privacy-policy/";
     if (await canLaunch(url)) {
@@ -424,8 +504,6 @@ class _customerSignup extends State<CustomerSignup>{
       throw 'Could not launch $url';
     }
   }
-
-
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
@@ -460,7 +538,7 @@ class _customerSignup extends State<CustomerSignup>{
           Map<String, String> data = new Map();
 
           data["password"] = txtPass.text;
-          data["contact"] = txtContact.text;
+          data["contact"] = selecteCode + txtContact.text;
           if(globals.isCustomer == true) {
             data["type_id"] = "4";
             data["term_id"] = "1";
@@ -494,10 +572,13 @@ class _customerSignup extends State<CustomerSignup>{
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-        printLog(txtContact.text);
+//        printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-          getOTP(txtContact.text);
+
+          String phone = selecteCode + txtContact.text;
+          print(phone);
+          getOTP(phone);
           // Return here any Widget you want to display in Android Device.
 //          Map<String, String> data = new Map();
 //          data["contact"] = txtContact.text;
@@ -517,7 +598,7 @@ class _customerSignup extends State<CustomerSignup>{
         }
         else if(Platform.isIOS) {
           Map<String, String> data = new Map();
-          data["contact"] = txtContact.text;
+          data["contact"] = selecteCode + txtContact.text;
           data["password"] = txtPass.text;
           if(globals.isCustomer == true) {
             data["type_id"] = "4";
@@ -715,9 +796,13 @@ class _customerSignup extends State<CustomerSignup>{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 //  final GoogleSignIn googleSignIn = GoogleSignIn();
 //
+//  GoogleSignInAccount googleSignInAccount;
+
+
 //  Future<List> signInWithGoogle() async {
-//    final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-//
+//    print("signInWithGoogle");
+//    googleSignInAccount = await googleSignIn.signIn();
+//    print("signInWithGoogle---- ${googleSignInAccount}");
 //    if(googleSignInAccount.id != null) {
 //      final GoogleSignInAuthentication googleSignInAuthentication =
 //      await googleSignInAccount.authentication;
