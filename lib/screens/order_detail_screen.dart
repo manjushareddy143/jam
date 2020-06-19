@@ -324,7 +324,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 Icon(Octicons.person, color: Configurations.themColor,),
                 Text((this.isCustomer == true) ?"Vendor: " : "Customer: ",
                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20)),
-                Text((this.isCustomer == true) ? globals.order.provider_first_name : globals.order.orderer_name,
+                Text((this.isCustomer == true) ? globals.order.provider.first_name : globals.order.orderer_name,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 20)),
               ],
             ),
@@ -343,7 +343,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       SmoothStarRating(
                         allowHalfRating: false,
                         starCount: 5,
-                        rating: (globals.order.rating == null)? 0.0 : globals.order.rating.floorToDouble(),
+                        rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
                         size: 20.0,
                         filledIconData: Icons.star,
                         halfFilledIconData: Icons.star,
@@ -357,7 +357,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         },
                       ),
                     ),
-                    Text((globals.order.rating == null) ? "" : globals.order.rating.toString(),textAlign: TextAlign.left,
+                    Text((globals.order.rating == null) ? "" : globals.order.rating.comment,textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
                   ],
@@ -433,7 +433,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
             children: <Widget>[
               Text("Service", style: TextStyle(fontSize: 12, color: Colors.grey),),
               SizedBox(height: 5,),
-              Text(globals.order.service)
+              Text(globals.order.service.name)
             ],
           ),
           ),

@@ -29,7 +29,7 @@ import 'package:jam/app_localizations.dart';
 class InquiryPage extends StatefulWidget {
 
   final Service service;
-  final Provider provider;
+  final User provider;
   InquiryPage({Key key, @required this.service, @required this.provider}) : super(key: key);
   @override
   _InquiryPageState createState() => _InquiryPageState(service: this.service, provider: this.provider);
@@ -37,7 +37,7 @@ class InquiryPage extends StatefulWidget {
 class _InquiryPageState extends State<InquiryPage> {
 
   final Service service;
-  final Provider provider;
+  final User provider;
   _InquiryPageState({Key key, @required this.service, @required this.provider});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -439,7 +439,7 @@ final formatt= DateFormat("h:mm a");
     return Container(padding:
     EdgeInsets.fromLTRB(0,0,0,0),
       child: Container(
-        height: 50,
+//        height: 55,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

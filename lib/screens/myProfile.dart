@@ -26,6 +26,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
 
     _tabController= TabController(vsync: this, length: tabList.length);
     super.initState();
+    print("YY");
   }
   Future getimage()async{
 //    final image = await ImagePicker.pickImage(source: ImageSource.gallery);

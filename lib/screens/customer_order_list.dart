@@ -134,10 +134,12 @@ class _OrderUIPageState extends State<OrderUIPage> {
   }
 
   Widget setupCard(Order order) { //Order order
-    double rating = (order.rating == null)? 0.0 : order.rating.floorToDouble();
+
+    double rating = (order.rating == null)? 0.0 : order.rating.rating.floorToDouble();
     String statusString = "";
     var status_color = null;
     var status_icon = null;
+
 
     switch(order.status)
     {
@@ -188,8 +190,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
                   decoration: BoxDecoration(
                     image:
                     DecorationImage(
-                      image: (order.provider_image != null)?
-                      NetworkImage(order.provider_image):setImgPlaceholder(),
+                      image: (order.provider.image != null)?
+                      NetworkImage(order.provider.image):setImgPlaceholder(),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(80.0),
@@ -201,7 +203,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     textBaseline: TextBaseline.ideographic,
                     children: <Widget>[
-                      Text(order.provider_first_name,
+                      Text(order.provider.first_name,
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textWidthBasis: TextWidthBasis.parent,
                         textAlign: TextAlign.center,
@@ -210,7 +212,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
                       Container(
                         width: 150,
-                        child: Text(order.service,
+                        child: Text(order.service.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5),
                       ),

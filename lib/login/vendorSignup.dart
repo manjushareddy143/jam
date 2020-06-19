@@ -36,32 +36,32 @@ import 'package:jam/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 
-class customer extends StatelessWidget {
+class vendor extends StatelessWidget {
 
   final String fcm_token;
 
-  const customer({Key key, this.fcm_token}) : super(key: key);
+  const vendor({Key key, this.fcm_token}) : super(key: key);
 
   Widget build(BuildContext context) {
     // TODO: implement build
     print("test == ${this.fcm_token}");
-    return CustomerSignup(fcm_token: this.fcm_token,);
+    return VendorSignup(fcm_token: this.fcm_token,);
   }
 }
-class CustomerSignup extends StatefulWidget {
+class VendorSignup extends StatefulWidget {
   //SignupPage({Key key, this.title}) : super(key: key);
   final String fcm_token;
 
   
-  CustomerSignup({Key key, this.fcm_token}) : super(key: key);
+  VendorSignup({Key key, this.fcm_token}) : super(key: key);
   @override
-  _customerSignup createState() => _customerSignup(fcm_token: fcm_token, key: key);
+  _vendorSignup createState() => _vendorSignup(fcm_token: fcm_token, key: key);
 }
 
-class _customerSignup extends State<CustomerSignup>{
+class _vendorSignup extends State<VendorSignup>{
   final String fcm_token;
 
-  _customerSignup({Key key, @required this.fcm_token});
+  _vendorSignup({Key key, @required this.fcm_token});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool _showOTPField = false;
@@ -97,14 +97,72 @@ class _customerSignup extends State<CustomerSignup>{
     return Form(
       key: _formKey,
       autovalidate: _autoValidate,
-      child: customerScreenUI(),
+      child: vendorScreenUI(),
     );
   }
 
-  Widget customerScreenUI(){
+  Widget vendorScreenUI(){
     return Container(
       margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
       child: Column( children: <Widget>[
+        Material(elevation: 10.0,shadowColor: Colors.grey,
+          child: TextFormField(
+            enabled: _fridgeEdit,
+            decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder')
+            ),
+            controller: txtName,//..text = 'KAR-MT30',
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('signup_txt_enteruser');
+              }
+              return null;
+            },
+            //..text = 'KAR-MT30',
+
+          ),
+        ),
+        SizedBox(height: 10,),
+
+        Material(elevation: 10.0,shadowColor: Colors.grey,
+          child: TextFormField(
+            enabled: _fridgeEdit,
+            decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder')),
+            controller: txtLname,//..text = 'KAR-MT30',
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('signup_txt_enterlast');
+              }
+              return null;
+            },
+
+          ),
+        ),
+        SizedBox(height: 10,),
+
+        Material(elevation: 10.0,shadowColor: Colors.grey,
+          child: TextFormField(
+            enabled: _fridgeEdit,
+            decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
+                labelText: AppLocalizations.of(context).translate('profile_email_placeholder')
+            ),
+            controller: txtEmail,//..text = 'KAR-MT30',
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('profile_txt_enteremail');
+              }
+              return validateEmail(value);
+            },
+          ),
+        ),
+        SizedBox(height: 10,),
 
         Row(
           children: <Widget>[
@@ -201,8 +259,8 @@ class _customerSignup extends State<CustomerSignup>{
         ),
         SizedBox(height: 10,),
 
-//        if(globals.isCustomer == false)
-//          setCountry(),
+        if(globals.isCustomer == false)
+          setCountry(),
 
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -279,13 +337,13 @@ class _customerSignup extends State<CustomerSignup>{
           ],
         ),),
 
-        Visibility(child: Column(
+        Visibility(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: 20,
               child: Text("------------------------ OR ------------------------"),
             ),
-
 //            SignInButton(
 //              Buttons.Google,
 //              text: "Sign in with Google",
@@ -294,7 +352,6 @@ class _customerSignup extends State<CustomerSignup>{
 //              },
 //            ),
 //            SizedBox(height: 10),
-
             SignInButton(
               Buttons.Facebook,
               text: "Sign in with Facebook",
@@ -304,7 +361,13 @@ class _customerSignup extends State<CustomerSignup>{
             ),
           ],
         ),
-          visible: _hideSocialSignin,),
+          visible: _hideSocialSignin,
+        ),
+
+
+
+
+
 
         /// OTP ENTERY
         Visibility(

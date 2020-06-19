@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/login/customerSignup.dart';
+import 'package:jam/login/vendorSignup.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/globals.dart' as globals;
@@ -75,7 +76,8 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     ),
                   ),
                   Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
-                    child: Container(height:60, decoration:BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
+                    child: Container(
+                      height:60, decoration:BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                       child: TabBar(
                         dragStartBehavior: DragStartBehavior.start,
@@ -86,9 +88,12 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                         indicatorColor: Configurations.themColor,
                         labelColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
-//                        indicatorPadding: EdgeInsets.all(5.0),
-                        indicator: BoxDecoration(color: Configurations.themColor, borderRadius:BorderRadius.only(topRight: Radius.circular(10),
-                            topLeft: Radius.circular(10))
+                        indicator: BoxDecoration(
+                            color: Configurations.themColor,
+                            borderRadius:BorderRadius.only(
+                                topRight: Radius.circular(10),
+                                topLeft: Radius.circular(10)
+                            )
                         ),
                         tabs:  <Widget>[
                           Tab(icon: Icon(Icons.person), text: "Customer"),
@@ -100,6 +105,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                   Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
                     child: Container(
                       height: viewHeight,
+//                        height: MediaQuery.of(context).size.height,
                       decoration: BoxDecoration(
                           border: Border.all(
                               color: Configurations.themColor, width: 1
@@ -109,12 +115,14 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                               bottomRight: Radius.circular(10)
                           )
                       ),
-                      child: TabBarView(
+                      child:
+                      TabBarView(
                         physics: NeverScrollableScrollPhysics(),
                         controller:_tabController,
                         children: <Widget>[
                           CustomerSignup(fcm_token: fcmToken,),
-                          CustomerSignup(fcm_token: fcmToken,),
+//                          CustomerSignup(fcm_token: fcmToken,),
+                        VendorSignup(fcm_token: fcmToken,),
 //                          vendor(),
                         ],
                       ),
@@ -129,17 +137,16 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
   }
 
   void onTap(val) {
-    print(val);
     setState(() {
       if(val == 0) {
-
+        globals.isCustomer = true;
         headerTitle= "CUSTOMER SIGN-UP";
         viewHeight = 730;
-        globals.isCustomer = true;
+
       } else {
+        globals.isCustomer = false;
         headerTitle= "SERVICE PROVIDER SIGN-UP";
         viewHeight = 800;
-        globals.isCustomer = false;
       }
     });
   }

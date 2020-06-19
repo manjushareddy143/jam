@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/sub_category.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/InquiryForm.dart';
@@ -37,18 +38,34 @@ class _ProviderListState extends State<ProviderListPage> {
 
   List<Provider> listofProviders;
   String image = "";
+
+  String selectedSubCategory;
+  List<DropdownMenuItem<String>> _dropDownSubCategory;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('service.name === ${service}');
+    print('service.name === ${service.categories.length}');
     print(service.id);
+    if(service.categories.length > 0) {
+      _dropDownSubCategory = buildSubCategoryDropDownMenuItems(service.categories);
+      selectedSubCategory = _dropDownSubCategory[0].value;
+    }
 
-    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+
+    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getProviders();
     });
    // print("after getprovider!");
+  }
+
+  List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
+    List<DropdownMenuItem<String>> items = List();
+    listSubCategory.forEach((val) {
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
+    });
+    return items;
   }
 
   getProviders() async {
@@ -118,6 +135,15 @@ class _ProviderListState extends State<ProviderListPage> {
 
   }
 
+//  String selectedService;
+
+  void changedDropDownItem(String selectedItem) {
+    setState(() {
+      selectedSubCategory = selectedItem;
+      print(selectedSubCategory);
+    });
+  }
+
   List<Widget> listOfCards() {
     List<Widget> list = new List();
 
@@ -127,6 +153,30 @@ class _ProviderListState extends State<ProviderListPage> {
       width: MediaQuery. of(context). size. width,
       height: 100,
     ));
+
+
+    print("categories ${this.service.categories.length}");
+
+    if(this.service.categories.length > 0) {
+      list.add(
+          Row(
+            children:[
+              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+              SizedBox(width: 20,),
+              Expanded(child:  DropdownButton(
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  value: selectedSubCategory,
+                  icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+                  items: _dropDownSubCategory,
+                  onChanged: changedDropDownItem),
+              ),
+
+            ],
+          )
+      );
+    }
+
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
 
@@ -153,7 +203,13 @@ class _ProviderListState extends State<ProviderListPage> {
     String img = "";
     String name = "";
     if(user.organisation != null) {
-      img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+      if(user.organisation.logo != null) {
+        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+      } else {
+        img = null;
+//        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+      }
+
       name = user.organisation.name;
     } else {
       if(user.image != null) {
@@ -186,7 +242,7 @@ class _ProviderListState extends State<ProviderListPage> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: new DecorationImage(
-                    image: (user.image != null)?
+                    image: (img != null)?
                     NetworkImage(img) : setImgPlaceholder(),
                     fit: BoxFit.fill,
                   )),
@@ -253,7 +309,7 @@ class _ProviderListState extends State<ProviderListPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        InquiryPage(service: this.service, provider: provider,)));
+                                        InquiryPage(service: this.service, provider: user,)));
                           }
 
                         },

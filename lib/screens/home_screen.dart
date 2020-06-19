@@ -73,7 +73,6 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (_currentIndex == 0)
-
               Text(
                 AppLocalizations.of(context).translate('home_txt_location'),
                 textAlign: TextAlign.left,
@@ -98,7 +97,7 @@ class _HomePageState extends State<HomePage> {
                       Flexible(
                         child: Text(
                           globals.addressLocation.addressLine.toString(), // current location
-                         maxLines: 3,
+                         maxLines: 2,
 
                           style: TextStyle(
                               fontSize: 14.0,
@@ -260,7 +259,6 @@ class _HomePageState extends State<HomePage> {
 
     HomeUIDesign(),
     CategoryScreen(),
-    if(globals.guest == false)
     ProfileUIPage(key: key),
     if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'customer')
@@ -268,7 +266,6 @@ class _HomePageState extends State<HomePage> {
     if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'provider')
       VendorOrderUIPage(),
-
   ];
 
   void onTabTapped(int index) {

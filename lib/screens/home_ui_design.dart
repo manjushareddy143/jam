@@ -40,7 +40,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
     // TODO: implement initState
     super.initState();
 
-    new Future<String>.delayed(new Duration(seconds: 5), () => null)
+    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
     });

@@ -90,7 +90,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
-    new Future<String>.delayed(new Duration(seconds: 1), () => null)
+    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
 
       printLog("now");

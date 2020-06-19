@@ -48,7 +48,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   @override
   void initState(){
 
-    print("PROFILE");
+    print("PROFILE ${globals.guest}");
 
     tabList.add(new Tab(text: 'About',));
     _tabController= TabController(vsync: this, length: tabList.length);
@@ -57,11 +57,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_email = FocusNode();
     focus_no = FocusNode();
     focus_address = FocusNode();
-    if(globals.guest == true) {
-
-    } else {
-//      getProfile();
-    }
+    printLog("globals.currentUser ${globals.currentUser.first_name}");
+//    if(globals.guest == true) {
+//
+//    } else {
+////      getProfile();
+//    }
 
   }
   @override
@@ -70,8 +71,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_email.dispose();
     focus_no.dispose();
     focus_address.dispose();
-
-
     super.dispose();
   }
 
@@ -262,18 +261,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget setDetails(){
 
+//    printLog(globals.currentUser.address);
     String addressString = "";
     if(globals.currentUser.address != null) {
-      addressString = globals.currentUser.address[0].address_line1;
-      if(globals.currentUser.address[0].address_line2 != "") {
-        addressString += ", " + globals.currentUser.address[0].address_line2;
+      if(globals.currentUser.address.length > 0) {
+        addressString = globals.currentUser.address[0].address_line1;
+        if(globals.currentUser.address[0].address_line2 != "") {
+          addressString += ", " + globals.currentUser.address[0].address_line2;
+        }
+
+        if(globals.currentUser.address[0].landmark != "") {
+          addressString += ", " + globals.currentUser.address[0].landmark;
+        }
+        addressString += ", " + globals.currentUser.address[0].district
+            + ", " + globals.currentUser.address[0].city + ", " + globals.currentUser.address[0].postal_code + ".";
       }
 
-      if(globals.currentUser.address[0].landmark != "") {
-        addressString += ", " + globals.currentUser.address[0].landmark;
-      }
-      addressString += ", " + globals.currentUser.address[0].district
-          + ", " + globals.currentUser.address[0].city + ", " + globals.currentUser.address[0].postal_code + ".";
     }
 
     return Column( crossAxisAlignment: CrossAxisAlignment.center,
