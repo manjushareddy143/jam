@@ -65,6 +65,9 @@ class _HomePageState extends State<HomePage> {
   var editIcon = Icons.mode_edit;
 
   Widget build(BuildContext context) {
+    printLog(globals.addressLocation);
+    printLog(globals.newAddress);
+    printLog(globals.addressChange);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
@@ -73,6 +76,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             if (_currentIndex == 0)
+
               Text(
                 AppLocalizations.of(context).translate('home_txt_location'),
                 textAlign: TextAlign.left,
@@ -95,8 +99,14 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: <Widget>[
                       Flexible(
-                        child: Text(
-                          globals.addressLocation.addressLine.toString(), // current location
+                        child:
+                        Text(
+                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
+
+                          globals.addressLocation.addressLine.toString(),
+
+
+                           //newAddress.addressL// current location
                          maxLines: 2,
 
                           style: TextStyle(
@@ -109,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                       Icon(
                         Icons.arrow_drop_down,
                         color: Configurations.themColor,
+
                       )
                     ],
                   ),
@@ -259,6 +270,7 @@ class _HomePageState extends State<HomePage> {
 
     HomeUIDesign(),
     CategoryScreen(),
+    if(globals.guest == false)
     ProfileUIPage(key: key),
     if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'customer')
@@ -266,6 +278,7 @@ class _HomePageState extends State<HomePage> {
     if(globals.guest == false)
     if(globals.currentUser.roles[0].slug == 'provider')
       VendorOrderUIPage(),
+
   ];
 
   void onTabTapped(int index) {

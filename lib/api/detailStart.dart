@@ -86,6 +86,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:jam/api/i18n.dart';
 
 import 'package:jam/globals.dart' as globals;
+import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/utils.dart';
 
 class NewPage extends StatelessWidget {
@@ -139,7 +140,7 @@ class _LocationPageState extends State<LocationPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    String addressString = "";
     LatLng pinPosition = LatLng(globals.latitude, globals.longitude);
 
     // these are the minimum required values to set
@@ -179,6 +180,10 @@ class _LocationPageState extends State<LocationPage> {
 
           print("latLogn::: $latLogn");
           setState(() {
+            getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
+              globals.newAddress = onValue;
+              addressString = globals.newAddress.addressLine;
+            });
             _markers.add(
                 Marker(
                     markerId: MarkerId("User"),
@@ -190,11 +195,25 @@ class _LocationPageState extends State<LocationPage> {
         },
 
       ),
-//      floatingActionButton: FloatingActionButton.extended(
-//        onPressed: _goToTheLake,
-//        label: Text('To the lake!'),
-//        icon: Icon(Icons.directions_boat),
-//      ),
+     floatingActionButton: FloatingActionButton.extended(
+       onPressed: (){
+         setState(() {
+           globals.addressChange = true;
+         });
+         print("before change");
+         printLog(globals.addressLocation.addressLine.toString());
+
+
+         print("change in address");
+         printLog(globals.newAddress.addressLine.toString());
+         Navigator.push(context,
+             MaterialPageRoute(builder: (context) => HomeScreen()));
+       }, //_goToTheLake,
+       label: Text('Save'),
+       //icon: Icon(Icons.save),
+       backgroundColor:Colors.teal,
+
+     ),
     );
 
 
@@ -271,7 +290,7 @@ class _LocationPageState extends State<LocationPage> {
 //    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 
-  Future<String> getAddress(LatLng latLng) async {
+/*  Future<String> getAddress(LatLng latLng) async {
 
     final query = "1600 Amphiteatre Parkway, Mountain View";
     var addresses = await Geocoder.local.findAddressesFromQuery(query);
@@ -284,6 +303,6 @@ class _LocationPageState extends State<LocationPage> {
     print("ADDDRESS::: ${first.featureName} : ${first.addressLine}");
 
     return first.addressLine;
-  }
+  } */
 
 }
