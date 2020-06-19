@@ -19,6 +19,8 @@ double longitude;
 double latitude;
 //GeoPoint location;
 dynamic addressLocation;
+dynamic newAddress;
+bool addressChange = false;
 
 
 

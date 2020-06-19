@@ -65,6 +65,9 @@ class _HomePageState extends State<HomePage> {
   var editIcon = Icons.mode_edit;
 
   Widget build(BuildContext context) {
+    printLog(globals.addressLocation);
+    printLog(globals.newAddress);
+    printLog(globals.addressChange);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,
@@ -96,9 +99,15 @@ class _HomePageState extends State<HomePage> {
                   child: Row(
                     children: <Widget>[
                       Flexible(
-                        child: Text(
-                          globals.addressLocation.addressLine.toString(), // current location
-                         maxLines: 3,
+                        child:
+                        Text(
+                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
+
+                          globals.addressLocation.addressLine.toString(),
+
+
+                           //newAddress.addressL// current location
+                         maxLines: 2,
 
                           style: TextStyle(
                               fontSize: 14.0,
@@ -110,6 +119,7 @@ class _HomePageState extends State<HomePage> {
                       Icon(
                         Icons.arrow_drop_down,
                         color: Configurations.themColor,
+
                       )
                     ],
                   ),
