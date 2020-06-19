@@ -154,9 +154,6 @@ class _ProviderListState extends State<ProviderListPage> {
       height: 100,
     ));
 
-
-    print("categories ${this.service.categories.length}");
-
     if(this.service.categories.length > 0) {
       list.add(
           Row(
@@ -192,6 +189,7 @@ class _ProviderListState extends State<ProviderListPage> {
 
     return list;
   }
+
   AssetImage setImgPlaceholder() {
     return AssetImage("assets/images/BG-1x.jpg");
   }
@@ -232,7 +230,7 @@ class _ProviderListState extends State<ProviderListPage> {
             context,
             MaterialPageRoute(
             builder: (context) =>
-            VendorProfileUIPage())),
+            VendorProfileUIPage(provider: user, ))),
 
               print('tap on card DETAIL')
             },

@@ -45,7 +45,8 @@ class HttpClient {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
       request.fields.addAll(data);
 
-      if(files != null) {
+      printLog("FILES ${files}");
+      if(files != null && files.length > 0) {
         print('files ${files[0].filename}');
         request.files.addAll(files);
       }
