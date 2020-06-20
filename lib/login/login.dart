@@ -37,6 +37,7 @@ class UserLogin extends StatefulWidget {
 
 class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   final _primeKey = GlobalKey<State>();
   //const String loginURL ="";
@@ -480,51 +481,11 @@ class _user extends State<UserLogin>{
     }
   }
 
-//  void getServices() async {
-//    try {
-//      Map<String, String> data = new HashMap();
-//      HttpClient httpClient = new HttpClient();
-//      var syncReportResponse =
-//      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
-//      processReportResponse(syncReportResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
-
-//  void processReportResponse(Response res) {
-//    print('get daily format');
-//    if (res != null) {
-//      if (res.statusCode == 200) {
-//        var data = json.decode(res.body);
-//        print(data);
-//        List roles = data;
-//        List<Service> listofRoles = Service.processServices(roles);
-//        printLog(listofRoles.length);
-//        // Preferences.saveObject('reportformate', jsonEncode(listofRoles));
-//
-//      } else {
-//        printLog("login response code is not 200");
-//      }
-//    } else {
-//      print('no data');
-//    }
-//  }
-
   void _validateInputs() {
-//    _showDialog(context),
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) => OTPScreen.buildAboutDialog(context),
-//    );
     if (_formKey.currentState.validate()) {
-//    If all data are correct then do API call
       _formKey.currentState.save();
       callLoginAPI();
     } else {
-//    If all data are not valid then start auto validation.
       setState(() {
         _autoValidate = true;
       });
@@ -556,11 +517,17 @@ class _user extends State<UserLogin>{
 
 
   }
+
   String email;
   String no;
+  bool showChangePass = false;
   final txtemail= TextEditingController();
   final txtno = TextEditingController();
+
+  final newPass = TextEditingController();
+  final confPass = TextEditingController();
   Widget setPasswordAgain(BuildContext context){
+    showChangePass = false;
     return AlertDialog(
       title: Center(
         child: Text(
@@ -571,79 +538,221 @@ class _user extends State<UserLogin>{
           ),
         ),
       ),
-      content: Container( height: 250,
+      content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+       return Container( height: 250,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: TextFormField(controller: txtemail,
-               /*  validator: (value) {
-                    if (value.isEmpty) {
-                      return AppLocalizations.of(context)
-                          .translate('profile_txt_city');
-                    }
-                    return null;
-                  }, */
 
-                  obscureText: false, decoration: InputDecoration(suffixIcon: Icon(Icons.email),
-              border: OutlineInputBorder( borderRadius: BorderRadius.all(Radius.circular(10.0)),),
-                      labelText: "Enter your email") ),
+            Visibility(child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: txtemail,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "Enter your email")
+                  ),
+                ),
+                Text("OR",style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child:
+                  TextFormField(
+                    controller: txtno,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.phone),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        labelText: "Enter your number"),
+                    keyboardType: TextInputType.phone,
+                  ),
+                ),
+                SizedBox(height: 10,),
+                ButtonTheme(minWidth: 300,
+                  child: RaisedButton(
+                    color: Configurations.themColor,
+                    textColor: Colors.white,
+                    child: Text("Submit"),
+                    onPressed: (){
+                      validateer(setState);
+                    },
 
+                  ),)
+              ],
             ),
-            Text("OR",style: TextStyle(
-              fontWeight: FontWeight.bold,
-
-            ),),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: TextFormField(controller: txtno,
-
-
-                  obscureText: false,
-                  decoration: InputDecoration(suffixIcon: Icon(Icons.phone),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),),
-                      labelText: "Enter your number"), keyboardType: TextInputType.phone, ),
+              visible: !showChangePass,
             ),
-            SizedBox(height: 10,),
-            ButtonTheme(minWidth: 300,
-            child: RaisedButton(
-              color: Configurations.themColor,
-              textColor: Colors.white,
-              child: Text("Submit"),
-              onPressed: (){
-                validateer();
-              },
 
-            ),)
+            Visibility(child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: newPass,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "New Password")
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: confPass,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "Confirm Password")
+                  ),
+                ),
+                SizedBox(height: 30,),
+                ButtonTheme(minWidth: 300,
+                  child: RaisedButton(
+                    color: Configurations.themColor,
+                    textColor: Colors.white,
+                    child: Text("Submit"),
+                    onPressed: (){
+                      validatePassword(setState);
+                    },
+
+                  ),)
+            ],),
+              visible: showChangePass,
+            )
+
+
           ],
         ),
-        key: _formKey,
-      ),
+        key: _forgetFormKey,
+      );
+      }),
     );
   }
-  void validateer(){
-   // _formKey.currentState.validate()
 
-    if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty) ) {
+  void validateer(StateSetter setState){
+//    _forgetFormKey.currentState.validate();
+
+    if((txtemail.text.isEmpty)&&(txtno.text.isEmpty) ) {
       showInfoAlert(context, "please enter any one of the given!!");
       print(email);
-      print(no);
-
+    } else if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty)) {
+      showInfoAlert(context, "please enter only one of the given!!");
     }
     else{
-      if((txtemail.text.isNotEmpty) && (txtno.text.isEmpty)){
-        email = txtemail.text;
-        print("email validation");
-        print(email);
-        validateEmail(email);
+      if((txtemail.text.isNotEmpty)){
+        String isValid = validateEmail(txtemail.text);
+        if(isValid != null) {
+          showInfoAlert(context, isValid);
+        } else {
+          print("email validation");
+          print(txtemail.text);
+          resetPassword("email", txtemail.text, setState);
+        }
 
+      } else if((txtno.text.isNotEmpty)) {
+        String isValid = validatePhoneNumber(txtno.text);
+        if(isValid != null) {
+          showInfoAlert(context, isValid);
+        } else {
+          print("email validation");
+          print(txtno.text);
+          resetPassword("contact", txtno.text, setState);
+        }
       }
-      else{
-        print("number validation");
-      }
+    }
+  }
 
+  void resetPassword(String key, String Val, StateSetter setState) async {
+    Map<String, String> data = new Map();
+    data[key] = Val;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.RESET_PASSWORD_STATUS_URL, data, true);
+      processResetResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  int resetUid = 0;
+  void processResetResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        resetUid = data['id'];
+        print("data::::::::${resetUid}");
+        if(resetUid != 0 && resetUid != null) {
+          setState(() {
+            showChangePass = true;
+          });
+        }
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
+      }
+    }
+  }
+
+  void validatePassword(StateSetter setState) {
+    if((newPass.text.isEmpty) && (newPass.text.isEmpty)) {
+      showInfoAlert(context, "Please enter password");
+    } else if((newPass.text.isEmpty) || (newPass.text.isEmpty)) {
+      showInfoAlert(context, "Please enter password");
+    } else if(newPass.text != confPass.text ) {
+      showInfoAlert(context, "Mismatch Confirm Password");
+    } else {
+      changePassword(setState);
+    }
+  }
+
+  void changePassword(StateSetter setState) async {
+    Map<String, String> data = new Map();
+    data["id"] = resetUid.toString();
+    data["password"] = newPass.text;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.CHANGE_PASSWORD_STATUS_URL, data, true);
+      processChangeResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processChangeResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("data::::::::${data}");
+        if(data['status'] == true) {
+          Navigator.of(context).pop();
+        }
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
+      }
     }
   }
 }

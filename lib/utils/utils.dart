@@ -292,7 +292,7 @@ String validatePhoneNumber(String value) {
 //    return "Invalid Phone Number. +XXX missing";
 //  }
   if (!regex.hasMatch(value))
-    return "Invalid Phone Number";
+    return "Invalid Phone Number. ex: +974XXXXXXXX";
   //return AppLocalizations.of(context).translate('login_txt_validuser');
   else
     return null;

@@ -226,11 +226,11 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-            Navigator.push(
-            context,
-            MaterialPageRoute(
-            builder: (context) =>
-            VendorProfileUIPage(provider: user, ))),
+//            Navigator.push(
+//            context,
+//            MaterialPageRoute(
+//            builder: (context) =>
+//            VendorProfileUIPage(provider: user, ))),
 
               print('tap on card DETAIL')
             },
