@@ -98,12 +98,16 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(
+    final image = await ImagePicker.pickImage(
       source: ImageSource.gallery,
+      imageQuality: 20,
     );
+    if(image != null)
+      print("image is not null");
     setState(() {
         _image = image;
     });
+  //  print("image is null so returning this statement");
   }
 
   @override
@@ -148,6 +152,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           _buildCoverImage(MediaQuery.of(context).size),
           SizedBox(height: 10,),
           setDetails(),
+          SizedBox(height: 20,),
           setTabbar(),
         ],
       ),
@@ -245,7 +250,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           image:
           DecorationImage(
             image:
-            (globals.currentUser.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(globals.currentUser.image),
+           // (globals.currentUser.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(globals.currentUser.image),
+            (_image == null) ? NetworkImage(globals.currentUser.image) : FileImage(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -279,34 +285,37 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     }
 
-    return Column( crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        TextField(
+    return Padding(
+      padding:  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+      child: Column( crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          TextField(
 
-          decoration: InputDecoration(
-              hintText: globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+            decoration: InputDecoration(
+                hintText: globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+            ),
           ),
-        ),
-        TextField(
-          focusNode: focus_email,
-          decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
-        ),
-        TextField(
-          focusNode: focus_no,
-          decoration: InputDecoration(hintText: globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
-        ),
+          TextField(
+            focusNode: focus_email,
+            decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+          ),
+          TextField(
+            focusNode: focus_no,
+            decoration: InputDecoration(hintText: globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile),
+          ),
 
 
-        TextField(
-          decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
-        ),
-        TextField(
-          focusNode: focus_address,
-          decoration: InputDecoration(hintText: addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
-          helperMaxLines: 5, hintMaxLines: 5),
-        ),
-      ],
+          TextField(
+            decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
+          ),
+          TextField(
+            focusNode: focus_address,
+            decoration: InputDecoration(hintText: addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
+            helperMaxLines: 5, hintMaxLines: 5),
+          ),
+        ],
 
+      ),
     );
   }
 
