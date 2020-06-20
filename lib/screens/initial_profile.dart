@@ -185,10 +185,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       child: Column(
         children: <Widget>[
           SizedBox(height: 30),
-          if (imageUrl == null) _buildProfileImage(),
+          if (imageUrl == null)
+            _buildProfileImage(),
 
-
-          if (imageUrl != null) _buildProfileImageForSocial(),
+          if (imageUrl != null)
+            _buildProfileImageForSocial(),
           SizedBox(height: 10),
           Text(
             AppLocalizations.of(context).translate('profile_txt_img'),
@@ -205,36 +206,36 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImageForSocial() {
-    print("IMG");
-    if(globals.isCustomer == true)
-    return Center(
-      child: Container(
-        child: GestureDetector(
-          onTap: () {
-            print("object");
-
-            getImage();
-          }, // handle your image tap here
-        ),
-        width: 120.0,
-        height: 120.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-
-            image: (imageUrl == null)
-                ? setImgPlaceholder()
-                : NetworkImage(imageUrl),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Colors.white,
-            width: 5.0,
-          ),
-        ),
-      ),
-    );
-    if(globals.isCustomer == false)
+    print("IMG ${globals.isCustomer}");
+//    if(globals.isCustomer == true)
+//    return Center(
+//      child: Container(
+//        child: GestureDetector(
+//          onTap: () {
+//            print("object");
+//
+//            getImage();
+//          }, // handle your image tap here
+//        ),
+//        width: 120.0,
+//        height: 120.0,
+//        decoration: BoxDecoration(
+//          image: DecorationImage(
+//
+//            image: (imageUrl == null)
+//                ? setImgPlaceholder()
+//                : NetworkImage(imageUrl),
+//            fit: BoxFit.cover,
+//          ),
+//          borderRadius: BorderRadius.circular(80.0),
+//          border: Border.all(
+//            color: Colors.white,
+//            width: 5.0,
+//          ),
+//        ),
+//      ),
+//    );
+//    if(globals.isCustomer == false)
       return Center(
         child: Container(
           child: GestureDetector(
@@ -647,7 +648,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   List<String> language = new List<String>();
   void initialProfileCall() async {
-  if(globals.isVendor == true)
+//  if(globals.isCustomer == false)
   if (_image == null )
    _buildCoverImage(MediaQuery.of(context).size);
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
@@ -668,8 +669,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["last_name"] = prfl_lname.text;
             data["gender"] = dropdownvalue;
             data["email"] = prfl_email.text;
-            String lang = language.join(', ');
-            print(lang);
+            String lang = language.join(',');
+            print("lang ${globals.currentUser.roles[0].slug}");
             data["languages"] = lang;
             var addressData = new Map<String, dynamic>();
             addressData["name"] = adrs_name.text;
@@ -682,7 +683,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["address"] = jsonEncode(addressData);
 
             if(globals.currentUser.roles[0].slug == "provider") {
-              String commaSeparated = selectedListOfId.join(', ');
+              String commaSeparated = selectedListOfId.join(',');
               print(commaSeparated);
               data["services"] = commaSeparated;
             }
@@ -702,6 +703,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void apiCall(Map data) async {
     List<http.MultipartFile> files = new List<http.MultipartFile>();
 
+    print('img==== ${_image}');
     if (_image != null) {
       print('COME FOR API IMAGE');
 //    files.add(await http.MultipartFile.fromPath('profile_photo', _image.path));

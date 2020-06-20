@@ -25,11 +25,18 @@ class Profile extends StatelessWidget{
 }
 class VendorProfileUIPage extends StatefulWidget {
 
-  VendorProfileUIPage({ Key key }) : super(key: key);
+  final User provider;
+  VendorProfileUIPage({Key key, @required this.provider}) : super(key: key);
+
+//  VendorProfileUIPage({ Key key }) : super(key: key);
   @override
-  VendorProfileState createState() => new VendorProfileState();
+  VendorProfileState createState() => new VendorProfileState(provider: this.provider );
 }
 class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderStateMixin {
+
+  final User provider;
+  VendorProfileState({Key key, @required this.provider});
+
   @override
   void initState() {
     // TODO: implement initState
@@ -78,6 +85,15 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
     }
  // }
   Widget setupVendor(Size screenSize ){
+
+    String name = "";
+    if(this.provider.organisation != null) {
+      name = this.provider.organisation.name;
+    } else {
+      name = this.provider.first_name + " " + this.provider.last_name;
+    }
+
+
     return Container(decoration: BoxDecoration(
       color: Colors.black,
     ),
@@ -88,7 +104,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
         children: <Widget>[
           Padding(padding: EdgeInsets.only(top: 20,bottom: 5),child: _buildProfileImage()),
           Center(
-            child: Text("Himanshu Malik",
+            child: Text(name,
               textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
               style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
                   color: Colors.white),
@@ -131,7 +147,38 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
       ),
     );
   }
+
+  AssetImage setImgPlaceholder() {
+    return AssetImage("assets/images/BG-1x.jpg");
+  }
+
+
   Widget _buildProfileImage(){
+
+    String img = "";
+
+    if(this.provider.organisation != null) {
+      if(this.provider.organisation.logo != null) {
+        img = (this.provider.organisation.logo.contains(Configurations.BASE_URL)) ? this.provider.organisation.logo :
+        Configurations.BASE_URL + this.provider.organisation.logo;
+      } else {
+        img = null;
+//        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+      }
+
+
+    } else {
+      if(this.provider.image != null) {
+        img = (this.provider.image.contains(Configurations.BASE_URL)) ? this.provider.image :
+        Configurations.BASE_URL + this.provider.image;
+      } else {
+//        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+      }
+
+
+    }
+
+
     return Center(
       child: Container(
 
@@ -140,7 +187,8 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
           decoration: BoxDecoration(
         image:
       DecorationImage(
-        image: AssetImage("assets/images/BG-1x.jpg"),
+        image: (img != null)?
+        NetworkImage(img) : setImgPlaceholder(),
         fit: BoxFit.cover,
       ), borderRadius: BorderRadius.circular(80.0),
     border: Border.all(
@@ -160,7 +208,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
             children: <Widget>[
               Icon(Icons.person, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text("Male", style: TextStyle(color: Colors.blueGrey),)
+              Text(this.provider.gender, style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
@@ -180,7 +228,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
             children: <Widget>[
               Icon(Icons.location_on, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text("From India", style: TextStyle(color: Colors.blueGrey),)
+              Text((this.provider.address.length > 0 && this.provider.address != null) ? "From" + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
