@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:jam/classes/language.dart';
@@ -272,6 +273,15 @@ class _user extends State<UserLogin>{
                   SizedBox(height: 10,),
 
                   SignInButton(
+                    Buttons.Google,
+                    text: "Sign in with Google",
+                    onPressed: () {
+                      signinWithGmail();
+                    },
+                  ),
+                  SizedBox(height: 10),
+
+                  SignInButton(
                     Buttons.Facebook,
                     text: "Sign in with Facebook",
                     onPressed: () {
@@ -303,6 +313,151 @@ class _user extends State<UserLogin>{
       ),
     );
   }
+
+  void signinWithGmail() {
+    signInWithGoogle()
+        .whenComplete(() {
+
+      printLog("FINSH ");
+    }).then((onValue) {
+      print("RES === $onValue");
+      if(onValue != null) {
+        GoogleSignInAccount g_user = onValue[0];
+        FirebaseUser  f_user = onValue[1];
+        Map<String, String> data = new Map();
+        data["first_name"] = g_user.displayName.split(" ")[0];
+        if(g_user.displayName.split(" ")[1] != null){
+          data["last_name"] = g_user.displayName.split(" ")[1];
+        }
+
+        data["password"] = g_user.id;
+        data["email"] = g_user.email;
+        data["image"] = g_user.photoUrl;
+
+        data["social_signin"] = "gmail";
+        print(data);
+        callSocialAPI(data);
+      }
+
+    }).catchError((onError) {
+      print("onError === $onError");
+    });
+  }
+
+  Future callSocialAPI(Map<String, String> data) async {
+    data["token"] = globals.fcmToken;
+    if(globals.isCustomer == true) {
+      data["type_id"] = "4";
+      data["term_id"] = "1";
+    } else {
+      data["type_id"] = "3";
+      data["term_id"] = "2";
+
+    }
+    if(Platform.isAndroid) {
+      data["device"] = "Android";
+    } else if (Platform.isIOS) {
+      data["device"] = "IOS";
+    }
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      if(globals.isCustomer ==true) {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        socialResponse(syncUserResponse);
+      } else {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        socialResponse(syncUserResponse);
+      }
+
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void socialResponse(Response res) {
+    print("come for response ${res.statusCode}");
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("come for data ${data}");
+        globals.currentUser = User.fromJson(data);
+        globals.guest = false;
+        Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+        if(data['existing_user'] == 1) {
+          print("COME INSIDE");
+          Preferences.saveObject("profile", "0");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+        } else {
+          Preferences.saveObject("profile", "1");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+        }
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    }
+  }
+
+
+
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  GoogleSignInAccount googleSignInAccount;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<List> signInWithGoogle() async {
+    print("signInWithGoogle");
+    googleSignInAccount = await googleSignIn.signIn();
+    print("signInWithGoogle---- ${googleSignInAccount}");
+    if(googleSignInAccount.id != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+
+      List  obj = new List();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      print("GMAIL == ${googleSignInAccount}");
+      print("GMAIL == ${currentUser.uid}");
+      print("GMAIL == ${user}");
+      obj.add(googleSignInAccount);
+      obj.add(user);
+      return obj;
+    } else {
+      print("NO DATA");
+      return null;
+    }
+    //'signInWithGoogle succeeded: $user';
+  }
+
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
