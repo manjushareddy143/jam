@@ -86,9 +86,8 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
       );
     }
  // }
-  Widget setupVendor(Size screenSize ){
-
-    //print("this.service ==== ${this.service.name}");
+  Widget setupVendor(Size screenSize )
+  {
     String name = "";
     if(this.provider.organisation != null) {
       name = this.provider.organisation.name;
