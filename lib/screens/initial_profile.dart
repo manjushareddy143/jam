@@ -736,7 +736,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
+ final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
   bool _autoValidateService = true;
   bool showMap = false;
