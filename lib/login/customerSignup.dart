@@ -13,6 +13,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:flutter_signin_button/button_list.dart';
 import 'package:http/http.dart' as http;
@@ -286,14 +287,14 @@ class _customerSignup extends State<CustomerSignup>{
               child: Text("------------------------ OR ------------------------"),
             ),
 
-//            SignInButton(
-//              Buttons.Google,
-//              text: "Sign in with Google",
-//              onPressed: () {
-//                signinWithGmail();
-//              },
-//            ),
-//            SizedBox(height: 10),
+            SignInButton(
+              Buttons.Google,
+              text: "Sign in with Google",
+              onPressed: () {
+                signinWithGmail();
+              },
+            ),
+            SizedBox(height: 10),
 
             SignInButton(
               Buttons.Facebook,
@@ -660,77 +661,77 @@ class _customerSignup extends State<CustomerSignup>{
     );
   }
 
-//  void signinWithGmail() {
-//    signInWithGoogle()
-//        .whenComplete(() {
-//
-//      printLog("FINSH ");
-//    }).then((onValue) {
-//      print("RES === $onValue");
-//      if(onValue != null) {
-////        GoogleSignInAccount g_user = onValue[0];
-//        FirebaseUser  f_user = onValue[1];
-//        Map<String, String> data = new Map();
-////        data["first_name"] = g_user.displayName.split(" ")[0];
-////        if(g_user.displayName.split(" ")[1] != null){
-////          data["last_name"] = g_user.displayName.split(" ")[1];
-////        }
-////
-////        data["password"] = g_user.id;
-////        data["email"] = g_user.email;
-////        data["image"] = g_user.photoUrl;
-////
-////        data["social_signin"] = "gmail";
-////        print(data);
-////        callLoginAPI(data);
-//      }
-//
-//    }).catchError((onError) {
-//      print("onError === $onError");
-//    });
-//  }
+  void signinWithGmail() {
+    signInWithGoogle()
+        .whenComplete(() {
+
+      printLog("FINSH ");
+    }).then((onValue) {
+      print("RES === $onValue");
+      if(onValue != null) {
+        GoogleSignInAccount g_user = onValue[0];
+        FirebaseUser  f_user = onValue[1];
+        Map<String, String> data = new Map();
+        data["first_name"] = g_user.displayName.split(" ")[0];
+        if(g_user.displayName.split(" ")[1] != null){
+          data["last_name"] = g_user.displayName.split(" ")[1];
+        }
+
+        data["password"] = g_user.id;
+        data["email"] = g_user.email;
+        data["image"] = g_user.photoUrl;
+
+        data["social_signin"] = "gmail";
+        print(data);
+        callLoginAPI(data);
+      }
+
+    }).catchError((onError) {
+      print("onError === $onError");
+    });
+  }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-//  final GoogleSignIn googleSignIn = GoogleSignIn();
-//
-//  GoogleSignInAccount googleSignInAccount;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  GoogleSignInAccount googleSignInAccount;
 
 
-//  Future<List> signInWithGoogle() async {
-//    print("signInWithGoogle");
-//    googleSignInAccount = await googleSignIn.signIn();
-//    print("signInWithGoogle---- ${googleSignInAccount}");
-//    if(googleSignInAccount.id != null) {
-//      final GoogleSignInAuthentication googleSignInAuthentication =
-//      await googleSignInAccount.authentication;
-//
-//
-//      List  obj = new List();
-//      final AuthCredential credential = GoogleAuthProvider.getCredential(
-//        accessToken: googleSignInAuthentication.accessToken,
-//        idToken: googleSignInAuthentication.idToken,
-//      );
-//
-//      final AuthResult authResult = await _auth.signInWithCredential(credential);
-//      final FirebaseUser user = authResult.user;
-//
-//      assert(!user.isAnonymous);
-//      assert(await user.getIdToken() != null);
-//
-//      final FirebaseUser currentUser = await _auth.currentUser();
-//      assert(user.uid == currentUser.uid);
-//      print("GMAIL == ${googleSignInAccount}");
-//      print("GMAIL == ${currentUser.uid}");
-//      print("GMAIL == ${user}");
-//      obj.add(googleSignInAccount);
-//      obj.add(user);
-//      return obj;
-//    } else {
-//      print("NO DATA");
-//      return null;
-//    }
-//    //'signInWithGoogle succeeded: $user';
-//  }
+  Future<List> signInWithGoogle() async {
+    print("signInWithGoogle");
+    googleSignInAccount = await googleSignIn.signIn();
+    print("signInWithGoogle---- ${googleSignInAccount}");
+    if(googleSignInAccount.id != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+
+      List  obj = new List();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      print("GMAIL == ${googleSignInAccount}");
+      print("GMAIL == ${currentUser.uid}");
+      print("GMAIL == ${user}");
+      obj.add(googleSignInAccount);
+      obj.add(user);
+      return obj;
+    } else {
+      print("NO DATA");
+      return null;
+    }
+    //'signInWithGoogle succeeded: $user';
+  }
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:jam/classes/language.dart';
@@ -37,6 +38,7 @@ class UserLogin extends StatefulWidget {
 
 class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   final _primeKey = GlobalKey<State>();
   //const String loginURL ="";
@@ -271,6 +273,15 @@ class _user extends State<UserLogin>{
                   SizedBox(height: 10,),
 
                   SignInButton(
+                    Buttons.Google,
+                    text: "Sign in with Google",
+                    onPressed: () {
+                      signinWithGmail();
+                    },
+                  ),
+                  SizedBox(height: 10),
+
+                  SignInButton(
                     Buttons.Facebook,
                     text: "Sign in with Facebook",
                     onPressed: () {
@@ -302,6 +313,151 @@ class _user extends State<UserLogin>{
       ),
     );
   }
+
+  void signinWithGmail() {
+    signInWithGoogle()
+        .whenComplete(() {
+
+      printLog("FINSH ");
+    }).then((onValue) {
+      print("RES === $onValue");
+      if(onValue != null) {
+        GoogleSignInAccount g_user = onValue[0];
+        FirebaseUser  f_user = onValue[1];
+        Map<String, String> data = new Map();
+        data["first_name"] = g_user.displayName.split(" ")[0];
+        if(g_user.displayName.split(" ")[1] != null){
+          data["last_name"] = g_user.displayName.split(" ")[1];
+        }
+
+        data["password"] = g_user.id;
+        data["email"] = g_user.email;
+        data["image"] = g_user.photoUrl;
+
+        data["social_signin"] = "gmail";
+        print(data);
+        callSocialAPI(data);
+      }
+
+    }).catchError((onError) {
+      print("onError === $onError");
+    });
+  }
+
+  Future callSocialAPI(Map<String, String> data) async {
+    data["token"] = globals.fcmToken;
+    if(globals.isCustomer == true) {
+      data["type_id"] = "4";
+      data["term_id"] = "1";
+    } else {
+      data["type_id"] = "3";
+      data["term_id"] = "2";
+
+    }
+    if(Platform.isAndroid) {
+      data["device"] = "Android";
+    } else if (Platform.isIOS) {
+      data["device"] = "IOS";
+    }
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      print('api call start signup');
+      if(globals.isCustomer ==true) {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        socialResponse(syncUserResponse);
+      } else {
+        var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+        socialResponse(syncUserResponse);
+      }
+
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void socialResponse(Response res) {
+    print("come for response ${res.statusCode}");
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("come for data ${data}");
+        globals.currentUser = User.fromJson(data);
+        globals.guest = false;
+        Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+        if(data['existing_user'] == 1) {
+          print("COME INSIDE");
+          Preferences.saveObject("profile", "0");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => HomeScreen()
+              ),ModalRoute.withName('/'));
+        } else {
+          Preferences.saveObject("profile", "1");
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => InitialProfileScreen()
+              ),ModalRoute.withName('/'));
+        }
+
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    }
+  }
+
+
+
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  GoogleSignInAccount googleSignInAccount;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<List> signInWithGoogle() async {
+    print("signInWithGoogle");
+    googleSignInAccount = await googleSignIn.signIn();
+    print("signInWithGoogle---- ${googleSignInAccount}");
+    if(googleSignInAccount.id != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+
+      List  obj = new List();
+      final AuthCredential credential = GoogleAuthProvider.getCredential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final AuthResult authResult = await _auth.signInWithCredential(credential);
+      final FirebaseUser user = authResult.user;
+
+      assert(!user.isAnonymous);
+      assert(await user.getIdToken() != null);
+
+      final FirebaseUser currentUser = await _auth.currentUser();
+      assert(user.uid == currentUser.uid);
+      print("GMAIL == ${googleSignInAccount}");
+      print("GMAIL == ${currentUser.uid}");
+      print("GMAIL == ${user}");
+      obj.add(googleSignInAccount);
+      obj.add(user);
+      return obj;
+    } else {
+      print("NO DATA");
+      return null;
+    }
+    //'signInWithGoogle succeeded: $user';
+  }
+
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
 
@@ -480,51 +636,11 @@ class _user extends State<UserLogin>{
     }
   }
 
-//  void getServices() async {
-//    try {
-//      Map<String, String> data = new HashMap();
-//      HttpClient httpClient = new HttpClient();
-//      var syncReportResponse =
-//      await httpClient.getRequest(context, "http://jam.savitriya.com/api/all_services", null, null, true, false);
-//      processReportResponse(syncReportResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
-
-//  void processReportResponse(Response res) {
-//    print('get daily format');
-//    if (res != null) {
-//      if (res.statusCode == 200) {
-//        var data = json.decode(res.body);
-//        print(data);
-//        List roles = data;
-//        List<Service> listofRoles = Service.processServices(roles);
-//        printLog(listofRoles.length);
-//        // Preferences.saveObject('reportformate', jsonEncode(listofRoles));
-//
-//      } else {
-//        printLog("login response code is not 200");
-//      }
-//    } else {
-//      print('no data');
-//    }
-//  }
-
   void _validateInputs() {
-//    _showDialog(context),
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) => OTPScreen.buildAboutDialog(context),
-//    );
     if (_formKey.currentState.validate()) {
-//    If all data are correct then do API call
       _formKey.currentState.save();
       callLoginAPI();
     } else {
-//    If all data are not valid then start auto validation.
       setState(() {
         _autoValidate = true;
       });
@@ -556,11 +672,17 @@ class _user extends State<UserLogin>{
 
 
   }
+
   String email;
   String no;
+  bool showChangePass = false;
   final txtemail= TextEditingController();
   final txtno = TextEditingController();
+
+  final newPass = TextEditingController();
+  final confPass = TextEditingController();
   Widget setPasswordAgain(BuildContext context){
+    showChangePass = false;
     return AlertDialog(
       title: Center(
         child: Text(
@@ -571,79 +693,221 @@ class _user extends State<UserLogin>{
           ),
         ),
       ),
-      content: Container( height: 250,
+      content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
+       return Container( height: 250,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: TextFormField(controller: txtemail,
-               /*  validator: (value) {
-                    if (value.isEmpty) {
-                      return AppLocalizations.of(context)
-                          .translate('profile_txt_city');
-                    }
-                    return null;
-                  }, */
 
-                  obscureText: false, decoration: InputDecoration(suffixIcon: Icon(Icons.email),
-              border: OutlineInputBorder( borderRadius: BorderRadius.all(Radius.circular(10.0)),),
-                      labelText: "Enter your email") ),
+            Visibility(child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: txtemail,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "Enter your email")
+                  ),
+                ),
+                Text("OR",style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child:
+                  TextFormField(
+                    controller: txtno,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.phone),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        labelText: "Enter your number"),
+                    keyboardType: TextInputType.phone,
+                  ),
+                ),
+                SizedBox(height: 10,),
+                ButtonTheme(minWidth: 300,
+                  child: RaisedButton(
+                    color: Configurations.themColor,
+                    textColor: Colors.white,
+                    child: Text("Submit"),
+                    onPressed: (){
+                      validateer(setState);
+                    },
 
+                  ),)
+              ],
             ),
-            Text("OR",style: TextStyle(
-              fontWeight: FontWeight.bold,
-
-            ),),
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: TextFormField(controller: txtno,
-
-
-                  obscureText: false,
-                  decoration: InputDecoration(suffixIcon: Icon(Icons.phone),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),),
-                      labelText: "Enter your number"), keyboardType: TextInputType.phone, ),
+              visible: !showChangePass,
             ),
-            SizedBox(height: 10,),
-            ButtonTheme(minWidth: 300,
-            child: RaisedButton(
-              color: Configurations.themColor,
-              textColor: Colors.white,
-              child: Text("Submit"),
-              onPressed: (){
-                validateer();
-              },
 
-            ),)
+            Visibility(child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: newPass,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "New Password")
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: TextFormField(controller: confPass,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.lock),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                          labelText: "Confirm Password")
+                  ),
+                ),
+                SizedBox(height: 30,),
+                ButtonTheme(minWidth: 300,
+                  child: RaisedButton(
+                    color: Configurations.themColor,
+                    textColor: Colors.white,
+                    child: Text("Submit"),
+                    onPressed: (){
+                      validatePassword(setState);
+                    },
+
+                  ),)
+            ],),
+              visible: showChangePass,
+            )
+
+
           ],
         ),
-        key: _formKey,
-      ),
+        key: _forgetFormKey,
+      );
+      }),
     );
   }
-  void validateer(){
-   // _formKey.currentState.validate()
 
-    if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty) ) {
+  void validateer(StateSetter setState){
+//    _forgetFormKey.currentState.validate();
+
+    if((txtemail.text.isEmpty)&&(txtno.text.isEmpty) ) {
       showInfoAlert(context, "please enter any one of the given!!");
       print(email);
-      print(no);
-
+    } else if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty)) {
+      showInfoAlert(context, "please enter only one of the given!!");
     }
     else{
-      if((txtemail.text.isNotEmpty) && (txtno.text.isEmpty)){
-        email = txtemail.text;
-        print("email validation");
-        print(email);
-        validateEmail(email);
+      if((txtemail.text.isNotEmpty)){
+        String isValid = validateEmail(txtemail.text);
+        if(isValid != null) {
+          showInfoAlert(context, isValid);
+        } else {
+          print("email validation");
+          print(txtemail.text);
+          resetPassword("email", txtemail.text, setState);
+        }
 
+      } else if((txtno.text.isNotEmpty)) {
+        String isValid = validatePhoneNumber(txtno.text);
+        if(isValid != null) {
+          showInfoAlert(context, isValid);
+        } else {
+          print("email validation");
+          print(txtno.text);
+          resetPassword("contact", txtno.text, setState);
+        }
       }
-      else{
-        print("number validation");
-      }
+    }
+  }
 
+  void resetPassword(String key, String Val, StateSetter setState) async {
+    Map<String, String> data = new Map();
+    data[key] = Val;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.RESET_PASSWORD_STATUS_URL, data, true);
+      processResetResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  int resetUid = 0;
+  void processResetResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        resetUid = data['id'];
+        print("data::::::::${resetUid}");
+        if(resetUid != 0 && resetUid != null) {
+          setState(() {
+            showChangePass = true;
+          });
+        }
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
+      }
+    }
+  }
+
+  void validatePassword(StateSetter setState) {
+    if((newPass.text.isEmpty) && (newPass.text.isEmpty)) {
+      showInfoAlert(context, "Please enter password");
+    } else if((newPass.text.isEmpty) || (newPass.text.isEmpty)) {
+      showInfoAlert(context, "Please enter password");
+    } else if(newPass.text != confPass.text ) {
+      showInfoAlert(context, "Mismatch Confirm Password");
+    } else {
+      changePassword(setState);
+    }
+  }
+
+  void changePassword(StateSetter setState) async {
+    Map<String, String> data = new Map();
+    data["id"] = resetUid.toString();
+    data["password"] = newPass.text;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+          await httpClient.postRequest(context, Configurations.CHANGE_PASSWORD_STATUS_URL, data, true);
+      processChangeResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processChangeResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("data::::::::${data}");
+        if(data['status'] == true) {
+          Navigator.of(context).pop();
+        }
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
+      }
     }
   }
 }

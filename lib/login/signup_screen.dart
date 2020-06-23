@@ -24,7 +24,7 @@ import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/widget_helper.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:jam/globals.dart' as globals;
@@ -501,11 +501,11 @@ class _SignupPageState extends State<SignupPage> {
 
   _launchURL() async {
     const url = "http://www.savitriya.com/privacy-policy/";
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
+//    if (await canLaunch(url)) {
+//      await launch(url);
+//    } else {
+//      throw 'Could not launch $url';
+//    }
   }
 
   submitPin(String pin) {

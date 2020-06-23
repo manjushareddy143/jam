@@ -79,7 +79,7 @@ android {
 flutter {
     source '../..'
 }
-
+    
 dependencies {
     implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta02'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
