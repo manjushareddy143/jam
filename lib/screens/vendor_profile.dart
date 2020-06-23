@@ -155,9 +155,10 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
 
   Widget _buildProfileImage(){
 
-    String img = "";
+    String img = null;
 
-    if(this.provider.organisation != null) {
+
+  /*  if(this.provider.organisation != null) {
       if(this.provider.organisation.logo != null) {
         img = (this.provider.organisation.logo.contains(Configurations.BASE_URL)) ? this.provider.organisation.logo :
         Configurations.BASE_URL + this.provider.organisation.logo;
@@ -176,7 +177,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
       }
 
 
-    }
+    } */
 
 
     return Center(
