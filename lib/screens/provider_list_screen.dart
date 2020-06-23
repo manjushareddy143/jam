@@ -196,6 +196,10 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
   Widget setupCard(User user, Provider provider, Service service) {
+
+  print("provider ==== ${provider.service.name}");
+
+
     double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
     String review = (user.rate.length == 0)? "0" : user.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
     String img = "";
@@ -213,6 +217,7 @@ class _ProviderListState extends State<ProviderListPage> {
       if(user.image != null) {
         img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
       } else {
+        img = null;
 //        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
       }
 
@@ -228,11 +233,11 @@ class _ProviderListState extends State<ProviderListPage> {
             onTap: ()=> {
            Navigator.push(
            context,
-          MaterialPageRoute(
-          builder: (context) =>
-         VendorProfileUIPage(provider: user, ))),
-
-              print('tap on card DETAIL')
+          MaterialPageRoute (
+              builder: (context) =>
+              VendorProfileUIPage(provider: user, service: provider.service,) //provider.service
+            )
+           ),
             },
             leading: Container(
               width: 60,

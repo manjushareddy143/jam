@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:jam/models/service.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -26,16 +27,17 @@ class Profile extends StatelessWidget{
 class VendorProfileUIPage extends StatefulWidget {
 
   final User provider;
-  VendorProfileUIPage({Key key, @required this.provider}) : super(key: key);
-
+  final Service service;
+  VendorProfileUIPage({Key key, @required this.provider, @required this.service}) : super(key: key);
 //  VendorProfileUIPage({ Key key }) : super(key: key);
   @override
-  VendorProfileState createState() => new VendorProfileState(provider: this.provider );
+  VendorProfileState createState() => new VendorProfileState(provider: this.provider, service: this.service );
 }
 class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderStateMixin {
 
   final User provider;
-  VendorProfileState({Key key, @required this.provider});
+  final Service service;
+  VendorProfileState({Key key, @required this.provider, @required this.service});
 
   @override
   void initState() {
@@ -86,6 +88,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
  // }
   Widget setupVendor(Size screenSize ){
 
+    //print("this.service ==== ${this.service.name}");
     String name = "";
     if(this.provider.organisation != null) {
       name = this.provider.organisation.name;
@@ -201,7 +204,8 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
     ),);
 
   }
-  Widget setupVendorDetails(){
+  Widget setupVendorDetails() {
+    print("PROVIDER ==== ${this.provider}");
     return Padding( padding: EdgeInsets.fromLTRB(20,20,20,5),
       child: Column(
         children: <Widget>[
@@ -213,6 +217,7 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
 
             ],
           ),
+
           Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
             child: SizedBox(
               height: 1.0,
@@ -225,11 +230,12 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.location_on, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text((this.provider.address.length > 0 && this.provider.address != null) ? "From" + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
+              Text((this.provider.address != null) ? "From" + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
