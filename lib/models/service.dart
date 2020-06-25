@@ -29,7 +29,7 @@ class Service {
 
 
   static List<Service> processServices(List services) {
-    printLog("reached here");
+    //printLog("reached here");
     return services.map<Service>((json) => new Service.fromJson(json)).toList();
   }
 }

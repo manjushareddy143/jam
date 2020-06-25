@@ -32,18 +32,19 @@ class CarouselDemoState extends State<CarouselDemo> {
           layout: SwiperLayout.STACK,
           itemWidth: 600.0,
         itemBuilder: (BuildContext context, int photoIndex) {
-      return Stack( children:<Widget>[Center(child: Image.asset(
-        photos[photoIndex],
-        fit: BoxFit.fill,
-      width: double.infinity,height: 250,),
-      ),
-          Center(
-          child: Container(
+      return Stack(
+             children:<Widget>[
+                 Center(child: Image.asset(photos[photoIndex],
+                 fit: BoxFit.fill,
+                   width: double.infinity,height: 250,),
+                 ),
+                  Center(
+                    child: Container(
           //width: 90,
           //height: 90,
           //color: Colors.white,
-            child: Text(phrase[photoIndex],
-          style: TextStyle( fontWeight: FontWeight.bold,
+                          child: Text(phrase[photoIndex],
+                         style: TextStyle( fontWeight: FontWeight.bold,
           color: Colors.white,
           )),),)]
 
