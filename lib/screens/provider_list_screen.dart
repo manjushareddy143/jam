@@ -332,7 +332,8 @@ class _ProviderListState extends State<ProviderListPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        InquiryPage(service: this.service, provider: user,)));
+                                        InquiryPage(service: this.service, provider: user,
+                                        category: selectedSubCategory,)));
                           }
 
                         },
