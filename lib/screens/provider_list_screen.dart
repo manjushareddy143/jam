@@ -255,7 +255,7 @@ class _ProviderListState extends State<ProviderListPage> {
            context,
           MaterialPageRoute (
               builder: (context) =>
-              VendorProfileUIPage(provider: user, service: service,) //provider.service
+              VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
             )
            ),
             },

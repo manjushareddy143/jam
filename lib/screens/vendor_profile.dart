@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/models/sub_category.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -30,20 +31,26 @@ class VendorProfileUIPage extends StatefulWidget {
 
   final User provider;
   final Service service;
-  VendorProfileUIPage({Key key, @required this.provider, @required this.service}) : super(key: key);
+  final SubCategory category;
+  VendorProfileUIPage({Key key, @required this.provider, @required this.service,
+    @required this.category}) : super(key: key);
 //  VendorProfileUIPage({ Key key }) : super(key: key);
   @override
-  VendorProfileState createState() => new VendorProfileState(provider: this.provider, service: this.service );
+  VendorProfileState createState() => new VendorProfileState(provider: this.provider,
+      service: this.service, category: this.category);
 }
 class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderStateMixin {
 
   final User provider;
   final Service service;
-  VendorProfileState({Key key, @required this.provider, @required this.service});
+  final SubCategory category;
+  VendorProfileState({Key key, @required this.provider, @required this.service,
+    @required this.category});
 int swiperIndex =0;
 
   @override
   void initState() {
+    print("DATA === ${this.category}");
     // TODO: implement initState
     super.initState();
     //tabList.add(new Tab(text: 'About',));
@@ -438,12 +445,13 @@ int swiperIndex =0;
                       fontWeight: FontWeight.w300,
                       color: Configurations.themColor)), //`Text` to display
                   onPressed: () {
-                   // printLog('provider::: ${provider}');
+                    printLog('this.category::: ${this.category}');
                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                InquiryPage(service: service, provider: provider)));
+                                InquiryPage(service: service, provider: provider,
+                                  category: this.category,)));
                   },
                 ),
               ),
@@ -678,7 +686,7 @@ int swiperIndex =0;
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    InquiryPage(provider: this.provider, service: this.service, )));
+                                    InquiryPage(provider: this.provider, service: this.service, category: this.category,)));
                       },
                     ),
                   ),

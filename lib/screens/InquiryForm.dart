@@ -32,7 +32,8 @@ class InquiryPage extends StatefulWidget {
   final Service service;
   final User provider;
   final SubCategory category;
-  InquiryPage({Key key, @required this.service, @required this.provider, @required this.category}) : super(key: key);
+  InquiryPage({Key key, @required this.service, @required this.provider,
+    @required this.category}) : super(key: key);
   @override
   _InquiryPageState createState() => _InquiryPageState(service: this.service,
       provider: this.provider, category: this.category);
@@ -90,6 +91,9 @@ class _InquiryPageState extends State<InquiryPage> {
 
   @override
   void initState() {
+
+    print("DATA === ${this.category}");
+
     super.initState();
     focus_name = FocusNode();
     focus_mail = FocusNode();
@@ -289,7 +293,7 @@ class _InquiryPageState extends State<InquiryPage> {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
         data["service_id"] = selectedService;
-//        data["category_id"] = selectedSubCategory;
+        data["category_id"] = selectedSubCategory;
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
         data["booking_date"] = format.format(selecteDate);
