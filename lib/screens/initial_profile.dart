@@ -680,6 +680,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             addressData["district"] = adrs_disctric.text;
             addressData["city"] = adrs_city.text;
             addressData["postal_code"] = adrs_postalcode.text;
+            addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+
             data["address"] = jsonEncode(addressData);
 
             if(globals.currentUser.roles[0].slug == "provider") {
@@ -1043,6 +1045,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           setState(() {
 
             getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
+              globals.longitude = latLogn.longitude;
+              globals.latitude = latLogn.latitude;
               globals.addressLocation = onValue;
               addressString = globals.addressLocation.addressLine;
             });

@@ -13,6 +13,7 @@ import 'package:jam/screens/home_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:jam/globals.dart' as globals;
 import 'package:jam/app_localizations.dart';
 
 //class InquiryScreen extends StatelessWidget {
@@ -104,18 +105,24 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
   void setProfile() async  {
-    await Preferences.readObject("user").then((onValue) async {
-      var userdata = json.decode(onValue);
-      printLog('userdata');
-      printLog(userdata);
-      User user = User.fromJson(userdata);
-      user_id = user.id.toString();
-      setState(() {
-        firstName = user.first_name;
-        phoneNumber = user.contact;
-        email = user.email;
-      });
+    setState(() {
+      firstName = globals.currentUser.first_name;
+      phoneNumber = globals.currentUser.contact;
+      email = globals.currentUser.email;
+      user_id = globals.currentUser.id.toString();
     });
+//    await Preferences.readObject("user").then((onValue) async {
+//      var userdata = json.decode(onValue);
+//      printLog('userdata');
+//      printLog(userdata);
+//      User user = User.fromJson(userdata);
+//      user_id = user.id.toString();
+//      setState(() {
+//        firstName = user.first_name;
+//        phoneNumber = user.contact;
+//        email = user.email;
+//      });
+//    });
   }
 
   String validateEmail(String value) {
