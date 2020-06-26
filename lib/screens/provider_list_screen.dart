@@ -39,8 +39,9 @@ class _ProviderListState extends State<ProviderListPage> {
   List<User> listofProviders;
   String image = "";
 
-  String selectedSubCategory;
-  List<DropdownMenuItem<String>> _dropDownSubCategory;
+  SubCategory selectedSubCategory;
+  List<DropdownMenuItem<SubCategory>> _dropDownSubCategory;
+  String apiCallURL = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -52,15 +53,15 @@ class _ProviderListState extends State<ProviderListPage> {
       selectedSubCategory = _dropDownSubCategory[0].value;
     }
 
-
-    String apiCallURL = Configurations.PROVIDER_SERVICES_URL +
+    apiCallURL = Configurations.PROVIDER_SERVICES_URL +
         "?service_id=" + this.service.id.toString() + "&lat=" + globals.latitude.toString() +
         "&long=" + globals.longitude.toString();
+
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
 
       if(service.categories.length > 0) {
-        apiCallURL += "&category_id=" + selectedSubCategory;
+        apiCallURL += "&category_id=" + selectedSubCategory.id.toString();
       }
       print("apiCallURL === ${apiCallURL}");
       getProviders(apiCallURL);
@@ -68,10 +69,10 @@ class _ProviderListState extends State<ProviderListPage> {
    // print("after getprovider!");
   }
 
-  List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
-    List<DropdownMenuItem<String>> items = List();
+  List<DropdownMenuItem<SubCategory>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
+    List<DropdownMenuItem<SubCategory>> items = List();
     listSubCategory.forEach((val) {
-      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
+      items.add(DropdownMenuItem(value: val, child: Text(val.name)));
     });
     return items;
   }
@@ -145,10 +146,15 @@ class _ProviderListState extends State<ProviderListPage> {
 
 //  String selectedService;
 
-  void changedDropDownItem(String selectedItem) {
+  void changedDropDownItem(SubCategory selectedItem) {
     setState(() {
       selectedSubCategory = selectedItem;
       print(selectedSubCategory);
+      if(service.categories.length > 0) {
+        apiCallURL += "&category_id=" + selectedSubCategory.id.toString();
+      }
+      print("apiCallURL === ${apiCallURL}");
+      getProviders(apiCallURL);
     });
   }
 

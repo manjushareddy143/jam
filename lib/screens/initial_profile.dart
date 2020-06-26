@@ -73,28 +73,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       phoneNumber = globals.currentUser.contact;
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
-
-      print("PROFLE VUEW");
-      //  number + street + sublocality + locality(city) + region(state) + postal_code + country
-//      String hourNumber = (globals.location.number == "") ? "" : globals.location.number +", " ;
-//      String street = (globals.location.street == "") ? "" : globals.location.street +", " ;
-//      String subLocality = (globals.location.sublocality == "") ? "" : globals.location.sublocality +", " ;
-//      String region = (globals.location.region == "") ? "" : globals.location.region +", " ;
-//      String locality = (globals.location.locality == "") ? "" : globals.location.locality +", " ;
-      print(globals.addressLocation.addressLine);
       addressString = globals.addressLocation.addressLine.toString();
-//          hourNumber + street + subLocality + locality
-//          + region+ ", " + globals.location.postalCode
-//          + ", " + globals.location.country;
-
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
-
-      printLog("now");
-      getServices();
+        getServices();
     });
   }
 
@@ -344,6 +329,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final prfl_fname = TextEditingController();
   final prfl_email = TextEditingController();
   final prfl_lname = TextEditingController();
+  final prfl_servcerds = TextEditingController();
   final prfl_phone = TextEditingController();
 
   bool _english = false;
@@ -364,9 +350,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ),
             ),
 
-              _buildCoverImage(MediaQuery.of(context).size),
-
-//          SizedBox(height: 10),
+            _buildCoverImage(MediaQuery.of(context).size),
 
             Padding(
               padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
@@ -512,7 +496,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     height: 20,
                   ),
 
-
+                  // languages
                   Material(
                       elevation: 5.0,
                       shadowColor: Colors.grey,
@@ -531,9 +515,51 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         ),)
 
                   ),
+
+                  if(globals.currentUser.roles[0].slug == "provider")
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  // Service Radius
+                  if(globals.currentUser.roles[0].slug == "provider")
+                  Material(
+                    elevation: 5.0,
+                    shadowColor: Colors.grey,
+                    child: TextFormField(
+                      controller: prfl_servcerds,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.location_searching,
+                        ),
+                        
+//                        suffix: Text("KM"),
+                        suffixText: "KM  ",
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        labelText: 'Service Radius',
+                        hasFloatingPlaceholder: false,
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter service radius';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
                 ],
               ),
             ),
+
+
 
 
             // SERVICE
@@ -688,6 +714,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               String commaSeparated = selectedListOfId.join(',');
               print(commaSeparated);
               data["services"] = commaSeparated;
+              data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
             apiCall(data);
