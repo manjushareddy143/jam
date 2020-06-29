@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geopoint_location/geopoint_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/service.dart';
+import 'package:jam/screens/service_selection.dart';
 import 'package:tree_view/tree_view.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -1204,10 +1205,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   void enterServices() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => setServiceListVendor(context),
-    );
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                ServiceSelectionUIPage()));
+//    showDialog(
+//      context: context,
+//      builder: (BuildContext context) => setServiceListVendor(context),
+//    );
   }
 
   bool _value1 = false;
@@ -1272,48 +1278,45 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     ),
                     height: 400,
                   ), */
-                  Expanded(
-                    child: Container( constraints: BoxConstraints(minWidth: 230.0, minHeight: 25.0),
-                      child: SingleChildScrollView(
-                        child: TreeView(
-                          parentList: [
+                  Expanded(child: TreeView(
+                    hasScrollBar: true,
+                    parentList: [
+                      Parent(
+                        parent: Container(
+//                          margin: EdgeInsets.only(left: 4),
+                          child: Card(elevation: 0.0,
+                              child: ListTile( leading: Icon(Icons.navigate_next),
+                                  title:Text('Desktop'))),
+                        ),
+                        childList: ChildList(
+                          children: <Widget>[
                             Parent(
                               parent: Container(
-                                margin: EdgeInsets.only(left: 4),
-                                child: Card(elevation: 0.0,
-                                    child: ListTile( leading: Icon(Icons.navigate_next),
-                                        title:Text('Desktop'))),
+//                                margin: const EdgeInsets.only(left: 8.0),
+                                child: Card(elevation: 0.0, child:
+                                ListTile(leading:Icon(Icons.navigate_next),
+                                    title:Text('Home')),),
                               ),
                               childList: ChildList(
                                 children: <Widget>[
-                                  Parent(
-                                    parent: Container(
-                                      margin: const EdgeInsets.only(left: 8.0),
-                                      child: Card(elevation: 0.0, child:
-                                      ListTile(leading:Icon(Icons.navigate_next),
-                                          title:Text('Home')),),
-                                    ),
-                                    childList: ChildList(
-                                      children: <Widget>[
 
-                                        Container(
-                                          margin: const EdgeInsets.only(left: 12.0),
-                                          child: Card(elevation: 0.0, child:
-                                          ListTile(leading:Icon(Icons.insert_drive_file),
-                                              title:Text('Resume.docx')),),
-                                        ),
-
-                                      ],
-                                    ),
+                                  Container(
+//                                    margin: const EdgeInsets.only(left: 12.0),
+                                    child: Card(elevation: 0.0, child:
+                                    ListTile(leading:Icon(Icons.insert_drive_file),
+                                        title:Text('Resume.docx')),),
                                   ),
 
                                 ],
                               ),
                             ),
+
                           ],
                         ),
                       ),
-                    ),
+                    ],
+                  ),
+                  flex: 2,
                   ),
 
 
