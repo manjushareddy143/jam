@@ -53,7 +53,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     print("PROFILE ${globals.guest}");
 
-    tabList.add(new Tab(text: 'About',));
+    tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
 
     super.initState();
@@ -807,7 +807,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'About Us', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
+            'Address', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
           SizedBox(height: 10,),
 //          SingleChildScrollView(
 //            child: RichText(
@@ -880,7 +880,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget _getPage(Tab tab){
     switch(tab.text){
-      case 'About' : return setRichText();
+      case 'Address' : return setRichText();
 
     }
   }

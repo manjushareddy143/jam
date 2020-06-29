@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:geopoint_location/geopoint_location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/service.dart';
+import 'package:tree_view/tree_view.dart';
 
 import 'package:flutter/cupertino.dart';
 
@@ -142,12 +143,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: new Form(
           key: _formKey,
           autovalidate: _autoValidate,
+
+
           child: profileUI(),
         ),
       ),
     );
   }
-
   Future getImage() async{
 
      final imageSrc = await showDialog<ImageSource>(context: context, builder: (context) =>
@@ -356,6 +358,20 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget> [
+          /*  TreeView(parentList: [
+              Parent( parent: Text("hello"),
+                  childList: ChildList(
+                    children: <Widget>[
+                      Text('hello 1')
+                    ],
+                  ))
+            ]
+            ), */
+
+
+
+
+
             Padding(
               padding: EdgeInsets.fromLTRB(15, 30, 0, 10),
               child: Text(
@@ -367,6 +383,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               _buildCoverImage(MediaQuery.of(context).size),
 
 //          SizedBox(height: 10),
+         // TreeView(),
+
 
             Padding(
               padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
@@ -1208,16 +1226,61 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
+
               child: SingleChildScrollView(
                 child: Column(children: <Widget>[
-                  Container(
+                 /* Container(
                     child: SingleChildScrollView(
                       child: Column(
                         children: listOfCards(setState),
                       ),
                     ),
                     height: 400,
+                  ), */
+                  Expanded(
+                    child: Container( constraints: BoxConstraints(minWidth: 230.0, minHeight: 25.0),
+                      child: SingleChildScrollView(
+                        child: TreeView(
+                          parentList: [
+                            Parent(
+                              parent: Container(
+                                margin: EdgeInsets.only(left: 4),
+                                child: Card(elevation: 0.0,
+                                    child: ListTile( leading: Icon(Icons.navigate_next),
+                                        title:Text('Desktop'))),
+                              ),
+                              childList: ChildList(
+                                children: <Widget>[
+                                  Parent(
+                                    parent: Container(
+                                      margin: const EdgeInsets.only(left: 8.0),
+                                      child: Card(elevation: 0.0, child:
+                                      ListTile(leading:Icon(Icons.navigate_next),
+                                          title:Text('Home')),),
+                                    ),
+                                    childList: ChildList(
+                                      children: <Widget>[
+
+                                        Container(
+                                          margin: const EdgeInsets.only(left: 12.0),
+                                          child: Card(elevation: 0.0, child:
+                                          ListTile(leading:Icon(Icons.insert_drive_file),
+                                              title:Text('Resume.docx')),),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
+
 
                   SizedBox(
                     height: 20,

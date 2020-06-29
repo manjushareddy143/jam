@@ -20,6 +20,7 @@ import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/globals.dart' as globals;
 //import 'package:pulse/models/helper.dart' as helper;
+import 'package:meta/meta.dart';
 
 
 List <Map> listCountry = [
@@ -446,3 +447,4 @@ void printExceptionLog(Exception e) {
     print("Exception $e");
   }
 }
+

@@ -330,8 +330,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
             ),
           ),
 
-          Visibility(visible: isRatingDisplay,
-            child: Column(
+         Visibility(visible: isRatingDisplay,
+            child:Column(
               mainAxisAlignment: MainAxisAlignment.start,
 //              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -375,11 +375,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
           /// SHOW OTP
-          if(order.status == 2 && this.isCustomer == true)
+         if(order.status == 2 && this.isCustomer == true)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Visibility(child: Padding(
+              Visibility(child:
+              Padding(
                   padding: EdgeInsets.fromLTRB(0, 0, 0,0),
                   child: OutlineButton(onPressed: () => {
                     showBookingOTP()
@@ -388,7 +389,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       borderSide: BorderSide(color: Configurations.themColor)
                   )
               ),
-                visible: !showOTP,
+               visible: !showOTP,
               ),
 
               Visibility(child: Row(
@@ -727,7 +728,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildCancelHeader("Service Cancellation Request"),
+            buildCancelHeader("Service Cancellation Request", ),
 
             SizedBox(
               height: 10.0,
@@ -768,7 +769,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         children: <Widget>[
           Text(
             title,
-            style: TextStyle(fontSize: 17.0, color: Configurations.themColor, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 16.0, color: Configurations.themColor, fontWeight: FontWeight.bold),
           ),
         ],
       ),
