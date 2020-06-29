@@ -36,43 +36,52 @@ class _ProviderListState extends State<ProviderListPage> {
   final Service service;
   _ProviderListState({Key key, @required this.service});
 
-  List<Provider> listofProviders;
+  List<User> listofProviders;
   String image = "";
 
-  String selectedSubCategory;
-  List<DropdownMenuItem<String>> _dropDownSubCategory;
+  SubCategory selectedSubCategory;
+  List<DropdownMenuItem<SubCategory>> _dropDownSubCategory;
+  String apiCallURL = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print('service.name === ${service.categories.length}');
-    print(service.id);
+//    print('service.name === ${service.categories.length}');
+//    print(service.id);
     if(service.categories.length > 0) {
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(service.categories);
       selectedSubCategory = _dropDownSubCategory[0].value;
     }
 
+    apiCallURL = Configurations.PROVIDER_SERVICES_URL +
+        "?service_id=" + this.service.id.toString() + "&lat=" + globals.latitude.toString() +
+        "&long=" + globals.longitude.toString();
 
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
-      getProviders();
+
+      if(service.categories.length > 0) {
+        apiCallURL += "&category_id=" + selectedSubCategory.id.toString();
+      }
+      print("apiCallURL === ${apiCallURL}");
+      getProviders(apiCallURL);
     });
    // print("after getprovider!");
   }
 
-  List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
-    List<DropdownMenuItem<String>> items = List();
+  List<DropdownMenuItem<SubCategory>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
+    List<DropdownMenuItem<SubCategory>> items = List();
     listSubCategory.forEach((val) {
-      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
+      items.add(DropdownMenuItem(value: val, child: Text(val.name)));
     });
     return items;
   }
 
-  getProviders() async {
+  getProviders(String url) async {
     try {
       HttpClient httpClient = new HttpClient();
-      var syncProviderResponse = await httpClient.getRequest(context,
-          Configurations.PROVIDER_SERVICES_URL + "?id=" + this.service.id.toString(), null, null, true, false);
+
+      var syncProviderResponse = await httpClient.getRequest(context, url, null, null, true, false);
       processProvidersResponse(syncProviderResponse);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -89,7 +98,7 @@ class _ProviderListState extends State<ProviderListPage> {
         print('providers=== $data');
         List providers = data;
         setState(() {
-          listofProviders = Provider.processProviders(providers);
+          listofProviders = User.processListOfUser(providers);
 //          build(context);
          // print("after process providers!");
         });
@@ -137,10 +146,15 @@ class _ProviderListState extends State<ProviderListPage> {
 
 //  String selectedService;
 
-  void changedDropDownItem(String selectedItem) {
+  void changedDropDownItem(SubCategory selectedItem) {
     setState(() {
       selectedSubCategory = selectedItem;
       print(selectedSubCategory);
+      if(service.categories.length > 0) {
+        apiCallURL += "&category_id=" + selectedSubCategory.id.toString();
+      }
+      print("apiCallURL === ${apiCallURL}");
+      getProviders(apiCallURL);
     });
   }
 
@@ -176,13 +190,13 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
-
-      for(int userCount = 0; userCount <listofProviders[providerCount].user.length; userCount++ ) {
-        User user = listofProviders[providerCount].user[userCount];
-        Provider provider = listofProviders[providerCount];
-        Service service = listofProviders[providerCount].service;
-        list.add(setupCard(user, provider, service));
-      }
+      print("listofProviders === ${listofProviders[providerCount]}");
+//      for(int userCount = 0; userCount <listofProviders[providerCount].user.length; userCount++ ) {
+        User user = listofProviders[providerCount];//.user[userCount];
+//        Provider provider; // = listofProviders[providerCount];
+//        Service service = listofProviders[providerCount].service;
+        list.add(setupCard(user, service));
+//      }
 
     }
 
@@ -195,9 +209,9 @@ class _ProviderListState extends State<ProviderListPage> {
   }
 
 
-  Widget setupCard(User user, Provider provider, Service service) {
+  Widget setupCard(User user, Service service) {
 
-  print("provider ==== ${provider.service.name}");
+
 
 
     double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
@@ -214,8 +228,14 @@ class _ProviderListState extends State<ProviderListPage> {
 
       name = user.organisation.name;
     } else {
+      print("user ==== ${user.image}");
       if(user.image != null) {
-        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+        if(user.image.contains("http")) {
+          img = user.image;
+        } else {
+          img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
+        }
+
       } else {
         img = null;
 //        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
@@ -235,7 +255,7 @@ class _ProviderListState extends State<ProviderListPage> {
            context,
           MaterialPageRoute (
               builder: (context) =>
-              VendorProfileUIPage(provider: user, service: provider.service,) //provider.service
+              VendorProfileUIPage(provider: user, service: service,) //provider.service
             )
            ),
             },
@@ -307,7 +327,7 @@ class _ProviderListState extends State<ProviderListPage> {
                             show();
                           }
                           else{
-                            printLog('provider::: ${provider}');
+//                            printLog('provider::: ${provider}');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

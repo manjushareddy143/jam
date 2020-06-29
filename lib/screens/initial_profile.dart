@@ -74,28 +74,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       phoneNumber = globals.currentUser.contact;
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
-
-      print("PROFLE VUEW");
-      //  number + street + sublocality + locality(city) + region(state) + postal_code + country
-//      String hourNumber = (globals.location.number == "") ? "" : globals.location.number +", " ;
-//      String street = (globals.location.street == "") ? "" : globals.location.street +", " ;
-//      String subLocality = (globals.location.sublocality == "") ? "" : globals.location.sublocality +", " ;
-//      String region = (globals.location.region == "") ? "" : globals.location.region +", " ;
-//      String locality = (globals.location.locality == "") ? "" : globals.location.locality +", " ;
-      print(globals.addressLocation.addressLine);
       addressString = globals.addressLocation.addressLine.toString();
-//          hourNumber + street + subLocality + locality
-//          + region+ ", " + globals.location.postalCode
-//          + ", " + globals.location.country;
-
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
-
-      printLog("now");
-      getServices();
+        getServices();
     });
   }
 
@@ -346,6 +331,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final prfl_fname = TextEditingController();
   final prfl_email = TextEditingController();
   final prfl_lname = TextEditingController();
+  final prfl_servcerds = TextEditingController();
   final prfl_phone = TextEditingController();
 
   bool _english = false;
@@ -380,10 +366,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ),
             ),
 
+
               _buildCoverImage(MediaQuery.of(context).size),
 
 //          SizedBox(height: 10),
          // TreeView(),
+
 
 
             Padding(
@@ -530,7 +518,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     height: 20,
                   ),
 
-
+                  // languages
                   Material(
                       elevation: 5.0,
                       shadowColor: Colors.grey,
@@ -549,9 +537,51 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         ),)
 
                   ),
+
+                  if(globals.currentUser.roles[0].slug == "provider")
+                  SizedBox(
+                    height: 20,
+                  ),
+
+                  // Service Radius
+                  if(globals.currentUser.roles[0].slug == "provider")
+                  Material(
+                    elevation: 5.0,
+                    shadowColor: Colors.grey,
+                    child: TextFormField(
+                      controller: prfl_servcerds,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.location_searching,
+                        ),
+                        
+//                        suffix: Text("KM"),
+                        suffixText: "KM  ",
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        labelText: 'Service Radius',
+                        hasFloatingPlaceholder: false,
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter service radius';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
                 ],
               ),
             ),
+
+
 
 
             // SERVICE
@@ -698,12 +728,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             addressData["district"] = adrs_disctric.text;
             addressData["city"] = adrs_city.text;
             addressData["postal_code"] = adrs_postalcode.text;
+            addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+
             data["address"] = jsonEncode(addressData);
 
             if(globals.currentUser.roles[0].slug == "provider") {
               String commaSeparated = selectedListOfId.join(',');
               print(commaSeparated);
               data["services"] = commaSeparated;
+              data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
             apiCall(data);
@@ -1061,6 +1094,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           setState(() {
 
             getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
+              globals.longitude = latLogn.longitude;
+              globals.latitude = latLogn.latitude;
               globals.addressLocation = onValue;
               addressString = globals.addressLocation.addressLine;
             });

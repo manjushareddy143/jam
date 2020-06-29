@@ -41,22 +41,6 @@ class VendorProfileState extends State<VendorProfileUIPage> with TickerProviderS
   final Service service;
   VendorProfileState({Key key, @required this.provider, @required this.service});
 int swiperIndex =0;
-  List<String> name1 = [
-    'Allison',
-    'Ellen D',
-    'Jimmy Falon',
-    'ALex Parish',
-  ];
-  List<String> reviews1 =[
-    'Je vous prie d’agréer, Monsieur le Directeur, l’assurance de ma considération distinguée',
-    'Veuillez accepter, Messieurs (or Monsieur or Madame), mes salutations distinguées',
-    'Croyez, cher Monsieur (or chère Madame), à l’expression de mes sentiments les meilleurs',
-    'Croyez, cher Monsieur (or chère Madame), à l’expression de mes sentiments les meilleurs'
-
-
-
-  ];
-  List<double> rating=[4,4,3,5];
 
   @override
   void initState() {
@@ -76,17 +60,6 @@ int swiperIndex =0;
   Widget build(BuildContext context) {
     // TODO: implement build
     var r = this.provider.rate;
-    print("hello");
-    print(r);
-   /* if(vendor == null) {
-      return new Scaffold(
-
-        appBar: new AppBar(
-          automaticallyImplyLeading: false,
-          title: new Text(AppLocalizations.of(context).translate('loading')),
-        ),
-      );
-    }else{ */
       return Scaffold(
         appBar: AppBar(backgroundColor: Colors.white70,
         title: Text("Vendor Profile", style: TextStyle(
@@ -140,7 +113,7 @@ int swiperIndex =0;
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    Text("32",style: TextStyle(color: Colors.white,fontSize: 18, fontWeight: FontWeight.w300)),
+                    Text((this.provider.jobs_count == 0) ? "0" :this.provider.jobs_count.toString() ,style: TextStyle(color: Colors.white,fontSize: 18, fontWeight: FontWeight.w300)),
                     Text("Job done",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200))
                   ],
 
@@ -149,7 +122,9 @@ int swiperIndex =0;
 
                   children: <Widget>[
                     Row(children:<Widget> [
-                      Text(this.provider.rate.toString(),style: TextStyle(color: Colors.white,fontSize: 18, fontWeight: FontWeight.w300)),
+                      Text((this.provider.rate.length == 0) ? "0" :
+                      double.parse(this.provider.rate[0].rate).floorToDouble().toString(),
+                          style: TextStyle(color: Colors.white,fontSize: 18, fontWeight: FontWeight.w300)),
                       Icon(Icons.star, color: Colors.orangeAccent, size: 18,)
                     ]),
                     Text("Rating",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w200))
@@ -226,7 +201,7 @@ int swiperIndex =0;
 
   }
   Widget setupVendorDetails() {
-    print("PROVIDER ==== ${this.provider.address.toString()}");
+    print("PROVIDER ==== ${this.provider.reviews.length}");
     return Padding( padding: EdgeInsets.fromLTRB(20,20,20,5),
       child: Column(
         children: <Widget>[
@@ -257,9 +232,11 @@ int swiperIndex =0;
               Icon(Icons.location_on, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
               Text((this.provider.address != null) ? "From" + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
+//            Text("")
 
             ],
           ),
+
           Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
             child: SizedBox(
               height: 1.0,
@@ -359,7 +336,7 @@ int swiperIndex =0;
             children: <Widget>[
               Icon(Icons.call, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text(this.provider.contact, style: TextStyle(color: Colors.blueGrey),)
+              Text((this.provider.contact != null) ? this.provider.contact : "", style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
@@ -377,20 +354,14 @@ int swiperIndex =0;
           ),
 
 
-
-
-
-
-
-
-
-
         ],
       ),
     );
   }
+
   List<Tab> tabList = List();
   TabController _tabController;
+
   Widget setupVendorTab(){
     return Column(
         children: <Widget>[
@@ -472,7 +443,7 @@ int swiperIndex =0;
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                InquiryPage())); 
+                                InquiryPage(service: service, provider: provider)));
                   },
                 ),
               ),
@@ -508,176 +479,184 @@ int swiperIndex =0;
 
 
   }
+
+  bool showReview = false;
   Widget setReviews(){
+    showReview = (this.provider.reviews.length == 0) ? false : true;
+    showReview = (this.provider.reviews.length == 0) ? false : true;
+  String title = (this.provider.reviews.length == 0) ? "No Ratings" : "Ratings & Reviews";
     return Padding( padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+
+
           Text(
-              'Ratings & Reviews', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15 ) ),
+              title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15 ) ),
 
+          SizedBox(
+            height: 20,
+          ),
 
-
-          Container(
+          Visibility(child: Container(
             height: 300,
             child: Swiper(
-               // layout: SwiperLayout.STACK,
+              // layout: SwiperLayout.STACK,
               //  itemWidth: 100.0,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                      children: <Widget>[
-                        Padding(padding: EdgeInsets.only(top: 10, bottom: 5),
-                          child: Row( mainAxisAlignment: MainAxisAlignment.center,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: 10, bottom: 5),
+                        child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(this.provider.reviews[index].rating.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
+                            Icon(Icons.star, color: Colors.orangeAccent, size: 15,),
+                            Text(this.provider.reviews.length.toString()+" Review"),
+                          ],
+                        ),
+                      ),
+                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: SizedBox(
+                          height: 1.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                              height: 0.2,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Column(
                             children: <Widget>[
-                              Text(rating[index].toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
-                              Icon(Icons.star, color: Colors.orangeAccent, size: 15,),
-                              Text(rating.length.toString()+" Review"),
+                              Text("0", style: TextStyle(color:Colors.grey),),
+                              (this.provider.reviews[index].rating == 5) ?
+                              Text("Excellent", style: TextStyle(color: Colors.teal),):Text("Excellent", style: TextStyle(color: Colors.grey),),
+                              Row(
+                                children: <Widget>[
+                                  Text("5", style: TextStyle(color: Colors.grey)),
+                                  (this.provider.reviews[index].rating == 5) ?
+                                  Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
+                                ],
+                              )
                             ],
                           ),
-                        ),
-                        Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
-                          child: SizedBox(
-                            height: 1.0,
-                            child: new Center(
-                              child: new Container(
-                                margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                                height: 0.2,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Column(
-                              children: <Widget>[
-                                Text("0", style: TextStyle(color:Colors.grey),),
-                                (rating[index] == 5) ?
-                                Text("Excellent", style: TextStyle(color: Colors.teal),):Text("Excellent", style: TextStyle(color: Colors.grey),),
-                                Row(
-                                  children: <Widget>[
-                                    Text("5", style: TextStyle(color: Colors.grey)),
-                                    (rating[index] == 5) ?
-                                    Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
-                                  ],
-                                )
-                              ],
-                            ),
-                            Column( children: <Widget>[
-                              Text("0", style: TextStyle(color:Colors.grey),),
-                              (rating[index] == 4) ?
-                              Text("Good", style: TextStyle(color: Colors.teal),):Text("Good", style: TextStyle(color: Colors.grey),),
-                              Row(
-                                children: <Widget>[
-                                  Text("4", style: TextStyle(color: Colors.grey)),
-                                  (rating[index] == 4) ?
-                                  Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
-                                ],
-                              )
-                            ],),
-                            Column( children: <Widget>[
-                              Text("0", style: TextStyle(color:Colors.grey),),
-                              (rating[index] == 3) ?
-                              Text("Average", style: TextStyle(color: Colors.teal),):Text("Average", style: TextStyle(color: Colors.grey),),
-                              Row(
-                                children: <Widget>[
-                                  Text("3", style: TextStyle(color: Colors.grey)),
-                                  (rating[index] == 3) ?
-                                  Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
-                                ],
-                              )
-                            ],),
-                            Column( children: <Widget>[
-                              Text("0", style: TextStyle(color:Colors.grey),),
-                              (rating[index] == 2) ?
-                              Text("Bad", style: TextStyle(color: Colors.teal),):Text("Bad", style: TextStyle(color: Colors.grey),),
-                              Row(
-                                children: <Widget>[
-                                  Text("2", style: TextStyle(color: Colors.grey)),
-                                  (rating[index] == 2) ?
-                                  Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
-                                ],
-                              )
-                            ],),
-                            Column( children: <Widget>[
-                              Text("0", style: TextStyle(color:Colors.grey),),
-                              (rating[index] == 1) ?
-                              Text("Very Bad", style: TextStyle(color: Colors.teal),):Text("Very Bad", style: TextStyle(color: Colors.grey),),
-                              Row(
-                                children: <Widget>[
-                                  Text("1", style: TextStyle(color: Colors.grey)),
-                                  (rating[index] == 1) ?
-                                  Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
-                                ],
-                              )
-                            ],),
-
-                          ],
-                        ),
-                        Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
-                          child: SizedBox(
-                            height: 1.0,
-                            child: new Center(
-                              child: new Container(
-                                margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                                height: 0.2,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                        ),
-
-                        SizedBox(height: 20,),
-                        Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
+                          Column( children: <Widget>[
+                            Text("0", style: TextStyle(color:Colors.grey),),
+                            (this.provider.reviews[index].rating == 4) ?
+                            Text("Good", style: TextStyle(color: Colors.teal),):Text("Good", style: TextStyle(color: Colors.grey),),
                             Row(
                               children: <Widget>[
-                                Text(name1[index], style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(8,0,8,0),
-                                  child: SmoothStarRating(
-                                    allowHalfRating: false,
-                                    starCount: 5,
-                                    rating: rating[index],
-                                    onRatingChanged:
-                                        (rating) => setState(() => this.rating[index] = rating),
-                                    size: 20.0,
-                                    filledIconData: Icons.star,
-                                    halfFilledIconData: Icons.star,
-                                    color: Colors.orangeAccent,
-                                    borderColor: Colors.orangeAccent,
-                                    spacing:0.0,
-
-
-
-                                  ),
-                                ),
-
-
+                                Text("4", style: TextStyle(color: Colors.grey)),
+                                (this.provider.reviews[index].rating == 4) ?
+                                Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
                               ],
+                            )
+                          ],),
+                          Column( children: <Widget>[
+                            Text("0", style: TextStyle(color:Colors.grey),),
+                            (this.provider.reviews[index].rating == 3) ?
+                            Text("Average", style: TextStyle(color: Colors.teal),):Text("Average", style: TextStyle(color: Colors.grey),),
+                            Row(
+                              children: <Widget>[
+                                Text("3", style: TextStyle(color: Colors.grey)),
+                                (this.provider.reviews[index].rating == 3) ?
+                                Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
+                              ],
+                            )
+                          ],),
+                          Column( children: <Widget>[
+                            Text("0", style: TextStyle(color:Colors.grey),),
+                            (this.provider.reviews[index].rating == 2) ?
+                            Text("Bad", style: TextStyle(color: Colors.teal),):Text("Bad", style: TextStyle(color: Colors.grey),),
+                            Row(
+                              children: <Widget>[
+                                Text("2", style: TextStyle(color: Colors.grey)),
+                                (this.provider.reviews[index].rating == 2) ?
+                                Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
+                              ],
+                            )
+                          ],),
+                          Column( children: <Widget>[
+                            Text("0", style: TextStyle(color:Colors.grey),),
+                            (this.provider.reviews[index].rating == 1) ?
+                            Text("Very Bad", style: TextStyle(color: Colors.teal),):Text("Very Bad", style: TextStyle(color: Colors.grey),),
+                            Row(
+                              children: <Widget>[
+                                Text("1", style: TextStyle(color: Colors.grey)),
+                                (this.provider.reviews[index].rating == 1) ?
+                                Icon(Icons.star, color: Colors.orangeAccent,): Icon(Icons.star, color: Colors.grey,)
+                              ],
+                            )
+                          ],),
+
+                        ],
+                      ),
+                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: SizedBox(
+                          height: 1.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                              height: 0.2,
+                              color: Colors.grey,
                             ),
-
-                            Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
-
-
-                          ],
+                          ),
                         ),
-                        SizedBox(height: 10,),
-                        SizedBox(
-                          height: 50,
-                          child: Text( reviews1[index],
+                      ),
+
+                      SizedBox(height: 20,),
+                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              Text(this.provider.reviews[index].rate_by.first_name, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8,0,8,0),
+                                child: SmoothStarRating(
+                                  allowHalfRating: false,
+                                  starCount: 5,
+                                  rating:  this.provider.reviews[index].rating.toDouble(),
+                                  size: 20.0,
+                                  filledIconData: Icons.star,
+                                  halfFilledIconData: Icons.star,
+                                  color: Colors.orangeAccent,
+                                  borderColor: Colors.orangeAccent,
+                                  spacing:0.0,
 
 
-                            maxLines: 14,style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),),
-                        ),
-                        SizedBox(height: 10,),
+
+                                ),
+                              ),
 
 
-                      ]);
+                            ],
+                          ),
 
-                } ,
-                itemCount : name1.length,
-                ),
+                          Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
+
+
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 50,
+                        child: Text( this.provider.reviews[index].comment,
+
+
+                          maxLines: 14,style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),),
+                      ),
+                      SizedBox(height: 10,),
+
+
+                    ]);
+
+              } ,
+              itemCount : this.provider.reviews.length,
+            ),
           ),
+          visible: showReview,),
 
 
           Row( mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -699,7 +678,7 @@ int swiperIndex =0;
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    InquiryPage()));
+                                    InquiryPage(provider: this.provider, service: this.service, )));
                       },
                     ),
                   ),

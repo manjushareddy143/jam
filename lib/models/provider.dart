@@ -5,13 +5,13 @@ import 'package:jam/models/service.dart';
 import 'package:jam/models/user.dart';
 
 class Provider {
-  final int id;
-  final int user_id;
-  final int service_id;
-  final int category_id;
+//  final int id;
+//  final int user_id;
+//  final int service_id;
+//  final int category_id;
 
   final List<User> user;
-  final Service service;
+//  final Service service;
 
 
 
@@ -36,14 +36,16 @@ class Provider {
 //  Provider(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
 //      this.doc, this.document_image, this.email, this.gender, this.org_id,
 //  this.resident_country,this.term_id, this.type_id, this.rate, this.reviews, this.provider);
-  Provider(this.id, this.user_id, this.service, this.user, this.category_id, this.service_id);
+//  Provider(this.id, this.user_id, this.service, this.user, this.category_id, this.service_id);
+  Provider(this.user);
 
   Provider.fromJson(Map<String, dynamic> json)
-  : id = json['id'], user_id = json['user_id'], category_id = json['category_id']
-  , service_id = json['service_id'], user = ((json.containsKey('user') && json['user'] != null ) ?
+//  : id = json['id'], user_id = json['user_id'], category_id = json['category_id']
+//  , service_id = json['service_id'],
+       : user = ((json.containsKey('user') && json['user'] != null ) ?
   json['user'].map<User>((json) => new User.fromJson(json)).toList() :
-  null),
-        service = ((json.containsKey('service') && json['service'] != null ) ? Service.fromJson(json['service']) : null);
+  null);
+//        service = ((json.containsKey('service') && json['service'] != null ) ? Service.fromJson(json['service']) : null);
 
 //  Provider.fromJson(Map<String, dynamic> json)
 //      : id = json['id'], first_name = json['first_name'], last_name = json['last_name'], image = json['image'],

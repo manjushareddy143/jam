@@ -10,6 +10,7 @@ import 'dart:math' as math;
 
 import 'package:jam/placeholder_widget.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/myProfile.dart';
 import 'package:jam/screens/provider_list_screen.dart';
 import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
@@ -133,6 +134,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
+//                                              ProfileUIPage()
                                           ProviderListPage(service: listofServices[serviceIndex])
                                   )
                               );
