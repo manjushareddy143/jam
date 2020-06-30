@@ -1270,53 +1270,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
               child: SingleChildScrollView(
                 child: Column(children: <Widget>[
-                 /* Container(
+                 Container(
                     child: SingleChildScrollView(
                       child: Column(
                         children: listOfCards(setState),
                       ),
                     ),
                     height: 400,
-                  ), */
-                  Expanded(child: TreeView(
-                    hasScrollBar: true,
-                    parentList: [
-                      Parent(
-                        parent: Container(
-//                          margin: EdgeInsets.only(left: 4),
-                          child: Card(elevation: 0.0,
-                              child: ListTile( leading: Icon(Icons.navigate_next),
-                                  title:Text('Desktop'))),
-                        ),
-                        childList: ChildList(
-                          children: <Widget>[
-                            Parent(
-                              parent: Container(
-//                                margin: const EdgeInsets.only(left: 8.0),
-                                child: Card(elevation: 0.0, child:
-                                ListTile(leading:Icon(Icons.navigate_next),
-                                    title:Text('Home')),),
-                              ),
-                              childList: ChildList(
-                                children: <Widget>[
-
-                                  Container(
-//                                    margin: const EdgeInsets.only(left: 12.0),
-                                    child: Card(elevation: 0.0, child:
-                                    ListTile(leading:Icon(Icons.insert_drive_file),
-                                        title:Text('Resume.docx')),),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  flex: 2,
                   ),
 
 
