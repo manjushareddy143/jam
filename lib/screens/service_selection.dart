@@ -36,8 +36,10 @@ class ServiceSelectionUIPage extends StatefulWidget {
   ServiceSelectionUIPageState createState() => new ServiceSelectionUIPageState();
 }
 class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with TickerProviderStateMixin {
+  static List<Map> selectedServicesJson;
   @override
   void initState(){
+    selectedServicesJson = new List<Map>();
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -138,8 +140,6 @@ bool Value = false;
 
 
   List<Parent> setupParentList() {
-//    ParentWithChild(),
-//    parentNoChild(),
     List<Parent> list = new List();
     for(int prntCount =0; prntCount < listofServices.length; prntCount++) {
       if(listofServices[prntCount].categories.length > 0) {
@@ -168,13 +168,19 @@ bool Value = false;
           child: Row(
               children: <Widget>[
                 Checkbox(
-                    value: Value,
-                    onChanged: (bool value) {
-                      printLog(value);
-                      setState(() {
-                        Value = value;
-                      },
-                      );}),
+                    value:  false,
+//                    onChanged: (bool value) {
+//                      printLog(value);
+//                      setState(() {
+//                        service.isSelected = value;
+//                        if (selectedListOfService.contains(service)) {
+//                          selectedListOfService.remove(service);
+//                        } else {
+//                          selectedListOfService.add(service);
+//                        }
+//                      });
+//                    }
+                    ),
                 Container( height: 40, width: 40,
                   padding: EdgeInsets.all(2),
                   child: Image.network(service.icon_image),
@@ -199,7 +205,7 @@ bool Value = false;
   }
 
 
-  Widget ChildCard(SubCategory category) {
+  Widget ChildCard(SubCategory category, ) {
 
     return Container(
       margin: const EdgeInsets.only(left: 25.0),
@@ -213,10 +219,16 @@ bool Value = false;
                     printLog(value);
 
                     setState(() {
-
-                      Value = value;
-                    },
-                    );}),
+//                      service.isSelected = value;
+//                      if (selectedListOfService.contains(service)) {
+//                        selectedListOfService.remove(service);
+//                        selectedListOfId.remove(service.id);
+//                      } else {
+//                        selectedListOfService.add(service);
+//                        selectedListOfId.add(service.id);
+//                      }
+                    });
+                  }),
               Padding(
                 padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child: Text(
@@ -248,6 +260,10 @@ bool Value = false;
       ),);
   }
 
+  static List<Service> selectedListOfService = new List<Service>();
+  static Map selectedServices = new Map<String, String>();
+
+
   Widget parentNoChild(Service service) {
     return Parent(
       parent: Container(
@@ -256,23 +272,22 @@ bool Value = false;
           child: Row(
               children: <Widget>[
                 Checkbox(
-                    value: Value,
+                    value:  (selectedListOfService.contains(service)) ? true : false,
                     onChanged: (bool value) {
                       printLog(value);
-
                       setState(() {
-
-                        Value = value;
-                      },
-                      );}),
+                        service.isSelected = value;
+                        if (selectedListOfService.contains(service)) {
+                          selectedListOfService.remove(service);
+                        } else {
+                          selectedListOfService.add(service);
+                        }
+                      });
+                    }
+                    ),
                 Container(height: 40, width: 40,
                   padding: EdgeInsets.all(2),
                   child: Image.network(service.icon_image),
-//                  decoration: BoxDecoration(
-//                    image: DecorationImage(
-//                        image: AssetImage('assets/images/painting.png'),
-//                        fit: BoxFit.fill),
-//                  ),
                 ),
                 Flexible(
                   child: Padding(
@@ -287,146 +302,108 @@ bool Value = false;
                   ),
                 ),
                 Padding(padding: EdgeInsetsDirectional.fromSTEB(10,2,1,2),
-
                   child: Container(width: 90, height: 30,
                     padding: EdgeInsets.only(bottom: 1.0),
-                    child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                    child:
+                    TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)
-                    )) ,
-                    ),),
+                    ),
+
+                    ),
+                      onTap: () => getSelectedField(service),
+                      onChanged: myService,
+                      keyboardType: TextInputType.number,
+//                      onEditingComplete: doneEdit,
+//                      onSubmitted: doneSubmit,
+                    ),
+                  ),
                 )
               ]),
-        ),),);
+        ),
+      ),
+      childList: ChildList(
+          children: []
+      ),
+    );
+  }
+
+  void doneSubmit(String str) {
+    print("doneSubmit  $str");
+
+//    selectedServicesJson
+  }
+  void doneEdit() {
+    print("done");
+
+//    selectedServicesJson
+  }
+
+  static Service onTapService;
+  static void getSelectedField(Service service) {
+    onTapService = service;
+    print("selectedServices direct tap ${selectedServices}");
+    print("selectedServices service tap ${onTapService.id}");
+    if(selectedServices.isNotEmpty) {
+      selectedServicesJson.add(selectedServices) ;
+      print("selectedServicesJson $selectedServicesJson");
+      selectedServices.clear();
+      selectedServices['service_id'] = service.id.toString();
+    } else {
+      print("selectedServices before ${selectedServices}");
+      selectedServices['service_id'] = service.id.toString();
+      print("selectedServices after ${selectedServices}");
+    }
+  }
+
+  static String fieldValue;
+  myService(String str) {
+    print("onChange $str");
+    fieldValue = str;
+    storeFormValue();
+
+  }
+
+  void storeFormValue() {
+    if (selectedListOfService.contains(onTapService)) {
+      if(selectedServices.containsKey('price')) {
+        print("price 1");
+        selectedServices.update('price', (value) => fieldValue);
+      } else {
+        print("price 2");
+        selectedServices['price'] = fieldValue;
+      }
+    } else {
+      setState(() {
+        print("price 3");
+        selectedListOfService.add(onTapService);
+        selectedServices['service_id'] = onTapService.id.toString();
+        selectedServices['price'] = fieldValue;
+      });
+
+    }
   }
 
   List<Service> listofServices;
   String serviceNamesString = "";
-  List<Service> selectedListOfService = new List<Service>();
-  List<int> selectedListOfId = new List<int>();
+//  List<int> selectedListOfId = new List<int>();
+
   void serviceSave() {
     serviceNamesString = "";
 //    if (_formServiceKey.currentState.validate()) {
 //      _formServiceKey.currentState.save();
-    setState(() {
-      print(selectedListOfService);
-      print(selectedListOfId);
-      for(int i = 0; i < selectedListOfService.length; i++) {
-        String name = selectedListOfService[i].name;
-        if (serviceNamesString.isEmpty) {
-          serviceNamesString = "* " + name;
-        } else {
-          serviceNamesString += "\n* " +name;
-        }
-      }
-    });
-        }
-  List<Widget> listOfCards(StateSetter setState) {
-    List<Widget> list = new List();
-    for (int orderCount = 0; orderCount < listofServices.length; orderCount++) {
-      listofServices[orderCount].isSelected = true;
-      listofServices[orderCount].index = orderCount;
-      list.add(SetupParent(listofServices[orderCount], setState));
-    }
-    return list;
-  }
-  Widget SetupParent(Service service, StateSetter setState) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(0.5, 5, 0.5, 5),
-      child: Row(
-        children: <Widget>[
-          Checkbox(
-            value: (selectedListOfService.contains(service)) ? true : false,
-            onChanged: (bool value) {
-              printLog(value);
+//    setState(() {
+//      print(selectedListOfService);
+//      for(int i = 0; i < selectedListOfService.length; i++) {
+//        String name = selectedListOfService[i].name;
+//        if (serviceNamesString.isEmpty) {
+//          serviceNamesString = "* " + name;
+//        } else {
+//          serviceNamesString += "\n* " +name;
+//        }
+//      }
+//    }
+//    );
 
-              setState(() {
-                service.isSelected = value;
-                if (selectedListOfService.contains(service)) {
-                  selectedListOfService.remove(service);
-                  selectedListOfId.remove(service.id);
-                } else {
-                  selectedListOfService.add(service);
-                  selectedListOfId.add(service.id);
-                }
-
-//                listofServices.insert(service.index, service);
-              });
-              printLog(service.isSelected);
-              printLog(selectedListOfService);
-            },
-          ),
-          Container(
-            padding: EdgeInsets.all(2),
-            child: Image.network(
-              service.icon_image,
-              height: 40.0,
-              width: 40.0,
-              fit: BoxFit.contain,
-            ),
-          ),
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-              child: Text(
-                service.name,
-                maxLines: 3,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-  Widget SetupChild(Service service, StateSetter setState) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(0.5, 5, 0.5, 5),
-      child: Row(
-        children: <Widget>[
-          Checkbox(
-            value: (selectedListOfService.contains(service)) ? true : false,
-            onChanged: (bool value) {
-              printLog(value);
-
-              setState(() {
-                service.isSelected = value;
-                if (selectedListOfService.contains(service)) {
-                  selectedListOfService.remove(service);
-                  selectedListOfId.remove(service.id);
-                } else {
-                  selectedListOfService.add(service);
-                  selectedListOfId.add(service.id);
-                }
-
-//                listofServices.insert(service.index, service);
-              });
-              printLog(service.isSelected);
-              printLog(selectedListOfService);
-            },
-          ),
-
-
-          Flexible(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-              child: Text(
-                service.name,
-                maxLines: 3,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-              ),
-            ),
-          ),
-          TextField(
-            controller: prfl_servicePrice,
-            keyboardType: TextInputType.number,
-          )
-        ],
-      ),
-    );
   }
   final prfl_servicePrice = TextEditingController();
 }
