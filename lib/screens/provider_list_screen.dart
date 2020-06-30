@@ -191,13 +191,8 @@ class _ProviderListState extends State<ProviderListPage> {
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
       print("listofProviders === ${listofProviders[providerCount]}");
-//      for(int userCount = 0; userCount <listofProviders[providerCount].user.length; userCount++ ) {
         User user = listofProviders[providerCount];//.user[userCount];
-//        Provider provider; // = listofProviders[providerCount];
-//        Service service = listofProviders[providerCount].service;
         list.add(setupCard(user, service));
-//      }
-
     }
 
 
