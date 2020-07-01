@@ -36,10 +36,12 @@ class ServiceSelectionUIPage extends StatefulWidget {
   ServiceSelectionUIPageState createState() => new ServiceSelectionUIPageState();
 }
 class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with TickerProviderStateMixin {
-  static List<Map> selectedServicesJson;
+  static List selectedServicesJson=[];
   @override
   void initState(){
     selectedServicesJson = new List<Map>();
+    print("lets see");
+    printLog(selectedServicesJson);
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -341,11 +343,17 @@ bool Value = false;
   static Service onTapService;
   static void getSelectedField(Service service) {
     onTapService = service;
+
     print("selectedServices direct tap ${selectedServices}");
     print("selectedServices service tap ${onTapService.id}");
     if(selectedServices.isNotEmpty) {
-      selectedServicesJson.add(selectedServices) ;
-      print("selectedServicesJson $selectedServicesJson");
+
+      selectedServicesJson=selectedServices['service_id']['price'];
+      for(var i =0; i<selectedServicesJson.length; i++) {
+        print(selectedServicesJson.length);
+        print(selectedServicesJson[i]);
+
+      }
       selectedServices.clear();
       selectedServices['service_id'] = service.id.toString();
     } else {
@@ -375,9 +383,11 @@ bool Value = false;
     } else {
       setState(() {
         print("price 3");
+        print(onTapService);
         selectedListOfService.add(onTapService);
         selectedServices['service_id'] = onTapService.id.toString();
         selectedServices['price'] = fieldValue;
+
       });
 
     }

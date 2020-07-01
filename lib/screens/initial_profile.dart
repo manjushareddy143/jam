@@ -75,7 +75,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       phoneNumber = globals.currentUser.contact;
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
-      addressString = globals.addressLocation.addressLine.toString();
+     // addressString = globals.addressLocation.addressLine.toString();
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
@@ -345,19 +345,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget> [
-          /*  TreeView(parentList: [
-              Parent( parent: Text("hello"),
-                  childList: ChildList(
-                    children: <Widget>[
-                      Text('hello 1')
-                    ],
-                  ))
-            ]
-            ), */
-
-
-
-
 
             Padding(
               padding: EdgeInsets.fromLTRB(15, 30, 0, 10),
@@ -545,8 +532,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   ),
 
                   // Service Radius
-                  if(globals.currentUser.roles[0].slug == "provider")
-                  Material(
+               //   if(globals.currentUser.roles[0].slug == "provider")
+                /*  Material(
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
@@ -576,7 +563,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         return null;
                       },
                     ),
-                  ),
+                  ), */
 
                 ],
               ),
@@ -603,7 +590,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             ),
 
             // ADDRESS
-            Padding(
+          /*  Padding(
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
               child: Card(
                 elevation: 5.0,
@@ -649,7 +636,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   ],
                 ),
               ),
-            ),
+            ),*/
 
             ButtonTheme(
               minWidth: MediaQuery.of(context).size.width - 20,
@@ -703,7 +690,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
-      addressEnter();
+    //  addressEnter();
     } else {
       if(language.length == 0) {
         showInfoAlert(context, "Please selecte language");
@@ -721,24 +708,24 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             String lang = language.join(',');
             print("lang ${globals.currentUser.roles[0].slug}");
             data["languages"] = lang;
-            var addressData = new Map<String, dynamic>();
-            addressData["name"] = adrs_name.text;
-            addressData["address_line1"] = adrs_line1.text;
-            addressData["address_line2"] = adrs_line2.text;
-            addressData["landmark"] = adrs_landmark.text;
-            addressData["district"] = adrs_disctric.text;
-            addressData["city"] = adrs_city.text;
-            addressData["postal_code"] = adrs_postalcode.text;
-            addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+         //   var addressData = new Map<String, dynamic>();
+         //   addressData["name"] = adrs_name.text;
+         //   addressData["address_line1"] = adrs_line1.text;
+         //   addressData["address_line2"] = adrs_line2.text;
+         //   addressData["landmark"] = adrs_landmark.text;
+         //   addressData["district"] = adrs_disctric.text;
+        //    addressData["city"] = adrs_city.text;
+         //   addressData["postal_code"] = adrs_postalcode.text;
+        //    addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
 
-            data["address"] = jsonEncode(addressData);
+        //    data["address"] = jsonEncode(addressData);
 
-            if(globals.currentUser.roles[0].slug == "provider") {
+         /*   if(globals.currentUser.roles[0].slug == "provider") {
               String commaSeparated = selectedListOfId.join(',');
               print(commaSeparated);
               data["services"] = commaSeparated;
               data["service_radius"] = prfl_servcerds.text;
-            }
+            } */
             printLog(data);
             apiCall(data);
           });
@@ -804,7 +791,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   String mapAddressTitle = "Set Location Map";
 //  number + street + sublocality + locality(city) + region(state) + postal_code + country
-  Widget _buildAddressDialog(BuildContext context) {
+ /* Widget _buildAddressDialog(BuildContext context) {
 
     print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
     return AlertDialog(
@@ -1056,10 +1043,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       bearing: 30,
       target: pinPosition
   );
+*/
+ // Completer<GoogleMapController> _controller = Completer();
 
-  Completer<GoogleMapController> _controller = Completer();
-
-  Widget  mapBuild(StateSetter setState) {
+/* Widget  mapBuild(StateSetter setState) {
     setCustomMapPin(pinLocationIcon).then((onValue) {
       pinLocationIcon = onValue;
     });
@@ -1113,7 +1100,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
       ),
     );
-  }
+  } */
 
 
   void addressSave() {
@@ -1150,13 +1137,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
   }
 
-  void addressEnter() {
+ /* void addressEnter() {
     showDialog(
       context: context,
       builder: (BuildContext context) => _buildAddressDialog(context),
     );
   }
-
+*/
   Widget setDropDown() {
     return Material(
       elevation: 5.0,

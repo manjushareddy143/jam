@@ -35,7 +35,8 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    getcordinates();
+   // getcordinates();
+    getLanguage();
   }
 
   Future getcordinates() async {
