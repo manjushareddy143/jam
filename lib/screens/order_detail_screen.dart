@@ -375,8 +375,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
           /// SHOW OTP
-         if(order.status == 2 && this.isCustomer == true)
-          Row(
+       //  if(order.status == 2 && this.isCustomer == true)
+        /*  Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Visibility(child:
@@ -404,7 +404,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
             ],
-          ),
+          ), */
 
           if(order.status == 5 && this.isCustomer == true)
           Visibility(visible: !isRatingDisplay,
@@ -829,6 +829,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
         ],
       ),
     );
+  }
+  Widget VendorBilling(BuildContext context){
+    return AlertDialog();
   }
 
   Widget buildCompleteDialog(BuildContext context) {
