@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jam/models/selected_service.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
@@ -36,10 +37,9 @@ class ServiceSelectionUIPage extends StatefulWidget {
   ServiceSelectionUIPageState createState() => new ServiceSelectionUIPageState();
 }
 class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with TickerProviderStateMixin {
-  static List selectedServicesJson=[];
+  List<Map<String,String>> selectedServicesJson = new List<Map<String,String>>();
   @override
   void initState(){
-    selectedServicesJson = new List<Map>();
     print("lets see");
     printLog(selectedServicesJson);
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
@@ -263,7 +263,7 @@ bool Value = false;
   }
 
   static List<Service> selectedListOfService = new List<Service>();
-  static Map selectedServices = new Map<String, String>();
+  List<SelectedService> selectedServices = new List<SelectedService>();
 
 
   Widget parentNoChild(Service service) {
@@ -341,26 +341,13 @@ bool Value = false;
   }
 
   static Service onTapService;
-  static void getSelectedField(Service service) {
+  void getSelectedField(Service service) {
     onTapService = service;
+    print("selectedServices.length ${selectedServices.length}");
+    selectedServices.forEach((element) {
+      print("elements ${element.toJson()}");
+    });
 
-    print("selectedServices direct tap ${selectedServices}");
-    print("selectedServices service tap ${onTapService.id}");
-    if(selectedServices.isNotEmpty) {
-
-      selectedServicesJson=selectedServices['service_id']['price'];
-      for(var i =0; i<selectedServicesJson.length; i++) {
-        print(selectedServicesJson.length);
-        print(selectedServicesJson[i]);
-
-      }
-      selectedServices.clear();
-      selectedServices['service_id'] = service.id.toString();
-    } else {
-      print("selectedServices before ${selectedServices}");
-      selectedServices['service_id'] = service.id.toString();
-      print("selectedServices after ${selectedServices}");
-    }
   }
 
   static String fieldValue;
@@ -372,22 +359,19 @@ bool Value = false;
   }
 
   void storeFormValue() {
-    if (selectedListOfService.contains(onTapService)) {
-      if(selectedServices.containsKey('price')) {
-        print("price 1");
-        selectedServices.update('price', (value) => fieldValue);
-      } else {
-        print("price 2");
-        selectedServices['price'] = fieldValue;
-      }
-    } else {
-      setState(() {
-        print("price 3");
-        print(onTapService);
-        selectedListOfService.add(onTapService);
-        selectedServices['service_id'] = onTapService.id.toString();
-        selectedServices['price'] = fieldValue;
 
+    if (selectedListOfService.contains(onTapService)) {
+       SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
+
+       int idx = selectedServices.indexWhere((element) => element == sltdsrv);
+       print("index === ${idx} == val ${sltdsrv.service_id}");
+
+      selectedServices[idx] =  SelectedService(sltdsrv.service_id, 0, int.parse(fieldValue));
+    }
+    else {
+      setState(() {
+        selectedListOfService.add(onTapService);
+        selectedServices.add(SelectedService(onTapService.id, 0 , int.parse(fieldValue)));
       });
 
     }
@@ -395,7 +379,6 @@ bool Value = false;
 
   List<Service> listofServices;
   String serviceNamesString = "";
-//  List<int> selectedListOfId = new List<int>();
 
   void serviceSave() {
     serviceNamesString = "";
