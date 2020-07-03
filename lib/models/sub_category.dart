@@ -4,7 +4,7 @@ class SubCategory {
   final String name;
   final String image;
   final String description;
-
+  bool isSelected;
   SubCategory(this.id, this.name, this.image, this.description);
 
   SubCategory.fromJson(Map<String, dynamic> json)

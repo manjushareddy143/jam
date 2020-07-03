@@ -154,10 +154,10 @@ bool Value = false;
     return list;
   }
 
-  List<Widget> setupChildList(List<SubCategory> categories) {
+  List<Widget> setupChildList(Service service) {
     List<Widget> list = new List();
-    for(int chldCount = 0; chldCount < categories.length; chldCount++) {
-      list.add(ChildCard(categories[chldCount]));
+    for(int chldCount = 0; chldCount < service.categories.length; chldCount++) {
+      list.add(ChildCard(service.categories[chldCount],service));
     }
     return list;
   }
@@ -170,18 +170,21 @@ bool Value = false;
           child: Row(
               children: <Widget>[
                 Checkbox(
-                    value:  false,
-//                    onChanged: (bool value) {
-//                      printLog(value);
-//                      setState(() {
-//                        service.isSelected = value;
-//                        if (selectedListOfService.contains(service)) {
-//                          selectedListOfService.remove(service);
-//                        } else {
-//                          selectedListOfService.add(service);
-//                        }
-//                      });
-//                    }
+
+                    value:  (selectedListOfService.contains(service)) ? true : false,
+                    onChanged: (bool value) {
+
+                     printLog(value);
+                     setState(() {
+                       service.isSelected = value;
+                       if (selectedListOfService.contains(service)) {
+                          selectedListOfService.remove(service);
+                      } else {
+                         selectedListOfService.add(service);
+                     }
+
+                     });
+                   }
                     ),
                 Container( height: 40, width: 40,
                   padding: EdgeInsets.all(2),
@@ -196,18 +199,19 @@ bool Value = false;
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
+
                     ),
                   ),
                 ),]),
         ),),
       childList: ChildList(
-        children:setupChildList(service.categories)
+        children:setupChildList(service)
       ),
     );
   }
 
 
-  Widget ChildCard(SubCategory category, ) {
+  Widget ChildCard(SubCategory category,Service service ) {
 
     return Container(
       margin: const EdgeInsets.only(left: 25.0),
@@ -216,19 +220,16 @@ bool Value = false;
         child: Row(
             children: <Widget>[
               Checkbox(
-                  value: Value,
+                  value:  (selectedListOfCategory.contains(category)) ? true : false,
                   onChanged: (bool value) {
                     printLog(value);
-
                     setState(() {
-//                      service.isSelected = value;
-//                      if (selectedListOfService.contains(service)) {
-//                        selectedListOfService.remove(service);
-//                        selectedListOfId.remove(service.id);
-//                      } else {
-//                        selectedListOfService.add(service);
-//                        selectedListOfId.add(service.id);
-//                      }
+                      category.isSelected = value;
+                      if (selectedListOfCategory.contains(category)) {
+                        selectedListOfCategory.remove(category);
+                      } else {
+                        selectedListOfCategory.add(category);
+                      }
                     });
                   }),
               Padding(
@@ -248,6 +249,11 @@ bool Value = false;
                   child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey)
                   )) ,
+                    onTap: () => getCategoryField(category, service),
+
+                    onChanged: myCategory,
+                    keyboardType: TextInputType.number,
+
                   ),),
               )
 
@@ -264,6 +270,8 @@ bool Value = false;
 
   static List<Service> selectedListOfService = new List<Service>();
   List<SelectedService> selectedServices = new List<SelectedService>();
+//  static int storeCategory;
+   static List<SubCategory> selectedListOfCategory = new List<SubCategory>();
 
 
   Widget parentNoChild(Service service) {
@@ -329,21 +337,26 @@ bool Value = false;
     );
   }
 
-  void doneSubmit(String str) {
-    print("doneSubmit  $str");
-
-//    selectedServicesJson
-  }
-  void doneEdit() {
-    print("done");
-
-//    selectedServicesJson
-  }
 
   static Service onTapService;
   void getSelectedField(Service service) {
     onTapService = service;
+
+
     print("selectedServices.length ${selectedServices.length}");
+    selectedServices.forEach((element) {
+      print("elements ${element.toJson()}");
+    });
+
+  }
+  static var parent;
+  static SubCategory onTapCategory;
+  void getCategoryField(SubCategory category, Service service) {
+    onTapService= service;
+    onTapCategory = category;
+
+
+    print("service ${service.name} category ${category.name} ${category.id}");
     selectedServices.forEach((element) {
       print("elements ${element.toJson()}");
     });
@@ -358,6 +371,43 @@ bool Value = false;
 
   }
 
+  myCategory(String str){
+    print("onchangeChild $str");
+    fieldValue = str;
+    storeFormValueChild();
+
+  }
+  void storeFormValueChild(){
+    if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
+      SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
+      sltdsrv =selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
+      int idx = selectedServices.indexWhere((element) => element == sltdsrv);
+      print("index === ${idx} == val ${sltdsrv.service_id} ${sltdsrv.category_id}");
+      selectedServices[idx] =  SelectedService(sltdsrv.service_id, sltdsrv.category_id, int.parse(fieldValue));
+    }
+    else if((selectedListOfCategory.contains(onTapCategory))&& (!(selectedListOfService.contains(onTapService)))){
+      SelectedService sltdsrv = selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
+      setState(() {
+        selectedListOfService.add(onTapService);
+
+      });
+      int idx = selectedServices.indexWhere((element) => element == sltdsrv);
+      selectedServices[idx] =  SelectedService(onTapService.id, sltdsrv.category_id, int.parse(fieldValue));
+
+
+    }
+    else{
+      setState(() {
+        selectedListOfService.add(onTapService);
+        selectedListOfCategory.add((onTapCategory));
+        selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
+      });
+
+    }
+
+
+  }
+
   void storeFormValue() {
 
     if (selectedListOfService.contains(onTapService)) {
@@ -368,6 +418,7 @@ bool Value = false;
 
       selectedServices[idx] =  SelectedService(sltdsrv.service_id, 0, int.parse(fieldValue));
     }
+
     else {
       setState(() {
         selectedListOfService.add(onTapService);
