@@ -94,17 +94,17 @@ class _HomePageState extends State<HomePage> {
                 child: new GestureDetector(
                   //tapping to go the corresponding view linked with it using navigator
                   onTap: () {
-                  //  Navigator.push(context,
-                   //     MaterialPageRoute(builder: (context) => NewPage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewPage()));
                   },
                   child: Row(
                     children: <Widget>[
                       Flexible(
                         child:
-                        Text("Address Commented",
-                         // (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
+                        Text(
+                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
 
-                         // globals.addressLocation.addressLine.toString(),
+                          globals.addressLocation.addressLine.toString(),
 
 
                            //newAddress.addressL// current location

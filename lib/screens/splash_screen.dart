@@ -35,15 +35,12 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-   // getcordinates();
-    getLanguage();
+    getcordinates();
+//    getLanguage();
   }
 
   Future getcordinates() async {
     printLog("getcordinates");
-
-
-
 
     GeoPoint geoPoint = await geoPointFromLocation(
         name: "Current position", withAddress: true, verbose: false);
@@ -57,15 +54,15 @@ class SplashScreenState extends State<SplashScreen> {
     getLanguage();
 //    globals.location = geoPoint;
 //    print("geoPoint:::: ${jsonEncode(geoPoint)}");
-    print("street:::: ${geoPoint.street}");
-    print("region:::: ${geoPoint.region}");
-    print("postalCode:::: ${geoPoint.postalCode}");
-    print("number:::: ${geoPoint.number}");
-    print("sublocality:::: ${geoPoint.sublocality}");
-    print("locality:::: ${geoPoint.locality}");
-    print("country:::: ${geoPoint.country}");
-    print("accuracy:::: ${geoPoint.accuracy}");
-    print("timestamp:::: ${geoPoint.timestamp}");
+//    print("street:::: ${geoPoint.street}");
+//    print("region:::: ${geoPoint.region}");
+//    print("postalCode:::: ${geoPoint.postalCode}");
+//    print("number:::: ${geoPoint.number}");
+//    print("sublocality:::: ${geoPoint.sublocality}");
+//    print("locality:::: ${geoPoint.locality}");
+//    print("country:::: ${geoPoint.country}");
+//    print("accuracy:::: ${geoPoint.accuracy}");
+//    print("timestamp:::: ${geoPoint.timestamp}");
   }
   void getLanguage() async {
     printLog("getLanguage");

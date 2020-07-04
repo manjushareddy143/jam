@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:jam/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:http/http.dart';
@@ -149,13 +150,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
                        ),
                        onPressed: () => {
                          print("COmplete"),
-                         showDialog(
-                           context: context,
-                           builder: (BuildContext context) {
-                             return buildCompleteDialog(context);
-
-                           },
-                         )
+                         insertIvoiceDetail(),
+//                         showDialog(
+//                           context: context,
+//                           builder: (BuildContext context) {
+//                             return buildCompleteDialog(context);
+//
+//                           },
+//                         )
                        }
                    ),
                  ),
@@ -980,5 +982,217 @@ class _DetailUIPageState extends State<DetailUIPage> {
       showInfoAlert(context, "Unknown error from server");
     }
   }
+
+  void insertIvoiceDetail(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => setOrderDetail(context),
+    );
+  }
+
+
+  bool checkedValue = false;
+
+  Widget setOrderDetail(BuildContext context){
+      return AlertDialog(
+
+          title:Center(child: Text("Order Detail"),
+          ),
+          content: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: Text("Time Taken"),
+                    ),
+                    Datepick(),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: <Widget>[
+                          Checkbox(
+                            value: checkedValue,
+                            onChanged:  (newValue) {
+                              setState(() {
+                                checkedValue = newValue;
+                              });
+                            },),
+                          Text("Material Used"),
+                        ],
+
+                      ),
+                    ),
+
+                    Visibility(
+                      visible: checkedValue,
+                      child: Container( height: 100,
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Flexible(
+                                        child: Text("Materials")
+                                    ),
+                                    Flexible(
+                                      child: Container(height: 10, width: 60,
+
+                                        child: TextField(),
+                                      ),
+                                    ),
+                                  ]),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                    Flexible(
+                                      child:Text("Quantity"),
+                                    ),
+                                    Flexible(
+                                      child: Container(height: 10, width: 60,
+
+                                        child: TextField(
+
+
+                                          keyboardType: TextInputType.number,
+
+                                        ),),
+                                    ),
+                                  ]),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: <Widget>[ Flexible(
+                                    child:Text("Price"),
+                                  ),
+                                    Flexible(
+                                      child: Container(height: 10, width: 60,
+
+                                        child: TextField(
+
+
+                                          keyboardType: TextInputType.number,
+
+                                        ),),
+                                    ),
+                                  ]  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Discount:"),
+                          Container(width: 70, height: 30,
+                            padding: EdgeInsets.only(bottom: 1.0),
+                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)
+                            )) ,
+
+
+                              keyboardType: TextInputType.number,
+
+                            ),),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Text("Tax"),
+                          Container(width: 40, height: 30,
+                            padding: EdgeInsets.only(bottom: 1.0),
+                            child: TextField( decoration: InputDecoration() ,
+
+
+                              keyboardType: TextInputType.number,
+
+                            ),),
+                          SizedBox(width: 5,),
+                          Text("Rate"),
+                          Container(width: 40, height: 30,
+
+                            child: TextField( decoration: InputDecoration(suffixText: '%') ,
+
+
+                              keyboardType: TextInputType.number,
+
+                            ),),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                        children: <Widget>[
+                          Text("Additional Charge"),
+                          Container(width: 70, height: 30,
+                            padding: EdgeInsets.only(bottom: 1.0),
+                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey)
+                            )) ,
+
+
+                              keyboardType: TextInputType.number,
+
+                            ),),
+                        ],
+                      ),
+                    ),
+                    ButtonTheme(
+                      minWidth: 300.0,
+                      child: RaisedButton(
+                          color: Configurations.themColor,
+                          textColor: Colors.white,
+                          child: Text(
+                              AppLocalizations.of(context).translate('btn_save'),
+                              style: TextStyle(fontSize: 16.5)),
+                          onPressed: () {
+
+                          }),
+                    ),
+                  ],
+                );
+              }
+          )
+      );
+  }
+  Widget Datepick() {
+    return Container(color: Colors.orangeAccent,
+        height: MediaQuery.of(context).copyWith().size.height / 18,
+        width: MediaQuery.of(context).copyWith().size.width / 1.4,
+        child: Center(
+          child: Row(mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(width: 70, height: 20,
+                padding: EdgeInsets.only(bottom: 1.0),
+                child: TextField( cursorColor: Colors.black,
+
+
+
+                  keyboardType: TextInputType.number,
+
+                ),),
+              SizedBox(width: 10,),
+              Text("Hours", style: TextStyle(fontWeight: FontWeight.bold),)
+
+            ],
+          ),
+        ));
+  }
+
 
 }

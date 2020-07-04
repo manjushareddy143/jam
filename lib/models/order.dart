@@ -17,7 +17,7 @@ class Order {
 //  final String provider_last_name;
 //  final String provider_image;
 //  final String service;
-  final String category;
+  final SubCategory category;
   final String booking_date;
   final String orderer_name;
   final String email;
@@ -49,7 +49,6 @@ class Order {
       : id = json['id'], provider_id = json['provider_id'],
         service_id = json['service_id'],
         category_id = json['category_id'],
-        category = json['category'],
         orderer_name = json['orderer_name'],
         email = json['email'],
         contact = json['contact'],
@@ -67,7 +66,9 @@ class Order {
         address = ((json.containsKey('address') && json['address'] != null ) ? Address.fromJson(json['address']) : null),
         service = ((json.containsKey('services') && json['services'] != null ) ? Service.fromJson(json['services']) : null),
         provider = ((json.containsKey('provider') && json['provider'] != null ) ? User.fromJson(json['provider']) : null),
-        user = ((json.containsKey('user') && json['user'] != null ) ? User.fromJson(json['user']) : null);
+        user = ((json.containsKey('user') && json['user'] != null ) ? User.fromJson(json['user']) : null),
+        category = ((json.containsKey('category') && json['category'] != null ) ? SubCategory.fromJson(json['category']) : null);
+
 //        ratings = ((json.containsKey('rating') && json['rating'] != null ) ? Rating.fromJson(json['rating']) : null),
 //        provider = ((json.containsKey('provider') && json['provider'] != null ) ? User.fromJson(json['provider']) : null),
 //        user = ((json.containsKey('users') && json['users'] != null ) ? User.fromJson(json['users']) : null),

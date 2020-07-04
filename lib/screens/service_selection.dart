@@ -269,7 +269,7 @@ bool Value = false;
   }
 
   static List<Service> selectedListOfService = new List<Service>();
-  List<SelectedService> selectedServices = new List<SelectedService>();
+  static List<SelectedService> selectedServices = new List<SelectedService>();
 //  static int storeCategory;
    static List<SubCategory> selectedListOfCategory = new List<SubCategory>();
 
@@ -429,21 +429,48 @@ bool Value = false;
   }
 
   List<Service> listofServices;
-  String serviceNamesString = "";
+  static String serviceNamesString = "";
 
   void serviceSave() {
+
+//    selectedServices.forEach((element) {
+//        print("elements ${element.toJson()}");
+//      });
+
     setState(() {
-      selectedServices.forEach((element) {
-        print("elements ${element.toJson()}");
-      });
+      for(int i = 0; i < selectedListOfService.length; i++) {
+        String name = selectedListOfService[i].name;
+        if (serviceNamesString.isEmpty) {
+          serviceNamesString = "* " + name;
+        } else {
+          serviceNamesString += "\n* " +name;
+        }
+      }
+
+      for(int i = 0; i < selectedListOfCategory.length; i++) {
+        String name = selectedListOfCategory[i].name;
+        if (serviceNamesString.isEmpty) {
+          serviceNamesString = "* " + name;
+        } else {
+          serviceNamesString += "\n* " +name;
+        }
+      }
+
+      Navigator.pop(context);
+    });
 
 
 
-        String rawJson = jsonEncode(selectedServices);
-        print(rawJson);
+//    setState(() {
+//      selectedServices.forEach((element) {
+//        print("elements ${element.toJson()}");
+//      });
+//        String rawJson = jsonEncode(selectedServices);
+//        print(rawJson);
 
      // }
-    });
+//    });
+
 
   }
   final prfl_servicePrice = TextEditingController();

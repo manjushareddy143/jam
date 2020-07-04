@@ -322,7 +322,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   String addressString = "";
-  String serviceNamesString = "";
+//  String serviceNamesString = "";
   String firstName = "";
   String lastName = "";
   String phoneNumber = "";
@@ -532,8 +532,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   ),
 
                   // Service Radius
-               //   if(globals.currentUser.roles[0].slug == "provider")
-                /*  Material(
+                  if(globals.currentUser.roles[0].slug == "provider")
+                  Material(
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
@@ -563,25 +563,26 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         return null;
                       },
                     ),
-                  ), */
+                  ),
 
                 ],
               ),
             ),
 
-            if(globals.currentUser.roles[0].slug == "provider")
-              Padding(
-                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-                child: Card(
-                  elevation: 5.0,
-                  child: ListTile(
-                    onTap: orderDetails,
-                    leading: Icon(Icons.list),
-                    title: Text("Order Detail"),
-                    subtitle: Text(serviceNamesString),
-                  ),
-                ),
-              ),
+            // Temporary
+//            if(globals.currentUser.roles[0].slug == "provider")
+//              Padding(
+//                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+//                child: Card(
+//                  elevation: 5.0,
+//                  child: ListTile(
+//                    onTap: orderDetails,
+//                    leading: Icon(Icons.list),
+//                    title: Text("Order Detail"),
+//                    subtitle: Text(ServiceSelectionUIPageState.serviceNamesString),
+//                  ),
+//                ),
+//              ),
 
 
             // SERVICE
@@ -593,16 +594,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                 child: ListTile(
                   onTap: enterServices,
                   leading: Icon(Icons.work),
-                  title: Text((adrs_name.text == "")
+                  title: Text((ServiceSelectionUIPageState.serviceNamesString == "")
                       ? "Select Services"
                       : adrs_name.text),
-                  subtitle: Text(serviceNamesString),
+                  subtitle: Text(ServiceSelectionUIPageState.serviceNamesString),
                 ),
               ),
             ),
 
             // ADDRESS
-          /*  Padding(
+           Padding(
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
               child: Card(
                 elevation: 5.0,
@@ -648,7 +649,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   ],
                 ),
               ),
-            ),*/
+            ),
 
             ButtonTheme(
               minWidth: MediaQuery.of(context).size.width - 20,
@@ -699,10 +700,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //  if(globals.isCustomer == false)
   if (_image == null )
    _buildCoverImage(MediaQuery.of(context).size);
-    if(selectedListOfId.length == 0 && globals.currentUser.roles[0].slug == "provider") {
+    if(ServiceSelectionUIPageState.selectedServices.length == 0 && globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
-    //  addressEnter();
+      addressEnter();
     } else {
       if(language.length == 0) {
         showInfoAlert(context, "Please selecte language");
@@ -715,29 +716,32 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["id"] = globals.currentUser.id.toString();
             data["first_name"] = prfl_fname.text;
             data["last_name"] = prfl_lname.text;
+
+            data["contact"] = prfl_phone.text;
             data["gender"] = dropdownvalue;
             data["email"] = prfl_email.text;
             String lang = language.join(',');
             print("lang ${globals.currentUser.roles[0].slug}");
             data["languages"] = lang;
-         //   var addressData = new Map<String, dynamic>();
-         //   addressData["name"] = adrs_name.text;
-         //   addressData["address_line1"] = adrs_line1.text;
-         //   addressData["address_line2"] = adrs_line2.text;
-         //   addressData["landmark"] = adrs_landmark.text;
-         //   addressData["district"] = adrs_disctric.text;
-        //    addressData["city"] = adrs_city.text;
-         //   addressData["postal_code"] = adrs_postalcode.text;
-        //    addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+            var addressData = new Map<String, dynamic>();
+            addressData["name"] = adrs_name.text;
+            addressData["address_line1"] = adrs_line1.text;
+            addressData["address_line2"] = adrs_line2.text;
+            addressData["landmark"] = adrs_landmark.text;
+            addressData["district"] = adrs_disctric.text;
+            addressData["city"] = adrs_city.text;
+            addressData["postal_code"] = adrs_postalcode.text;
+            addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
 
-        //    data["address"] = jsonEncode(addressData);
+            data["address"] = jsonEncode(addressData);
 
-         /*   if(globals.currentUser.roles[0].slug == "provider") {
-              String commaSeparated = selectedListOfId.join(',');
-              print(commaSeparated);
-              data["services"] = commaSeparated;
+
+            if(globals.currentUser.roles[0].slug == "provider") {
+              String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+              print(rawJson);
+              data["services"] = rawJson;
               data["service_radius"] = prfl_servcerds.text;
-            } */
+            }
             printLog(data);
             apiCall(data);
           });
@@ -803,7 +807,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   String mapAddressTitle = "Set Location Map";
 //  number + street + sublocality + locality(city) + region(state) + postal_code + country
- /* Widget _buildAddressDialog(BuildContext context) {
+  Widget _buildAddressDialog(BuildContext context) {
 
     print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
     return AlertDialog(
@@ -1055,10 +1059,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       bearing: 30,
       target: pinPosition
   );
-*/
- // Completer<GoogleMapController> _controller = Completer();
 
-/* Widget  mapBuild(StateSetter setState) {
+  Completer<GoogleMapController> _controller = Completer();
+
+ Widget  mapBuild(StateSetter setState) {
     setCustomMapPin(pinLocationIcon).then((onValue) {
       pinLocationIcon = onValue;
     });
@@ -1112,7 +1116,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
       ),
     );
-  } */
+  }
 
 
   void addressSave() {
@@ -1149,13 +1153,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
   }
 
- /* void addressEnter() {
+ void addressEnter() {
     showDialog(
       context: context,
       builder: (BuildContext context) => _buildAddressDialog(context),
     );
   }
-*/
+
   Widget setDropDown() {
     return Material(
       elevation: 5.0,
@@ -1202,13 +1206,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       dropdownvalue = selectedItem;
     });
   }
-  void orderDetails(){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => setOrderDetail(context),
-    );
 
-  }
 
   void enterServices() {
     Navigator.push(
@@ -1254,221 +1252,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
    });
   }
   bool Value= false;
-  bool checkedValue = false;
-  Widget setOrderDetail(BuildContext context){
-    if(!isLoadin)
-      return AlertDialog(
-        title:Center(child: Text("Order Detail"),
-        ),
-          content: StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child:
-
-                        Text("Time Taken"),
 
 
-
-
-                    ),
-                    Datepick(),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: <Widget>[
-                          Checkbox(
-                            value: checkedValue,
-                              onChanged:  (newValue) {
-                            setState(() {
-                              checkedValue = newValue;
-                            });
-                          },),
-                          Text("Material Used"),
-                        ],
-
-                      ),
-                    ),
-
-                 //   Visibility (
-                 //     visible: checkedValue,
-
-                     // child:
-
-
-                          Visibility(
-                            visible: checkedValue,
-                            child: Container( height: 100,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                         Flexible(
-                                           child: Text("Materials")
-                                         ),
-                                        Flexible(
-                                          child: Container(height: 10, width: 60,
-
-                                            child: TextField(),
-                                          ),
-                                        ),
-                                      ]),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Flexible(
-                                        child:Text("Quantity"),
-                                      ),
-                                      Flexible(
-                                        child: Container(height: 10, width: 60,
-
-                                          child: TextField(
-
-
-                                            keyboardType: TextInputType.number,
-
-                                          ),),
-                                      ),
-                                    ]),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                       children: <Widget>[ Flexible(
-                                         child:Text("Price"),
-                                       ),
-                                         Flexible(
-                                           child: Container(height: 10, width: 60,
-
-                                             child: TextField(
-
-
-                                               keyboardType: TextInputType.number,
-
-                                             ),),
-                                         ),
-                                ]  ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-
-                  //  ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Discount:"),
-                          Container(width: 70, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)
-                            )) ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text("Tax"),
-                          Container(width: 40, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration() ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                          SizedBox(width: 5,),
-                          Text("Rate"),
-                          Container(width: 40, height: 30,
-
-                            child: TextField( decoration: InputDecoration(suffix: Icon(Icons.add,color: Colors.orangeAccent,)) ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: <Widget>[
-                          Text("Additional Charge"),
-                          Container(width: 70, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)
-                            )) ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                        ],
-                      ),
-                    ),
-                    ButtonTheme(
-                      minWidth: 300.0,
-                      child: RaisedButton(
-                          color: Configurations.themColor,
-                          textColor: Colors.white,
-                          child: Text(
-                              AppLocalizations.of(context).translate('btn_save'),
-                              style: TextStyle(fontSize: 16.5)),
-                          onPressed: () {
-
-                          }),
-                    ),
-                  ],
-                );
-              }
-      )
-      );
-
-  }
   Duration initialtimer = new Duration();
-  Widget Datepick() {
-    return Container(color: Colors.orangeAccent,
-        height: MediaQuery.of(context).copyWith().size.height / 18,
-        width: MediaQuery.of(context).copyWith().size.width / 1.4,
-        child: Center(
-          child: Row(mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(width: 70, height: 20,
-                padding: EdgeInsets.only(bottom: 1.0),
-                child: TextField( cursorColor: Colors.black, 
 
-
-
-                  keyboardType: TextInputType.number,
-
-                ),),
-              SizedBox(width: 10,),
-              Text("Hours", style: TextStyle(fontWeight: FontWeight.bold),)
-
-            ],
-          ),
-        ));
-  }
 
   Widget setServiceListVendor(BuildContext context) {
     if (!isLoadin)
@@ -1527,20 +1314,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List<int> selectedListOfId = new List<int>();
 
   void serviceSave() {
-    serviceNamesString = "";
+//    serviceNamesString = "";
 //    if (_formServiceKey.currentState.validate()) {
 //      _formServiceKey.currentState.save();
       setState(() {
         print(selectedListOfService);
         print(selectedListOfId);
-        for(int i = 0; i < selectedListOfService.length; i++) {
-          String name = selectedListOfService[i].name;
-          if (serviceNamesString.isEmpty) {
-            serviceNamesString = "* " + name;
-          } else {
-            serviceNamesString += "\n* " +name;
-          }
-        }
+
 //        print(adrs_line2.text);
 //        print(adrs_landmark.text);
 //
