@@ -104,37 +104,39 @@ bool Value = false;
         appBar: new AppBar(
           title: new Text("Select Services"),
         ),
-        body: Column(
-          children: <Widget>[
-            Container(
-              height: 500,
-              child: Stack(
-                children: <Widget>[
-                  TreeView(
-                    hasScrollBar: true,
-                    parentList: setupParentList(),
-                  ),
-                ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: 500,
+                child: Stack(
+                  children: <Widget>[
+                    TreeView(
+                      hasScrollBar: true,
+                      parentList: setupParentList(),
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            SizedBox(
-              height: 20,
-            ),
-            ButtonTheme(
-              minWidth: 300.0,
-              child: RaisedButton(
-                  color: Configurations.themColor,
-                  textColor: Colors.white,
-                  child: Text(
-                      AppLocalizations.of(context).translate('btn_save'),
-                      style: TextStyle(fontSize: 16.5)),
-                  onPressed: () {
-                    serviceSave();
-                  }),
-            ),
+              SizedBox(
+                height: 20,
+              ),
+              ButtonTheme(
+                minWidth: 300.0,
+                child: RaisedButton(
+                    color: Configurations.themColor,
+                    textColor: Colors.white,
+                    child: Text(
+                        AppLocalizations.of(context).translate('btn_save'),
+                        style: TextStyle(fontSize: 16.5)),
+                    onPressed: () {
+                      serviceSave();
+                    }),
+              ),
 
-          ],
+            ],
+          ),
         ),
       );
     }
@@ -456,7 +458,11 @@ bool Value = false;
         }
       }
 
-      Navigator.pop(context);
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => InitialProfileScreen(),
+          ));
     });
 
 
