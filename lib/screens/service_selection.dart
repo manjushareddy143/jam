@@ -130,7 +130,7 @@ bool Value = false;
                       AppLocalizations.of(context).translate('btn_save'),
                       style: TextStyle(fontSize: 16.5)),
                   onPressed: () {
-                    //serviceSave();
+                    serviceSave();
                   }),
             ),
 
@@ -432,21 +432,18 @@ bool Value = false;
   String serviceNamesString = "";
 
   void serviceSave() {
-    serviceNamesString = "";
-//    if (_formServiceKey.currentState.validate()) {
-//      _formServiceKey.currentState.save();
-//    setState(() {
-//      print(selectedListOfService);
-//      for(int i = 0; i < selectedListOfService.length; i++) {
-//        String name = selectedListOfService[i].name;
-//        if (serviceNamesString.isEmpty) {
-//          serviceNamesString = "* " + name;
-//        } else {
-//          serviceNamesString += "\n* " +name;
-//        }
-//      }
-//    }
-//    );
+    setState(() {
+      selectedServices.forEach((element) {
+        print("elements ${element.toJson()}");
+      });
+
+
+
+        String rawJson = jsonEncode(selectedServices);
+        print(rawJson);
+
+     // }
+    });
 
   }
   final prfl_servicePrice = TextEditingController();
