@@ -70,6 +70,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void initState() {
     super.initState();
     setState(() {
+      if(globals.currentUser.roles[0].slug == "provider")
+        print("provider");
+      else
+        print("customer");
       firstName = globals.currentUser.first_name;
       lastName = globals.currentUser.last_name;
       phoneNumber = globals.currentUser.contact;
@@ -169,7 +173,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
-      height: screenSize.height / 3.4,
+      height: screenSize.height / 3.3,
       child: Column(
         children: <Widget>[
           SizedBox(height: 30),

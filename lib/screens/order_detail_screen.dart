@@ -1000,176 +1000,236 @@ class _DetailUIPageState extends State<DetailUIPage> {
           ),
           content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Text("Time Taken"),
-                    ),
-                    Datepick(),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: <Widget>[
-                          Checkbox(
-                            value: checkedValue,
-                            onChanged:  (newValue) {
-                              setState(() {
-                                checkedValue = newValue;
-                              });
-                            },),
-                          Text("Material Used"),
-                        ],
-
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(1.0),
+                        child: Text("Time Taken"),
                       ),
-                    ),
-
-                    Visibility(
-                      visible: checkedValue,
-                      child: Container( height: 100,
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-
+                      Datepick(),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Flexible(
-                                        child: Text("Materials")
-                                    ),
-                                    Flexible(
-                                      child: Container(height: 10, width: 60,
+                            Checkbox(
+                              value: checkedValue,
+                              onChanged:  (newValue) {
+                                setState(() {
+                                  checkedValue = newValue;
+                                });
+                              },),
+                            Text("Material Used"),
+                          ],
 
-                                        child: TextField(),
+                        ),
+                      ),
+
+                      Visibility(
+                        visible: checkedValue,
+                        child: Container( height: 100,
+                          child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Flexible(
+                                          child: Text("Materials")
                                       ),
+                                      Flexible(
+                                        child: Container(height: 10, width: 60,
+
+                                          child: TextField(controller: mtrl_used),
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Flexible(
+                                        child:Text("Quantity"),
+                                      ),
+                                      Flexible(
+                                        child: Container(height: 10, width: 60,
+
+                                          child: TextField(controller: mtrl_qty,
+
+
+                                            keyboardType: TextInputType.number,
+
+                                          ),),
+                                      ),
+                                    ]),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget>[ Flexible(
+                                      child:Text("Price"),
                                     ),
-                                  ]),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child:Text("Quantity"),
-                                    ),
-                                    Flexible(
-                                      child: Container(height: 10, width: 60,
+                                      Flexible(
+                                        child: Container(height: 10, width: 60,
 
-                                        child: TextField(
+                                          child: TextField(
 
+                                            controller: mtrl_price,
+                                            keyboardType: TextInputType.number,
 
-                                          keyboardType: TextInputType.number,
+                                          ),),
+                                      ),
+                                    ]  ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
 
-                                        ),),
-                                    ),
-                                  ]),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: <Widget>[ Flexible(
-                                    child:Text("Price"),
-                                  ),
-                                    Flexible(
-                                      child: Container(height: 10, width: 60,
-
-                                        child: TextField(
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text("Discount:"),
+                            Container(width: 70, height: 30,
+                              padding: EdgeInsets.only(bottom: 1.0),
+                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)
+                              )) ,
+                                controller: discnt,
 
 
-                                          keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.number,
 
-                                        ),),
-                                    ),
-                                  ]  ),
-                            ),
+                              ),),
                           ],
                         ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Text("Tax"),
+                            Container(width: 40, height: 30,
+                              padding: EdgeInsets.only(bottom: 1.0),
+                              child: TextField( decoration: InputDecoration() ,
+                                controller: tax,
 
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text("Discount:"),
-                          Container(width: 70, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)
-                            )) ,
+                                keyboardType: TextInputType.number,
+
+                              ),),
+                            SizedBox(width: 5,),
+                            Text("Rate"),
+                            Container(width: 40, height: 30,
+
+                              child: TextField( decoration: InputDecoration(suffixText: '%') ,
+                                controller: taxRate,
 
 
-                              keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.number,
 
-                            ),),
-                        ],
+                              ),),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Text("Tax"),
-                          Container(width: 40, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration() ,
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                          children: <Widget>[
+                            Text("Additional Charge"),
+                            Container(width: 70, height: 30,
+                              padding: EdgeInsets.only(bottom: 1.0),
+                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)
+                              )) ,
+                                controller: add_charge,
 
 
-                              keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.number,
 
-                            ),),
-                          SizedBox(width: 5,),
-                          Text("Rate"),
-                          Container(width: 40, height: 30,
-
-                            child: TextField( decoration: InputDecoration(suffixText: '%') ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                        ],
+                              ),),
+                          ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: <Widget>[
-                          Text("Additional Charge"),
-                          Container(width: 70, height: 30,
-                            padding: EdgeInsets.only(bottom: 1.0),
-                            child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey)
-                            )) ,
-
-
-                              keyboardType: TextInputType.number,
-
-                            ),),
-                        ],
+                      ButtonTheme(
+                        minWidth: 300.0,
+                        child: RaisedButton(
+                            color: Configurations.themColor,
+                            textColor: Colors.white,
+                            child: Text(
+                                AppLocalizations.of(context).translate('btn_save'),
+                                style: TextStyle(fontSize: 16.5)),
+                            onPressed: () {callLoginAPI(); }),
                       ),
-                    ),
-                    ButtonTheme(
-                      minWidth: 300.0,
-                      child: RaisedButton(
-                          color: Configurations.themColor,
-                          textColor: Colors.white,
-                          child: Text(
-                              AppLocalizations.of(context).translate('btn_save'),
-                              style: TextStyle(fontSize: 16.5)),
-                          onPressed: () {
-
-                          }),
-                    ),
-                  ],
+                    ],
+                  ),
                 );
               }
           )
       );
   }
+  final wrking_hr = TextEditingController();
+  final taxRate = TextEditingController();
+  final tax = TextEditingController();
+  final mtrl_used = TextEditingController();
+  final mtrl_qty = TextEditingController();
+  final mtrl_price = TextEditingController();
+  final add_charge = TextEditingController();
+  final discnt = TextEditingController();
+
+
+  Future callLoginAPI() async {
+    Map<String, String> data = new Map();
+    data["order_id"] = globals.order.id.toString();
+    data["working_hr"] = wrking_hr.text;
+    data["tax_rate"] = taxRate.text;
+    data["tax"] = tax.text;
+    data["material_names"] = mtrl_used.text;
+    data["material_quantity"] = mtrl_qty.text;
+    data["material_price"] = mtrl_price.text;
+    data["additional_charges"] = add_charge.text;
+    data["discount"] = discnt.text;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+      await httpClient.postRequest(context, Configurations.INVOICE_GENERATE_URL, data, true);
+      processInvoiceResponse(syncUserResponse);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+
+  }
+  void processInvoiceResponse(Response res){
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("data::::::::$data");
+       Navigator.of(context).pop();
+
+        showDialog(
+                           context: context,
+                           builder: (BuildContext context) {
+                             return buildCompleteDialog(context);
+
+                           },
+                         );
+
+      }
+    }
+
+
+
+  }
+
+
   Widget Datepick() {
     return Container(color: Colors.orangeAccent,
         height: MediaQuery.of(context).copyWith().size.height / 18,
@@ -1180,6 +1240,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               Container(width: 70, height: 20,
                 padding: EdgeInsets.only(bottom: 1.0),
                 child: TextField( cursorColor: Colors.black,
+                  controller: wrking_hr,
 
 
 
