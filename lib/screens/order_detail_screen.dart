@@ -103,6 +103,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      style: TextStyle(fontSize: 16.5)
                  ),
                  onPressed: () {
+
 //                   validateForm();
                  }
              ),

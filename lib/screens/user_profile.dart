@@ -51,8 +51,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   @override
   void initState(){
 
-    print("PROFILE ${globals.guest}");
-
     tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
 
@@ -60,13 +58,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_email = FocusNode();
     focus_no = FocusNode();
     focus_address = FocusNode();
-    printLog("globals.currentUser ${globals.currentUser.first_name}");
-//    if(globals.guest == true) {
-//
-//    } else {
-////      getProfile();
-//    }
-
   }
   @override
   void dispose() {
@@ -83,12 +74,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       print('EDIT');
       setState(() {
         if(isEditProfile == true) {
+          updateProfile();
           isEditProfile = false;
         } else {
           isEditProfile = true;
         }
       });
     }
+  }
+
+  void updateProfile() {
+    print("update");
   }
 
   void getProfile() async  {
@@ -300,8 +296,15 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               ),
             ),
           ),
-          Visibility(visible: isEditProfile,
-          child: setDropDown(),),
+
+
+
+
+          Visibility(
+            visible: isEditProfile,
+            child: setDropDown(),
+          ),
+
           TextField(
             focusNode: focus_email,style: TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
@@ -409,15 +412,15 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
   String mapAddressTitle = "Set Location Map";
+
   void addressEnter() {
     showDialog(
       context: context,
       builder: (BuildContext context) => _buildAddressDialog(context),
     );
   }
-  Widget _buildAddressDialog(BuildContext context) {
 
-    print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
+  Widget _buildAddressDialog(BuildContext context) {
     return AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -899,6 +902,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       child: Row(
+
         children: [
           Icon((dropdownvalue == "Male")
               ? Ionicons.ios_male
