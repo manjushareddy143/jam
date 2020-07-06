@@ -104,6 +104,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      style: TextStyle(fontSize: 16.5)
                  ),
                  onPressed: () {
+
 //                   validateForm();
                  }
              ),
@@ -1188,13 +1189,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
     Map<String, String> data = new Map();
     data["order_id"] = globals.order.id.toString();
     data["working_hr"] = wrking_hr.text;
-    data["tax_rate"] = taxRate.text;
-    data["tax"] = tax.text;
-    data["material_names"] = mtrl_used.text;
-    data["material_quantity"] = mtrl_qty.text;
-    data["material_price"] = mtrl_price.text;
-    data["additional_charges"] = add_charge.text;
-    data["discount"] = discnt.text;
+    data["tax_rate"] = (taxRate.text.isEmpty) ? "" :  taxRate.text;
+    data["tax"] = (tax.text.isEmpty) ? "" :  tax.text;
+    if(checkedValue) {
+      data["material_names"] = (mtrl_used.text.isEmpty) ? "" : mtrl_used.text ;
+      data["material_quantity"] = ( mtrl_qty.text.isEmpty) ? "0" :  mtrl_qty.text;
+      data["material_price"] = ( mtrl_price.text.isEmpty) ? "0" : mtrl_price.text;
+    }
+
+    data["additional_charges"] = ( add_charge.text.isEmpty) ? "0" : add_charge.text;
+    data["discount"] = ( discnt.text.isEmpty) ? "0" : discnt.text;
     printLog(data);
     try {
       HttpClient httpClient = new HttpClient();

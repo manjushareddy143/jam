@@ -786,6 +786,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       globals.currentUser = User.fromJson(res);
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
+      ServiceSelectionUIPageState.selectedServices.clear();
+      ServiceSelectionUIPageState.serviceNamesString = "";
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
