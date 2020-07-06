@@ -15,6 +15,7 @@ import 'package:jam/widget/otp_screen.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:flutter_downloader/flutter_downloader.dart';
 
 class OrderDetail extends StatelessWidget{
   Widget build(BuildContext context) {
