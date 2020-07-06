@@ -183,6 +183,8 @@ bool Value = false;
                        service.isSelected = value;
                        if (selectedListOfService.contains(service)) {
                           selectedListOfService.remove(service);
+                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
+                          selectedServices.remove(sltdsrv);
                       } else {
                          selectedListOfService.add(service);
                      }
@@ -231,6 +233,9 @@ bool Value = false;
                       category.isSelected = value;
                       if (selectedListOfCategory.contains(category)) {
                         selectedListOfCategory.remove(category);
+                        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id &&
+                            element.category_id == category.id);
+                        selectedServices.remove(sltdsrv);
                       } else {
                         selectedListOfCategory.add(category);
                       }
@@ -293,6 +298,8 @@ bool Value = false;
                         service.isSelected = value;
                         if (selectedListOfService.contains(service)) {
                           selectedListOfService.remove(service);
+                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
+                          selectedServices.remove(sltdsrv);
                         } else {
                           selectedListOfService.add(service);
                         }
