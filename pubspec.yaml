@@ -49,7 +49,7 @@ dependencies:
   google_sign_in: ^4.5.1
   flutter_facebook_login: ^3.0.0
   flutter_signin_button: ^1.0.0
-  flutter_downloader: ^1.4.4
+
   smooth_star_rating: 1.0.4+1
   flutter_icons: ^1.0.0+1
   flutter_swiper: ^1.1.6

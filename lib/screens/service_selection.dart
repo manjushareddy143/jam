@@ -42,6 +42,8 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
   void initState(){
     print("lets see");
     printLog(selectedServicesJson);
+
+    selectedServices.clear();
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();

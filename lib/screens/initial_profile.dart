@@ -747,7 +747,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
-            apiCall(data);
+           // apiCall(data);
           });
         }
         else {
