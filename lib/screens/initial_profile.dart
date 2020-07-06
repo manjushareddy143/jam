@@ -83,25 +83,25 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
-    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
-        .then((String value) {
-        getServices();
-    });
+//    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
+//        .then((String value) {
+////        getServices();
+//    });
   }
 
-  getServices() async {
-    try {
-      HttpClient httpClient = new HttpClient();
-      var syncServicesResponse = await httpClient.getRequest(
-          context, Configurations.SERVICES_ALL_URL, null, null, true, false);
-
-      processServiceResponse(syncServicesResponse);
-    } on Exception catch (e) {
-      if (e is Exception) {
-        printExceptionLog(e);
-      }
-    }
-  }
+//  getServices() async {
+//    try {
+//      HttpClient httpClient = new HttpClient();
+//      var syncServicesResponse = await httpClient.getRequest(
+//          context, Configurations.SERVICES_ALL_URL, null, null, true, false);
+//
+//      processServiceResponse(syncServicesResponse);
+//    } on Exception catch (e) {
+//      if (e is Exception) {
+//        printExceptionLog(e);
+//      }
+//    }
+//  }
 
   void processServiceResponse(Response res) {
     print('get daily format');
@@ -447,6 +447,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     child: TextFormField(
                       controller: (phoneNumber == "") ? prfl_phone : prfl_phone
                         ..text = phoneNumber,
+                      keyboardType: TextInputType.phone,
 //                      TextEditingController()..text = phoneNumber,
                       decoration: InputDecoration(
 //                    isDense: true,
@@ -747,7 +748,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
-           // apiCall(data);
+            apiCall(data);
           });
         }
         else {

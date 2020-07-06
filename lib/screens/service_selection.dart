@@ -44,6 +44,7 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
     printLog(selectedServicesJson);
 
     selectedServices.clear();
+    serviceNamesString = "";
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -183,8 +184,8 @@ bool Value = false;
                        service.isSelected = value;
                        if (selectedListOfService.contains(service)) {
                           selectedListOfService.remove(service);
-                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
-                          selectedServices.remove(sltdsrv);
+//                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
+//                          selectedServices.remove(sltdsrv);
                       } else {
                          selectedListOfService.add(service);
                      }
@@ -233,9 +234,9 @@ bool Value = false;
                       category.isSelected = value;
                       if (selectedListOfCategory.contains(category)) {
                         selectedListOfCategory.remove(category);
-                        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id &&
-                            element.category_id == category.id);
-                        selectedServices.remove(sltdsrv);
+//                        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id &&
+//                            element.category_id == category.id);
+//                        selectedServices.remove(sltdsrv);
                       } else {
                         selectedListOfCategory.add(category);
                       }
@@ -298,8 +299,8 @@ bool Value = false;
                         service.isSelected = value;
                         if (selectedListOfService.contains(service)) {
                           selectedListOfService.remove(service);
-                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
-                          selectedServices.remove(sltdsrv);
+//                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
+//                          selectedServices.remove(sltdsrv);
                         } else {
                           selectedListOfService.add(service);
                         }
@@ -399,7 +400,12 @@ bool Value = false;
     else if((selectedListOfCategory.contains(onTapCategory))&& (!(selectedListOfService.contains(onTapService)))){
       SelectedService sltdsrv = selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
       setState(() {
-        selectedListOfService.add(onTapService);
+        if (selectedListOfService.contains(onTapService)) {
+          selectedListOfService.remove(onTapService);
+        } else {
+          selectedListOfService.add(onTapService);
+        }
+
 
       });
       int idx = selectedServices.indexWhere((element) => element == sltdsrv);
@@ -409,8 +415,16 @@ bool Value = false;
     }
     else{
       setState(() {
-        selectedListOfService.add(onTapService);
-        selectedListOfCategory.add((onTapCategory));
+        if (selectedListOfService.contains(onTapService)) {
+          selectedListOfService.remove(onTapService);
+        } else {
+          selectedListOfService.add(onTapService);
+        }
+        if (selectedListOfCategory.contains(onTapCategory)) {
+          selectedListOfCategory.remove(onTapCategory);
+        } else {
+          selectedListOfCategory.add(onTapCategory);
+        }
         selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
       });
 
@@ -451,21 +465,30 @@ bool Value = false;
     setState(() {
       for(int i = 0; i < selectedListOfService.length; i++) {
         String name = selectedListOfService[i].name;
+        print("single serv name ==$name");
         if (serviceNamesString.isEmpty) {
           serviceNamesString = "* " + name;
         } else {
-          serviceNamesString += "\n* " +name;
+          if(!serviceNamesString.contains(name)) {
+            serviceNamesString += "\n* " +name;
+          }
+
         }
       }
 
+      print("service ==$serviceNamesString");
+
+
       for(int i = 0; i < selectedListOfCategory.length; i++) {
         String name = selectedListOfCategory[i].name;
+        print("single cate name ==$name");
         if (serviceNamesString.isEmpty) {
           serviceNamesString = "* " + name;
         } else {
           serviceNamesString += "\n* " +name;
         }
       }
+      print("category ==$serviceNamesString");
 
       Navigator.pushReplacement(
           context,
