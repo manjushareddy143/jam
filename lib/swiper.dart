@@ -3,9 +3,9 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 
 class CarouselDemo extends StatefulWidget {
 
-
   @override
   CarouselDemoState createState() => CarouselDemoState();
+
 }
 
 class CarouselDemoState extends State<CarouselDemo> {
