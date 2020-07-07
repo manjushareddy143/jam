@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:jam/app_localizations.dart';
@@ -6,15 +7,20 @@ import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/otp_screen.dart';
+import 'package:jam/screens/download.dart';
+
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
+
+//import 'package:path_provider/path_provider.dart';
 
 
 class OrderDetail extends StatelessWidget{
@@ -32,6 +38,7 @@ class DetailUIPage extends StatefulWidget {
 class _DetailUIPageState extends State<DetailUIPage> {
   final Order order;
   final bool isCustomer;
+
   _DetailUIPageState({Key key, @required this.order, @required this.isCustomer});
   bool isRatingDisplay = true;
   bool showOTP = false;
@@ -103,10 +110,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      'Download Invoice',
                      style: TextStyle(fontSize: 16.5)
                  ),
-                 onPressed: () {
-
-//                   validateForm();
-                 }
+               onPressed: (){
+                 Navigator.pushReplacement(
+                     context,
+                     MaterialPageRoute(
+                     builder: (context) => Downloadd(),));
+               },
              ),
            ),
 
@@ -670,7 +679,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       print('api call start signup');
       var syncUserResponse =
           await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data, true);
-      processRatingResponse(syncUserResponse);
+      //processRatingResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -678,20 +687,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
   }
 
-  processRatingResponse(Response res)  {
-    if (res != null) {
-      if (res.statusCode == 200) {
-        Navigator.of(context).pop();
-        getOrderDetail();
-      } else {
-        printLog("login response code is not 200");
-        var data = json.decode(res.body);
-        showInfoAlert(context, "ERROR");
-      }
-    } else {
-      showInfoAlert(context, "Unknown error from server");
-    }
-  }
+//  processRatingResponse(Response res)  {
+//    if (res != null) {
+//      if (res.statusCode == 200) {
+//        Navigator.of(context).pop();
+//        getOrderDetail();
+//      } else {
+//        printLog("login response code is not 200");
+//        var data = json.decode(res.body);
+//        showInfoAlert(context, "ERROR");
+//      }
+//    } else {
+//      showInfoAlert(context, "Unknown error from server");
+//    }
+//  }
 
 
   var setRate = 0.0;
