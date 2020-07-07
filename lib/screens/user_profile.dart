@@ -333,9 +333,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                     SizedBox(width: 1,),
                     Text("Arabic"),
                     Checkbox(value: _arabic, onChanged: _selecteArabic),
-                    SizedBox(width: 1,),
-                    Text("Hindi"),
-                    Checkbox(value: _hindi, onChanged: _selecteHindi),
+//                    SizedBox(width: 1,),
+//                    Text("Hindi"),
+//                    Checkbox(value: _hindi, onChanged: _selecteHindi),
                   ],
                 ),)),
           Visibility( visible: !isEditProfile,
@@ -900,19 +900,20 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget setDropDown() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+      padding: const EdgeInsets.fromLTRB(1, 1, 1, 1),
       child: Row(
-
         children: [
           Icon((dropdownvalue == "Male")
               ? Ionicons.ios_male
               : Ionicons.ios_female),
+
           SizedBox(
             width: 20,
           ),
           Expanded(
             child: DropdownButton<String>(
                 underline: SizedBox(),
+
                 isExpanded: true,
                 value: dropdownvalue,
                 icon: Icon(
