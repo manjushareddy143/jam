@@ -111,10 +111,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      style: TextStyle(fontSize: 16.5)
                  ),
                onPressed: (){
-                 Navigator.pushReplacement(
-                     context,
-                     MaterialPageRoute(
-                     builder: (context) => Downloadd(),));
+                   print("donwload click");
+                   DownLoadHelper down = new DownLoadHelper();
+                   down.downloadFile((fn) {
+                   setState(() {
+
+                   });
+                 });
                },
              ),
            ),
