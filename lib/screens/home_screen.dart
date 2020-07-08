@@ -70,9 +70,9 @@ class _HomePageState extends State<HomePage> {
   var editIcon = Icons.mode_edit;
 
   Widget build(BuildContext context) {
-    printLog(globals.addressLocation);
-    printLog(globals.newAddress);
-    printLog(globals.addressChange);
+//    printLog(globals.addressLocation);
+//    printLog(globals.newAddress);
+//    printLog(globals.addressChange);
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.white,

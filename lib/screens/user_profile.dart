@@ -48,17 +48,20 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address;
 
 
-  Address singleAddress;
+  Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "");
 
 
 
   @override
   void initState(){
+    print("PROFILE ${globals.currentUser.toJson()}");
     globals.context = context;
-    if(globals.currentUser.address.length > 0) {
+    if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
       singleAddress = globals.currentUser.address[0];
-    }
+    } else {
+      print("no address");
 
+    }
     tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
 
@@ -70,20 +73,24 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_address = FocusNode();
     isEditProfile = false;
 
-    print("languages  = ${globals.currentUser.languages}");
-    List langs = globals.currentUser.languages.split(',');
-    langs.forEach((element) {
-      if(element == 'English') {
-        _english = true;
-        languages.add("English");
-      }
+//    print("languages  = ${globals.currentUser.languages}");
+    if(globals.currentUser.languages != null) {
+      List langs = globals.currentUser.languages.split(',');
+      langs.forEach((element) {
+        if(element == 'English') {
+          _english = true;
+          languages.add("English");
+        }
 
-      if(element == 'Arabic') {
-        _arabic = true;
-        languages.add("Arabic");
-      }
-    });
-    print("languages  = ${globals.currentUser.languages.split(',')}");
+        if(element == 'Arabic') {
+          _arabic = true;
+          languages.add("Arabic");
+        }
+      });
+      print("languages  = ${globals.currentUser.languages.split(',')}");
+    }
+
+
 
   }
   @override
@@ -406,7 +413,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 ListTile(
                   onTap: addressEnter,
                   leading: Icon(Icons.location_on),
-                  title: Text((singleAddress.name == "") ? "" : adrs_name.text),
+                  title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
                   subtitle: Text(addressString),
                 ),
                 ButtonBar(
@@ -546,7 +553,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   String addressString = "";
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
-  // final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
   // bool _autoValidateService = true;
   bool showMap = false;
