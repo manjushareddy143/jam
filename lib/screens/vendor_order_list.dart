@@ -31,7 +31,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
   TabController _tabController;
   @override
   void initState() {
-    printLog("VENDOR");
+    globals.context = context;
     // TODO: implement initState
     super.initState();
     _tabController = new TabController(vsync: this, length:2);

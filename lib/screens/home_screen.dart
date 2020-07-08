@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     printLog("LOADDD");
     editIcon = Icons.mode_edit;
+    globals.context = context;
 //    print(globals.currentUser.roles[0].slug);
   }
 

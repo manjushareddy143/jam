@@ -95,6 +95,7 @@ class _InquiryPageState extends State<InquiryPage> {
     print("DATA === ${this.category}");
 
     super.initState();
+    globals.context = context;
     focus_name = FocusNode();
     focus_mail = FocusNode();
     focus_no = FocusNode();

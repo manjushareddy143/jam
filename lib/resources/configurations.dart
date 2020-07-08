@@ -4,7 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 
 class Configurations {
   //URLS
-  static const String BASE_URL = "http://192.168.43.126";  // "https://staging.jam-app.com"; //"http://192.168.43.40";//
+  static const String BASE_URL =  "https://staging.jam-app.com"; //"http://192.168.43.40";// "http://192.168.43.126";  //
   static const String APP_URL = "";
   static const String API_VERSION = "/api/v1";
   static const String REGISTER_URL = BASE_URL + APP_URL + API_VERSION + "/register";
@@ -21,6 +21,8 @@ class Configurations {
   static const String RESET_PASSWORD_STATUS_URL = BASE_URL + APP_URL +"/resetPassword";
   static const String CHANGE_PASSWORD_STATUS_URL = BASE_URL + APP_URL +"/changepassword";
   static const String INVOICE_GENERATE_URL = BASE_URL + APP_URL + API_VERSION +"/invoice";
+  static const String UPDATE_USER_URL = BASE_URL + APP_URL + API_VERSION +"/user/update/";
+
 
 
   static Color themColor = Hexcolor('#0ca798');

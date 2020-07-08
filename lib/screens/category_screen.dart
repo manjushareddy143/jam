@@ -15,6 +15,7 @@ import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
 
 class CategoryScreen extends StatelessWidget {
 
@@ -52,6 +53,7 @@ class _CategoryPageState extends State<CategoryPage> {
         .then((String value) {
       getServices();
     });
+    globals.context = context;
   }
 
   @override

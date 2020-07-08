@@ -19,12 +19,13 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:jam/globals.dart' as globals;
+
 class Profile extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
     return VendorProfileUIPage();
-    //Center(child: );
   }
 }
 class VendorProfileUIPage extends StatefulWidget {
@@ -50,9 +51,10 @@ int swiperIndex =0;
 
   @override
   void initState() {
-    print("DATA === ${this.category}");
+
     // TODO: implement initState
     super.initState();
+    globals.context = context;
     //tabList.add(new Tab(text: 'About',));
     tabList.add(new Tab(text: "Reviews",));
     _tabController= TabController(vsync: this, length: tabList.length);

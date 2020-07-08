@@ -16,6 +16,7 @@ import 'package:jam/swiper.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
 
 class HomeUIDesign extends StatelessWidget {
   @override
@@ -41,6 +42,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
     // TODO: implement initState
     super.initState();
 
+    globals.context = context;
 
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {

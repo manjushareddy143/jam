@@ -46,6 +46,7 @@ class _ProviderListState extends State<ProviderListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
 //    print('service.name === ${service.categories.length}');
 //    print(service.id);
     if(service.categories.length > 0) {

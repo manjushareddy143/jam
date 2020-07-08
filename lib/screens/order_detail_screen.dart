@@ -55,6 +55,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
     if(this.isCustomer == true) {
       _dropDownTypes = buildAndGetDropDownMenuItems(_customerCancelReasonList);
     } else {
@@ -422,8 +423,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
           /// SHOW OTP
-       //  if(order.status == 2 && this.isCustomer == true)
-        /*  Row(
+         if(order.status == 2 && this.isCustomer == true)
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Visibility(child:
@@ -451,7 +452,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
             ],
-          ), */
+          ),
 
           if(order.status == 5 && this.isCustomer == true)
           Visibility(visible: !isRatingDisplay,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:jam/globals.dart' as globals;
 
 class Profile extends StatelessWidget{
   @override
@@ -22,6 +22,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   TabController _tabController;
   @override
   void initState(){
+    globals.context = context;
     tabList.add(new Tab(text: 'About',));
 
     _tabController= TabController(vsync: this, length: tabList.length);

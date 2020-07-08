@@ -69,6 +69,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   @override
   void initState() {
     super.initState();
+    globals.context = context;
     setState(() {
       if(globals.currentUser.roles[0].slug == "provider")
         print("provider");
