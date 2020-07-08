@@ -15,11 +15,12 @@ class DownLoadHelper {
    var progress = "";
 //   Future<Directory> downloadsDirectory = DownloadsPathProvider.downloadsDirectory;
 
-   final invoiceURL = Configurations.INVOICE_GENERATE_URL +  "?id=1";
+
    bool downloading = false;
-  Future<String> downloadFile(StateSetter setState) async {
+  Future<String> downloadFile(StateSetter setState, String order_id) async {
     var dirToSave = await getExternalStorageDirectory();
     Dio dio = Dio();
+    final invoiceURL = Configurations.INVOICE_GENERATE_URL +  "?id=" + order_id;
 
     await dio.download(invoiceURL, "${dirToSave.path}/invoice.pdf",
         onReceiveProgress: (rec, total){

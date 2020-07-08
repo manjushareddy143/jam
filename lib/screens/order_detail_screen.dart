@@ -119,7 +119,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                    print("donwload click");
                    Widget_Helper.showLoading(context);
                    DownLoadHelper down = new DownLoadHelper();
-                   String status = await down.downloadFile(setState);
+                   String status = await down.downloadFile(setState, order.id.toString());
                    print("on done = $status");
                    Widget_Helper.dismissLoading(context);
                    final result = await OpenFile.open(status);
