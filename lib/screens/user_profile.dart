@@ -42,7 +42,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
  List<Tab> tabList = List();
   TabController _tabController;
 //  User user;
-  FocusNode focus_email, focus_no, focus_address;
+  FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address;
 
 
 
@@ -50,19 +50,39 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
+    printLog("LOADDD");
 
     tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
 
     super.initState();
+    focus_fName = FocusNode();
+    focus_lName = FocusNode();
     focus_email = FocusNode();
     focus_no = FocusNode();
     focus_address = FocusNode();
+    isEditProfile = false;
+
+    print("languages  = ${globals.currentUser.languages}");
+    List langs = globals.currentUser.languages.split(',');
+    langs.forEach((element) {
+      if(element == 'English') {
+        _english = true;
+      }
+
+      if(element == 'Arabic') {
+        _arabic = true;
+      }
+    });
+    print("languages  = ${globals.currentUser.languages.split(',')}");
+
   }
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
     focus_email.dispose();
+    focus_fName.dispose();
+    focus_lName.dispose();
     focus_no.dispose();
     focus_address.dispose();
     super.dispose();
@@ -81,10 +101,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         }
       });
     }
-  }
-
-  void updateProfile() {
-    print("update");
   }
 
   void getProfile() async  {
@@ -264,6 +280,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
+  final prfl_fname = TextEditingController();
+  final prfl_lname = TextEditingController();
+  final prfl_email = TextEditingController();
+  final prfl_contact = TextEditingController();
+
   Widget setDetails(){
 
 //    printLog(globals.currentUser.address);
@@ -289,8 +310,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       child: Column( crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Visibility( visible: !isEditProfile,
+            // Gender
             child: TextField(
-
               decoration: InputDecoration(
                   hintText: (gender == "")?globals.currentUser.gender : gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
               ),
@@ -305,39 +326,63 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             child: setDropDown(),
           ),
 
+          // FistName
           TextField(
-            focusNode: focus_email,style: TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+            focusNode: focus_fName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            decoration: InputDecoration(hintText: globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            controller: (globals.currentUser.first_name == "")
+                ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
           ),
+
+          // LastName
           TextField(
-            focusNode: focus_no, style: TextStyle(color: Colors.grey),
+            focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            decoration: InputDecoration(hintText: globals.currentUser.last_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            controller: (globals.currentUser.last_name == "")
+                ? prfl_lname : prfl_lname ..text = globals.currentUser.last_name,
+          ),
+
+          // EMAIL
+          TextField(
+            focusNode: focus_email,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+            controller: (globals.currentUser.email == "")
+                ? prfl_email : prfl_email ..text = globals.currentUser.email,
+          ),
+
+          // PHONE
+          TextField(
+            focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
+            controller: (globals.currentUser.contact == "")
+                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
           ),
 
 
 
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
-              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.library_books), enabled: isEditProfile),
+              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.language), enabled: isEditProfile),
             ),
           ),
           Visibility( visible: isEditProfile,
-           child:   Padding(padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Icon(Icons.language),
-                    SizedBox(width: 10,),
-                    Text("English"),
-                    Checkbox(value: _english, onChanged: _selecteEnglish),
-                    SizedBox(width: 1,),
-                    Text("Arabic"),
-                    Checkbox(value: _arabic, onChanged: _selecteArabic),
-//                    SizedBox(width: 1,),
-//                    Text("Hindi"),
-//                    Checkbox(value: _hindi, onChanged: _selecteHindi),
-                  ],
-                ),)),
+           child: Container(
+               decoration: myBoxDecoration(),
+               child: Padding(padding: EdgeInsets.all(1),
+                 child: Row(
+                   mainAxisAlignment: MainAxisAlignment.start,
+                   children: <Widget>[
+                     Icon(Icons.language),
+                     SizedBox(width: 10,),
+                     Text("English"),
+                     Checkbox(value: _english, onChanged: _selecteEnglish),
+                     SizedBox(width: 1,),
+                     Text("Arabic"),
+                     Checkbox(value: _arabic, onChanged: _selecteArabic),
+                   ],
+                 ),)),
+           ),
+
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
@@ -345,6 +390,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               helperMaxLines: 5, hintMaxLines: 5),
             ),
           ),
+
           Visibility(visible: isEditProfile,
           child: Padding(
             padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
@@ -355,8 +401,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                   onTap: addressEnter,
                   leading: Icon(Icons.location_on),
                   title: Text((adrs_name.text == "")
-                     ? ""//
-                     : adrs_name.text),
+                      ? ""//
+                      : adrs_name.text),
                   subtitle: Text(addressString),
                 ),
                 ButtonBar(
@@ -395,6 +441,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       ),
     );
   }
+
+  void updateProfile() {
+    print("update");
+    print(gender);
+
+  }
+
+
   String addressString = "";
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
   // final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
@@ -496,6 +550,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         .translate('address_placeholder'),
                                   ),
                                   controller: adrs_name,
+//                                  (globals.currentUser.address == "")
+//                                      ? adrs_name : adrs_name ..text = globals.addressLocation.featureName,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return AppLocalizations.of(context)
@@ -898,20 +954,30 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   List<DropdownMenuItem<String>> _dropDownTypes;
 
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+      border: Border(
+        top: BorderSide(width: 0.5, color: Color(0xFFFF7F7F7F)),
+        bottom: BorderSide(width: 0.5, color: Color(0xFFFF7F7F7F)),
+      ),
+    );
+  }
   Widget setDropDown() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(1, 1, 1, 1),
-      child: Row(
-        children: [
-          Icon((dropdownvalue == "Male")
-              ? Ionicons.ios_male
-              : Ionicons.ios_female),
+    return Container(
+      decoration: myBoxDecoration(),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(1, 1, 1, 1),
+        child: Row(
+          children: [
+            Icon((dropdownvalue == "Male")
+                ? Ionicons.ios_male
+                : Ionicons.ios_female),
 
-          SizedBox(
-            width: 20,
-          ),
-          Expanded(
-            child: DropdownButton<String>(
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: DropdownButton<String>(
                 underline: SizedBox(),
 
                 isExpanded: true,
@@ -922,22 +988,24 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 ),
                 items: <String>['Male', 'Female'
                 ]
-                .map<DropdownMenuItem<String>>((String value) {
-               return DropdownMenuItem<String>(
-                  value: value,
-                     child: Text(value),
-             );
-                 }).toList(),
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
 
 
                 onChanged: (String newValue) {
-                setState(() {
-                  dropdownvalue = newValue;
-                  gender = newValue;
-                 });},
-          ),)
-        ],
+                  setState(() {
+                    dropdownvalue = newValue;
+                    gender = newValue;
+                  });},
+              ),)
+          ],
+        ),
       ),
     );
+
   }
 }

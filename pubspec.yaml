@@ -17,6 +17,9 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  open_file: ^3.0.1
+#  native_pdf_view: ^3.6.2
+
   location: ^3.0.1
   google_map_location_picker: ^3.3.1
   google_maps_flutter: ^0.5.27
@@ -24,6 +27,7 @@ dependencies:
   geopoint_location: ^0.4.0
 #  flutter_geofence: ^0.2.0
   url_launcher: ^5.4.11
+
   image_picker: ^0.6.5+2
   flutter_launcher_icons: ^0.7.4
   hexcolor: ^1.0.1

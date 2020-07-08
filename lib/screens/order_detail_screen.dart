@@ -11,10 +11,14 @@ import 'package:intl/intl.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/pdf_view.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/widget/otp_screen.dart';
 import 'package:jam/screens/download.dart';
+import 'package:jam/widget/widget_helper.dart';
+import 'package:open_file/open_file.dart';
+//import 'package:native_pdf_view/native_pdf_view.dart';
 
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -110,14 +114,41 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      'Download Invoice',
                      style: TextStyle(fontSize: 16.5)
                  ),
-               onPressed: (){
+               onPressed: () async {
                    print("donwload click");
+                   Widget_Helper.showLoading(context);
                    DownLoadHelper down = new DownLoadHelper();
-                   down.downloadFile((fn) {
-                   setState(() {
+                   String status = await down.downloadFile(setState);
+                   print("on done = $status");
+                   Widget_Helper.dismissLoading(context);
+                   final result = await OpenFile.open(status);
+                   print("type=${result.type}  message=${result.message}");
+//                   Navigator.push(
+//                       context,
+//                       MaterialPageRoute (
+//                           builder: (context) =>
+//                               PDFViewUIPage(path: status,) //provider.service
+//                       )
+//                   );
+//                   final pdfController = PdfController(
+//                     document: PdfDocument.openFile(status),
+//                   );
+//
+//                   Widget pdfView() => PdfView(
+//                     controller: pdfController,
+//                   );
 
-                   });
-                 });
+
+                   print("start = $status");
+//                   down.downloadFile( (fn) {
+//                     setState(() {
+//                       print("start = $fn");
+//                     });
+//                   }).then((value) => {
+//                       print("then $value")
+//                   }).whenComplete(() => {
+//                     print("complete")
+//                   });
                },
              ),
            ),
