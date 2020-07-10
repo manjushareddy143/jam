@@ -45,15 +45,12 @@ class customer extends StatelessWidget {
 
   Widget build(BuildContext context) {
     // TODO: implement build
-    print("test == ${this.fcm_token}");
     return CustomerSignup(fcm_token: this.fcm_token,);
   }
 }
 class CustomerSignup extends StatefulWidget {
-  //SignupPage({Key key, this.title}) : super(key: key);
   final String fcm_token;
 
-  
   CustomerSignup({Key key, this.fcm_token}) : super(key: key);
   @override
   _customerSignup createState() => _customerSignup(fcm_token: fcm_token, key: key);
@@ -78,14 +75,10 @@ class _customerSignup extends State<CustomerSignup>{
   bool _value1 = false;
   List<DropdownMenuItem<String>> _dropDownTypes;
   String selectedCountry;
-//  List _lstType = ["India", "Qatar"];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-//    globals.isCustomer == true;
-//    print("listCountry :: ${listCountry[0]["name"]}");
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
   }
@@ -142,7 +135,7 @@ class _customerSignup extends State<CustomerSignup>{
                       labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
 
                   keyboardType: TextInputType.phone,
-                  controller: txtContact,//..text = 'KAR-MT30',
+                  controller: txtContact,
 
                   validator: (value){
                     if (value.isEmpty) {
@@ -196,14 +189,9 @@ class _customerSignup extends State<CustomerSignup>{
               }
               return null;
             },
-
-
           ),
         ),
-        SizedBox(height: 10,),
-
-//        if(globals.isCustomer == false)
-//          setCountry(),
+        SizedBox(height: 10),
 
         Row(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -234,7 +222,6 @@ class _customerSignup extends State<CustomerSignup>{
                       )),
                   onTap: _launchURL,
                 ),
-
             ]
         ),
         // SizedBox(height: 10,),
@@ -243,26 +230,20 @@ class _customerSignup extends State<CustomerSignup>{
           minWidth: 300.0,
           child:  RaisedButton(
               color: Configurations.themColor,
-
-
               textColor: Colors.white,
               child:  Text(
-
                   AppLocalizations.of(context).translate('signin_btn_signup'),
                   style: TextStyle(fontSize: 16.5)
               ),
               onPressed: () {
                 _validateInputs();
               }
-
-
           ),
         ),
 
         Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Already have an account?"),
-
             FlatButton( onPressed:() {
               Navigator.push(
                   context, new MaterialPageRoute(
@@ -286,7 +267,6 @@ class _customerSignup extends State<CustomerSignup>{
             SizedBox(height: 20,
               child: Text("------------------------ OR ------------------------"),
             ),
-
             SignInButton(
               Buttons.Google,
               text: "Sign in with Google",
@@ -328,9 +308,6 @@ class _customerSignup extends State<CustomerSignup>{
                   showFieldAsBox: false,
                   fields: 6,
                   onSubmit: submitPin,
-//                  fieldWidth: 300.0,
-//                  fontSize: 10,
-
                 ),
               ),
 
@@ -350,27 +327,6 @@ class _customerSignup extends State<CustomerSignup>{
                     }
                 ),
               ),
-
-//              Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-//                children: <Widget>[
-//                  Text("Resend OTP"),
-//                  IconButton(icon: Icon(Icons.refresh),
-//                    onPressed: () {
-//                    getOTP(txtContact.text);
-////                      Map<String, String> data = new Map();
-////                      data["first_name"] = txtName.text;
-////                      data["last_name"] = txtLname.text;
-////                      data["password"] = txtPass.text;
-////
-////                      data["email"] = txtEmail.text;
-////                      data["contact"] = txtContact.text;
-////                      callLoginAPI(data);
-//                    },
-//                  ),
-//
-//                ],
-//              ),
-//              ),
             ],
           ),
         )
@@ -386,12 +342,10 @@ class _customerSignup extends State<CustomerSignup>{
   String selecteCode = "";
   void _initCountryCode(code) {
     selecteCode = code.toString();
-//    print("New Country selected: " + code.toString());
   }
   void _onCountryChange(countryCode) {
     //TODO : manipulate the selected country code here
     selecteCode = countryCode.toString();
-//    print("New Country selected: " + countryCode.toString());
   }
 
   _launchURL() async {
@@ -409,19 +363,19 @@ class _customerSignup extends State<CustomerSignup>{
   static String status;
   var firebaseAuth;
 
-
-
-
-
   submitPin(String pin) {
-//    print(pin);
     pinCode = pin;
   }
 
   void otpVerification() async {
-    await _signInWithPhoneNumber(pinCode);
-  }
+    if(pinCode != "" && pinCode.length > 5) {
+      Widget_Helper.showLoading(context);
+      await _signInWithPhoneNumber(pinCode);
+    } else {
+      showInfoAlert(context, "Please enter OTP");
+    }
 
+  }
 
   Future _signInWithPhoneNumber(String smsCode) async {
     _authCredential = PhoneAuthProvider.getCredential(
@@ -453,11 +407,14 @@ class _customerSignup extends State<CustomerSignup>{
       } else {
         setState(() {
           status = 'Invalid code/invalid authentication';
+          Widget_Helper.dismissLoading(context);
           showInfoAlert(context, status);
         });
       }
     }).catchError((error) {
       setState(() {
+        print("error ${error.}");
+        Widget_Helper.dismissLoading(context);
         status = 'Something has gone wrong, please try later';
         showInfoAlert(context, status);
       });
@@ -470,29 +427,10 @@ class _customerSignup extends State<CustomerSignup>{
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-//        printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
-
           String phone = selecteCode + txtContact.text;
-//          print(phone);
           getOTP(phone);
-          // Return here any Widget you want to display in Android Device.
-//          Map<String, String> data = new Map();
-//          data["contact"] = txtContact.text;
-//          data["password"] = txtPass.text;
-//          if(globals.isCustomer == true) {
-//            data["type_id"] = "4";
-//            data["term_id"] = "1";
-//          } else {
-//            data["first_name"] = txtName.text;
-//            data["last_name"] = txtLname.text;
-//            data["email"] = txtEmail.text;
-//            data["type_id"] = "3";
-//            data["term_id"] = "2";
-//            data["resident_country"] = selectedCountry;
-//          }
-//          callLoginAPI(data);
         }
         else if(Platform.isIOS) {
           Map<String, String> data = new Map();
@@ -510,11 +448,7 @@ class _customerSignup extends State<CustomerSignup>{
             data["resident_country"] = selectedCountry;
           }
           callLoginAPI(data);
-          // Return here any Widget you want to display in iOS Device.
-          printLog('iOS Device Detected');
         }
-        //
-
       } else {
         showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
       }
@@ -574,8 +508,6 @@ class _customerSignup extends State<CustomerSignup>{
         var data = json.decode(res.body);
         print("come for data ${data}");
         globals.currentUser = User.fromJson(data);
-//        printLog(globals.currentUser.first_name);
-//        print(globals.currentUser.contact);
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
@@ -604,10 +536,7 @@ class _customerSignup extends State<CustomerSignup>{
   }
 
 
-
-
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
-//    print("reportForlist:: $reportForlist");
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
       items.add(DropdownMenuItem(value: key["name"], child: Text(key["name"])));
@@ -621,11 +550,6 @@ class _customerSignup extends State<CustomerSignup>{
       printLog(selectedCountry);
     });
   }
-
-
-
-
-
 
   Widget setCountry() {
     return Material(
@@ -662,12 +586,10 @@ class _customerSignup extends State<CustomerSignup>{
   }
 
   void signinWithGmail() {
+    Widget_Helper.showLoading(context);
     signInWithGoogle()
         .whenComplete(() {
-
-      printLog("FINSH ");
     }).then((onValue) {
-      print("RES === $onValue");
       if(onValue != null) {
         GoogleSignInAccount g_user = onValue[0];
         FirebaseUser  f_user = onValue[1];
@@ -676,7 +598,6 @@ class _customerSignup extends State<CustomerSignup>{
         if(g_user.displayName.split(" ")[1] != null){
           data["last_name"] = g_user.displayName.split(" ")[1];
         }
-
         data["password"] = g_user.id;
         data["email"] = g_user.email;
         data["image"] = g_user.photoUrl;
@@ -805,6 +726,7 @@ class _customerSignup extends State<CustomerSignup>{
   }
   verificationFailed (AuthException authException) {
     print("authException.message :${authException.message}");
+//    Widget_Helper.dismissLoading(context);
     printLog(txtContact.text);
     printLog(authException.message);
     setState(() {
@@ -817,7 +739,6 @@ class _customerSignup extends State<CustomerSignup>{
         status = 'Please check your internet connection and try again';
 //      else
 //        status = 'Something has gone wrong, please try later';
-
       showInfoAlert(context, status);
     });
   }
@@ -836,12 +757,12 @@ class _customerSignup extends State<CustomerSignup>{
   }
 
   codeAutoRetrievalTimeout(String verificationId) {
-    actualCode = verificationId;
-    printLog("codeAutoRetrievalTimeout $actualCode");
+//    actualCode = verificationId;
+//    printLog("codeAutoRetrievalTimeout $actualCode");
     setState(() {
-      status = "\nAuto retrieval time out:: $actualCode";
-      Widget_Helper.dismissLoading(context);
-      showInfoAlert(context, status);
+//      status = "\nAuto retrieval time out:: $actualCode";
+//      Widget_Helper.dismissLoading(context);
+//      showInfoAlert(context, status);
     });
   }
 

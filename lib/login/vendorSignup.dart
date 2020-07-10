@@ -483,6 +483,7 @@ class _vendorSignup extends State<VendorSignup>{
   }
 
   void otpVerification() async {
+    Widget_Helper.showLoading(context);
     await _signInWithPhoneNumber(pinCode);
   }
 
@@ -534,29 +535,11 @@ class _vendorSignup extends State<VendorSignup>{
     if (_formKey.currentState.validate()) {
       if(_value1) {
         _formKey.currentState.save();
-//        printLog(txtContact.text);
         if (Platform.isAndroid) {
           Widget_Helper.showLoading(context);
 
           String phone = selecteCode + txtContact.text;
-//          print(phone);
           getOTP(phone);
-          // Return here any Widget you want to display in Android Device.
-//          Map<String, String> data = new Map();
-//          data["contact"] = txtContact.text;
-//          data["password"] = txtPass.text;
-//          if(globals.isCustomer == true) {
-//            data["type_id"] = "4";
-//            data["term_id"] = "1";
-//          } else {
-//            data["first_name"] = txtName.text;
-//            data["last_name"] = txtLname.text;
-//            data["email"] = txtEmail.text;
-//            data["type_id"] = "3";
-//            data["term_id"] = "2";
-//            data["resident_country"] = selectedCountry;
-//          }
-//          callLoginAPI(data);
         }
         else if(Platform.isIOS) {
           Map<String, String> data = new Map();
@@ -574,11 +557,7 @@ class _vendorSignup extends State<VendorSignup>{
             data["resident_country"] = selectedCountry;
           }
           callLoginAPI(data);
-          // Return here any Widget you want to display in iOS Device.
-          printLog('iOS Device Detected');
         }
-        //
-
       } else {
         showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
       }
@@ -610,10 +589,8 @@ class _vendorSignup extends State<VendorSignup>{
     } else if (Platform.isIOS) {
       data["device"] = "IOS";
     }
-    printLog(data);
     try {
       HttpClient httpClient = new HttpClient();
-      print('api call start signup');
       if(globals.isCustomer ==true) {
         var syncUserResponse =
         await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
@@ -636,14 +613,10 @@ class _vendorSignup extends State<VendorSignup>{
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("come for data ${data}");
         globals.currentUser = User.fromJson(data);
-//        printLog(globals.currentUser.first_name);
-//        print(globals.currentUser.contact);
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
-          print("COME INSIDE");
           Preferences.saveObject("profile", "0");
           Navigator.pushAndRemoveUntil(
               context,
@@ -658,10 +631,7 @@ class _vendorSignup extends State<VendorSignup>{
                   builder: (BuildContext context) => InitialProfileScreen()
               ),ModalRoute.withName('/'));
         }
-
       } else {
-        printLog("login response code is not 200");
-        var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
     }
@@ -671,7 +641,6 @@ class _vendorSignup extends State<VendorSignup>{
 
 
   List<DropdownMenuItem<String>> buildAndGetDropDownMenuItems(List reportForlist) {
-//    print("reportForlist:: $reportForlist");
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
       items.add(DropdownMenuItem(value: key["name"], child: Text(key["name"])));
@@ -685,11 +654,6 @@ class _vendorSignup extends State<VendorSignup>{
       printLog(selectedCountry);
     });
   }
-
-
-
-
-
 
   Widget setCountry() {
     return Material(
@@ -726,9 +690,9 @@ class _vendorSignup extends State<VendorSignup>{
   }
 
   void signinWithGmail() {
+    Widget_Helper.showLoading(context);
     signInWithGoogle()
         .whenComplete(() {
-      printLog("FINSH ");
     }).then((onValue) {
       print("RES === $onValue");
       if(onValue != null) {

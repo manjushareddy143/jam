@@ -370,8 +370,10 @@ bool isNumeric(String s) {
 
 Future<BitmapDescriptor> setCustomMapPin(BitmapDescriptor pinLocationIcon) async {
   pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
-      'assets/icons/icons8-gender-48.png');
+      ImageConfiguration(size: Size(48, 48)), 'assets/icons/mappin.png')
+      .then((onValue) {
+    pinLocationIcon = onValue;
+  });
   return pinLocationIcon;
 }
 

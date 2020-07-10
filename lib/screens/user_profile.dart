@@ -128,17 +128,42 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     });
   }
 
+  String imageUrl = "";
   Future getImage() async {
-    final image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 20,
+    final imageSrc = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select the image source"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Camera"),
+            onPressed: () => Navigator.pop(
+              context,
+              ImageSource.camera,
+            ),
+          ),
+          MaterialButton(
+            child: Text("Gallery"),
+            onPressed: () => Navigator.pop(
+              context,
+              ImageSource.gallery,
+            ),
+          ),
+        ],
+      ),
     );
-    if(image != null)
-      print("image is not null");
-    setState(() {
-        _image = image;
-    });
-  //  print("image is null so returning this statement");
+    if (imageSrc != null) {
+      final image = await ImagePicker.pickImage(
+        source: imageSrc,
+        imageQuality: 20,
+      );
+      if (image != null) {
+        setState(() {
+          imageUrl = null;
+          _image = image;
+        });
+      }
+    }
   }
 
   @override
@@ -300,26 +325,30 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   final prfl_lname = TextEditingController();
   final prfl_email = TextEditingController();
   final prfl_contact = TextEditingController();
+  String addressString = "";
 
   Widget setDetails(){
 
 //    printLog(globals.currentUser.address);
-    String addressString = "";
+//    String addressString = "";
+
+
     if(globals.currentUser.address != null) {
       if(globals.currentUser.address.length > 0) {
-        addressString = globals.currentUser.address[0].address_line1;
-        if(globals.currentUser.address[0].address_line2 != "") {
-          addressString += ", " + globals.currentUser.address[0].address_line2;
+        addressString = singleAddress.address_line1;
+        if(singleAddress.address_line2 != "") {
+          addressString += ", " + singleAddress.address_line2;
         }
 
-        if(globals.currentUser.address[0].landmark != "") {
-          addressString += ", " + globals.currentUser.address[0].landmark;
+        if(singleAddress.landmark != "") {
+          addressString += ", " + singleAddress.landmark;
         }
-        addressString += ", " + globals.currentUser.address[0].district
-            + ", " + globals.currentUser.address[0].city + ", " + globals.currentUser.address[0].postal_code + ".";
+        addressString += ", " + singleAddress.district
+            + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
       }
-
     }
+
+    print("addressString===== $addressString");
 
     return Padding(
       padding:  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
@@ -328,7 +357,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // FistName
           TextField(
             focusNode: focus_fName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.first_name == "" || globals.currentUser.first_name == null) ? "First Name" : globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
             controller: (globals.currentUser.first_name == "")
                 ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
           ),
@@ -336,7 +365,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // LastName
           TextField(
             focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: globals.currentUser.last_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ? "Last Name" : globals.currentUser.last_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
             controller: (globals.currentUser.last_name == "")
                 ? prfl_lname : prfl_lname ..text = globals.currentUser.last_name,
           ),
@@ -344,7 +373,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // EMAIL
           TextField(
             focusNode: focus_email,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
             controller: (globals.currentUser.email == "")
                 ? prfl_email : prfl_email ..text = globals.currentUser.email,
           ),
@@ -352,7 +381,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // PHONE
           TextField(
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
+            decoration: InputDecoration(hintText: (globals.currentUser.contact == "" || globals.currentUser.contact == null) ? "Phone number" : globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
             controller: (globals.currentUser.contact == "")
                 ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
           ),
@@ -361,7 +390,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             // Gender
             child: TextField(
               decoration: InputDecoration(
-                  hintText: (gender == "")?globals.currentUser.gender : gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+                  hintText: (gender == "" || gender == null) ? "NOT SELECTED" : globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
               ),
             ),
           ),
@@ -378,6 +407,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.language), enabled: isEditProfile),
             ),
           ),
+
           Visibility( visible: isEditProfile,
            child: Container(
                decoration: myBoxDecoration(),
@@ -399,7 +429,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
-              decoration: InputDecoration(hintText: addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
+              decoration: InputDecoration(hintText: (addressString == null || addressString == "") ? "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
               helperMaxLines: 5, hintMaxLines: 5),
             ),
           ),
@@ -456,28 +486,29 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   void updateProfile() {
     print("update");
     var data = new Map<String, String>();
-    if(globals.currentUser.first_name != prfl_fname.text) {
+    if(globals.currentUser.first_name != prfl_fname.text && globals.currentUser.first_name != null) {
       data["first_name"] = prfl_fname.text;
     }
 
-    if(globals.currentUser.last_name != prfl_lname.text) {
+    if(globals.currentUser.last_name != prfl_lname.text && globals.currentUser.last_name != null) {
       data["last_name"] = prfl_lname.text;
     }
 
-    if(globals.currentUser.contact != prfl_contact.text) {
+    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact != null) {
       data["contact"] = prfl_contact.text;
     }
 
-    if(globals.currentUser.gender != dropdownvalue) {
+    if(globals.currentUser.gender != dropdownvalue && globals.currentUser.gender != null) {
       data["gender"] = dropdownvalue;
     }
 
-    if(globals.currentUser.email != prfl_email.text) {
+    print(globals.currentUser.email);
+    if(globals.currentUser.email != prfl_email.text && globals.currentUser.email != null) {
       data["email"] = prfl_email.text;
     }
 
     String lang = languages.join(',');
-    if(globals.currentUser.languages != lang) {
+    if(globals.currentUser.languages != lang && globals.currentUser.languages != null) {
       data["languages"] = lang;
     }
 
@@ -488,6 +519,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["name"] = adrs_name.text;
       addressData["address_line1"] = adrs_line1.text;
       addressData["address_line2"] = adrs_line2.text;
+      addressData["user_id"] = globals.currentUser.id.toString();
       addressData["landmark"] = adrs_landmark.text;
       addressData["district"] = adrs_disctric.text;
       addressData["city"] = adrs_city.text;
@@ -505,7 +537,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //      data["service_radius"] = prfl_servcerds.text;
 //    }
     printLog(data);
-    if(data.isNotEmpty) {
+    if(data.isNotEmpty && data.length > 0) {
       apiCall(data);
     } else if(_image != null) {
       apiCall(data);
@@ -514,47 +546,32 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   void apiCall(Map data) async {
     List<http.MultipartFile> files = new List<http.MultipartFile>();
-
-    print('img==== ${_image}');
     if (_image != null) {
-      print('COME FOR API IMAGE');
-//    files.add(await http.MultipartFile.fromPath('profile_photo', _image.path));
       files.add(http.MultipartFile.fromBytes(
           'profile_photo', _image.readAsBytesSync(),
           filename: _image.path.split("/").last));
-      printLog(files.length);
     }
 
     HttpClient httpClient = new HttpClient();
     Map responseData = await httpClient.postMultipartRequest(
         context, Configurations.UPDATE_USER_URL + globals.currentUser.id.toString(), data, files);
-    //Request(context, Configurations.PROFILE_URL, data);
     processUpodateUserResponse(responseData);
   }
 
   void processUpodateUserResponse(Map res) {
-    print("come for response");
-    print(res);
     if (res != null) {
       globals.currentUser = User.fromJson(res);
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
+      _image = null;
       build(context);
-//      ServiceSelectionUIPageState.selectedServices.clear();
-//      ServiceSelectionUIPageState.serviceNamesString = "";
-//      Navigator.pushReplacement(
-//          context,
-//          MaterialPageRoute(
-//            builder: (context) => HomeScreen(),
-//          ));
     }
   }
 
 
-  String addressString = "";
+
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
-  // bool _autoValidateService = true;
   bool showMap = false;
 
   final adrs_name = TextEditingController();
@@ -564,9 +581,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   final adrs_disctric = TextEditingController();
   final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
-
-
-
 
   String mapAddressTitle = "Set Location Map";
 
@@ -580,6 +594,16 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
 
   Widget _buildAddressDialog(BuildContext context) {
+    if(singleAddress.name == null || singleAddress.name == "") {
+      singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
+          globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+    }
+
+
+
+  print("showMap == $showMap");
+//  print("singleAddress == ${singleAddress.name}");
+//    _markers.clear();
     return AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -627,16 +651,15 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                               if(showMap == true) {
                                 showMap = false;
                                 _markers.clear();
-                                mapAddressTitle = "Set Location Map";
+                                mapAddressTitle = "Enter Location";
                               } else {
 
                                 showMap = true;
-                                mapAddressTitle = "Enter Location";
-                                setCustomMapPin(pinLocationIcon).then((onValue) {
-                                  pinLocationIcon = onValue;
-                                });
+                                mapAddressTitle = "Set Location Map";
+//                                setCustomMapPin(pinLocationIcon).then((onValue) {
+//                                  pinLocationIcon = onValue;
+//                                });
                               }
-                              print("showMap === $showMap");
                             });
                           },
                         ),
@@ -716,7 +739,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                           ),
                                           controller: (singleAddress.landmark == "") ? adrs_landmark : adrs_landmark
                                             ..text = singleAddress.landmark
-
                                       ),
                                     ),
 
@@ -763,7 +785,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         },
                                       ),
                                     ),
-
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -779,7 +800,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         controller: (singleAddress.postal_code == "") ?
                                         adrs_postalcode : adrs_postalcode
                                           ..text = singleAddress.postal_code,
-                                        //adrs_postalcode,
                                         validator: (value) {
                                           if (value.isEmpty) {
                                             return AppLocalizations.of(context)
@@ -844,14 +864,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       child: GoogleMap(
         myLocationButtonEnabled: true,
         myLocationEnabled: true,
-//        mapType: MapType.hybrid,
         markers: _markers,
         initialCameraPosition: initialLocation,
         onMapCreated: (GoogleMapController controller) {
-          print("ADDDRESS::: ${controller}");
           _controller.complete(controller);
-
-//          getAddress(globals.location);
           setState(() {
             _markers.add(
                 Marker(
@@ -864,16 +880,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         },
 
         onTap: (latLogn) {
-
-          print("latLogn::: $latLogn");
-
           setState(() {
-
             getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
               globals.addressLocation = onValue;
+              globals.latitude = latLogn.latitude;
+              globals.longitude = latLogn.longitude;
               addressString = globals.addressLocation.addressLine;
+//              singleAddress = Address(0, , , "",
+//                  , , , "", globals.currentUser.id, "");
+////              Address(id, , , , , , postal_code, location, user_id, name)
+                adrs_line1.text = globals.addressLocation.featureName;
+                adrs_line2.text = globals.addressLocation.subLocality;
+                adrs_disctric.text = globals.addressLocation.subAdminArea;
+                adrs_city.text = globals.addressLocation.locality;
+                adrs_postalcode.text = globals.addressLocation.postalCode;
+                print("adrs_line1.text == ${adrs_line1.text}" );
             });
-
             _markers.add(
                 Marker(
                     markerId: MarkerId("User"),
@@ -890,15 +912,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   void addressSave() {
     showMap = false;
+    printLog("addressString on save ::: $addressString");
     if (_formAddressKey.currentState.validate()) {
       _formAddressKey.currentState.save();
       _autoValidateAddress = false;
 
       setState(() {
-        print(adrs_line1.text);
-        print(adrs_line2.text);
-        print(adrs_landmark.text);
-
         addressString = adrs_line1.text;
         if (adrs_line2.text.isNotEmpty) {
           addressString += "\n" + adrs_line2.text;
@@ -913,8 +932,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             adrs_city.text +
             "\n" +
             adrs_postalcode.text;
+        print("addressString == $addressString");
+        singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
+            adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
+
+        Navigator.of(context).pop();
       });
-      Navigator.of(context).pop();
+
+
     } else {
       setState(() {
         _autoValidateAddress = true;
@@ -924,23 +949,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   List<String> languages = new List<String>();
   void _selecteEnglish(bool value) {
     setState(() {
-     // lastName = prfl_lname.text;
-     // firstName = prfl_fname.text;
       _english = value;
-
       if(languages.contains("English")) {
         languages.remove("English");
       } else {
         languages.add("English");
       }
-      print("language :: $languages $value");
     });
   }
   void _selecteArabic(bool value) {
     setState(() {
       _arabic = value;
-     // lastName = prfl_lname.text;
-     // firstName = prfl_fname.text;
       if(languages.contains("Arabic")) {
         languages.remove("Arabic");
       } else {
@@ -948,21 +967,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       }
     });
   }
-  void _selecteHindi(bool value) {
-    setState(() {
-      _hindi = value;
-      //lastName = prfl_lname.text;
-     // firstName = prfl_fname.text;
-      if(languages.contains("Hindi")) {
-        languages.remove("Hindi");
-      } else {
-        languages.add("Hindi");
-      }
-    });
-  }
+
   bool _english = false;
   bool _arabic = false;
-  bool _hindi = false;
 
   Widget setRichText(){
     return Container(
@@ -974,35 +981,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           Text(
             'Address', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
           SizedBox(height: 10,),
-//          SingleChildScrollView(
-//            child: RichText(
-//              softWrap: true,
-//              textWidthBasis: TextWidthBasis.parent,
-//              overflow: TextOverflow.ellipsis,
-//              maxLines: 150,
-////              text: Text("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod Color is a form of non verbal communication. It is not a static energy and its meaning can change from one day to the next with any individual - it all depends on what energy they are expressing at that point in time "
-////              ),
-//            ),
-//          )
-
-//          Container(
-////            child:
-////            RichText(
-////                overflow: TextOverflow.ellipsis,
-////                maxLines: 50,
-////                text:
-////                TextSpan(
-////                  text:'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod Color is a form of non verbal communication. It is not a static energy and its meaning can change from one day to the next with any individual - it all depends on what energy they are expressing at that point in time ' ,style: DefaultTextStyle.of(context).style,
-////                )
-////
-////            ),
-//            height: 250,
-//          )
         ],
       ),
     );
-
-
   }
 
   Widget setTabbar(){
@@ -1046,19 +1027,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget _getPage(Tab tab){
     switch(tab.text){
       case 'Address' : return setRichText();
-
     }
   }
   String dropdownvalue = "Male";
-  void changedDropDownItem(String selectedItem) {
-    setState(() {
-      //dropdownvalue = selectedItem;
-    });
-  }
+
   String gender= "";
   String address = "";
-
-  List<DropdownMenuItem<String>> _dropDownTypes;
 
   BoxDecoration myBoxDecoration() {
     return BoxDecoration(
@@ -1100,8 +1074,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                     child: Text(value),
                   );
                 }).toList(),
-
-
                 onChanged: (String newValue) {
                   setState(() {
                     dropdownvalue = newValue;

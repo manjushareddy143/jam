@@ -31,6 +31,7 @@ import 'package:http/http.dart' as http;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:flutter/src/cupertino/date_picker.dart';
+
 class InitialProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,6 @@ class InitialProfileScreen extends StatelessWidget {
     );
   }
 }
-
-
 
 class InitialProfilePage extends StatefulWidget {
   InitialProfilePage({Key key, this.title}) : super(key: key);
@@ -60,18 +59,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List _lstType = ["Male", "Female"];
   String dropdownvalue;
   File _image;
-//  String user_id;
   List<Service> listofServices;
   bool isLoadin = true;
-
-//  String addressLine = "";
 
   @override
   void initState() {
     super.initState();
     globals.context = context;
     setState(() {
-      if(globals.currentUser.roles[0].slug == "provider")
+      if (globals.currentUser.roles[0].slug == "provider")
         print("provider");
       else
         print("customer");
@@ -80,29 +76,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       phoneNumber = globals.currentUser.contact;
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
-     // addressString = globals.addressLocation.addressLine.toString();
     });
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     dropdownvalue = _dropDownTypes[0].value;
-//    new Future<String>.delayed(new Duration(microseconds: 10), () => null)
-//        .then((String value) {
-////        getServices();
-//    });
   }
-
-//  getServices() async {
-//    try {
-//      HttpClient httpClient = new HttpClient();
-//      var syncServicesResponse = await httpClient.getRequest(
-//          context, Configurations.SERVICES_ALL_URL, null, null, true, false);
-//
-//      processServiceResponse(syncServicesResponse);
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
-//  }
 
   void processServiceResponse(Response res) {
     print('get daily format');
@@ -126,7 +103,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,43 +110,48 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: new Form(
           key: _formKey,
           autovalidate: _autoValidate,
-
-
           child: profileUI(),
         ),
       ),
     );
   }
-  Future getImage() async{
 
-     final imageSrc = await showDialog<ImageSource>(context: context, builder: (context) =>
-         AlertDialog(title: Text("Select the image source"),
-           actions: <Widget>[
-             MaterialButton(
-               child: Text("Camera"),
-               onPressed: ()=>Navigator.pop(context, ImageSource.camera,),),
-             MaterialButton(
-               child: Text("Gallery"),
-               onPressed: ()=>Navigator.pop(context, ImageSource.gallery,),),
-           ],),);
-     if(imageSrc != null){
-       print("Image Src is not null!!");
-       printLog(imageSrc);
-       final image = await ImagePicker.pickImage(
-         source: imageSrc,
-         imageQuality: 20,
-       );
-       if (image != null){
-         setState(() {
-           imageUrl = null;
-           _image = image;
-         });
-         print("IMAGE:::::::::: $_image");
-       }
-     }
-
-
-     }
+  Future getImage() async {
+    final imageSrc = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select the image source"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Camera"),
+            onPressed: () => Navigator.pop(
+              context,
+              ImageSource.camera,
+            ),
+          ),
+          MaterialButton(
+            child: Text("Gallery"),
+            onPressed: () => Navigator.pop(
+              context,
+              ImageSource.gallery,
+            ),
+          ),
+        ],
+      ),
+    );
+    if (imageSrc != null) {
+      final image = await ImagePicker.pickImage(
+        source: imageSrc,
+        imageQuality: 20,
+      );
+      if (image != null) {
+        setState(() {
+          imageUrl = null;
+          _image = image;
+        });
+      }
+    }
+  }
 
   Widget _buildCoverImage(Size screenSize) {
     return Container(
@@ -178,11 +159,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       child: Column(
         children: <Widget>[
           SizedBox(height: 30),
-          if (imageUrl == null)
-            _buildProfileImage(),
-
-          if (imageUrl != null)
-            _buildProfileImageForSocial(),
+          if (imageUrl == null) _buildProfileImage(),
+          if (imageUrl != null) _buildProfileImageForSocial(),
           SizedBox(height: 10),
           Text(
             AppLocalizations.of(context).translate('profile_txt_img'),
@@ -229,34 +207,30 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //      ),
 //    );
 //    if(globals.isCustomer == false)
-      return Center(
-        child: Container(
-          child: GestureDetector(
-            onTap: () {
-              print("object");
+    return Center(
+      child: Container(
+        child: GestureDetector(
+          onTap: () {
+            print("object");
 
-              getImage();
-            }, // handle your image tap here
+            getImage();
+          }, // handle your image tap here
+        ),
+        width: 120.0,
+        height: 120.0,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: (imageUrl == null) ? getImage() : NetworkImage(imageUrl),
+            fit: BoxFit.cover,
           ),
-          width: 120.0,
-          height: 120.0,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-
-              image: (imageUrl == null)
-                  ? getImage()
-                  : NetworkImage(imageUrl),
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(80.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 5.0,
-            ),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Colors.white,
+            width: 5.0,
           ),
         ),
-      );
-
+      ),
+    );
   }
 
   AssetImage setImgPlaceholder() {
@@ -267,20 +241,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     print("NO DATA ${globals.isCustomer}");
 //    if(globals.isCustomer == true)
     return Center(
-
       child: Container(
         child: GestureDetector(
           onTap: () {
             print("object");
-           // if(globals.isCustomer == true)
-           getImage();
-           // if(globals.isVendor == true)
-              // pickImage();
+            // if(globals.isCustomer == true)
+            getImage();
+            // if(globals.isVendor == true)
+            // pickImage();
           }, // handle your image tap here
         ),
         width: 120.0,
         height: 120.0,
-
         decoration: BoxDecoration(
           image: DecorationImage(
             image: (_image == null) ? setImgPlaceholder() : FileImage(_image),
@@ -294,36 +266,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
       ),
     );
-//    if(globals.isVendor== true)
-//      return Center(
-//
-//        child: Container(
-//          child: GestureDetector(
-//            onTap: () {
-//              print("object");
-//              // if(globals.isCustomer == true)
-//               getImage();
-//              // if(globals.isVendor == true)
-//            //  pickImage();
-//            }, // handle your image tap here
-//          ),
-//          width: 120.0,
-//          height: 120.0,
-//
-//          decoration: BoxDecoration(
-//            image: DecorationImage(
-//              image: (_image == null) ? Text("Try again!!") : FileImage(_image),
-//              fit: BoxFit.cover,
-//            ),
-//            borderRadius: BorderRadius.circular(80.0),
-//            border: Border.all(
-//              color: Colors.white,
-//              width: 5.0,
-//            ),
-//          ),
-//        ),
-//      );
-
   }
 
   String addressString = "";
@@ -344,13 +286,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   bool _arabic = false;
 
   Widget profileUI() {
-
     return Container(
         margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget> [
-
+          children: <Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(15, 30, 0, 10),
               child: Text(
@@ -359,13 +299,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               ),
             ),
 
-
-              _buildCoverImage(MediaQuery.of(context).size),
-
-//          SizedBox(height: 10),
-         // TreeView(),
-
-
+            _buildCoverImage(MediaQuery.of(context).size),
 
             Padding(
               padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
@@ -516,61 +450,65 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   Material(
                       elevation: 5.0,
                       shadowColor: Colors.grey,
-                      child: Padding(padding: EdgeInsets.all(10),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Icon(Icons.language),
-                            SizedBox(width: 20,),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Text("English"),
-                            Checkbox(value: _english, onChanged: _selecteEnglish),
-                            SizedBox(width: 20,),
+                            Checkbox(
+                                value: _english, onChanged: _selecteEnglish),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Text("Arabic"),
                             Checkbox(value: _arabic, onChanged: _selecteArabic),
                           ],
-                        ),)
+                        ),
+                      )),
 
-                  ),
-
-                  if(globals.currentUser.roles[0].slug == "provider")
-                  SizedBox(
-                    height: 20,
-                  ),
+                  if (globals.currentUser.roles[0].slug == "provider")
+                    SizedBox(
+                      height: 20,
+                    ),
 
                   // Service Radius
-                  if(globals.currentUser.roles[0].slug == "provider")
-                  Material(
-                    elevation: 5.0,
-                    shadowColor: Colors.grey,
-                    child: TextFormField(
-                      controller: prfl_servcerds,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.location_searching,
-                        ),
-                        
-//                        suffix: Text("KM"),
-                        suffixText: "KM  ",
-//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1,
+                  if (globals.currentUser.roles[0].slug == "provider")
+                    Material(
+                      elevation: 5.0,
+                      shadowColor: Colors.grey,
+                      child: TextFormField(
+                        controller: prfl_servcerds,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.location_searching,
                           ),
-                        ),
-                        labelText: 'Service Radius',
-                        hasFloatingPlaceholder: false,
-                      ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter service radius';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
 
+//                        suffix: Text("KM"),
+                          suffixText: "KM  ",
+//                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1,
+                            ),
+                          ),
+                          labelText: 'Service Radius',
+                          hasFloatingPlaceholder: false,
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Please enter service radius';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -590,26 +528,27 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //                ),
 //              ),
 
-
             // SERVICE
-            if(globals.currentUser.roles[0].slug == "provider")
-            Padding(
-              padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-              child: Card(
-                elevation: 5.0,
-                child: ListTile(
-                  onTap: enterServices,
-                  leading: Icon(Icons.work),
-                  title: Text((ServiceSelectionUIPageState.serviceNamesString == "")
-                      ? "Select Services"
-                      : adrs_name.text),
-                  subtitle: Text(ServiceSelectionUIPageState.serviceNamesString),
+            if (globals.currentUser.roles[0].slug == "provider")
+              Padding(
+                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                child: Card(
+                  elevation: 5.0,
+                  child: ListTile(
+                    onTap: enterServices,
+                    leading: Icon(Icons.work),
+                    title: Text(
+                        (ServiceSelectionUIPageState.serviceNamesString == "")
+                            ? "Select Services"
+                            : adrs_name.text),
+                    subtitle:
+                        Text(ServiceSelectionUIPageState.serviceNamesString),
+                  ),
                 ),
               ),
-            ),
 
             // ADDRESS
-           Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
               child: Card(
                 elevation: 5.0,
@@ -681,22 +620,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               child: RaisedButton(
                   color: Configurations.themColor,
                   textColor: Colors.white,
-                  child: Text(
-                      "Skip",
-                      style: TextStyle(fontSize: 16.5)),
+                  child: Text("Skip", style: TextStyle(fontSize: 16.5)),
                   onPressed: () {
-
                     Preferences.saveObject("profile", "0");
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomeScreen(),
                         ));
-
                   }),
             )
-
-
           ],
         ));
   }
@@ -704,14 +637,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List<String> language = new List<String>();
   void initialProfileCall() async {
 //  if(globals.isCustomer == false)
-  if (_image == null )
-   _buildCoverImage(MediaQuery.of(context).size);
-    if(ServiceSelectionUIPageState.selectedServices.length == 0 && globals.currentUser.roles[0].slug == "provider") {
+    if (_image == null) _buildCoverImage(MediaQuery.of(context).size);
+    if (ServiceSelectionUIPageState.selectedServices.length == 0 &&
+        globals.currentUser.roles[0].slug == "provider") {
       enterServices();
     } else if (_autoValidateAddress) {
       addressEnter();
     } else {
-      if(language.length == 0) {
+      if (language.length == 0) {
         showInfoAlert(context, "Please selecte language");
       } else {
         if (_formKey.currentState.validate()) {
@@ -737,13 +670,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             addressData["district"] = adrs_disctric.text;
             addressData["city"] = adrs_city.text;
             addressData["postal_code"] = adrs_postalcode.text;
-            addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+            addressData["location"] = globals.latitude.toString() +
+                ',' +
+                globals.longitude.toString();
 
             data["address"] = jsonEncode(addressData);
 
-
-            if(globals.currentUser.roles[0].slug == "provider") {
-              String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+            if (globals.currentUser.roles[0].slug == "provider") {
+              String rawJson =
+                  jsonEncode(ServiceSelectionUIPageState.selectedServices);
               print(rawJson);
               data["services"] = rawJson;
               data["service_radius"] = prfl_servcerds.text;
@@ -751,14 +686,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             printLog(data);
             apiCall(data);
           });
-        }
-        else {
+        } else {
           setState(() {
             _autoValidate = true;
           });
         }
+      }
     }
-  }
   }
 
   void apiCall(Map data) async {
@@ -799,7 +733,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   final GlobalKey<FormState> _formAddressKey = GlobalKey<FormState>();
- final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formServiceKey = GlobalKey<FormState>();
   bool _autoValidateAddress = true;
   bool _autoValidateService = true;
   bool showMap = false;
@@ -812,11 +746,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
 
-
   String mapAddressTitle = "Set Location Map";
 //  number + street + sublocality + locality(city) + region(state) + postal_code + country
   Widget _buildAddressDialog(BuildContext context) {
-
     print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
     return AlertDialog(
         title: Row(
@@ -834,226 +766,241 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ),
         content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-              return Container(
-                child: SingleChildScrollView(
-                  child: Form(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-
-                        FlatButton(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.my_location,
-                                color: Configurations.themColor,
-                                size: 15,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                mapAddressTitle,
-                                style:
-                                TextStyle(color: Configurations.themColor),
-                              )
-                            ],
+          return Container(
+            child: SingleChildScrollView(
+              child: Form(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FlatButton(
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.my_location,
+                            color: Configurations.themColor,
+                            size: 15,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              if(showMap == true) {
-                                showMap = false;
-                                _markers.clear();
-                                mapAddressTitle = "Set Location Map";
-                              } else {
-
-                                showMap = true;
-                                mapAddressTitle = "Enter Location";
-                                setCustomMapPin(pinLocationIcon).then((onValue) {
-                                  pinLocationIcon = onValue;
-                                });
-                              }
-                              print("showMap === $showMap");
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            mapAddressTitle,
+                            style: TextStyle(color: Configurations.themColor),
+                          )
+                        ],
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (showMap == true) {
+                            showMap = false;
+                            _markers.clear();
+                            mapAddressTitle = "Set Location Map";
+                          } else {
+                            showMap = true;
+                            mapAddressTitle = "Enter Location";
+                            setCustomMapPin(pinLocationIcon).then((onValue) {
+                              pinLocationIcon = onValue;
                             });
-                          },
-                        ),
+                          }
+                          print("showMap === $showMap");
+                        });
+                      },
+                    ),
+                    Visibility(
+                      child: mapBuild(setState),
+                      visible: showMap,
+                    ),
+                    Visibility(
+                        visible: !showMap,
+                        child: Column(
+                          children: <Widget>[
+                            // Name
+                            TextFormField(
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)
+                                    .translate('address_placeholder'),
+                              ),
+                              controller: adrs_name,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return AppLocalizations.of(context)
+                                      .translate('profile_txt_address');
+                                }
+                                return null;
+                              },
+                            ),
 
-                        Visibility(child: mapBuild(setState),
-                          visible: showMap,),
-
-                        Visibility(
-                            visible: !showMap,
-                            child: Column(
+                            Row(
                               children: <Widget>[
-                                // Name
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context)
-                                        .translate('address_placeholder'),
+                                // Address Line 1
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('address1_placeholder'),
+                                    ),
+                                    controller: (globals
+                                                .addressLocation.featureName ==
+                                            "")
+                                        ? adrs_line1
+                                        : adrs_line1
+                                      ..text =
+                                          globals.addressLocation.featureName,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return AppLocalizations.of(context)
+                                            .translate('profile_txt_address1');
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  controller: adrs_name,
-                                  validator: (value) {
-                                    if (value.isEmpty) {
-                                      return AppLocalizations.of(context)
-                                          .translate('profile_txt_address');
-                                    }
-                                    return null;
-                                  },
-                                ),
-
-                                Row(
-                                  children: <Widget>[
-                                    // Address Line 1
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('address1_placeholder'),
-                                        ),
-                                        controller: (globals.addressLocation.featureName == "")
-                                            ? adrs_line1 : adrs_line1 ..text = globals.addressLocation.featureName,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_address1');
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    // Address Line 2
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                          decoration: InputDecoration(
-                                            labelText: AppLocalizations.of(context)
-                                                .translate('address2_placeholder'),
-                                          ),
-                                          controller: (globals.addressLocation.subLocality == "") ? adrs_line2 : adrs_line2
-                                            ..text = globals.addressLocation.subLocality
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                Row(
-                                  children: <Widget>[
-                                    // Landmark
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                          decoration: InputDecoration(
-                                            labelText: AppLocalizations.of(context)
-                                                .translate('landmark_placeholder'),
-                                          ),
-                                          controller: adrs_landmark
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    // District
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('district_placeholder'),
-                                        ),
-                                        controller: (globals.addressLocation.subAdminArea == "") ?
-                                        adrs_disctric : adrs_disctric
-                                          ..text = globals.addressLocation.subAdminArea,
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                                Row(
-                                  children: <Widget>[
-                                    // City
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('city_placeholder'),
-                                        ),
-                                        controller: (globals.addressLocation.locality == "") ?
-                                        adrs_city : adrs_city
-                                          ..text = globals.addressLocation.locality,
-                                        //adrs_city,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_city');
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    // postal Code
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('postalcode_placeholder'),
-                                        ),
-                                        controller: (globals.addressLocation.postalCode == "") ?
-                                        adrs_postalcode : adrs_postalcode
-                                          ..text = globals.addressLocation.postalCode,
-                                        //adrs_postalcode,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_postalcode');
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    )
-                                  ],
                                 ),
                                 SizedBox(
-                                  height: 20,
+                                  width: 10,
+                                ),
+                                // Address Line 2
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('address2_placeholder'),
+                                      ),
+                                      controller: (globals.addressLocation
+                                                  .subLocality ==
+                                              "")
+                                          ? adrs_line2
+                                          : adrs_line2
+                                        ..text = globals
+                                            .addressLocation.subLocality),
                                 ),
                               ],
-                            )),
+                            ),
 
+                            Row(
+                              children: <Widget>[
+                                // Landmark
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                      decoration: InputDecoration(
+                                        labelText: AppLocalizations.of(context)
+                                            .translate('landmark_placeholder'),
+                                      ),
+                                      controller: adrs_landmark),
+                                ),
 
+                                SizedBox(
+                                  width: 10,
+                                ),
 
-                        ButtonTheme(
-                          minWidth: 300.0,
-                          child: RaisedButton(
-                              color: Configurations.themColor,
-                              textColor: Colors.white,
-                              child: Text(
-                                  AppLocalizations.of(context).translate('btn_save'),
-                                  style: TextStyle(fontSize: 16.5)),
-                              onPressed: () {
-                                addressSave();
-                              }),
-                        ),
-                      ],
+                                // District
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('district_placeholder'),
+                                    ),
+                                    controller: (globals
+                                                .addressLocation.subAdminArea ==
+                                            "")
+                                        ? adrs_disctric
+                                        : adrs_disctric
+                                      ..text =
+                                          globals.addressLocation.subAdminArea,
+                                  ),
+                                )
+                              ],
+                            ),
+
+                            Row(
+                              children: <Widget>[
+                                // City
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('city_placeholder'),
+                                    ),
+                                    controller:
+                                        (globals.addressLocation.locality == "")
+                                            ? adrs_city
+                                            : adrs_city
+                                          ..text =
+                                              globals.addressLocation.locality,
+                                    //adrs_city,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return AppLocalizations.of(context)
+                                            .translate('profile_txt_city');
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  width: 10,
+                                ),
+
+                                // postal Code
+                                Container(
+                                  width: 100.0,
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('postalcode_placeholder'),
+                                    ),
+                                    controller: (globals
+                                                .addressLocation.postalCode ==
+                                            "")
+                                        ? adrs_postalcode
+                                        : adrs_postalcode
+                                      ..text =
+                                          globals.addressLocation.postalCode,
+                                    //adrs_postalcode,
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return AppLocalizations.of(context)
+                                            .translate(
+                                                'profile_txt_postalcode');
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )),
+                    ButtonTheme(
+                      minWidth: 300.0,
+                      child: RaisedButton(
+                          color: Configurations.themColor,
+                          textColor: Colors.white,
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .translate('btn_save'),
+                              style: TextStyle(fontSize: 16.5)),
+                          onPressed: () {
+                            addressSave();
+                          }),
                     ),
-                    key: _formAddressKey,
-                    autovalidate: _autoValidateAddress,
-                  ),
+                  ],
                 ),
-              );
-            }));
+                key: _formAddressKey,
+                autovalidate: _autoValidateAddress,
+              ),
+            ),
+          );
+        }));
   }
 
   Set<Marker> _markers = {};
@@ -1062,15 +1009,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   // these are the minimum required values to set
   // the camera position
-  CameraPosition initialLocation = CameraPosition(
-      zoom: 16,
-      bearing: 30,
-      target: pinPosition
-  );
+  CameraPosition initialLocation =
+      CameraPosition(zoom: 16, bearing: 30, target: pinPosition);
 
   Completer<GoogleMapController> _controller = Completer();
 
- Widget  mapBuild(StateSetter setState) {
+  Widget mapBuild(StateSetter setState) {
     setCustomMapPin(pinLocationIcon).then((onValue) {
       pinLocationIcon = onValue;
     });
@@ -1088,44 +1032,35 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           _controller.complete(controller);
 
 //          getAddress(globals.location);
-        setState(() {
-            _markers.add(
-                Marker(
-                    markerId: MarkerId("User"),
-                    position: pinPosition,
-                    icon: pinLocationIcon
-                )
-            );
+          setState(() {
+            _markers.add(Marker(
+                markerId: MarkerId("User"),
+                position: pinPosition,
+                icon: pinLocationIcon));
           });
         },
 
         onTap: (latLogn) {
-
           print("latLogn::: $latLogn");
 
           setState(() {
-
-            getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
+            getAddress(LatLng(latLogn.latitude, latLogn.longitude))
+                .then((onValue) {
               globals.longitude = latLogn.longitude;
               globals.latitude = latLogn.latitude;
               globals.addressLocation = onValue;
               addressString = globals.addressLocation.addressLine;
             });
 
-            _markers.add(
-                Marker(
-                    markerId: MarkerId("User"),
-                    position: latLogn,
-                    icon: pinLocationIcon
-                )
-            );
+            _markers.add(Marker(
+                markerId: MarkerId("User"),
+                position: latLogn,
+                icon: pinLocationIcon));
           });
         },
-
       ),
     );
   }
-
 
   void addressSave() {
     showMap = false;
@@ -1161,7 +1096,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     }
   }
 
- void addressEnter() {
+  void addressEnter() {
     showDialog(
       context: context,
       builder: (BuildContext context) => _buildAddressDialog(context),
@@ -1215,13 +1150,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     });
   }
 
-
   void enterServices() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                ServiceSelectionUIPage()));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ServiceSelectionUIPage()));
 //    showDialog(
 //      context: context,
 //      builder: (BuildContext context) => setServiceListVendor(context),
@@ -1229,7 +1160,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   bool _value1 = false;
-
 
   void _value1Changed(bool value) => setState(() => _value1 = value);
 
@@ -1239,7 +1169,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       firstName = prfl_fname.text;
       _english = value;
 
-      if(language.contains("English")) {
+      if (language.contains("English")) {
         language.remove("English");
       } else {
         language.add("English");
@@ -1247,23 +1177,23 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       print("language :: $language $value");
     });
   } // => setState(() => );
-  void _selecteArabic(bool value) {
-   setState(() {
-     _arabic = value;
-     lastName = prfl_lname.text;
-     firstName = prfl_fname.text;
-     if(language.contains("Arabic")) {
-       language.remove("Arabic");
-     } else {
-       language.add("Arabic");
-     }
-   });
-  }
-  bool Value= false;
 
+  void _selecteArabic(bool value) {
+    setState(() {
+      _arabic = value;
+      lastName = prfl_lname.text;
+      firstName = prfl_fname.text;
+      if (language.contains("Arabic")) {
+        language.remove("Arabic");
+      } else {
+        language.add("Arabic");
+      }
+    });
+  }
+
+  bool Value = false;
 
   Duration initialtimer = new Duration();
-
 
   Widget setServiceListVendor(BuildContext context) {
     if (!isLoadin)
@@ -1284,10 +1214,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
             return Container(
-
               child: SingleChildScrollView(
                 child: Column(children: <Widget>[
-                 Container(
+                  Container(
                     child: SingleChildScrollView(
                       child: Column(
                         children: listOfCards(setState),
@@ -1295,8 +1224,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     ),
                     height: 400,
                   ),
-
-
                   SizedBox(
                     height: 20,
                   ),
@@ -1325,9 +1252,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //    serviceNamesString = "";
 //    if (_formServiceKey.currentState.validate()) {
 //      _formServiceKey.currentState.save();
-      setState(() {
-        print(selectedListOfService);
-        print(selectedListOfId);
+    setState(() {
+      print(selectedListOfService);
+      print(selectedListOfId);
 
 //        print(adrs_line2.text);
 //        print(adrs_landmark.text);
@@ -1346,8 +1273,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //            adrs_city.text +
 //            "\n" +
 //            adrs_postalcode.text;
-      });
-      Navigator.of(context).pop();
+    });
+    Navigator.of(context).pop();
 //    } else {
 ////      setState(() {
 ////        _autoValidateAddress = true;

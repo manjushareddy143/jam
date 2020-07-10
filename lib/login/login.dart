@@ -106,63 +106,62 @@ class _user extends State<UserLogin>{
           key: _formKey,
           autovalidate: _autoValidate,
           child:  SingleChildScrollView(
-            //child:Padding(
-            // padding: const EdgeInsets.fromLTRB(5,20,5,20),
             child: new Column(
-
-                crossAxisAlignment: CrossAxisAlignment.center,
+//                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-
                   new Image.asset("assets/images/BG-1x.jpg",
                     height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-
-                 // SizedBox(height: 30),
-                  Row(mainAxisAlignment: MainAxisAlignment.start,children: <Widget>[
-                     DropdownButton(
-                      underline: SizedBox(),
-                      onChanged: ( Language language){
-                        _changeLanguage(language);
-                      },
-                      icon: Icon(Icons.language, color: Configurations.themColor,),
-                      items: Language.languageList()
-                          .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                        value:  lang,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget> [
-                            Text(lang.flag),
-                            Text(lang.name)
-                          ],
-                        ) ,
-                      )).toList(),
-                    ),
-                   // SizedBox(width: 30)
-                  ],),
-                  new Image.asset("assets/images/jamLogo.png",
-                    height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
-                  /*new Text(
-                         'JAM    ',
-                         textAlign: TextAlign.center,
-                         overflow: TextOverflow.ellipsis,
-                         style: TextStyle(fontWeight: FontWeight.bold,background: paint ,  color: Colors.white, fontSize: 40.0, ),
-                       ), */
-                  new Text(
-                    AppLocalizations.of(context).translate('txt_loginuser'),
-                    textAlign: TextAlign.center,
-
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+//                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      DropdownButton(
+                        underline: SizedBox(),
+                        onChanged: ( Language language){
+                          _changeLanguage(language);
+                        },
+                        icon: Icon(Icons.language, color: Configurations.themColor,),
+                        items: Language.languageList()
+                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                          value:  lang,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget> [
+                              Text(lang.flag),
+                              Text(lang.name)
+                            ],
+                          ) ,
+                        )).toList(),
+                      ),
+                    ],
                   ),
 
-                  SizedBox(height: 30,
+                  Row(
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset("assets/images/jamLogo.png",
+                        height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
+                    ],
+                  ),
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: <Widget>[
+                       Text(
+                         AppLocalizations.of(context).translate('txt_loginuser'),
+                         textAlign: TextAlign.center,
+                         overflow: TextOverflow.ellipsis,
+                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
+                       )
+                     ],
+                   ),
 
-                      ),
+                  SizedBox(height: 30),
 
                   Container( padding: new  EdgeInsets.all(20),
                     child:
                     Column(children: <Widget>[
-
-                      new TextFormField(
+                      TextFormField(
                         focusNode: focus_email,
                         controller: txtUser
                         ,
@@ -211,7 +210,6 @@ class _user extends State<UserLogin>{
                         showDialog(context:  context,
                           builder: (BuildContext context) => setPasswordAgain(context),);
                       },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
-                      // FlatButton(textColor: Colors.cyan, child:  Text('Forget Password?'),),
                     ],
                   ),),
                   SizedBox(height: 10),
@@ -222,7 +220,6 @@ class _user extends State<UserLogin>{
                         color: Configurations.themColor,
                         textColor: Colors.white,
                         padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        //invokes _authUser function which validate data entered as well does the api call
                         child:  Text(
                             AppLocalizations.of(context).translate('btn_login'),
                             style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
@@ -242,8 +239,6 @@ class _user extends State<UserLogin>{
                         Navigator.push(
                             context, new MaterialPageRoute(
                             builder: (BuildContext context) => masterSignup()
-                                //SignupScreen()
-                          //masterSignup(),
                         )
                         );
                         },
@@ -261,15 +256,6 @@ class _user extends State<UserLogin>{
                   SizedBox(height: 20,
                     child: Text("------------------------ OR ------------------------"),
                   ),
-
-//                  SignInButton(
-//                    Buttons.Google,
-//                    text: "Sign in with Google",
-//                    onPressed: () {
-//      //                signinWithGmail();
-//                    },
-//                  ),
-
                   SizedBox(height: 10,),
 
                   SignInButton(
@@ -315,6 +301,7 @@ class _user extends State<UserLogin>{
   }
 
   void signinWithGmail() {
+    Widget_Helper.showLoading(context);
     signInWithGoogle()
         .whenComplete(() {
 
@@ -381,16 +368,13 @@ class _user extends State<UserLogin>{
   }
 
   void socialResponse(Response res) {
-    print("come for response ${res.statusCode}");
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("come for data ${data}");
         globals.currentUser = User.fromJson(data);
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
-          print("COME INSIDE");
           Preferences.saveObject("profile", "0");
           Navigator.pushAndRemoveUntil(
               context,
@@ -407,8 +391,6 @@ class _user extends State<UserLogin>{
         }
 
       } else {
-        printLog("login response code is not 200");
-        var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
     }
@@ -423,13 +405,10 @@ class _user extends State<UserLogin>{
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<List> signInWithGoogle() async {
-    print("signInWithGoogle");
     googleSignInAccount = await googleSignIn.signIn();
-    print("signInWithGoogle---- ${googleSignInAccount}");
     if(googleSignInAccount.id != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-
 
       List  obj = new List();
       final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -445,17 +424,12 @@ class _user extends State<UserLogin>{
 
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
-      print("GMAIL == ${googleSignInAccount}");
-      print("GMAIL == ${currentUser.uid}");
-      print("GMAIL == ${user}");
       obj.add(googleSignInAccount);
       obj.add(user);
       return obj;
     } else {
-      print("NO DATA");
       return null;
     }
-    //'signInWithGoogle succeeded: $user';
   }
 
 
