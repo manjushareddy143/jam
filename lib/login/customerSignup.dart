@@ -12,6 +12,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
@@ -330,11 +331,6 @@ class _customerSignup extends State<CustomerSignup>{
             ],
           ),
         )
-
-
-
-
-
       ],)
       ,);
   }
@@ -388,7 +384,6 @@ class _customerSignup extends State<CustomerSignup>{
       if (value.user != null) {
         setState(() {
           Map<String, String> data = new Map();
-
           data["password"] = txtPass.text;
           data["contact"] = selecteCode + txtContact.text;
           if(globals.isCustomer == true) {
@@ -413,10 +408,12 @@ class _customerSignup extends State<CustomerSignup>{
       }
     }).catchError((error) {
       setState(() {
-        print("error ${error.}");
         Widget_Helper.dismissLoading(context);
-        status = 'Something has gone wrong, please try later';
-        showInfoAlert(context, status);
+        showInfoAlert(context, error.message);
+        _showOTPField = false;
+        _hideSocialSignin = true;
+        _fridgeEdit = true;
+
       });
     });
   }
@@ -467,13 +464,10 @@ class _customerSignup extends State<CustomerSignup>{
     } else {
       data["type_id"] = "3";
       data["term_id"] = "2";
-
       if(data.containsKey("social_signin")) {
-
       } else {
         data["resident_country"] = selectedCountry;
       }
-
     }
     if(Platform.isAndroid) {
       data["device"] = "Android";
@@ -483,7 +477,6 @@ class _customerSignup extends State<CustomerSignup>{
     printLog(data);
     try {
       HttpClient httpClient = new HttpClient();
-      print('api call start signup');
       if(globals.isCustomer ==true) {
         var syncUserResponse =
         await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
@@ -493,7 +486,6 @@ class _customerSignup extends State<CustomerSignup>{
         await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
         processLoginResponse(syncUserResponse);
       }
-
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -502,16 +494,13 @@ class _customerSignup extends State<CustomerSignup>{
   }
 
   void processLoginResponse(Response res) {
-    print("come for response ${res.statusCode}");
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("come for data ${data}");
         globals.currentUser = User.fromJson(data);
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
-          print("COME INSIDE");
           Preferences.saveObject("profile", "0");
           Navigator.pushAndRemoveUntil(
               context,
@@ -526,9 +515,7 @@ class _customerSignup extends State<CustomerSignup>{
                   builder: (BuildContext context) => InitialProfileScreen()
               ),ModalRoute.withName('/'));
         }
-
       } else {
-        printLog("login response code is not 200");
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
@@ -601,13 +588,13 @@ class _customerSignup extends State<CustomerSignup>{
         data["password"] = g_user.id;
         data["email"] = g_user.email;
         data["image"] = g_user.photoUrl;
-
         data["social_signin"] = "gmail";
         print(data);
         callLoginAPI(data);
       }
 
     }).catchError((onError) {
+      Widget_Helper.dismissLoading(context);
       print("onError === $onError");
     });
   }
@@ -619,13 +606,10 @@ class _customerSignup extends State<CustomerSignup>{
 
 
   Future<List> signInWithGoogle() async {
-    print("signInWithGoogle");
     googleSignInAccount = await googleSignIn.signIn();
-    print("signInWithGoogle---- ${googleSignInAccount}");
     if(googleSignInAccount.id != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
-
 
       List  obj = new List();
       final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -641,17 +625,12 @@ class _customerSignup extends State<CustomerSignup>{
 
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
-      print("GMAIL == ${googleSignInAccount}");
-      print("GMAIL == ${currentUser.uid}");
-      print("GMAIL == ${user}");
       obj.add(googleSignInAccount);
       obj.add(user);
       return obj;
     } else {
-      print("NO DATA");
       return null;
     }
-    //'signInWithGoogle succeeded: $user';
   }
 
   static final FacebookLogin facebookSignIn = new FacebookLogin();
@@ -673,12 +652,9 @@ class _customerSignup extends State<CustomerSignup>{
         });
         break;
       case FacebookLoginStatus.cancelledByUser:
-        print('Login cancelled by the user.');
         Widget_Helper.dismissLoading(context);
         break;
       case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.\n'
-            'Here\'s the error Facebook gave us: ${result.errorMessage}');
         Widget_Helper.dismissLoading(context);
         break;
     }
@@ -690,7 +666,6 @@ class _customerSignup extends State<CustomerSignup>{
     final graphResponse = await http.get('https://graph.facebook.com/v2'
         '.12/me?fields=name,first_name,last_name,email,picture.type(large)&access_token=$token');
     final profile = json.decode(graphResponse.body);
-    print("profile :: $profile");
     Map<String, String> data = new Map();
     data["first_name"] = profile['first_name'];
     data["last_name"] = profile['last_name'];
@@ -700,7 +675,6 @@ class _customerSignup extends State<CustomerSignup>{
     data["type_id"] = "4";
     data["term_id"] = "1";
     data["social_signin"] = "facebook";
-//    Widget_Helper.dismissLoading(context);
     callLoginAPI(data);
   }
 
@@ -718,36 +692,27 @@ class _customerSignup extends State<CustomerSignup>{
   verificationCompleted (AuthCredential auth) {
     printLog(txtContact.text);
     setState(() {
-      printLog("verificationCompleted ${auth.toString()}");
-      printLog("verificationCompleted ${auth}");
       status = 'Auto retrieving verification code';
     });
     _authCredential = auth;
   }
+
   verificationFailed (AuthException authException) {
-    print("authException.message :${authException.message}");
-//    Widget_Helper.dismissLoading(context);
-    printLog(txtContact.text);
-    printLog(authException.message);
     setState(() {
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
-      print("verificationFailed: " + status);
       if (authException.message.contains('not authorized'))
         status = 'Something has gone wrong, please try later';
       else if (authException.message.contains('Network'))
         status = 'Please check your internet connection and try again';
-//      else
-//        status = 'Something has gone wrong, please try later';
       showInfoAlert(context, status);
     });
   }
+
   static String actualCode;
 
   codeSent (String verificationId, [int forceResendingToken]) async {
     actualCode = verificationId;
-    printLog(txtContact.text);
-    printLog("codeSent::: $actualCode");
     setState(() {
       _showOTPField = true;
       _hideSocialSignin = false;
@@ -756,14 +721,6 @@ class _customerSignup extends State<CustomerSignup>{
     });
   }
 
-  codeAutoRetrievalTimeout(String verificationId) {
-//    actualCode = verificationId;
-//    printLog("codeAutoRetrievalTimeout $actualCode");
-    setState(() {
-//      status = "\nAuto retrieval time out:: $actualCode";
-//      Widget_Helper.dismissLoading(context);
-//      showInfoAlert(context, status);
-    });
-  }
+  codeAutoRetrievalTimeout(String verificationId) {}
 
 }

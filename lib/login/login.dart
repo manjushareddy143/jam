@@ -327,6 +327,7 @@ class _user extends State<UserLogin>{
       }
 
     }).catchError((onError) {
+      Widget_Helper.dismissLoading(context);
       print("onError === $onError");
     });
   }

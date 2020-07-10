@@ -714,6 +714,7 @@ class _vendorSignup extends State<VendorSignup>{
       }
 
     }).catchError((onError) {
+      Widget_Helper.dismissLoading(context);
       print("onError === $onError");
     });
   }

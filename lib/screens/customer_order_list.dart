@@ -39,14 +39,10 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
   @override
   void initState() {
-    printLog("CUSTMMER ${this.url}");
-    printLog("isCustomer ${this.isCustomer}");
-//    printLog(this.user.first_name);
     // TODO: implement initState
     super.initState();
     getProfile();
     globals.context = context;
-//    getOrders();
   }
   void getProfile() async  {
     await Preferences.readObject("user").then((onValue) async {
@@ -80,13 +76,9 @@ class _OrderUIPageState extends State<OrderUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-//        print('ORDERSSS === $data');
         List orders = data;
         setState(() {
-          printLog("MYDDDDDAARA");
           listofOrders = Order.processOrders(orders);
-          printLog("LISTSSS :: ${listofOrders.length}");
-//          build(context);
         });
       } else {
         printLog("login response code is not 200");
