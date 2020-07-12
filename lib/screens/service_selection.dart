@@ -443,58 +443,101 @@ bool Value = false;
   }
   void storeFormValueChild(){
 
-    if(selectedServices.any((element) => element.category_id == onTapCategory.id) == false) {
-      selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
-    } else {
 
-      if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
-        print("YES");
+    /////////
+
+    print("onTapService ${onTapService.name}  onTapCategory ${onTapCategory.name}");
+
+    if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
+      print("YES");
+      if(selectedServices.any((element) => element.service_id == onTapService.id &&
+          element.category_id == onTapCategory.id) == false) {
+        print("is not data");
+//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
+
+        selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
+
+      } else {
+        print("is that data");
         SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
         sltdsrv =selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
         int idx = selectedServices.indexWhere((element) => element == sltdsrv);
         print("index === ${idx} == val ${sltdsrv.service_id} ${sltdsrv.category_id}");
         selectedServices[idx] =  SelectedService(sltdsrv.service_id, sltdsrv.category_id, int.parse(fieldValue));
       }
-      else if((selectedListOfCategory.contains(onTapCategory))&& (!(selectedListOfService.contains(onTapService)))){
-        print("NO");
-        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
-        setState(() {
-          if (selectedListOfService.contains(onTapService)) {
-            selectedListOfService.remove(onTapService);
-          } else {
-            selectedListOfService.add(onTapService);
-          }
-        });
-        int idx = selectedServices.indexWhere((element) => element == sltdsrv);
-        selectedServices[idx] =  SelectedService(onTapService.id, sltdsrv.category_id, int.parse(fieldValue));
-      }
-      else{
-      print("NUTERAL");
+
+    } else {
+
       setState(() {
         if (selectedListOfService.contains(onTapService)) {
-          selectedListOfService.remove(onTapService);
+//        selectedListOfService.remove(onTapService);
         } else {
           selectedListOfService.add(onTapService);
         }
         if (selectedListOfCategory.contains(onTapCategory)) {
-          selectedListOfCategory.remove(onTapCategory);
+//        selectedListOfCategory.remove(onTapCategory);
         } else {
           selectedListOfCategory.add(onTapCategory);
-
         }
         selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
       });
 
     }
-    }
+
+    //////////
+
+
+
+
+//    if(selectedServices.any((element) => element.category_id == onTapCategory.id) == false) {
+//      selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
+//    } else {
+//      if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
+//        print("YES");
+//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
+//        sltdsrv =selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
+//        int idx = selectedServices.indexWhere((element) => element == sltdsrv);
+//        print("index === ${idx} == val ${sltdsrv.service_id} ${sltdsrv.category_id}");
+//        selectedServices[idx] =  SelectedService(sltdsrv.service_id, sltdsrv.category_id, int.parse(fieldValue));
+//      }
+//      else if((selectedListOfCategory.contains(onTapCategory))&& (!(selectedListOfService.contains(onTapService)))){
+//        print("NO");
+//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
+//        setState(() {
+//          if (selectedListOfService.contains(onTapService)) {
+//            selectedListOfService.remove(onTapService);
+//          } else {
+//            selectedListOfService.add(onTapService);
+//          }
+//        });
+//        int idx = selectedServices.indexWhere((element) => element == sltdsrv);
+//        selectedServices[idx] =  SelectedService(onTapService.id, sltdsrv.category_id, int.parse(fieldValue));
+//      }
+//      else{
+//      print("NUTERAL");
+//      setState(() {
+//        if (selectedListOfService.contains(onTapService)) {
+//          selectedListOfService.remove(onTapService);
+//        } else {
+//          selectedListOfService.add(onTapService);
+//        }
+//        if (selectedListOfCategory.contains(onTapCategory)) {
+//          selectedListOfCategory.remove(onTapCategory);
+//        } else {
+//          selectedListOfCategory.add(onTapCategory);
+//
+//        }
+//        selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
+//      });
+//
+//    }
+//    }
 
   }
 
   void storeFormValue() {
 
     if (selectedListOfService.contains(onTapService)) {
-
-
       if(selectedServices.any((element) => element.service_id == onTapService.id) == false) {
         selectedServices.add(SelectedService(onTapService.id, 0 , int.parse(fieldValue)));
       } else {
@@ -543,7 +586,8 @@ bool Value = false;
     }
     if(isValid == false) {
       showInfoAlert(context, "Please insert Price for Services and Categories");
-    } else {
+    }
+    else {
 
       selectedListOfService.forEach((service) {
 
@@ -611,10 +655,18 @@ bool Value = false;
 //        }
 //      });
 
+      printLog("serviceNamesString === ${serviceNamesString}");
+
+      Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => InitialProfileScreen(),
+            ));
+
     }
 
 
-    printLog("serviceNamesString === ${serviceNamesString}");
+
 //    printLog("selected Services === ${selectedServices.length}");
 //    printLog("Category === ${selectedListOfCategory.length}");
 //    printLog("Services === ${selectedListOfService.length}");
@@ -639,11 +691,17 @@ bool Value = false;
 //        }
 ////        print("category ==$serviceNamesString");
 //
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => InitialProfileScreen(),
-            ));
+
+
+
+//        Navigator.pushReplacement(
+//            context,
+//            MaterialPageRoute(
+//              builder: (context) => InitialProfileScreen(),
+//            ));
+
+
+
 //      });
 //
 //    } else {
