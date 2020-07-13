@@ -617,12 +617,21 @@ class _vendorSignup extends State<VendorSignup>{
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
         if(data['existing_user'] == 1) {
-          Preferences.saveObject("profile", "0");
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => HomeScreen()
-              ),ModalRoute.withName('/'));
+          if(globals.currentUser.address.length > 0) {
+            Preferences.saveObject("profile", "0");
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => HomeScreen()
+                ),ModalRoute.withName('/'));
+          } else {
+            Preferences.saveObject("profile", "1");
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                    builder: (BuildContext context) => InitialProfileScreen()
+                ),ModalRoute.withName('/'));
+          }
         } else {
           Preferences.saveObject("profile", "1");
           Navigator.pushAndRemoveUntil(

@@ -75,7 +75,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         print(globals.customFirstName);
         firstName = globals.customFirstName;
       } else {
-        print("EMPTY");
         firstName = globals.currentUser.first_name;
       }
 
@@ -86,8 +85,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         phoneNumber = globals.customContact;
       } else {
         print("yes phone ${phoneNumber}");
+
       }
+
+      print("yes ${ServiceSelectionUIPageState.serviceNamesString}");
       email = globals.currentUser.email;
+      print(globals.currentUser);
       imageUrl = globals.currentUser.image;
       if(globals.customImage != null) {
         _image = globals.customImage;
@@ -558,7 +561,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                             ? "Select Services"
                             : "Your Services"),
                     subtitle:
-                        Text(ServiceSelectionUIPageState.serviceNamesString),
+                        Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
                   ),
                 ),
               ),
@@ -1214,11 +1217,17 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
       }
 
-      if (globals.customLanguage.contains("English")) {
-        globals.customLanguage.remove("English");
+      if(globals.customLanguage != null ) {
+        if (globals.customLanguage.contains("English")) {
+          globals.customLanguage.remove("English");
+        } else {
+          globals.customLanguage.add("English");
+        }
       } else {
+        globals.customLanguage = new List<String>();
         globals.customLanguage.add("English");
       }
+
 
       print("language :: ${language} $value");
     });
@@ -1234,9 +1243,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       } else {
         language.add("Arabic");
       }
-      if (globals.customLanguage.contains("Arabic")) {
-        globals.customLanguage.remove("Arabic");
+
+
+      if(globals.customLanguage != null) {
+        if (globals.customLanguage.contains("Arabic")) {
+          globals.customLanguage.remove("Arabic");
+        } else {
+          globals.customLanguage.add("Arabic");
+        }
       } else {
+        globals.customLanguage = new List<String>();
         globals.customLanguage.add("Arabic");
       }
 
