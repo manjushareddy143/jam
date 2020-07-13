@@ -17,6 +17,7 @@ import 'package:jam/globals.dart' as globals;
 import 'package:jam/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:jam/utils/httpclient.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class Profile extends StatelessWidget{
 
@@ -973,18 +974,49 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget setRichText(){
     return Container(
-      padding: EdgeInsets.all(30.0),
+      padding: EdgeInsets.only(left:15, right: 15),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Address', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
+          Align(alignment: Alignment.topRight,
+              child: IconButton(onPressed: () {addressEnter();}, icon: Icon(Icons.add),)),
+//          Text(
+//            'Address', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
           SizedBox(height: 10,),
+        Container(margin: const EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+          border: Border.all(
+            color: Configurations.themColor,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+            height: 140,
+            child: Swiper(
+
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                    Align(alignment:Alignment.center,
+                      child: ListTile(
+
+                      leading: Icon(Icons.location_on),
+                      title: Text((adrs_name.text == "")
+                          ? AppLocalizations.of(context).translate('address')
+                          : adrs_name.text),
+                      subtitle: Text(addressString),),
+                    )
+                    ],
+
+                  );
+                },
+              itemCount: 2,
+                ))
         ],
       ),
     );
   }
+
 
   Widget setTabbar(){
     return Column(
@@ -1010,7 +1042,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           ),
         ),
          Container(
-           height: 200,
+           height: 270,
 
            child: TabBarView(
            controller: _tabController,
