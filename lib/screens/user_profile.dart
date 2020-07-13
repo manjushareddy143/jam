@@ -61,7 +61,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       singleAddress = globals.currentUser.address[0];
     } else {
       print("no address");
-
     }
     tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
@@ -114,6 +113,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           updateProfile();
           isEditProfile = false;
         } else {
+          if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
+            singleAddress = globals.currentUser.address[0];
+          }
           isEditProfile = true;
         }
       });
@@ -330,11 +332,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Widget setDetails(){
 
-//    printLog(globals.currentUser.address);
-//    String addressString = "";
-
-
     if(globals.currentUser.address != null) {
+      print("ADDRESS GET");
       if(globals.currentUser.address.length > 0) {
         addressString = singleAddress.address_line1;
         if(singleAddress.address_line2 != "") {
@@ -442,7 +441,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 ListTile(
-                  onTap: addressEnter,
+                  onTap: showAddress,
                   leading: Icon(Icons.location_on),
                   title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
                   subtitle: Text(addressString),
@@ -470,7 +469,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                       ),
                       onPressed: () {
                         /* ... */
-                        addressEnter();
+                        addressEnter(false);
                       },
                     ),
                   ],
@@ -482,6 +481,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
       ),
     );
+  }
+
+  void showAddress() {
+    addressEnter(false);
   }
 
   void updateProfile() {
@@ -586,25 +589,25 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   String mapAddressTitle = "Set Location Map";
 
   bool isAdddressUpdate = false;
-  void addressEnter() {
+  void addressEnter(bool isNewAddress) {
     isAdddressUpdate = true;
     showDialog(
       context: context,
-      builder: (BuildContext context) => _buildAddressDialog(context),
+      builder: (BuildContext context) => _buildAddressDialog(context, isNewAddress),
     );
   }
 
-  Widget _buildAddressDialog(BuildContext context) {
-    if(singleAddress.name == null || singleAddress.name == "") {
-      singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
-          globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+  Widget _buildAddressDialog(BuildContext context, bool isNewAddress) {
+    if(isNewAddress) {
+      singleAddress = Address(0, "", "", "",
+          "", "", "", "", globals.currentUser.id, "");
+    } else {
+      if(singleAddress.name == null || singleAddress.name == "") {
+        singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
+            globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+      }
     }
 
-
-
-  print("showMap == $showMap");
-//  print("singleAddress == ${singleAddress.name}");
-//    _markers.clear();
     return AlertDialog(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -829,7 +832,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                   AppLocalizations.of(context).translate('btn_save'),
                                   style: TextStyle(fontSize: 16.5)),
                               onPressed: () {
-                                addressSave();
+                                addressSave(isNewAddress);
                               }),
                         ),
                       ],
@@ -911,32 +914,51 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     );
   }
 
-  void addressSave() {
+  void addressSave(bool isNewAddress) {
     showMap = false;
-    printLog("addressString on save ::: $addressString");
     if (_formAddressKey.currentState.validate()) {
       _formAddressKey.currentState.save();
       _autoValidateAddress = false;
 
       setState(() {
-        addressString = adrs_line1.text;
-        if (adrs_line2.text.isNotEmpty) {
-          addressString += "\n" + adrs_line2.text;
-        }
+        if(isNewAddress) {
+          print(isNewAddress);
+          String newAddressString = adrs_line1.text;
+          if (adrs_line2.text.isNotEmpty) {
+            newAddressString += "\n" + adrs_line2.text;
+          }
 
-        if (adrs_landmark.text.isNotEmpty) {
-          addressString += "\n" + adrs_landmark.text;
-        }
-        addressString += "\n" +
-            adrs_disctric.text +
-            "\n" +
-            adrs_city.text +
-            "\n" +
-            adrs_postalcode.text;
-        print("addressString == $addressString");
-        singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
-            adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
+          if (adrs_landmark.text.isNotEmpty) {
+            newAddressString += "\n" + adrs_landmark.text;
+          }
+          newAddressString += "\n" +
+              adrs_disctric.text +
+              "\n" +
+              adrs_city.text +
+              "\n" +
+              adrs_postalcode.text;
+          print("NEW addressString == $newAddressString");
 
+        } else {
+          print(isNewAddress);
+          addressString = adrs_line1.text;
+          if (adrs_line2.text.isNotEmpty) {
+            addressString += "\n" + adrs_line2.text;
+          }
+
+          if (adrs_landmark.text.isNotEmpty) {
+            addressString += "\n" + adrs_landmark.text;
+          }
+          addressString += "\n" +
+              adrs_disctric.text +
+              "\n" +
+              adrs_city.text +
+              "\n" +
+              adrs_postalcode.text;
+          print("addressString == $addressString");
+          singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
+              adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
+        }
         Navigator.of(context).pop();
       });
 
@@ -972,7 +994,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   bool _english = false;
   bool _arabic = false;
 
-  Widget setRichText(){
+  Widget setRichText()
+  {
     return Container(
       padding: EdgeInsets.only(left:15, right: 15),
       child: Column(
@@ -980,26 +1003,28 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Align(alignment: Alignment.topRight,
-              child: IconButton(onPressed: () {addressEnter();}, icon: Icon(Icons.add),)),
-//          Text(
-//            'Address', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20 ) ),
-          SizedBox(height: 10,),
-        Container(margin: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-          border: Border.all(
-            color: Configurations.themColor,
+              child: IconButton(
+                onPressed: () {
+                  addressEnter(true);
+                  },
+                icon: Icon(Icons.add),
+              )
           ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
+          SizedBox(height: 10,),
+          Container(margin: const EdgeInsets.all(15.0),
+              decoration: BoxDecoration(
+            border: Border.all(
+              color: Configurations.themColor,
+            ),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
             height: 140,
             child: Swiper(
-
                 itemBuilder: (BuildContext context, int index) {
                   return Column(mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                     Align(alignment:Alignment.center,
                       child: ListTile(
-
                       leading: Icon(Icons.location_on),
                       title: Text((adrs_name.text == "")
                           ? AppLocalizations.of(context).translate('address')
@@ -1010,7 +1035,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
                   );
                 },
-              itemCount: 2,
+              itemCount: globals.currentUser.address.length,
                 ))
         ],
       ),
