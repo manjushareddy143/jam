@@ -27,7 +27,6 @@ class ServiceSelection extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return ServiceSelectionUIPage();
-      //Center(child: );
   }
 }
 class ServiceSelectionUIPage extends StatefulWidget {
@@ -40,12 +39,10 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
 
   List<Service> selectedListOfService;
   static List<SelectedService> selectedServices;
-//  static int storeCategory;
   List<SubCategory> selectedListOfCategory;
 
   @override
   void initState(){
-    print("lets see");
     selectedListOfService = new List<Service>();
     selectedServices = new List<SelectedService>();
     selectedListOfCategory = new List<SubCategory>();
@@ -73,24 +70,19 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
     }
   }
   void processServiceResponse(Response res) {
-    print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
         List roles = data;
         setState(() {
           listofServices = Service.processServices(roles);
-          print("listofServices === ${listofServices.length}");
         });
       } else {
-        printLog("login response code is not 200");
         setState(() {
 
         });
       }
     } else {
-      print('no data');
     }
   }
 
@@ -235,29 +227,13 @@ bool Value = false;
       callback: (isSelected) {
         setState(() {
           if(isSelected) {
-//            icon = Icons.star;
           icon = Icons.chevron_right;
           } else {
           icon = Icons.keyboard_arrow_down;
-//            icon = Icons.keyboard;
           }
         });
       },
     );
-  }
-
-  isClickChild(Service service) {
-    printLog("isClick === ${service.id}");
-    setState(() {
-//      isClickCard = isClick;
-//      if(isClick == false) {
-//
-//        icon = Icons.keyboard_arrow_down;
-//      } else {
-//        icon = Icons.chevron_right;
-//      }
-    });
-
   }
 
 
@@ -276,9 +252,6 @@ bool Value = false;
                       category.isSelected = value;
                       if (selectedListOfCategory.contains(category)) {
                         selectedListOfCategory.remove(category);
-//                        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id &&
-//                            element.category_id == category.id);
-//                        selectedServices.remove(sltdsrv);
                       } else {
                         selectedListOfCategory.add(category);
                         if (selectedListOfService.contains(service)) {
@@ -309,20 +282,10 @@ bool Value = false;
                         hintText: "QR"
                     ) ,
                     onTap: () => getCategoryField(category, service),
-
                     onChanged: myCategory,
                     keyboardType: TextInputType.number,
-
                   ),),
               )
-
-
-
-              //TextField(
-              // controller: prfl_servicePrice,
-              //keyboardType: TextInputType.number,
-
-              // ),
             ]),
       ),);
   }
@@ -344,8 +307,6 @@ bool Value = false;
                         service.isSelected = value;
                         if (selectedListOfService.contains(service)) {
                           selectedListOfService.remove(service);
-//                          SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == service.id);
-//                          selectedServices.remove(sltdsrv);
                         } else {
                           selectedListOfService.add(service);
                         }
@@ -369,17 +330,12 @@ bool Value = false;
                   ),
                 ),
                 Padding(padding:  EdgeInsets.fromLTRB(10, 0, 0, 0),
-//                EdgeInsetsDirectional.fromSTEB(10,2,1,0),
                   child: Container(width: 90, height: 40,
                     padding: EdgeInsets.only(bottom: 0.0),
                     child:
                     TextField(
 
                       decoration: InputDecoration(
-//                          enabledBorder: OutlineInputBorder(
-//                        borderSide: BorderSide(color: Colors.grey)
-//                    ),
-//                      prefixText: "QR",
                       suffix: Text("QR"),
                       hintText: "QR"
 
@@ -387,8 +343,6 @@ bool Value = false;
                       onTap: () => getSelectedField(service),
                       onChanged: myService,
                       keyboardType: TextInputType.number,
-//                      onEditingComplete: doneEdit,
-//                      onSubmitted: doneSubmit,
                     ),
                   ),
                 )
@@ -405,64 +359,36 @@ bool Value = false;
   static Service onTapService;
   void getSelectedField(Service service) {
     onTapService = service;
-
-
-    print("selectedServices.length ${selectedServices.length}");
-    selectedServices.forEach((element) {
-      print("elements ${element.toJson()}");
-    });
-
   }
   static var parent;
   static SubCategory onTapCategory;
   void getCategoryField(SubCategory category, Service service) {
     onTapService= service;
     onTapCategory = category;
-
-
-    print("service ${service.name} category ${category.name} ${category.id}");
-    selectedServices.forEach((element) {
-      print("elements ${element.toJson()}");
-    });
-
   }
 
   static String fieldValue;
   myService(String str) {
-    print("onChange $str");
     fieldValue = str;
     storeFormValue();
 
   }
 
   myCategory(String str){
-    print("onchangeChild $str");
     fieldValue = str;
     storeFormValueChild();
 
   }
   void storeFormValueChild(){
-
-
-    /////////
-
-    print("onTapService ${onTapService.name}  onTapCategory ${onTapCategory.name}");
-
     if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
-      print("YES");
       if(selectedServices.any((element) => element.service_id == onTapService.id &&
           element.category_id == onTapCategory.id) == false) {
-        print("is not data");
-//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
-
         selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
 
       } else {
-        print("is that data");
         SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
         sltdsrv =selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
         int idx = selectedServices.indexWhere((element) => element == sltdsrv);
-        print("index === ${idx} == val ${sltdsrv.service_id} ${sltdsrv.category_id}");
         selectedServices[idx] =  SelectedService(sltdsrv.service_id, sltdsrv.category_id, int.parse(fieldValue));
       }
 
@@ -470,69 +396,16 @@ bool Value = false;
 
       setState(() {
         if (selectedListOfService.contains(onTapService)) {
-//        selectedListOfService.remove(onTapService);
         } else {
           selectedListOfService.add(onTapService);
         }
         if (selectedListOfCategory.contains(onTapCategory)) {
-//        selectedListOfCategory.remove(onTapCategory);
         } else {
           selectedListOfCategory.add(onTapCategory);
         }
         selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
       });
-
     }
-
-    //////////
-
-
-
-
-//    if(selectedServices.any((element) => element.category_id == onTapCategory.id) == false) {
-//      selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
-//    } else {
-//      if((selectedListOfService.contains(onTapService))&&(selectedListOfCategory.contains(onTapCategory)) ){
-//        print("YES");
-//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
-//        sltdsrv =selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
-//        int idx = selectedServices.indexWhere((element) => element == sltdsrv);
-//        print("index === ${idx} == val ${sltdsrv.service_id} ${sltdsrv.category_id}");
-//        selectedServices[idx] =  SelectedService(sltdsrv.service_id, sltdsrv.category_id, int.parse(fieldValue));
-//      }
-//      else if((selectedListOfCategory.contains(onTapCategory))&& (!(selectedListOfService.contains(onTapService)))){
-//        print("NO");
-//        SelectedService sltdsrv = selectedServices.firstWhere((element) => element.category_id == onTapCategory.id);
-//        setState(() {
-//          if (selectedListOfService.contains(onTapService)) {
-//            selectedListOfService.remove(onTapService);
-//          } else {
-//            selectedListOfService.add(onTapService);
-//          }
-//        });
-//        int idx = selectedServices.indexWhere((element) => element == sltdsrv);
-//        selectedServices[idx] =  SelectedService(onTapService.id, sltdsrv.category_id, int.parse(fieldValue));
-//      }
-//      else{
-//      print("NUTERAL");
-//      setState(() {
-//        if (selectedListOfService.contains(onTapService)) {
-//          selectedListOfService.remove(onTapService);
-//        } else {
-//          selectedListOfService.add(onTapService);
-//        }
-//        if (selectedListOfCategory.contains(onTapCategory)) {
-//          selectedListOfCategory.remove(onTapCategory);
-//        } else {
-//          selectedListOfCategory.add(onTapCategory);
-//
-//        }
-//        selectedServices.add(SelectedService(onTapService.id, onTapCategory.id, int.parse(fieldValue)));
-//      });
-//
-//    }
-//    }
-
   }
 
   void storeFormValue() {
@@ -542,14 +415,11 @@ bool Value = false;
         selectedServices.add(SelectedService(onTapService.id, 0 , int.parse(fieldValue)));
       } else {
         SelectedService sltdsrv = selectedServices.firstWhere((element) => element.service_id == onTapService.id);
-        print("yes ${sltdsrv}");
         int idx = selectedServices.indexWhere((element) => element == sltdsrv);
-        print("index === ${idx} == val ${sltdsrv.service_id}");
         selectedServices[idx] =  SelectedService(sltdsrv.service_id, 0, int.parse(fieldValue));
       }
 
     } else {
-      print("NO");
       setState(() {
         selectedListOfService.add(onTapService);
         selectedServices.add(SelectedService(onTapService.id, 0 , int.parse(fieldValue)));
@@ -564,23 +434,10 @@ bool Value = false;
   void serviceSave() {
 
     serviceNamesString = "";
-
-    printLog("${selectedListOfService.length} :: ${selectedServices.length}");
-//    printLog("$selectedListOfService");
-//    if(selectedListOfService.length != selectedServices.length ) {
-//      showInfoAlert(context, "Please insert Price for Services and Categories");
-//    }
     bool isValid = true;
-    selectedServices.forEach((element) {
-      print("selectedServices ${element.toJson()}");
-    });
     for(int i = 0; i < selectedListOfService.length; i++) {
-//      print("data === ${selectedServices.where((element) => element.service_id == selectedListOfService[i].id).length}");
-      print("data === ${selectedServices.any((element) => element.service_id == selectedListOfService[i].id)}");
-      print("service ${selectedListOfService[i].id}");
       if(selectedServices.any((element) => element.service_id == selectedListOfService[i].id)) {
       } else {
-        print("no element");
         isValid = false;
       }
     }
@@ -588,12 +445,8 @@ bool Value = false;
       showInfoAlert(context, "Please insert Price for Services and Categories");
     }
     else {
-
       selectedListOfService.forEach((service) {
-
         if(selectedServices.any((selection) => service.id == selection.service_id)) {
-//          Service srvc = selectedListOfService.firstWhere((service) => service.id == element.service_id);
-//          if(srvc != null) {
             String srvcName = service.name;
             if (serviceNamesString.isEmpty) {
               serviceNamesString = "* " + srvcName;
@@ -602,114 +455,25 @@ bool Value = false;
                 serviceNamesString += "\n* " +srvcName;
               }
             }
+          if(selectedServices.where((element) => service.id == element.service_id).length > 0) {
+            selectedServices.where((element) => service.id == element.service_id).forEach((element) {
+              if(element.category_id != 0) {
+                SubCategory sbctgry = service.categories.firstWhere((category) => category.id == element.category_id);
+                if (serviceNamesString.isEmpty) {
+                  serviceNamesString = "\t\t - " + sbctgry.name;
+                } else {
+                  serviceNamesString += "\n\t\t - " +sbctgry.name;
+                }
+              }
+            });
           }
-//        }
-
-
-//        if(selectedServices.any((selection) => selection.category_id == service.category_id)) {
-//          SubCategory ctgr = selectedListOfCategory.firstWhere((category) => category.id == element.category_id);
-//          if(ctgr != null) {
-//            String ctgrName = ctgr.name;
-//            if (serviceNamesString.isEmpty) {
-//              serviceNamesString = "\t - " + ctgrName;
-//            } else {
-//              if(!serviceNamesString.contains(ctgrName)) {
-//                serviceNamesString += "\n\t - " +ctgrName;
-//              }
-//            }
-//          }
-//        }
-
-
+        }
       });
-
-//      selectedServices.forEach((element) {
-//        print("SELECTED DATA -===  ${element.toJson()}");
-//
-//        if(selectedListOfService.any((service) => service.id == element.service_id)) {
-//          Service srvc = selectedListOfService.firstWhere((service) => service.id == element.service_id);
-//          if(srvc != null) {
-//            String srvcName = srvc.name;
-//            if (serviceNamesString.isEmpty) {
-//              serviceNamesString = "* " + srvcName;
-//            } else {
-//              if(!serviceNamesString.contains(srvcName)) {
-//                serviceNamesString += "\n* " +srvcName;
-//              }
-//            }
-//          }
-//        }
-//
-//        if(selectedListOfCategory.any((category) => category.id == element.category_id)) {
-//          SubCategory ctgr = selectedListOfCategory.firstWhere((category) => category.id == element.category_id);
-//          if(ctgr != null) {
-//            String ctgrName = ctgr.name;
-//            if (serviceNamesString.isEmpty) {
-//              serviceNamesString = "\t - " + ctgrName;
-//            } else {
-//              if(!serviceNamesString.contains(ctgrName)) {
-//                serviceNamesString += "\n\t - " +ctgrName;
-//              }
-//            }
-//          }
-//        }
-//      });
-
-      printLog("serviceNamesString === ${serviceNamesString}");
-
       Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => InitialProfileScreen(),
             ));
-
     }
-
-
-
-//    printLog("selected Services === ${selectedServices.length}");
-//    printLog("Category === ${selectedListOfCategory.length}");
-//    printLog("Services === ${selectedListOfService.length}");
-//    if(selectedServices.length > 0) {
-//      setState(() {
-//        for(int i = 0; i < selectedListOfService.length; i++) {
-//          String name = selectedListOfService[i].name;
-//
-//        }
-//
-////        print("service ==$serviceNamesString");
-//
-//
-//        for(int i = 0; i < selectedListOfCategory.length; i++) {
-//          String name = selectedListOfCategory[i].name;
-////          print("single cate name ==$name");
-//          if (serviceNamesString.isEmpty) {
-//            serviceNamesString = "* " + name;
-//          } else {
-//            serviceNamesString += "\n* " +name;
-//          }
-//        }
-////        print("category ==$serviceNamesString");
-//
-
-
-
-//        Navigator.pushReplacement(
-//            context,
-//            MaterialPageRoute(
-//              builder: (context) => InitialProfileScreen(),
-//            ));
-
-
-
-//      });
-//
-//    } else {
-//      showInfoAlert(context, "Please select services");
-//
-//    }
-
-    
   }
-  final prfl_servicePrice = TextEditingController();
 }

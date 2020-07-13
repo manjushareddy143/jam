@@ -5,6 +5,7 @@ import 'package:jam/models/organisation.dart';
 import 'package:jam/models/provider_detail.dart';
 import 'package:jam/models/rate.dart';
 import 'package:jam/models/review.dart';
+import 'package:jam/models/user_services.dart';
 
 class User {
   final int id;
@@ -30,18 +31,21 @@ class User {
   final Organisation organisation;
   final List<Review> reviews;
   final int jobs_count;
+  final String price;
+  final List<UserServices> services;
 //  final List<Jobs> jobs;
 
 
   User(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
        this.email, this.gender, this.org_id, this.term_id, this.type_id, this.rate,
       this.address, this.resident_country, this.roles, this.social_signin,
-      this.existing_user, this.provider, this.organisation, this.reviews, this.jobs_count);
+      this.existing_user, this.provider, this.organisation, this.reviews, this.jobs_count, this.price, this.services);
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],  first_name = json['first_name'],
         last_name = json['last_name'], image = json['image'],
         languages = json['languages'], contact = json['contact'],
+        price = json['price'],
         email = json['email'], gender = json['gender'],
         org_id = json['org_id'], term_id = json['term_id'],
         type_id = json['type_id'],resident_country = json['resident_country'],
@@ -58,6 +62,8 @@ class User {
             ? Organisation.fromJson(json['organisation']) : null),
         reviews = ((json.containsKey('reviews') && json['reviews'] != null )
             ? json['reviews'].map<Review>((json) => new Review.fromJson(json)).toList() : null),
+        services = ((json.containsKey('services') && json['services'] != null )
+            ? json['services'].map<UserServices>((json) => new UserServices.fromJson(json)).toList() : null),
         jobs_count = json['jobs_count'];
 //        jobs = ((json.containsKey('jobs') && json['jobs'] != null )
 //  ? json['jobs'].map<Jobs>((json) => new Jobs.fromJson(json)).toList() : null);

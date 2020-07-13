@@ -165,29 +165,6 @@ int swiperIndex =0;
 
     String img = null;
 
-
-  /*  if(this.provider.organisation != null) {
-      if(this.provider.organisation.logo != null) {
-        img = (this.provider.organisation.logo.contains(Configurations.BASE_URL)) ? this.provider.organisation.logo :
-        Configurations.BASE_URL + this.provider.organisation.logo;
-      } else {
-        img = null;
-//        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
-      }
-
-
-    } else {
-      if(this.provider.image != null) {
-        img = (this.provider.image.contains(Configurations.BASE_URL)) ? this.provider.image :
-        Configurations.BASE_URL + this.provider.image;
-      } else {
-//        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
-      }
-
-
-    } */
-
-
     return Center(
       child: Container(
 
@@ -210,7 +187,30 @@ int swiperIndex =0;
 
   }
   Widget setupVendorDetails() {
-    print("PROVIDER ==== ${this.provider.reviews.length}");
+    print("PROVIDER ==== ${this.provider.toJson()}");
+
+    String services = "";
+    this.provider.services.forEach((element) {
+      if (services.isEmpty) {
+        services = element.service.name;
+      } else {
+        if(!services.contains(element.service.name)) {
+          services += ", " +element.service.name;
+        }
+      }
+
+      if(element.categories != null) {
+        if (services.isEmpty) {
+          services = " - " + element.categories.name;
+        } else {
+          services += " - " +element.categories.name;
+        }
+      }
+    });
+
+    print("services  ${services}");
+
+
     return Padding( padding: EdgeInsets.fromLTRB(20,20,20,5),
       child: Column(
         children: <Widget>[
@@ -303,7 +303,7 @@ int swiperIndex =0;
               Icon(Icons.settings, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
               Flexible(
-                child: Text("Wet Servicing, Repairing Work, Gas Charging, Intstallation/Uninstallation Services",
+                child: Text(services,
                   maxLines: 2,style: TextStyle(color: Colors.blueGrey),),
               )
 

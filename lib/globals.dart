@@ -1,5 +1,7 @@
 // TODO Implement this library.
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/order.dart';
@@ -21,6 +23,12 @@ double latitude;
 dynamic addressLocation;
 dynamic newAddress;
 bool addressChange = false;
+String customRadius;
+File customImage;
+String customGender;
+String customContact;
+String customFirstName;
+List<String> customLanguage = new List<String>();
 
 
 
