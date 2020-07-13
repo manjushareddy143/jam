@@ -52,6 +52,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
   String cancelReason;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -116,44 +122,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      style: TextStyle(fontSize: 16.5)
                  ),
                onPressed: () async {
-                   print("donwload click");
                    Widget_Helper.showLoading(context);
                    DownLoadHelper down = new DownLoadHelper();
                    String status = await down.downloadFile(setState, order.id.toString());
-                   print("on done = $status");
                    Widget_Helper.dismissLoading(context);
                    final result = await OpenFile.open(status);
-                   print("type=${result.type}  message=${result.message}");
-//                   Navigator.push(
-//                       context,
-//                       MaterialPageRoute (
-//                           builder: (context) =>
-//                               PDFViewUIPage(path: status,) //provider.service
-//                       )
-//                   );
-//                   final pdfController = PdfController(
-//                     document: PdfDocument.openFile(status),
-//                   );
-//
-//                   Widget pdfView() => PdfView(
-//                     controller: pdfController,
-//                   );
-
-
-                   print("start = $status");
-//                   down.downloadFile( (fn) {
-//                     setState(() {
-//                       print("start = $fn");
-//                     });
-//                   }).then((value) => {
-//                       print("then $value")
-//                   }).whenComplete(() => {
-//                     print("complete")
-//                   });
                },
              ),
            ),
-
            Row(
              mainAxisAlignment: MainAxisAlignment.center,
              children: <Widget>[
@@ -505,11 +481,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
    String addressString = "";
     if(globals.order.address != null) {
       addressString = globals.order.address.address_line1;
-      if(globals.order.address.address_line2 != "") {
+      if(globals.order.address.address_line2 != "" && globals.order.address.address_line2 != null) {
         addressString += ", " + globals.order.address.address_line2;
       }
 
-      if(globals.order.address.landmark != "") {
+      if(globals.order.address.landmark != "" && globals.order.address.landmark != null) {
         addressString += ", " + globals.order.address.landmark;
       }
       addressString += ", " + globals.order.address.district

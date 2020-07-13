@@ -6,6 +6,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jam/models/address.dart';
 import 'package:jam/models/user.dart';
@@ -33,11 +34,15 @@ class ProfileUIPage extends StatefulWidget {
   @override
   ProfileUIPageState createState() => new ProfileUIPageState();
 }
-class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMixin {
+class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMixin,
+    AutomaticKeepAliveClientMixin<ProfileUIPage> {
+
+  @override
+  bool get wantKeepAlive => true;
+
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-//  bool isEdit = false;
   bool isEditProfile = false;
 
 
@@ -45,9 +50,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   File _image;
  List<Tab> tabList = List();
   TabController _tabController;
-//  User user;
   FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address;
-
 
   Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "");
 
@@ -171,35 +174,27 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // TODO: implement build
-    if(globals.currentUser == null) {
-      return new Scaffold(
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
 
-        appBar: new AppBar(
-          automaticallyImplyLeading: false,
-          title: new Text(AppLocalizations.of(context).translate('loading')),
-        ),
-      );
-    } else {
-      return GestureDetector(
-        onTap: (){
-          FocusScopeNode currentFocus = FocusScope.of(context);
-
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: Scaffold(
-            body: SingleChildScrollView(
-              child: new Form(
-                key: _formKey,
-                autovalidate: _autoValidate,
-                child: myProfileUI(),
-              ),
-            )
-        ),
-      );
-    }
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+          body: SingleChildScrollView(
+            child: new Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: myProfileUI(),
+            ),
+          )
+      ),
+    );
   }
 
   Widget myProfileUI() {
@@ -333,14 +328,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget setDetails(){
 
     if(globals.currentUser.address != null) {
-      print("ADDRESS GET");
+      print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
         addressString = singleAddress.address_line1;
-        if(singleAddress.address_line2 != "") {
+        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
           addressString += ", " + singleAddress.address_line2;
         }
 
-        if(singleAddress.landmark != "") {
+        if(singleAddress.landmark != "" && singleAddress.landmark != null) {
           addressString += ", " + singleAddress.landmark;
         }
         addressString += ", " + singleAddress.district
@@ -832,7 +827,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                   AppLocalizations.of(context).translate('btn_save'),
                                   style: TextStyle(fontSize: 16.5)),
                               onPressed: () {
-                                addressSave(isNewAddress);
+                                addressSave(isNewAddress, setState);
                               }),
                         ),
                       ],
@@ -858,6 +853,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Completer<GoogleMapController> _controller = Completer();
 
+  bool isMapAdrs = false;
   Widget  mapBuild(StateSetter setState) {
     setCustomMapPin(pinLocationIcon).then((onValue) {
       pinLocationIcon = onValue;
@@ -890,15 +886,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               globals.latitude = latLogn.latitude;
               globals.longitude = latLogn.longitude;
               addressString = globals.addressLocation.addressLine;
-//              singleAddress = Address(0, , , "",
-//                  , , , "", globals.currentUser.id, "");
-////              Address(id, , , , , , postal_code, location, user_id, name)
-                adrs_line1.text = globals.addressLocation.featureName;
-                adrs_line2.text = globals.addressLocation.subLocality;
-                adrs_disctric.text = globals.addressLocation.subAdminArea;
-                adrs_city.text = globals.addressLocation.locality;
-                adrs_postalcode.text = globals.addressLocation.postalCode;
-                print("adrs_line1.text == ${adrs_line1.text}" );
+              adrs_line1.text = globals.addressLocation.featureName;
+              adrs_line2.text = globals.addressLocation.subLocality;
+              adrs_disctric.text = globals.addressLocation.subAdminArea;
+              adrs_city.text = globals.addressLocation.locality;
+              adrs_postalcode.text = globals.addressLocation.postalCode;
+              print("adrs_line1.text == ${adrs_line1.text}");
+              isMapAdrs = true;
             });
             _markers.add(
                 Marker(
@@ -909,66 +903,122 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             );
           });
         },
-
-      ),
+      )
     );
   }
 
-  void addressSave(bool isNewAddress) {
-    showMap = false;
-    if (_formAddressKey.currentState.validate()) {
-      _formAddressKey.currentState.save();
-      _autoValidateAddress = false;
-
+  void addressSave(bool isNewAddress, StateSetter setState) {
+    _markers.clear();
+    if(isMapAdrs == true) {
+      print("isMapAdrs == $isMapAdrs");
+      print("showMap == $showMap");
       setState(() {
-        if(isNewAddress) {
-          print(isNewAddress);
-          String newAddressString = adrs_line1.text;
-          if (adrs_line2.text.isNotEmpty) {
-            newAddressString += "\n" + adrs_line2.text;
-          }
-
-          if (adrs_landmark.text.isNotEmpty) {
-            newAddressString += "\n" + adrs_landmark.text;
-          }
-          newAddressString += "\n" +
-              adrs_disctric.text +
-              "\n" +
-              adrs_city.text +
-              "\n" +
-              adrs_postalcode.text;
-          print("NEW addressString == $newAddressString");
-
-        } else {
-          print(isNewAddress);
-          addressString = adrs_line1.text;
-          if (adrs_line2.text.isNotEmpty) {
-            addressString += "\n" + adrs_line2.text;
-          }
-
-          if (adrs_landmark.text.isNotEmpty) {
-            addressString += "\n" + adrs_landmark.text;
-          }
-          addressString += "\n" +
-              adrs_disctric.text +
-              "\n" +
-              adrs_city.text +
-              "\n" +
-              adrs_postalcode.text;
-          print("addressString == $addressString");
-          singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
-              adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
-        }
-        Navigator.of(context).pop();
-      });
-
-
-    } else {
-      setState(() {
-        _autoValidateAddress = true;
+        showMap = false;
+        isMapAdrs = false;
+        singleAddress = Address(0, adrs_line1.text, adrs_line2.text,
+        "", adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, "");
+        print("adrs_line1.text == ${adrs_line1.text}");
       });
     }
+    else {
+      showMap = false;
+      if (_formAddressKey.currentState.validate()) {
+        _formAddressKey.currentState.save();
+        _autoValidateAddress = false;
+        setState(() {
+          if(isNewAddress) {
+            AddAddress(setState);
+            singleAddress = globals.currentUser.address[0];
+          }
+          else {
+            print("OLD ADDESSS");
+            addressString = adrs_line1.text;
+            if (adrs_line2.text.isNotEmpty) {
+              addressString += "\n" + adrs_line2.text;
+            }
+
+            if (adrs_landmark.text.isNotEmpty) {
+              addressString += "\n" + adrs_landmark.text;
+            }
+            addressString += "\n" +
+                adrs_disctric.text +
+                "\n" +
+                adrs_city.text +
+                "\n" +
+                adrs_postalcode.text;
+            print("addressString == $addressString");
+            singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
+                adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
+            Navigator.of(context).pop();
+          }
+        });
+      }
+      else {
+        print("ELEXC");
+        setState(() {
+          _autoValidateAddress = true;
+        });
+      }
+    }
+
   }
+
+  void AddAddress(StateSetter setState) {
+    var addressData = new Map<String, dynamic>();
+    addressData["name"] = adrs_name.text;
+    addressData["address_line1"] = adrs_line1.text;
+    addressData["address_line2"] = adrs_line2.text;
+    addressData["user_id"] = globals.currentUser.id.toString();
+    addressData["landmark"] = adrs_landmark.text;
+    addressData["district"] = adrs_disctric.text;
+    addressData["city"] = adrs_city.text;
+    addressData["postal_code"] = adrs_postalcode.text;
+    addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+    apiCallAddAddress(addressData, setState);
+  }
+
+  void apiCallAddAddress(Map data, StateSetter setState) async {
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+      await httpClient.postRequest(context, Configurations.ADD_USER_ADDRESS, data, true);
+      processAddressResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processAddressResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("data::::::::$data");
+        List addresses = data;
+        setState(() {
+          globals.currentUser.address = Address.processListOfAddress(addresses);
+          print("ADDRESS LENT == ${globals.currentUser.address.length}");
+          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+          new Future<String>.delayed(new Duration(microseconds: 100), () => null)
+              .then((String value) {
+            Navigator.of(context).pop();
+            build(context);
+          });
+
+        });
+      } else {
+        showInfoAlert(context, "Unknown error from server side");
+      }
+    } else {
+      printLog("login response code is not 200");
+      var data = json.decode(res.body);
+      showInfoAlert(context, data['message']);
+    }
+  }
+
+
+
   List<String> languages = new List<String>();
   void _selecteEnglish(bool value) {
     setState(() {
@@ -994,8 +1044,27 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   bool _english = false;
   bool _arabic = false;
 
+  String addressListString(Address address) {
+
+    String newAddressString = address.address_line1;
+    if(address.address_line2 != "" && address.address_line2 != null) {
+      newAddressString += ", " + address.address_line2;
+    }
+
+    if(address.landmark != "" && address.landmark != null) {
+      newAddressString += ", " + address.landmark;
+    }
+    newAddressString += ", " + address.district
+        + ", " + address.city + ", " + address.postal_code + ".";
+
+    print("NEW addressString == $newAddressString");
+    return newAddressString;
+  }
+
   Widget setRichText()
   {
+    int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
+    print("AddressLength == ${AddressLength}");
     return Container(
       padding: EdgeInsets.only(left:15, right: 15),
       child: Column(
@@ -1010,33 +1079,33 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 icon: Icon(Icons.add),
               )
           ),
-          SizedBox(height: 10,),
-          Container(margin: const EdgeInsets.all(15.0),
+          if(AddressLength > 0)
+          Container(
+              margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
               decoration: BoxDecoration(
-            border: Border.all(
-              color: Configurations.themColor,
-            ),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-            height: 140,
-            child: Swiper(
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                    Align(alignment:Alignment.center,
-                      child: ListTile(
-                      leading: Icon(Icons.location_on),
-                      title: Text((adrs_name.text == "")
-                          ? AppLocalizations.of(context).translate('address')
-                          : adrs_name.text),
-                      subtitle: Text(addressString),),
-                    )
-                    ],
-
-                  );
-                },
-              itemCount: globals.currentUser.address.length,
-                ))
+                border: Border.all(
+                  color: Configurations.themColor,
+                ),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              height: 100,
+              child: Swiper(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Column(mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Align(alignment:Alignment.center,
+                          child: ListTile(
+                            leading: Icon(Icons.location_on),
+                            title: Text(globals.currentUser.address[index].name),
+                            subtitle: Text(addressListString(globals.currentUser.address[index])),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                itemCount: AddressLength,
+              )
+          )
         ],
       ),
     );
@@ -1067,8 +1136,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           ),
         ),
          Container(
-           height: 270,
-
+           height: 200,
            child: TabBarView(
            controller: _tabController,
            children:
@@ -1084,6 +1152,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget _getPage(Tab tab){
     switch(tab.text){
       case 'Address' : return setRichText();
+
     }
   }
   String dropdownvalue = "Male";

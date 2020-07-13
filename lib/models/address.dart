@@ -28,4 +28,8 @@ class Address {
     'postal_code': postal_code, 'location': location,
     'user_id': user_id
   };
+
+  static List<Address> processListOfAddress(List addresses) {
+    return addresses.map<Address>((json) => new Address.fromJson(json)).toList();
+  }
 }

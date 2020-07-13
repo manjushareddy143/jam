@@ -510,8 +510,6 @@ int swiperIndex =0;
           Visibility(child: Container(
             height: 300,
             child: Swiper(
-              // layout: SwiperLayout.STACK,
-              //  itemWidth: 100.0,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                     children: <Widget>[

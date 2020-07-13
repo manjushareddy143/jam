@@ -24,7 +24,7 @@ class User {
   final String resident_country;
   final String social_signin;
 
-  final List<Address> address;
+  List<Address> address;
   final List<UserRole> roles;
   final List<Rate> rate;
   final ProviderDetail provider;
