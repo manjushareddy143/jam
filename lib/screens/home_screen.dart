@@ -13,6 +13,7 @@ import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/InquiryForm.dart';
 import 'package:jam/screens/home_ui_design.dart';
 import 'package:jam/screens/customer_order_list.dart';
+import 'package:jam/screens/service_selection.dart';
 import 'package:jam/screens/user_profile.dart';
 import 'package:jam/services.dart';
 import 'package:jam/utils/preferences.dart';
@@ -184,9 +185,16 @@ class _HomePageState extends State<HomePage> {
               } else if(globals.currentUser.social_signin == "gmail") {
                 signOutGoogle();
               }
-
               globals.isCustomer = true;
               globals.currentUser = null;
+              globals.customRadius = null;
+              globals.customImage = null;
+              globals.customGender = null;
+              globals.customContact = null;
+              globals.customFirstName = null;
+              globals.customLanguage = null;
+              ServiceSelectionUIPageState.serviceNamesString = null;
+              ServiceSelectionUIPageState.selectedServices = null;
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => UserLogin()));
             },

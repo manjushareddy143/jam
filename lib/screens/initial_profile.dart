@@ -67,22 +67,67 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     super.initState();
     globals.context = context;
     setState(() {
-      if (globals.currentUser.roles[0].slug == "provider")
-        print("provider");
-      else
-        print("customer");
-      firstName = globals.currentUser.first_name;
+//      if (globals.currentUser.roles[0].slug == "provider")
+//        print("provider");
+//      else
+//        print("RE INIT");
+      if(globals.customFirstName != null) {
+        print(globals.customFirstName);
+        firstName = globals.customFirstName;
+      } else {
+        print("EMPTY");
+        firstName = globals.currentUser.first_name;
+      }
+
       lastName = globals.currentUser.last_name;
       phoneNumber = globals.currentUser.contact;
+      if(phoneNumber == "" || phoneNumber == null) {
+        print("no phone");
+        phoneNumber = globals.customContact;
+      } else {
+        print("yes phone ${phoneNumber}");
+      }
       email = globals.currentUser.email;
       imageUrl = globals.currentUser.image;
+      if(globals.customImage != null) {
+        _image = globals.customImage;
+      }
+
+      if(globals.customLanguage != null) {
+
+        globals.customLanguage.forEach((element) {
+          if(element == 'English') {
+            _english = true;
+            language.add("English");
+          }
+
+          if(element == 'Arabic') {
+            _arabic = true;
+            language.add("Arabic");
+          }
+        });
+      }
+
     });
+
+
+
+
+
+
+//    if(globals.customLanguage != null) {
+//      language.addAll(globals.customLanguage);
+//    }
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
-    dropdownvalue = _dropDownTypes[0].value;
+    if(globals.customGender !=  null) {
+      dropdownvalue = globals.customGender;
+    } else {
+      dropdownvalue = _dropDownTypes[0].value;
+    }
+
   }
 
   void processServiceResponse(Response res) {
-    print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
@@ -93,13 +138,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           isLoadin = false;
         });
       } else {
-        printLog("login response code is not 200");
         setState(() {
           isLoadin = false;
         });
       }
     } else {
-      print('no data');
     }
   }
 
@@ -148,6 +191,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         setState(() {
           imageUrl = null;
           _image = image;
+          globals.customImage = _image;
         });
       }
     }
@@ -177,36 +221,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImageForSocial() {
-    print("IMG ${globals.isCustomer}");
-//    if(globals.isCustomer == true)
-//    return Center(
-//      child: Container(
-//        child: GestureDetector(
-//          onTap: () {
-//            print("object");
-//
-//            getImage();
-//          }, // handle your image tap here
-//        ),
-//        width: 120.0,
-//        height: 120.0,
-//        decoration: BoxDecoration(
-//          image: DecorationImage(
-//
-//            image: (imageUrl == null)
-//                ? setImgPlaceholder()
-//                : NetworkImage(imageUrl),
-//            fit: BoxFit.cover,
-//          ),
-//          borderRadius: BorderRadius.circular(80.0),
-//          border: Border.all(
-//            color: Colors.white,
-//            width: 5.0,
-//          ),
-//        ),
-//      ),
-//    );
-//    if(globals.isCustomer == false)
     return Center(
       child: Container(
         child: GestureDetector(
@@ -238,17 +252,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImage() {
-    print("NO DATA ${globals.isCustomer}");
-//    if(globals.isCustomer == true)
     return Center(
       child: Container(
         child: GestureDetector(
           onTap: () {
-            print("object");
-            // if(globals.isCustomer == true)
             getImage();
-            // if(globals.isVendor == true)
-            // pickImage();
           }, // handle your image tap here
         ),
         width: 120.0,
@@ -269,7 +277,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   String addressString = "";
-//  String serviceNamesString = "";
   String firstName = "";
   String lastName = "";
   String phoneNumber = "";
@@ -305,6 +312,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               padding: EdgeInsets.fromLTRB(10, 30, 10, 10),
               child: Column(
                 children: <Widget>[
+
                   // First Name
                   Material(
                     elevation: 5.0,
@@ -334,6 +342,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         }
                         return null;
                       },
+                      onChanged: setFirstName,
                     ),
                   ),
                   SizedBox(
@@ -383,12 +392,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       controller: (phoneNumber == "") ? prfl_phone : prfl_phone
                         ..text = phoneNumber,
                       keyboardType: TextInputType.phone,
-//                      TextEditingController()..text = phoneNumber,
+                    onChanged: setContact,
                       decoration: InputDecoration(
-//                    isDense: true,
                         prefixIcon:
                             Icon(Icons.phone, textDirection: TextDirection.rtl),
-//                    contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.white,
@@ -398,6 +405,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                         labelText: AppLocalizations.of(context)
                             .translate('signin_phone_placeholder'),
                         hasFloatingPlaceholder: false,
+
                       ),
                     ),
                   ),
@@ -476,13 +484,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       height: 20,
                     ),
 
+
+                  /*
+
+                  * */
                   // Service Radius
                   if (globals.currentUser.roles[0].slug == "provider")
                     Material(
                       elevation: 5.0,
                       shadowColor: Colors.grey,
                       child: TextFormField(
-                        controller: prfl_servcerds,
+                        controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
+                          ..text = globals.customRadius,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           prefixIcon: Icon(
@@ -507,6 +520,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                           }
                           return null;
                         },
+
+                        onChanged: setRadius,
                       ),
                     ),
                 ],
@@ -528,6 +543,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //                ),
 //              ),
 
+
             // SERVICE
             if (globals.currentUser.roles[0].slug == "provider")
               Padding(
@@ -540,7 +556,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     title: Text(
                         (ServiceSelectionUIPageState.serviceNamesString == "")
                             ? "Select Services"
-                            : adrs_name.text),
+                            : "Your Services"),
                     subtitle:
                         Text(ServiceSelectionUIPageState.serviceNamesString),
                   ),
@@ -634,19 +650,39 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ));
   }
 
+  void setContact (String str) {
+    globals.customContact = str;
+  }
+  void setFirstName(String str) {
+    globals.customFirstName = str;
+  }
+
+  void setRadius(String str) {
+    globals.customRadius = str;
+  }
+
   List<String> language = new List<String>();
   void initialProfileCall() async {
 //  if(globals.isCustomer == false)
-    if (_image == null) _buildCoverImage(MediaQuery.of(context).size);
-    if (ServiceSelectionUIPageState.selectedServices.length == 0 &&
+//    if (_image == null) {
+//      _buildCoverImage(MediaQuery.of(context).size);
+//    }
+    print("CHECK ${ServiceSelectionUIPageState.selectedServices}");
+    if (ServiceSelectionUIPageState.selectedServices == null &&
         globals.currentUser.roles[0].slug == "provider") {
-      enterServices();
+      print("provider");
+//      ServiceSelectionUIPageState.selectedServices.length == 0 ||
+          enterServices();
     } else if (_autoValidateAddress) {
+      print("address");
       addressEnter();
     } else {
+      print("LANAGNE CHECH");
       if (language.length == 0) {
+        print("no language");
         showInfoAlert(context, "Please selecte language");
       } else {
+        print("DONe");
         if (_formKey.currentState.validate()) {
           _formKey.currentState.save();
           _autoValidate = false;
@@ -722,8 +758,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       globals.currentUser = User.fromJson(res);
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
-      ServiceSelectionUIPageState.selectedServices.clear();
-      ServiceSelectionUIPageState.serviceNamesString = "";
+      if(ServiceSelectionUIPageState.selectedServices != null) {
+        ServiceSelectionUIPageState.selectedServices.clear();
+        ServiceSelectionUIPageState.serviceNamesString = "";
+      }
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -1147,6 +1185,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void changedDropDownItem(String selectedItem) {
     setState(() {
       dropdownvalue = selectedItem;
+      globals.customGender = dropdownvalue;
     });
   }
 
@@ -1168,13 +1207,20 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       lastName = prfl_lname.text;
       firstName = prfl_fname.text;
       _english = value;
-
       if (language.contains("English")) {
         language.remove("English");
       } else {
         language.add("English");
+
       }
-      print("language :: $language $value");
+
+      if (globals.customLanguage.contains("English")) {
+        globals.customLanguage.remove("English");
+      } else {
+        globals.customLanguage.add("English");
+      }
+
+      print("language :: ${language} $value");
     });
   } // => setState(() => );
 
@@ -1188,6 +1234,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       } else {
         language.add("Arabic");
       }
+      if (globals.customLanguage.contains("Arabic")) {
+        globals.customLanguage.remove("Arabic");
+      } else {
+        globals.customLanguage.add("Arabic");
+      }
+
     });
   }
 

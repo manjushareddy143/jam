@@ -63,6 +63,8 @@ class _ProviderListState extends State<ProviderListPage> {
 
       if(service.categories.length > 0) {
         apiCallURL += "&category_id=" + selectedSubCategory.id.toString();
+      } else {
+        apiCallURL += "&category_id=0";
       }
       print("apiCallURL === ${apiCallURL}");
       getProviders(apiCallURL);
@@ -100,8 +102,6 @@ class _ProviderListState extends State<ProviderListPage> {
         List providers = data;
         setState(() {
           listofProviders = User.processListOfUser(providers);
-//          build(context);
-         // print("after process providers!");
         });
       } else {
         printLog("login response code is not 200");
@@ -192,7 +192,7 @@ class _ProviderListState extends State<ProviderListPage> {
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
       print("listofProviders === ${listofProviders[providerCount]}");
-        User user = listofProviders[providerCount];//.user[userCount];
+        User user = listofProviders[providerCount];
         list.add(setupCard(user, service));
     }
 
@@ -209,7 +209,6 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
 
-
     double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
     String review = (user.rate.length == 0)? "0" : user.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
     String img = "";
@@ -219,22 +218,17 @@ class _ProviderListState extends State<ProviderListPage> {
         img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
       } else {
         img = null;
-//        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
       }
-
       name = user.organisation.name;
     } else {
-      print("user ==== ${user.image}");
       if(user.image != null) {
         if(user.image.contains("http")) {
           img = user.image;
         } else {
           img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
         }
-
       } else {
         img = null;
-//        img = (user.image.contains(Configurations.BASE_URL)) ? user.image : Configurations.BASE_URL +user.image;
       }
 
       name = user.first_name;
@@ -247,6 +241,7 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
+            print("USERSS ${user.services}"),
            Navigator.push(
            context,
           MaterialPageRoute (
@@ -276,8 +271,9 @@ class _ProviderListState extends State<ProviderListPage> {
             subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years'),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SmoothStarRating(
                   allowHalfRating: false,
@@ -290,17 +286,33 @@ class _ProviderListState extends State<ProviderListPage> {
                   borderColor: Colors.amber,
                   //unfilledStar: Icon(Icons., color: Colors.grey),
                   spacing:0.0,
-                  onRatingChanged: (v) {
-//                    rating = v;
-                    setState(() {
-                      printLog("RATE :: $v");
-//                      rating = v;
-                    });
-                  },
+                  onRatingChanged: (v) {},
                 ),
                 Text( " " + review + " " + AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Cost  ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold),
+                ),
+                Text(user.price,
+                  style: TextStyle(
+                    color: Colors.red, fontWeight: FontWeight.bold
+                  ),
+                ),
+                Text("/hr",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold
+                  ),
+                ),
               ],
             ),
           ),
@@ -310,31 +322,28 @@ class _ProviderListState extends State<ProviderListPage> {
                 children: <Widget>[
                   Expanded(
                       child: FlatButton.icon(
-//                          color: Colors.red,
-                        icon: Icon(Icons.monetization_on, color: Configurations.themColor), //`Icon` to display
+                        icon: Icon(Icons.monetization_on, color: Configurations.themColor),
                         label: Text(AppLocalizations.of(context).translate('quotes'), style: TextStyle(
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w400,
-                                color: Configurations.themColor)), //`Text` to display
+                                color: Configurations.themColor)),
                         onPressed: () {
-                         // show();
                          if(globals.guest == true){
-                           print("i am a guest so need to login first");
                             show();
-                          }
-                          else{
-//                            printLog('provider::: ${provider}');
+                          } else {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         InquiryPage(service: this.service, provider: user,
-                                        category: selectedSubCategory,)));
+                                        category: selectedSubCategory)
+                                )
+                            );
                           }
-
                         },
                       ),
                   ),
+
                   Padding(
                     padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
                     child: FlatButton.icon(
@@ -350,7 +359,6 @@ class _ProviderListState extends State<ProviderListPage> {
                           )
                       ),
                       onPressed: () {
-                        print('Call Press');
                       },
                     ),
                   )
@@ -362,9 +370,6 @@ class _ProviderListState extends State<ProviderListPage> {
     );
   }
 
-  _ratingChange(int rate) {
-    printLog('rating change $rate');
-  }
   void show(){
     showDialog(context: context,
     builder: (BuildContext context){
@@ -379,9 +384,7 @@ class _ProviderListState extends State<ProviderListPage> {
             },
           ),
         ],
-
       );
-    }
-    );
+    });
   }
 }
