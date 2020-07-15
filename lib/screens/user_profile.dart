@@ -385,7 +385,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             // Gender
             child: TextField(
               decoration: InputDecoration(
-                  hintText: (gender == "" || gender == null) ? "NOT SELECTED" : globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+                  hintText: ( gender == null) ? "NOT SELECTED" : globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
               ),
             ),
           ),
@@ -500,12 +500,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     if(globals.currentUser.gender != dropdownvalue && globals.currentUser.gender != null) {
       data["gender"] = dropdownvalue;
     }
-
+      print(globals.currentUser.gender);
+    print(dropdownvalue);
+    print(data['gender']);
     print(globals.currentUser.email);
     if(globals.currentUser.email != prfl_email.text && globals.currentUser.email != null) {
       data["email"] = prfl_email.text;
     }
-
+    print(data['email']);
     String lang = languages.join(',');
     if(globals.currentUser.languages != lang && globals.currentUser.languages != null) {
       data["languages"] = lang;
@@ -535,6 +537,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //      data["services"] = rawJson;
 //      data["service_radius"] = prfl_servcerds.text;
 //    }
+    print("data");
     printLog(data);
     if(data.isNotEmpty && data.length > 0) {
       apiCall(data);
