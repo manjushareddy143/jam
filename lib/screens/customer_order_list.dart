@@ -32,7 +32,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
   final String url;
   final bool isCustomer;
   int oIndex = 0;
-  List<Order> listofOrders;
+
   User user;
 
   _OrderUIPageState({Key key, this.url, this.isCustomer});
@@ -84,7 +84,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
         var data = json.decode(res.body);
         List orders = data;
         setState(() {
-          listofOrders = Order.processOrders(orders);
+          globals.listofOrders = Order.processOrders(orders);
         });
       } else {
         printLog("login response code is not 200");
@@ -97,7 +97,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (listofOrders == null) {
+    if (globals.listofOrders == null) {
       return new Scaffold(
         appBar: new AppBar(
           automaticallyImplyLeading: false,
@@ -121,8 +121,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
 
   List<Widget> listOfCards() {
     List<Widget> list = new List();
-    for(int orderCount = 0; orderCount< listofOrders.length; orderCount++) {
-      list.add(setupCard(listofOrders[orderCount]));
+    for(int orderCount = 0; orderCount< globals.listofOrders.length; orderCount++) {
+      list.add(setupCard(globals.listofOrders[orderCount]));
     }
     return list;
   }

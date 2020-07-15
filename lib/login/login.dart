@@ -593,6 +593,7 @@ class _user extends State<UserLogin>{
                 builder: (context) => InitialProfileScreen(),
               ));
         } else {
+          // location
           print('HMMM ADDRESS');
           Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
           Preferences.saveObject("profile", "0");

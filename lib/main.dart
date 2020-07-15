@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:jam/api/i18n.dart';
 //import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
+import 'package:jam/models/order.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/order_detail_screen.dart';
 import 'package:jam/screens/customer_order_list.dart';
@@ -70,6 +71,11 @@ class _MyAppState extends State<MyApp> {
             orderList.build(globals.context);
             globals.orderStatus = message['data']['order'];
             globals.order.status = int.parse(message['data']['order']);
+//            Order ord  =globals.listofOrders.firstWhere((element) => element.id == globals.order.id);
+            int idx = globals.listofOrders.indexWhere((element) => element == globals.order);
+            globals.listofOrders[idx] = globals.order;
+
+
           });
           // something else you wanna execute
         };
