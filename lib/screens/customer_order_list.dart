@@ -38,7 +38,15 @@ class _OrderUIPageState extends State<OrderUIPage> {
   _OrderUIPageState({Key key, this.url, this.isCustomer});
 
   set result(result) {
-    print("result === $result");
+    setState(() {
+      globals.listofOrders;
+    });
+    print("result === ${globals.listofOrders}");
+    globals.listofOrders.forEach((element) {
+      print(element.id);
+      print(element.status);
+    });
+
 //    build(context);
   }
 
@@ -85,6 +93,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
         List orders = data;
         setState(() {
           globals.listofOrders = Order.processOrders(orders);
+          print("ORDERS === ${globals.listofOrders.length}");
         });
       } else {
         printLog("login response code is not 200");

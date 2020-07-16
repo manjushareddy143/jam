@@ -61,8 +61,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        if(msgCount%2==0) {
-          print("onMessage 11: $message");
+//        if(msgCount%2==0) {
+          print("PUSH NOTIFICATION 11: $message");
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           setState(() {
             OrderDetail detail = new OrderDetail();
@@ -72,14 +72,14 @@ class _MyAppState extends State<MyApp> {
             globals.orderStatus = message['data']['order'];
             globals.order.status = int.parse(message['data']['order']);
 //            Order ord  =globals.listofOrders.firstWhere((element) => element.id == globals.order.id);
-            int idx = globals.listofOrders.indexWhere((element) => element == globals.order);
-            globals.listofOrders[idx] = globals.order;
-
-
+            int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+            if(idx != null) {
+              globals.listofOrders[idx] = globals.order;
+            }
           });
           // something else you wanna execute
-        };
-        msgCount++;
+//        };
+//        msgCount++;
 
       },
       onLaunch: (Map<String, dynamic> message) async {
