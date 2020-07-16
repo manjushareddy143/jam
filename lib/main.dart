@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:jam/api/i18n.dart';
 //import 'package:jam/api/detail.dart';
 import 'package:jam/login/login.dart';
+import 'package:jam/models/invoice.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/screens/order_detail_screen.dart';
@@ -69,8 +70,14 @@ class _MyAppState extends State<MyApp> {
             detail.build(globals.context);
             Orders orderList = new Orders();
             orderList.build(globals.context);
-            globals.orderStatus = message['data']['order'];
-            globals.order.status = int.parse(message['data']['order']);
+            globals.orderStatus = message['data']['status'];
+            var data = message['data'];
+            print("data ========= ${data}");
+            globals.order.status = int.parse(message['data']['status']);
+            if(globals.order.status == 6) {
+              var invoice = json.decode(message['data']['invoice']);
+              globals.order.invoice = Invoice.fromJson(invoice);
+            }
 //            Order ord  =globals.listofOrders.firstWhere((element) => element.id == globals.order.id);
             int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
             if(idx != null) {

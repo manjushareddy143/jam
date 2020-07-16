@@ -33,13 +33,15 @@ class User {
   final int jobs_count;
   final String price;
   final List<UserServices> services;
+  final UserServices servicePrice;
 //  final List<Jobs> jobs;
 
 
-  User(this.id, this.first_name, this.last_name, this.image, this.languages, this.contact,
-       this.email, this.gender, this.org_id, this.term_id, this.type_id, this.rate,
-      this.address, this.resident_country, this.roles, this.social_signin,
-      this.existing_user, this.provider, this.organisation, this.reviews, this.jobs_count, this.price, this.services);
+  User(this.id, this.first_name, this.last_name, this.image, this.languages,
+      this.contact, this.email, this.gender, this.org_id, this.term_id,
+      this.type_id, this.rate, this.address, this.resident_country, this.roles,
+      this.social_signin, this.existing_user, this.provider, this.organisation,
+      this.reviews, this.jobs_count, this.price, this.services, this.servicePrice);
 
   User.fromJson(Map<String, dynamic> json)
       : id = json['id'],  first_name = json['first_name'],
@@ -58,6 +60,8 @@ class User {
       ? json['rate'].map<Rate>((json) => new Rate.fromJson(json)).toList() : null),
         provider = ((json.containsKey('provider') && json['provider'] != null )
             ? ProviderDetail.fromJson(json['provider']) : null),
+        servicePrice = ((json.containsKey('service_price') && json['service_price'] != null )
+            ? UserServices.fromJson(json['service_price']) : null),
         organisation = ((json.containsKey('organisation') && json['organisation'] != null )
             ? Organisation.fromJson(json['organisation']) : null),
         reviews = ((json.containsKey('reviews') && json['reviews'] != null )

@@ -110,7 +110,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
            setOrderInfo(),
            setServiceInfo(),
            detailInfo(),
-           invoiceDetails(),
+           Visibility(child: invoiceDetails(),
+           visible: (order.status == 6 || order.status == 5) ? true : false,),
 
            if(order.status == 5)
            ButtonTheme(
@@ -254,6 +255,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
      status_color = Colors.red;
      status_icon = Icons.cancel;
      break;
+     case 5: statusString = 'Order Completed';
+     status_color = Colors.green;
+     status_icon = Icons.check_circle;
+     break;
+     case 6: statusString = 'Invoice Submitted';
+     status_color = Configurations.themColor;
+     status_icon = Icons.attach_money;
+     break;
      default : statusString = 'Order Completed';
      status_color = Colors.green;
      status_icon = Icons.check_circle;
@@ -360,7 +369,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               mainAxisAlignment: MainAxisAlignment.start,
 //              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
+                Column(
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.fromLTRB(70, 5, 10,10),
@@ -382,10 +391,15 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         },
                       ),
                     ),
-                    Text((globals.order.rating == null) ? "" : globals.order.rating.comment,textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                      child: Text((globals.order.rating == null) ? "" : globals.order.rating.comment,textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                    ),
                   ],
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                mainAxisAlignment: MainAxisAlignment.center,
                 ),
                 Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
@@ -395,12 +409,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
           ),
 
-
-
-
-
           /// SHOW OTP
-         if(order.status == 2 && this.isCustomer == true)
+         if(order.status == 6 || order.status == 2 && this.isCustomer == true)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -462,6 +472,19 @@ class _DetailUIPageState extends State<DetailUIPage> {
               Text(globals.order.service.name)
             ],
           ),
+          ),
+
+          if(globals.order.category != null)
+          Padding(
+            padding: EdgeInsets.fromLTRB(40, 0, 10,20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text("Category", style: TextStyle(fontSize: 12, color: Colors.grey),),
+                SizedBox(height: 5,),
+                Text(globals.order.category.name)
+              ],
+            ),
           ),
 
         ],
@@ -691,7 +714,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       print('api call start signup');
       var syncUserResponse =
           await httpClient.postRequest(context, Configurations.BOOKING_RATING_URL, data, true);
-      //processRatingResponse(syncUserResponse);
+      processRatingResponse(syncUserResponse);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -699,20 +722,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
   }
 
-//  processRatingResponse(Response res)  {
-//    if (res != null) {
-//      if (res.statusCode == 200) {
-//        Navigator.of(context).pop();
-//        getOrderDetail();
-//      } else {
-//        printLog("login response code is not 200");
-//        var data = json.decode(res.body);
-//        showInfoAlert(context, "ERROR");
-//      }
-//    } else {
-//      showInfoAlert(context, "Unknown error from server");
-//    }
-//  }
+  processRatingResponse(Response res)  {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        Navigator.of(context).pop();
+        getOrderDetail();
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, "ERROR");
+      }
+    } else {
+      showInfoAlert(context, "Unknown error from server");
+    }
+  }
 
 
   var setRate = 0.0;
@@ -992,6 +1015,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
         setState(() {
           globals.order = Order.fromJson(data);
+          int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+          if(idx != null) {
+            globals.listofOrders[idx] = globals.order;
+          }
           print("rating ::: ${globals.order.rating}");
           build(context);
         });
@@ -1013,7 +1040,38 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
   }
 
+
+  String findTotal() {
+    if(order.invoice != null) {
+      double cost = double.parse(order.provider.servicePrice.price);
+      double serviceAmount = order.invoice.working_hr * cost;
+      int meterialAmount = order.invoice.material_quantity * order.invoice.material_price;
+      int additional_total = order.invoice.additional_charges * order.invoice.working_hr;
+      double sub_total = serviceAmount + additional_total + meterialAmount;
+      double total_discount = sub_total * order.invoice.discount/100;
+      double totalWithDiscount =  sub_total -  total_discount;
+      double taxCut =  totalWithDiscount * order.invoice.tax /100;
+      double total = totalWithDiscount -  taxCut;
+      print("total ${total}");
+      return total.toString();
+    } else {
+      return "";
+    }
+
+
+  }
+
   Widget invoiceDetails(){
+    String workingHour = (order.invoice != null) ? order.invoice.working_hr.toString() : "0";
+    String materialQTY = (order.invoice != null) ? order.invoice.material_quantity.toString() : "0";
+    String materialCost = (order.invoice != null) ? order.invoice.material_price.toString() : "0";
+    String discount = (order.invoice != null) ? order.invoice.discount.toString() : "0";
+    String tax = (order.invoice != null) ? order.invoice.tax.toString() : "0";
+//    String tax_rate = (order.invoice != null) ? order.invoice.tax_rate.toString() : "0";
+    String add_charge = (order.invoice != null) ? order.invoice.additional_charges.toString() : "0";
+
+
+
     return Card(
         margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
         elevation: 5,
@@ -1028,7 +1086,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Working Hours :   0 "),
+              child: Text("Working Hours :   " + workingHour),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,2),
@@ -1043,10 +1101,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                   child: Row(mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Flexible(
-                          child:Text("Quantity :    0    "),
+                          child:Text("Quantity :    " + materialQTY),
                         ),
                         Flexible(
-                          child:Text("Price :    0    "),
+                          child:Text("Price :    " + materialCost),
                         ),
 
                       ]),
@@ -1055,11 +1113,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
               ],),
             Padding(
                 padding: EdgeInsets.fromLTRB(30, 10, 10,2),
-              child: Text("Discount :    0"),
+              child: Text("Discount :    " + discount),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 2, 10,2),
-              child: Text("Tax :             0"),
+              child: Text("Tax :             " + tax),
             ), Padding(
               padding: EdgeInsets.fromLTRB(30, 2, 10,2),
               child: Text("Rate :           0%"),
@@ -1068,11 +1126,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Additional Charge :    0"),
+              child: Text("Additional Charge :    " + add_charge),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Total :   0  QAR",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+              child: Text("Total :   " + findTotal() + "  QAR",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
             ),
 
 

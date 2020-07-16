@@ -166,6 +166,14 @@ class _OrderUIPageState extends State<OrderUIPage> {
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
+      case 5: statusString = 'Order Completed';
+      status_color = Configurations.themColor;
+      status_icon = Icons.thumb_up;
+      break;
+      case 6: statusString = 'Invoice Submitted';
+      status_color = Configurations.themColor;
+      status_icon = Icons.attach_money;
+      break;
       default : statusString = 'Order Completed';
       status_color = Configurations.themColor;
       status_icon = Icons.thumb_up;

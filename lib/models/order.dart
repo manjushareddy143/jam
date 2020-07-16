@@ -1,4 +1,5 @@
 
+import 'package:jam/models/invoice.dart';
 import 'package:jam/models/rating.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
@@ -33,6 +34,7 @@ class Order {
   final User provider;
   final Service service;
   final Rating rating;
+  Invoice invoice;
 //  final User provider;
 //  final User user;
 
@@ -41,7 +43,7 @@ class Order {
       this.end_time, this.remark, this.status, this.booking_date,
       this.service, this.category,
 //      this.provider_first_name, this.provider_image, this.provider_last_name,
-      this.comment, this.rating,
+      this.comment, this.rating, this.invoice,
       this.user_id,this.address, this.otp, this.user, this.provider);
   //this.provider, this.user, this.ratings
 
@@ -67,6 +69,7 @@ class Order {
         service = ((json.containsKey('services') && json['services'] != null ) ? Service.fromJson(json['services']) : null),
         provider = ((json.containsKey('provider') && json['provider'] != null ) ? User.fromJson(json['provider']) : null),
         user = ((json.containsKey('user') && json['user'] != null ) ? User.fromJson(json['user']) : null),
+        invoice = ((json.containsKey('invoice') && json['invoice'] != null ) ? Invoice.fromJson(json['invoice']) : null),
         category = ((json.containsKey('category') && json['category'] != null ) ? SubCategory.fromJson(json['category']) : null);
 
 //        ratings = ((json.containsKey('rating') && json['rating'] != null ) ? Rating.fromJson(json['rating']) : null),
