@@ -352,7 +352,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // FistName
           TextField(
             focusNode: focus_fName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.first_name == "" || globals.currentUser.first_name == null) ? "First Name" : globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.first_name == null || globals.currentUser.first_name == "" ) ? "First Name" : globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
             controller: (globals.currentUser.first_name == "")
                 ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
           ),
@@ -376,7 +376,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // PHONE
           TextField(
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null) ? "Phone number" : globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
+            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
             controller: (globals.currentUser.contact == "")
                 ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
           ),

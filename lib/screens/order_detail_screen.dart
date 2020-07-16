@@ -110,6 +110,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
            setOrderInfo(),
            setServiceInfo(),
            detailInfo(),
+           invoiceDetails(),
 
            if(order.status == 5)
            ButtonTheme(
@@ -1012,6 +1013,76 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
   }
 
+  Widget invoiceDetails(){
+    return Card(
+        margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
+        elevation: 5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Center(child: Text("Invoice Details",
+                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20))),
+            ),
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
+              child: Text("Working Hours :   0 "),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 10,2),
+              child: Text("Materials"),
+            ),
+            Column(crossAxisAlignment: CrossAxisAlignment.start,
+
+              children: <Widget>[
+
+                Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child:Text("Quantity :    0    "),
+                        ),
+                        Flexible(
+                          child:Text("Price :    0    "),
+                        ),
+
+                      ]),
+                ),
+
+              ],),
+            Padding(
+                padding: EdgeInsets.fromLTRB(30, 10, 10,2),
+              child: Text("Discount :    0"),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 2, 10,2),
+              child: Text("Tax :             0"),
+            ), Padding(
+              padding: EdgeInsets.fromLTRB(30, 2, 10,2),
+              child: Text("Rate :           0%"),
+            ),
+
+
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
+              child: Text("Additional Charge :    0"),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
+              child: Text("Total :   0  QAR",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            ),
+
+
+          ],
+        )
+
+
+    );
+
+  }
 
   bool checkedValue = false;
 
