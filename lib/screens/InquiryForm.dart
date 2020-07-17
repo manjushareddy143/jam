@@ -49,7 +49,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-
+   bool subCategory ;
   final txtName = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
@@ -67,6 +67,7 @@ class _InquiryPageState extends State<InquiryPage> {
   String selectedService;
   List<DropdownMenuItem<String>> _dropDownService;
   List<Service> _lstServices = new List<Service>();
+
   List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
   String selectedSubCategory;
@@ -99,14 +100,24 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_name = FocusNode();
     focus_mail = FocusNode();
     focus_no = FocusNode();
-
+    print("DATA === ${this.service}");
     focus_remark = FocusNode();
     _lstServices.add(this.service);
-    _lstSubCategory.add(this.category);
+    if(this.category != null){
+      subCategory = true;
+      _lstSubCategory.add(this.category);
+    }else {
+      _lstSubCategory = null;
+      subCategory = false;
+    }
+    print("DATA === ${_lstSubCategory}");
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
-    _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
-    selectedSubCategory = _dropDownSubCategory[0].value;
+    if(this.category != null){
+      _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
+      selectedSubCategory = _dropDownSubCategory[0].value;
+    }
+
     setProfile();
     print(this.service.name);
     selecteDate = _currentDt;//format.format(_currentDt);
@@ -182,7 +193,8 @@ class _InquiryPageState extends State<InquiryPage> {
       setDropDown(),
       SizedBox(height: 10,),
 
-      setDropDown1(),
+      Visibility(visible: (this.category != null),
+          child: setDropDown1()),
       SizedBox(height: 10,),
 
       Material(elevation: 5.0,shadowColor: Colors.grey,

@@ -110,9 +110,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   void validateform() {
     if (_formKey.currentState.validate()) {
       // If the form is valid, display a Snackbar.
+
       print('EDIT');
       setState(() {
         if(isEditProfile == true) {
+
           updateProfile();
           isEditProfile = false;
         } else {
@@ -368,9 +370,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // EMAIL
           TextField(
             focusNode: focus_email,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email, prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email,
+                prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+
             controller: (globals.currentUser.email == "")
                 ? prfl_email : prfl_email ..text = globals.currentUser.email,
+
           ),
 
           // PHONE
@@ -494,6 +499,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
 
     if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact != null) {
+
       data["contact"] = prfl_contact.text;
     }
 
@@ -505,6 +511,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     print(data['gender']);
     print(globals.currentUser.email);
     if(globals.currentUser.email != prfl_email.text && globals.currentUser.email != null) {
+
       data["email"] = prfl_email.text;
     }
     print(data['email']);

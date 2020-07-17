@@ -163,8 +163,7 @@ class _user extends State<UserLogin>{
                     Column(children: <Widget>[
                       TextFormField(
                         focusNode: focus_email,
-                        controller: txtUser
-                        ,
+                        controller: txtUser,
                         validator: (value) {
                           if (value.isEmpty) {
                             return AppLocalizations.of(context).translate('login_txt_user');
