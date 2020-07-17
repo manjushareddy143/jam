@@ -195,9 +195,9 @@ class HttpClient {
 
 
 //      }
-      //to indicate caller doesn't need to handle API response
-      return null;
+      //to indicate caller doesn't need to handle API response\
     }
+    return null;
   }
 
   //show loading view
