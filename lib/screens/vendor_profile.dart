@@ -162,8 +162,13 @@ int swiperIndex =0;
 
 
   Widget _buildProfileImage(){
+    String img = (this.provider.image != null && this.provider.image.contains("http"))
+        ? this.provider.image : Configurations.BASE_URL +this.provider.image;
+    if(this.provider.organisation != null) {
+      img = (this.provider.organisation.logo != null && this.provider.organisation.logo.contains("http"))
+          ? this.provider.organisation.logo : Configurations.BASE_URL +this.provider.organisation.logo;
+    }
 
-    String img = null;
 
     return Center(
       child: Container(
@@ -187,7 +192,7 @@ int swiperIndex =0;
 
   }
   Widget setupVendorDetails() {
-    print("PROVIDER ==== ${this.provider.toJson()}");
+    print("PROVIDER ==== ${this.provider.organisation.admin.first_name}");
 
     String services = "";
     this.provider.services.forEach((element) {
@@ -208,8 +213,18 @@ int swiperIndex =0;
       }
     });
 
-    print("services  ${services}");
+    String email = (this.provider.email != null) ? this.provider.email : "-";
+    if(this.provider.organisation != null) {
+      email = this.provider.organisation.admin.email;
+    }
 
+    String contact = (this.provider.contact != null) ? this.provider.contact : "-";
+    if(this.provider.organisation != null) {
+      contact = this.provider.organisation.admin.contact;
+    }
+
+
+    
 
     return Padding( padding: EdgeInsets.fromLTRB(20,20,20,5),
       child: Column(
@@ -222,7 +237,6 @@ int swiperIndex =0;
 
             ],
           ),
-
           Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
             child: SizedBox(
               height: 1.0,
@@ -240,12 +254,11 @@ int swiperIndex =0;
             children: <Widget>[
               Icon(Icons.location_on, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text((this.provider.address != null) ? "From" + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
+              Text((this.provider.address != null) ? "From " + this.provider.address[0].city : "", style: TextStyle(color: Colors.blueGrey),)
 //            Text("")
 
             ],
           ),
-
           Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
             child: SizedBox(
               height: 1.0,
@@ -258,6 +271,7 @@ int swiperIndex =0;
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.local_library, color: Colors.blueGrey, size: 20,),
@@ -278,6 +292,7 @@ int swiperIndex =0;
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.access_time, color: Colors.blueGrey, size: 20,),
@@ -298,6 +313,7 @@ int swiperIndex =0;
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.settings, color: Colors.blueGrey, size: 20,),
@@ -321,11 +337,12 @@ int swiperIndex =0;
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.mail, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text(this.provider.email, style: TextStyle(color: Colors.blueGrey),)
+              Text(email, style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
@@ -341,11 +358,12 @@ int swiperIndex =0;
               ),
             ),
           ),
+
           Row(
             children: <Widget>[
               Icon(Icons.call, color: Colors.blueGrey, size: 20,),
               SizedBox(width: 10,),
-              Text((this.provider.contact != null) ? this.provider.contact : "", style: TextStyle(color: Colors.blueGrey),)
+              Text((contact != null) ? contact : "-", style: TextStyle(color: Colors.blueGrey),)
 
             ],
           ),
