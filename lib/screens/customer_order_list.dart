@@ -28,7 +28,7 @@ class OrderUIPage extends StatefulWidget {
   @override
   _OrderUIPageState createState() => _OrderUIPageState(key: key, url: this.url, isCustomer: this.isCustomer);
 }
-class _OrderUIPageState extends State<OrderUIPage> {
+class _OrderUIPageState extends State<OrderUIPage>  {
   final String url;
   final bool isCustomer;
   int oIndex = 0;
@@ -210,7 +210,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
               )
           ),
         },
-        child: new Card(
+        child: Card(
             margin: EdgeInsets.fromLTRB(1, 10, 1, 10),
             elevation: 5,
             child: Row(

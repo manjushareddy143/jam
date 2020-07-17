@@ -92,27 +92,35 @@ class _MyAppState extends State<MyApp> {
                 }
                 else {
                   print("ELSE");
-                  print("ELSE == ${int.parse(message['data']['status'])}");
+                  print("STUTUS == ${int.parse(message['data']['status'])}");
+                  print("ORDEWR ID == ${int.parse(message['data']['order'])}");
                   int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
                   print("idx ${idx}");
                   if(idx != null) {
                     globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
+                    print("globals.order == ${globals.order.id}");
                     globals.order.status = int.parse(message['data']['status']);
+                    print("globals.order status == ${globals.order.status}");
                     globals.listofOrders[idx] = globals.order;
                     print("LIST UPDATE");
                   }
                 }
               } else {
-                print("AGAIN");
-                print("AGAIN == ${int.parse(message['data']['status'])}");
-                int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['status']));
-                print(" AGAIN idx ${idx}");
-                if(idx != null) {
-                  globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['status']));
-                  globals.order.status = int.parse(message['data']['status']);
-                  globals.listofOrders[idx] = globals.order;
-                  print("AGAIN  LIST UPDATE");
-                }
+                setState(() {
+                  print("AGAIN");
+                  print("AGAIN == ${int.parse(message['data']['status'])}");
+                  int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
+                  print(" AGAIN idx ${idx}");
+                  if(idx != null) {
+                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
+                    print("globals.order == ${globals.order.id}");
+                    globals.order.status = int.parse(message['data']['status']);
+                    print("globals.order status == ${globals.order.status}");
+                    globals.listofOrders[idx] = globals.order;
+                    print("AGAIN  LIST UPDATE");
+                  }
+                });
+
               }
 
               

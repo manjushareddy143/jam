@@ -498,8 +498,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       data["last_name"] = prfl_lname.text;
     }
 
-    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact != null) {
 
+    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact == null) {
       data["contact"] = prfl_contact.text;
     }
 
