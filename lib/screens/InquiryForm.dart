@@ -302,7 +302,9 @@ class _InquiryPageState extends State<InquiryPage> {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
         data["service_id"] = selectedService;
-        data["category_id"] = selectedSubCategory;
+        if(selectedSubCategory != null) {
+          data["category_id"] = selectedSubCategory;
+        }
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
         data["booking_date"] = format.format(selecteDate);
