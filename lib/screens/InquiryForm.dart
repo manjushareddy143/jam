@@ -302,7 +302,8 @@ class _InquiryPageState extends State<InquiryPage> {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
         data["service_id"] = selectedService;
-        if(selectedSubCategory != null) {
+
+        if(selectedSubCategory != null && selectedSubCategory != "") {
           data["category_id"] = selectedSubCategory;
         }
         data["orderer_name"] = txtName.text;
@@ -313,7 +314,7 @@ class _InquiryPageState extends State<InquiryPage> {
         data["end_time"] = formatt.format(end_time);
         data["provider_id"] = provider.id.toString();
         data["remark"] = txtRemark.text;
-        print(data);
+        print("API CALLL DATA === ${data}");
         apiCall(data);
       });
     } else {
