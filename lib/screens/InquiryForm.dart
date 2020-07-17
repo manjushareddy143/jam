@@ -49,7 +49,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
-   bool subCategory ;
+//   bool subCategory ;
   final txtName = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
@@ -70,7 +70,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
-  String selectedSubCategory;
+  String selectedSubCategory = "";
   List<DropdownMenuItem<String>> _dropDownSubCategory;
   FocusNode focus_name,focus_mail,focus_no,  focus_remark;
 
@@ -104,16 +104,12 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_remark = FocusNode();
     _lstServices.add(this.service);
     if(this.category != null){
-      subCategory = true;
       _lstSubCategory.add(this.category);
-    }else {
-      _lstSubCategory = null;
-      subCategory = false;
     }
-    print("DATA === ${_lstSubCategory}");
+//    print("DATA === ${_lstSubCategory}");
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
-    if(this.category != null){
+    if(_lstSubCategory.length > 0){
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
       selectedSubCategory = _dropDownSubCategory[0].value;
     }
@@ -394,6 +390,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
 
   Widget setDropDown1() {
+    print(selectedSubCategory);
     return Material(elevation: 5.0,shadowColor: Colors.grey,
       child: Container(
         padding: const EdgeInsets.fromLTRB(10,0,0,0),
@@ -404,7 +401,7 @@ class _InquiryPageState extends State<InquiryPage> {
             Expanded(child: DropdownButton(
                 underline: SizedBox(),
                 isExpanded: true,
-                value: selectedSubCategory.toUpperCase(),
+                value: (selectedSubCategory != null) ? selectedSubCategory.toUpperCase() : "",
                 icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
                 items: _dropDownSubCategory,
                 onChanged: changedDropDownItem1),
