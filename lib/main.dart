@@ -89,7 +89,10 @@ class _MyAppState extends State<MyApp> {
                   print("LIST UPDATE");
                 }  
               } else {
+                print("ELSE");
+                print("ELSE == ${int.parse(message['data']['status'])}");
                 int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['status']));
+                print("idx ${idx}");
                 if(idx != null) {
                   globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['status']));
                   globals.order.status = int.parse(message['data']['status']);
