@@ -70,8 +70,8 @@ class _MyAppState extends State<MyApp> {
             detail.build(globals.context);
             Orders orderList = new Orders();
             orderList.build(globals.context);
-            var data = message['data'];
-            if(data['status']) {
+            Map data = message['data'];
+            if(data.containsKey('status')) {
               globals.orderStatus = message['data']['status'];
 
               print("data ========= ${data}");

@@ -1013,6 +1013,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
   processCancelOrderResponse(Response res, String status)  {
     if (res != null) {
       if (res.statusCode == 200) {
+        print("status change");
         ///////// change globale variable
         if(globals.currentUser.roles[0].slug == "provider") {
           globals.order.status = int.parse(status);
@@ -1025,8 +1026,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
             globals.listofOrders[idx] = globals.order;
             print("LIST UPDATE");
           }
+        } else {
+          print("ITS CUSTOMER");
         }
-
         Navigator.of(context).pop();
       } else {
         printLog("login response code is not 200");
