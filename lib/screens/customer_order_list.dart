@@ -148,6 +148,14 @@ class _OrderUIPageState extends State<OrderUIPage> {
     var status_icon = null;
 
 
+    print("image === ${order.provider.image}");
+    String img = (order.provider.image != null && order.provider.image.contains("http"))
+        ? order.provider.image : Configurations.BASE_URL +order.provider.image;
+    if(order.provider.organisation != null) {
+      img = (order.provider.organisation.logo != null && order.provider.organisation.logo.contains("http"))
+          ? order.provider.organisation.logo : Configurations.BASE_URL +order.provider.organisation.logo;
+    }
+
     switch(order.status)
     {
       case 1: statusString = 'Order Pending';
@@ -208,8 +216,8 @@ class _OrderUIPageState extends State<OrderUIPage> {
                   decoration: BoxDecoration(
                     image:
                     DecorationImage(
-                      image: (order.provider.image != null)?
-                      NetworkImage(order.provider.image):setImgPlaceholder(),
+                      image: (img != null)?
+                      NetworkImage(img):setImgPlaceholder(),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(80.0),
