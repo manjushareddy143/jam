@@ -192,7 +192,7 @@ int swiperIndex =0;
 
   }
   Widget setupVendorDetails() {
-    print("PROVIDER ==== ${this.provider.organisation.admin.first_name}");
+//    print("PROVIDER ==== ${this.provider.organisation.admin.first_name}");
 
     String services = "";
     this.provider.services.forEach((element) {
