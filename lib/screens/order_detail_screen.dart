@@ -92,6 +92,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     return Scaffold(
         appBar: new AppBar(leading: BackButton(color:Colors.black),
@@ -1013,18 +1014,19 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         ///////// change globale variable
-        globals.order.status = int.parse(status);
-        print("globals.order.status ========= ${globals.order.status}");
-        if(globals.order.status == 6) {
-          getOrderDetail();
-//          var invoice = json.decode(message['data']['invoice']);
-//          globals.order.invoice = Invoice.fromJson(invoice);
+        if(globals.currentUser.roles[0].slug == "provider") {
+          globals.order.status = int.parse(status);
+          print("globals.order.status ========= ${globals.order.status}");
+          if(globals.order.status == 6) {
+            getOrderDetail();
+          }
+          int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+          if(idx != null) {
+            globals.listofOrders[idx] = globals.order;
+            print("LIST UPDATE");
+          }
         }
-        int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
-        if(idx != null) {
-          globals.listofOrders[idx] = globals.order;
-          print("LIST UPDATE");
-        }
+
         Navigator.of(context).pop();
       } else {
         printLog("login response code is not 200");
