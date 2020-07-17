@@ -76,30 +76,45 @@ class _MyAppState extends State<MyApp> {
 
               print("data ========= ${data}");
 
-              if(globals.order.id == int.parse(message['data']['order'])) {
-                globals.order.status = int.parse(message['data']['status']);
-                print("globals.order.status ========= ${globals.order.status}");
-                if(globals.order.status == 6) {
-                  var invoice = json.decode(message['data']['invoice']);
-                  globals.order.invoice = Invoice.fromJson(invoice);
+              if(globals.order != null) {
+                if(globals.order.id == int.parse(message['data']['order'])) {
+                  globals.order.status = int.parse(message['data']['status']);
+                  print("globals.order.status ========= ${globals.order.status}");
+                  if(globals.order.status == 6) {
+                    var invoice = json.decode(message['data']['invoice']);
+                    globals.order.invoice = Invoice.fromJson(invoice);
+                  }
+                  int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+                  if(idx != null) {
+                    globals.listofOrders[idx] = globals.order;
+                    print("LIST UPDATE");
+                  }
                 }
-                int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
-                if(idx != null) {
-                  globals.listofOrders[idx] = globals.order;
-                  print("LIST UPDATE");
-                }  
+                else {
+                  print("ELSE");
+                  print("ELSE == ${int.parse(message['data']['status'])}");
+                  int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['status']));
+                  print("idx ${idx}");
+                  if(idx != null) {
+                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['status']));
+                    globals.order.status = int.parse(message['data']['status']);
+                    globals.listofOrders[idx] = globals.order;
+                    print("LIST UPDATE");
+                  }
+                }
               } else {
-                print("ELSE");
-                print("ELSE == ${int.parse(message['data']['status'])}");
+                print("AGAIN");
+                print("AGAIN == ${int.parse(message['data']['status'])}");
                 int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['status']));
-                print("idx ${idx}");
+                print(" AGAIN idx ${idx}");
                 if(idx != null) {
                   globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['status']));
                   globals.order.status = int.parse(message['data']['status']);
                   globals.listofOrders[idx] = globals.order;
-                  print("LIST UPDATE");
+                  print("AGAIN  LIST UPDATE");
                 }
               }
+
               
             } else {
               print("onlly order");
