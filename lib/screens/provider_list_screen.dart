@@ -215,7 +215,7 @@ class _ProviderListState extends State<ProviderListPage> {
     String name = "";
     if(user.organisation != null) {
       if(user.organisation.logo != null) {
-        img = (user.organisation.logo.contains(Configurations.BASE_URL)) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
+        img = (user.organisation.logo.contains("http")) ? user.organisation.logo : Configurations.BASE_URL + user.organisation.logo;
       } else {
         img = null;
       }
@@ -233,6 +233,8 @@ class _ProviderListState extends State<ProviderListPage> {
 
       name = user.first_name;
     }
+
+    print("img === ${img}");
     return
       new Card(
       child: Column(

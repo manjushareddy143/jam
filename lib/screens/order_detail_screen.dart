@@ -438,7 +438,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           ),
 
           /// SHOW OTP
-         if(order.status == 6 || order.status == 2 && this.isCustomer == true)
+         if((order.status == 6 || order.status == 2) && this.isCustomer == true)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -760,8 +760,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
-    } else {
-      showInfoAlert(context, "Unknown error from server");
     }
   }
 
@@ -1015,14 +1013,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         Navigator.of(context).pop();
-
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
-    } else {
-      showInfoAlert(context, "Unknown error from server");
     }
   }
 
@@ -1056,8 +1051,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
-    } else {
-      showInfoAlert(context, "Unknown error from server");
     }
   }
 
@@ -1369,7 +1362,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     data["tax_rate"] = (taxRate.text.isEmpty) ? "" :  taxRate.text;
     data["tax"] = (tax.text.isEmpty) ? "" :  tax.text;
     if(checkedValue) {
-      data["material_names"] = (mtrl_used.text.isEmpty) ? "" : mtrl_used.text ;
+      data["material_names"] = (mtrl_used.text.isEmpty) ? "0" : mtrl_used.text ;
       data["material_quantity"] = ( mtrl_qty.text.isEmpty) ? "0" :  mtrl_qty.text;
       data["material_price"] = ( mtrl_price.text.isEmpty) ? "0" : mtrl_price.text;
     }
@@ -1394,16 +1387,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print("data::::::::$data");
-       Navigator.of(context).pop();
-
-//        showDialog(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return buildCompleteDialog(context);
-//
-//                           },
-//                         );
-
+        Navigator.of(context).pop();
       }
     }
 

@@ -73,7 +73,9 @@ class _MyAppState extends State<MyApp> {
             globals.orderStatus = message['data']['status'];
             var data = message['data'];
             print("data ========= ${data}");
+
             globals.order.status = int.parse(message['data']['status']);
+            print("globals.order.status ========= ${globals.order.status}");
             if(globals.order.status == 6) {
               var invoice = json.decode(message['data']['invoice']);
               globals.order.invoice = Invoice.fromJson(invoice);
@@ -82,6 +84,7 @@ class _MyAppState extends State<MyApp> {
             int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
             if(idx != null) {
               globals.listofOrders[idx] = globals.order;
+              print("LIST UPDATE");
             }
           });
           // something else you wanna execute
