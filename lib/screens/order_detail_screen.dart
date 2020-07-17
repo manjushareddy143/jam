@@ -1001,7 +1001,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       print('api call start signup');
       var syncUserResponse =
           await httpClient.postRequest(context, Configurations.BOOKING_STATUS_URL, data, true);
-      processCancelOrderResponse(syncUserResponse);
+      processCancelOrderResponse(syncUserResponse, data['status']);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -1009,9 +1009,22 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
   }
 
-  processCancelOrderResponse(Response res)  {
+  processCancelOrderResponse(Response res, String status)  {
     if (res != null) {
       if (res.statusCode == 200) {
+        ///////// change globale variable
+        globals.order.status = int.parse(status);
+        print("globals.order.status ========= ${globals.order.status}");
+        if(globals.order.status == 6) {
+          getOrderDetail();
+//          var invoice = json.decode(message['data']['invoice']);
+//          globals.order.invoice = Invoice.fromJson(invoice);
+        }
+        int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+        if(idx != null) {
+          globals.listofOrders[idx] = globals.order;
+          print("LIST UPDATE");
+        }
         Navigator.of(context).pop();
       } else {
         printLog("login response code is not 200");
@@ -1088,7 +1101,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
     String materialCost = (order.invoice != null) ? order.invoice.material_price.toString() : "0";
     String discount = (order.invoice != null) ? order.invoice.discount.toString() : "0";
     String tax = (order.invoice != null) ? order.invoice.tax.toString() : "0";
-//    String tax_rate = (order.invoice != null) ? order.invoice.tax_rate.toString() : "0";
     String add_charge = (order.invoice != null) ? order.invoice.additional_charges.toString() : "0";
 
 
@@ -1111,21 +1123,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,2),
-              child: Text("Materials"),
+              child: Text("Materials", style: TextStyle(fontWeight: FontWeight.bold),),
             ),
-            Column(crossAxisAlignment: CrossAxisAlignment.start,
-
+            Column(
               children: <Widget>[
-
                 Padding(
                   padding: const EdgeInsets.all(1.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
                         Flexible(
-                          child:Text("Quantity :    " + materialQTY),
+                          child:Text("Quantity :" + materialQTY),
                         ),
                         Flexible(
-                          child:Text("Price :    " + materialCost),
+                          child:Text("Price :" + materialCost),
                         ),
 
                       ]),
@@ -1167,7 +1178,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   Widget setOrderDetail(BuildContext context){
       return AlertDialog(
-
           title:Center(child: Text("Order Detail"),
           ),
           content: StatefulBuilder(
