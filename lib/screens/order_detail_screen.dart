@@ -372,6 +372,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
  Widget setServiceInfo() {
     (globals.order.rating == null)? isRatingDisplay = false : isRatingDisplay = true;
 
+    String name = "";
+    if(order.provider.organisation != null) {
+      name = order.provider.organisation.name;
+    } else {
+      name = order.provider.first_name + " " + order.provider.last_name;
+    }
+
     return new Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
       elevation: 5,
@@ -387,7 +394,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 Icon(Octicons.person, color: Configurations.themColor,),
                 Text((this.isCustomer == true) ?"Vendor: " : "Customer: ",
                     style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20)),
-                Text((this.isCustomer == true) ? globals.order.provider.first_name : globals.order.orderer_name,
+                Text((this.isCustomer == true) ? name : globals.order.orderer_name,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 20)),
               ],
             ),
