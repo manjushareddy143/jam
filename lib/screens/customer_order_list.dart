@@ -187,6 +187,13 @@ class _OrderUIPageState extends State<OrderUIPage> {
       status_icon = Icons.thumb_up;
     }
 
+    String name = "";
+    if(order.provider.organisation != null) {
+      name = order.provider.organisation.name;
+    } else {
+      name = order.provider.first_name + " " + order.provider.last_name;
+    }
+
     return Container(
       child: GestureDetector(
         onTap: () async => {
@@ -229,7 +236,7 @@ class _OrderUIPageState extends State<OrderUIPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     textBaseline: TextBaseline.ideographic,
                     children: <Widget>[
-                      Text(order.provider.first_name,
+                      Text(name,
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textWidthBasis: TextWidthBasis.parent,
                         textAlign: TextAlign.center,
