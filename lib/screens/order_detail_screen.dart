@@ -164,10 +164,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                        textColor: Colors.white,
                        child: Row(
                          children: <Widget>[
-                           Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+                           Icon(Icons.attach_money, color: Colors.white, size: 20,),
                            SizedBox(width: 8,),
                            Text(
-                               'Complete',
+                               'Submit Invoice',
                                style: TextStyle(fontSize: 14)
                            ),
                          ],
@@ -182,6 +182,34 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //
 //                           },
 //                         )
+                       }
+                   ),
+                 ),
+               if(order.status == 6 && this.isCustomer == false)
+                 ButtonTheme(
+                   child:  RaisedButton(
+                       color: Configurations.themColor,
+                       textColor: Colors.white,
+                       child: Row(
+                         children: <Widget>[
+                           Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+                           SizedBox(width: 8,),
+                           Text(
+                               'Complete',
+                               style: TextStyle(fontSize: 14)
+                           ),
+                         ],
+                       ),
+                       onPressed: () => {
+                         print("COmplete"),
+
+                   showDialog(
+                           context: context,
+                           builder: (BuildContext context) {
+                            return buildCompleteDialog(context);
+//
+                           },
+                         )
                        }
                    ),
                  ),
@@ -1368,13 +1396,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
         print("data::::::::$data");
        Navigator.of(context).pop();
 
-        showDialog(
-                           context: context,
-                           builder: (BuildContext context) {
-                             return buildCompleteDialog(context);
-
-                           },
-                         );
+//        showDialog(
+//                           context: context,
+//                           builder: (BuildContext context) {
+//                             return buildCompleteDialog(context);
+//
+//                           },
+//                         );
 
       }
     }
