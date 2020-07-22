@@ -62,7 +62,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-//        if(msgCount%2==0) {
+        if(msgCount%2==0) {
           print("PUSH NOTIFICATION 11: $message");
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           setState(() {
@@ -79,10 +79,14 @@ class _MyAppState extends State<MyApp> {
               if(globals.order != null) {
                 if(globals.order.id == int.parse(message['data']['order'])) {
                   globals.order.status = int.parse(message['data']['status']);
-                  print("globals.order.status ========= ${globals.order.status}");
+//                  print("globals.order.status ========= ${globals.order.status}");
                   if(globals.order.status == 6) {
+                    print("INVOICE -- BEFORE ${globals.order.invoice.working_hr}");
+
                     var invoice = json.decode(message['data']['invoice']);
-                    globals.order.invoice = Invoice.fromJson(invoice);
+                    print("working_hr -- ${invoice['working_hr']}");
+                    globals.order.invoice = Invoice(globals.order.invoice.id, int.parse(invoice['additional_charges']), int.parse(invoice['discount']), "", int.parse(invoice['material_price']), int.parse(invoice['material_quantity']), int.parse(invoice['order_id']), int.parse(invoice['tax']), int.parse(invoice['working_hr']), 0);
+                    print("INVOICE -- AFTER ${globals.order.invoice.working_hr}");
                   }
                   int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
                   if(idx != null) {
@@ -130,8 +134,8 @@ class _MyAppState extends State<MyApp> {
 
           });
           // something else you wanna execute
-//        };
-//        msgCount++;
+        };
+        msgCount++;
 
       },
       onLaunch: (Map<String, dynamic> message) async {

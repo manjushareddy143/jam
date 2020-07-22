@@ -16,7 +16,10 @@ class Invoice {
       this.working_hr, this.tax_rate);
 
   Invoice.fromJson(Map<String, dynamic> json)
-      : id = json['id'], order_id = json['order_id'], working_hr = json['working_hr']
+      : id = ((json.containsKey('id') && json['id'] != null ) ? json['id'] : 0),
+  //json['id'],
+//   : id: ((json.containsKey('id') && json['id'] != null ) ? json['id'] : null),
+        order_id = json['order_id'], working_hr = json['working_hr']
   , material_names = json['material_names'], material_quantity = json['material_quantity'],
         material_price = json['material_price'], additional_charges = json['additional_charges'],
         discount = json['discount'], tax = json['tax'], tax_rate = json['tax_rate'];
