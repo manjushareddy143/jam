@@ -1239,7 +1239,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       Flexible(
                                         child: Container(height: 10, width: 60,
 
-                                          child: TextField(controller: mtrl_used),
+                                          child: TextField(controller: mtrl_used, maxLines: 2,),
                                         ),
                                       ),
                                     ]),
@@ -1254,7 +1254,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       Flexible(
                                         child: Container(height: 10, width: 60,
 
-                                          child: TextField(controller: mtrl_qty,
+                                          child: TextField(controller: mtrl_qty..text='0',
 
 
                                             keyboardType: TextInputType.number,
@@ -1274,7 +1274,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                                           child: TextField(
 
-                                            controller: mtrl_price,
+                                            controller: mtrl_price..text='0',
                                             keyboardType: TextInputType.number,
 
                                           ),),
@@ -1296,7 +1296,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey)
                               )) ,
-                                controller: discnt,
+                                controller: discnt..text='0',
 
 
                                 keyboardType: TextInputType.number,
@@ -1313,7 +1313,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration() ,
-                                controller: tax,
+                                controller: tax..text='0',
 
                                 keyboardType: TextInputType.number,
 
@@ -1323,7 +1323,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Container(width: 40, height: 30,
 
                               child: TextField( decoration: InputDecoration(suffixText: '%') ,
-                                controller: taxRate,
+                                controller: taxRate..text='0',
 
 
                                 keyboardType: TextInputType.number,
@@ -1343,7 +1343,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.grey)
                               )) ,
-                                controller: add_charge,
+                                controller: add_charge..text='0',
 
 
                                 keyboardType: TextInputType.number,
@@ -1431,7 +1431,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               Container(width: 70, height: 20,
                 padding: EdgeInsets.only(bottom: 1.0),
                 child: TextField( cursorColor: Colors.black,
-                  controller: wrking_hr,
+                  controller: wrking_hr..text='0',
 
 
 
