@@ -1116,6 +1116,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
     String discount = (order.invoice != null) ? order.invoice.discount.toString() : "0";
     String tax = (order.invoice != null) ? order.invoice.tax.toString() : "0";
     String add_charge = (order.invoice != null) ? order.invoice.additional_charges.toString() : "0";
+    String taxrate = (order.invoice != null) ? order.invoice.tax_rate.toString() : "0";
+
 
 
 
@@ -1126,53 +1128,61 @@ class _DetailUIPageState extends State<DetailUIPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(1.0),
+              padding: const EdgeInsets.all(5.0),
               child: Center(child: Text("Invoice Details",
                   style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20))),
             ),
 
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Working Hours :   " + workingHour),
+              child: Text("Working Hours :   " + workingHour, ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 10,2),
-              child: Text("Materials", style: TextStyle(fontWeight: FontWeight.bold),),
+              padding: EdgeInsets.fromLTRB(30, 10, 10,0),
+              child: Text("Materials : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
             ),
-            Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        Flexible(
-                          child:Text("Quantity :" + materialQTY),
-                        ),
-                        Flexible(
-                          child:Text("Price :" + materialCost),
-                        ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(120,0,10,2),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
 
-                      ]),
-                ),
-
-              ],),
+                children: <Widget>[
+                  Text("Quantity :   " + materialQTY, ),
+                  Text("Price :   " + materialCost, ),
+                ],
+              ),
+            ),
+//            Column(
+//              children: <Widget>[
+//                Padding(
+//                  padding: const EdgeInsets.all(1.0),
+//                  child: Row(
+//                      mainAxisAlignment: MainAxisAlignment.center,
+//                      children: <Widget>[
+//                        Flexible(
+//                          child:Text("Quantity :   " + materialQTY, ),
+//                        ),
+//                        SizedBox(width: 15,),
+//                        Flexible(
+//                          child:Text("Price :   " + materialCost, ),
+//                        ),
+//
+//                      ]),
+//                ),
+//
+//              ],),
             Padding(
                 padding: EdgeInsets.fromLTRB(30, 10, 10,2),
-              child: Text("Discount :    " + discount),
+              child: Text("Discount :   " + discount, ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 2, 10,2),
-              child: Text("Tax :             " + tax),
-            ), Padding(
-              padding: EdgeInsets.fromLTRB(30, 2, 10,2),
-              child: Text("Rate :           0%"),
+              child: Text("Tax :   " + tax, ),
             ),
 
 
             Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Additional Charge :    " + add_charge),
+              padding: EdgeInsets.fromLTRB(30, 2, 10,10),
+              child: Text("Additional Charge :   " + add_charge, ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(30, 10, 10,10),
@@ -1239,7 +1249,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       Flexible(
                                         child: Container(height: 10, width: 60,
 
-                                          child: TextField(controller: mtrl_used, maxLines: 2,),
+                                          child: Align(alignment:Alignment.center,child: TextField(controller: mtrl_used, )),
                                         ),
                                       ),
                                     ]),
@@ -1307,28 +1317,20 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
-                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text("Tax"),
-                            Container(width: 40, height: 30,
+                            Text("Tax:"),
+                            Container(width: 70, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration() ,
+                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey)
+                              )) ,
                                 controller: tax..text='0',
 
                                 keyboardType: TextInputType.number,
 
                               ),),
-                            SizedBox(width: 5,),
-                            Text("Rate"),
-                            Container(width: 40, height: 30,
 
-                              child: TextField( decoration: InputDecoration(suffixText: '%') ,
-                                controller: taxRate..text='0',
-
-
-                                keyboardType: TextInputType.number,
-
-                              ),),
                           ],
                         ),
                       ),
@@ -1383,8 +1385,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
     Map<String, String> data = new Map();
     data["order_id"] = globals.order.id.toString();
     data["working_hr"] = wrking_hr.text;
-    data["tax_rate"] = (taxRate.text.isEmpty) ? "" :  taxRate.text;
-    data["tax"] = (tax.text.isEmpty) ? "" :  tax.text;
+    data["tax_rate"] = (taxRate.text.isEmpty) ? "0" :  taxRate.text;
+    data["tax"] = (tax.text.isEmpty) ? "0" :  tax.text;
     if(checkedValue) {
       data["material_names"] = (mtrl_used.text.isEmpty) ? "0" : mtrl_used.text ;
       data["material_quantity"] = ( mtrl_qty.text.isEmpty) ? "0" :  mtrl_qty.text;
@@ -1412,6 +1414,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         var data = json.decode(res.body);
         print("data::::::::$data");
         getOrderDetail();
+        printLog('reached here');
         Navigator.of(context).pop();
       }
     }
@@ -1430,8 +1433,15 @@ class _DetailUIPageState extends State<DetailUIPage> {
             children: <Widget>[
               Container(width: 70, height: 20,
                 padding: EdgeInsets.only(bottom: 1.0),
-                child: TextField( cursorColor: Colors.black,
-                  controller: wrking_hr..text='0',
+                child: TextFormField( cursorColor: Colors.black,
+                  decoration: InputDecoration( hintText: "worked hours plz", hintStyle: TextStyle(fontSize: 8) ),
+                  controller: wrking_hr,
+                  validator: (value) {
+                  if (value.isEmpty) {
+                     return "Please enter the working hours!!";
+                     }
+                     return null;
+                    },
 
 
 
