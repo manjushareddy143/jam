@@ -1235,7 +1235,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                       Visibility(
                         visible: checkedValue,
-                        child: Container( height: 100,
+                        child: Container( height: 150,
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
 
                             children: <Widget>[
@@ -1273,6 +1273,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       ),
                                     ]),
                               ),
+                              Padding(padding: const EdgeInsets.all(5),
+                              child: Align(alignment: Alignment.center ,child: Text("X")),),
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
