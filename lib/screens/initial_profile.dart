@@ -61,10 +61,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   File _image;
   List<Service> listofServices;
   bool isLoadin = true;
-
+  FocusNode focus_fname, focus_lname, focus_phnno, focus_mail;
   @override
   void initState() {
     super.initState();
+    focus_fname = FocusNode();
+    focus_lname = FocusNode();
+    focus_phnno = FocusNode();
+    focus_mail = FocusNode();
     globals.context = context;
     setState(() {
 //      if (globals.currentUser.roles[0].slug == "provider")
@@ -127,6 +131,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     } else {
       dropdownvalue = _dropDownTypes[0].value;
     }
+
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    focus_fname.dispose();
+    focus_lname.dispose();
+    focus_phnno.dispose();
+    focus_mail.dispose();
 
   }
 
@@ -321,6 +335,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
+                      focusNode: focus_fname,
                       controller: (firstName == "") ? prfl_fname : prfl_fname
                         ..text = firstName,
                       decoration: InputDecoration(
@@ -357,6 +372,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
+                      focusNode: focus_lname,
                       controller: (lastName == "") ? prfl_lname : prfl_lname
                         ..text = lastName,
                       decoration: InputDecoration(
@@ -392,6 +408,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                     elevation: 5.0,
                     shadowColor: Colors.grey,
                     child: TextFormField(
+                      focusNode: focus_phnno,
                       controller: (phoneNumber == "") ? prfl_phone : prfl_phone
                         ..text = phoneNumber,
                       keyboardType: TextInputType.phone,
@@ -420,7 +437,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   Material(
                     elevation: 5.0,
                     shadowColor: Colors.grey,
-                    child: TextFormField(
+                    child: TextFormField(focusNode: focus_mail,
                       controller: (email == "") ? prfl_email : prfl_email
                         ..text = email,
                       decoration: InputDecoration(
