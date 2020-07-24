@@ -88,21 +88,35 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
       lastName = globals.currentUser.last_name;
       phoneNumber = globals.currentUser.contact;
+
+      print("languages ${globals.currentUser.languages}");
+      if(globals.currentUser.languages != null) {
+      var lang = globals.currentUser.languages;
+       if (lang.contains("Arabic"))
+         _arabic = true;
+       if(lang.contains("English"))
+         _english = true;
+      }
+      if(globals.currentUser.gender != null){
+        dropdownvalue =globals.currentUser.gender;
+        print("gender ${dropdownvalue}");
+      }
+
+
+
       if(phoneNumber == "" || phoneNumber == null) {
         print("no phone");
         phoneNumber = globals.customContact;
       } else {
         print("yes phone ${phoneNumber}");
 
+
       }
 
       print("yes ${ServiceSelectionUIPageState.serviceNamesString}");
       email = globals.currentUser.email;
-      print(globals.currentUser);
-      imageUrl = globals.currentUser.image;
-      if(globals.customImage != null) {
-        _image = globals.customImage;
-      }
+      print(globals.currentUser.toString());
+
 
       if(globals.customLanguage != null) {
 
@@ -131,11 +145,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //    }
     _dropDownTypes = buildAndGetDropDownMenuItems(_lstType);
     if(globals.customGender !=  null) {
-      dropdownvalue = globals.customGender;
+     dropdownvalue = globals.customGender;
+     printLog("gender"+globals.customGender.toString());
     } else {
       dropdownvalue = _dropDownTypes[0].value;
     }
 
+    imageUrl = globals.currentUser.image;
+    if(globals.customImage != null) {
+      _image = globals.customImage;
+    }
   }
   @override
   void dispose() {
