@@ -61,7 +61,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   File _image;
   List<Service> listofServices;
   bool isLoadin = true;
-  FocusNode focus_fname, focus_lname, focus_phnno, focus_mail;
+  FocusNode focus_fname, focus_lname, focus_phnno, focus_mail, focus_gender, focus_language, focus_adress,focus_radius;
   @override
   void initState() {
     super.initState();
@@ -69,6 +69,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     focus_lname = FocusNode();
     focus_phnno = FocusNode();
     focus_mail = FocusNode();
+    focus_gender = FocusNode();
+    focus_language = FocusNode();
+    focus_adress = FocusNode();
+    focus_radius = FocusNode();
     globals.context = context;
     setState(() {
 //      if (globals.currentUser.roles[0].slug == "provider")
@@ -141,6 +145,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     focus_lname.dispose();
     focus_phnno.dispose();
     focus_mail.dispose();
+    focus_gender.dispose();
+    focus_language.dispose();
+    focus_adress.dispose();
+    focus_radius.dispose();
 
   }
 
@@ -165,12 +173,21 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: new Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child: profileUI(),
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: new Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: profileUI(),
+          ),
         ),
       ),
     );
@@ -481,6 +498,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: Row(
+
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Icon(Icons.language),
@@ -489,12 +507,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                             ),
                             Text("English"),
                             Checkbox(
-                                value: _english, onChanged: _selecteEnglish),
+                                value: _english, onChanged: _selecteEnglish , focusNode: focus_language,),
                             SizedBox(
                               width: 20,
                             ),
                             Text("Arabic"),
-                            Checkbox(value: _arabic, onChanged: _selecteArabic),
+                            Checkbox(value: _arabic, onChanged: _selecteArabic, focusNode: focus_language,),
                           ],
                         ),
                       )),
@@ -514,6 +532,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       elevation: 5.0,
                       shadowColor: Colors.grey,
                       child: TextFormField(
+                        focusNode: focus_radius,
                         controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
                           ..text = globals.customRadius,
                         keyboardType: TextInputType.number,
@@ -592,6 +611,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ListTile(
+
                       onTap: addressEnter,
                       leading: Icon(Icons.location_on),
                       title: Text((adrs_name.text == "")
@@ -600,8 +620,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                       subtitle: Text(addressString),
                     ),
                     ButtonBar(
+
                       children: <Widget>[
-                        FlatButton(
+                        FlatButton( focusNode: focus_adress,
                           child: Row(
                             children: <Widget>[
                               Icon(
@@ -1177,6 +1198,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             ),
             Expanded(
               child: DropdownButton(
+                focusNode: focus_gender,
                   underline: SizedBox(),
                   isExpanded: true,
                   value: dropdownvalue,
