@@ -383,7 +383,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
             controller: (globals.currentUser.contact == "")
-                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
+                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,keyboardType: TextInputType.phone,
           ),
 
           Visibility( visible: !isEditProfile,
