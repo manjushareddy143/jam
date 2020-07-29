@@ -216,7 +216,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  ),
                if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
                SizedBox(width: 50,),
-               if(order.status != 5 && order.status != 4 && order.status != 3)
+               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
                ButtonTheme(
                  child:  RaisedButton(
                      color: Configurations.themColor,
@@ -1093,13 +1093,18 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if(order.invoice != null) {
       double cost = double.parse(order.provider.servicePrice.price);
       double serviceAmount = order.invoice.working_hr * cost;
+      print("serviceAmount = ${serviceAmount}");
       int meterialAmount = order.invoice.material_quantity * order.invoice.material_price;
+      print("meterialAmount = ${meterialAmount}");
       int additional_total = order.invoice.additional_charges * order.invoice.working_hr;
+      print("additional_total = ${additional_total}");
       double sub_total = serviceAmount + additional_total + meterialAmount;
-      double total_discount = sub_total * order.invoice.discount/100;
-      double totalWithDiscount =  sub_total -  total_discount;
-      double taxCut =  totalWithDiscount * order.invoice.tax /100;
-      double total = totalWithDiscount -  taxCut;
+      print("sub_total = ${sub_total}");
+      double total_discount = sub_total - order.invoice.discount;
+      print("total_discount = ${total_discount}");
+//      double totalWithDiscount =  sub_total -  total_discount;
+      double taxCut =  total_discount * order.invoice.tax /100;
+      double total = total_discount -  taxCut;
       print("total ${total}");
       return total.toString();
     } else {
@@ -1239,21 +1244,21 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
 
                             children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Flexible(
-                                          child: Text("Materials")
-                                      ),
-                                      Flexible(
-                                        child: Container(height: 10, width: 60,
-
-                                          child: Align(alignment:Alignment.center,child: TextField(controller: mtrl_used, )),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
+//                              Padding(
+//                                padding: const EdgeInsets.all(5.0),
+//                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                                    children: <Widget>[
+//                                      Flexible(
+//                                          child: Text("Materials")
+//                                      ),
+//                                      Flexible(
+//                                        child: Container(height: 10, width: 60,
+//
+//                                          child: Align(alignment:Alignment.center,child: TextField(controller: mtrl_used, )),
+//                                        ),
+//                                      ),
+//                                    ]),
+//                              ),
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1390,7 +1395,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     data["tax_rate"] = (taxRate.text.isEmpty) ? "0" :  taxRate.text;
     data["tax"] = (tax.text.isEmpty) ? "0" :  tax.text;
     if(checkedValue) {
-      data["material_names"] = (mtrl_used.text.isEmpty) ? "0" : mtrl_used.text ;
+//      data["material_names"] =  ""; //(mtrl_used.text.isEmpty) ? "0" : mtrl_used.text ;
       data["material_quantity"] = ( mtrl_qty.text.isEmpty) ? "0" :  mtrl_qty.text;
       data["material_price"] = ( mtrl_price.text.isEmpty) ? "0" : mtrl_price.text;
     }

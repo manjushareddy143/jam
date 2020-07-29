@@ -243,7 +243,8 @@ class _ProviderListState extends State<ProviderListPage> {
           ListTile(
             contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
             onTap: ()=> {
-            print("USERSS ${user.services}"),
+//            print("USERSS ${user.services}"),
+            print("USERSS ${user.image}"),
            Navigator.push(
            context,
           MaterialPageRoute (

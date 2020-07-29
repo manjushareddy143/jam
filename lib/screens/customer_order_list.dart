@@ -149,12 +149,27 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
 
     print("image === ${order.provider.image}");
-    String img = (order.provider.image != null && order.provider.image.contains("http"))
-        ? order.provider.image : Configurations.BASE_URL +order.provider.image;
+    String img = "";
+//    (order.provider.image != null && order.provider.image.contains("http"))
+//        ? order.provider.image : Configurations.BASE_URL +order.provider.image;
+
+
+    if( (order.provider.image != null && order.provider.image.contains("http"))) {
+      img = order.provider.image;
+    } else if(order.provider.image == null) {
+      img = null;
+    } else {
+      img =  Configurations.BASE_URL + order.provider.image;
+    }
+
+
+
     if(order.provider.organisation != null) {
       img = (order.provider.organisation.logo != null && order.provider.organisation.logo.contains("http"))
           ? order.provider.organisation.logo : Configurations.BASE_URL +order.provider.organisation.logo;
     }
+
+    print("IM == ${img}");
 
     switch(order.status)
     {

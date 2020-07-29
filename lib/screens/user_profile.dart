@@ -50,7 +50,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   File _image;
  List<Tab> tabList = List();
   TabController _tabController;
-  FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address;
+  FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address, focus_radius;
 
   Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "");
 
@@ -73,6 +73,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_lName = FocusNode();
     focus_email = FocusNode();
     focus_no = FocusNode();
+    focus_radius = FocusNode();
     focus_address = FocusNode();
     isEditProfile = false;
 
@@ -103,6 +104,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_fName.dispose();
     focus_lName.dispose();
     focus_no.dispose();
+    focus_radius.dispose();
     focus_address.dispose();
     super.dispose();
   }
@@ -325,6 +327,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   final prfl_lname = TextEditingController();
   final prfl_email = TextEditingController();
   final prfl_contact = TextEditingController();
+  final prfl_radius = TextEditingController();
   String addressString = "";
 
   Widget setDetails(){
@@ -346,6 +349,37 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
 
     print("addressString===== $addressString");
+
+    String ServiceRadiusHint = "Service Radius";
+    if(globals.currentUser.provider != null) {
+
+      ServiceRadiusHint = globals.currentUser.provider.service_radius.toString();
+    }
+
+    String services = "";
+    if(globals.currentUser.services  != null) {
+      globals.currentUser.services.forEach((element) {
+        if (services.isEmpty) {
+          services = element.service.name;
+        } else {
+          if(!services.contains(element.service.name)) {
+            services += ", " +element.service.name;
+          }
+        }
+
+        if(element.categories != null) {
+          if (services.isEmpty) {
+            services = " - " + element.categories.name;
+          } else {
+            services += " - " +element.categories.name;
+          }
+        }
+      });
+    }
+
+
+
+
 
     return Padding(
       padding:  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
@@ -402,9 +436,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
 
+          // Language
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
-              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages, prefixIcon: Icon(Icons.language), enabled: isEditProfile),
+              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages,
+                  prefixIcon: Icon(Icons.language), enabled: isEditProfile),
             ),
           ),
 
@@ -426,6 +462,30 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                  ),)),
            ),
 
+
+          // Services
+          if(globals.currentUser.roles[0].slug == "provider")
+            Visibility( visible: !isEditProfile,
+              child:  TextField(style: TextStyle(color: Colors.grey),
+                focusNode: focus_address,
+                decoration: InputDecoration(hintText: (services == null || services == "") ? "NOT SET" : services,
+                    prefixIcon: Icon(Icons.settings),enabled: isEditProfile,
+                    helperMaxLines: 5, hintMaxLines: 5),
+              ),
+            ),
+
+
+          // Radius
+          if(globals.currentUser.roles[0].slug == "provider")
+          TextField(
+            focusNode: focus_radius, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            decoration: InputDecoration(hintText: ServiceRadiusHint,
+              prefixIcon: Icon(Icons.location_searching),enabled: isEditProfile, ),
+            controller: (ServiceRadiusHint == "0")
+                ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,keyboardType: TextInputType.number,
+          ),
+
+          // Address
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
@@ -506,7 +566,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     if(globals.currentUser.gender != dropdownvalue && globals.currentUser.gender != null) {
       data["gender"] = dropdownvalue;
     }
-      print(globals.currentUser.gender);
+    print(globals.currentUser.gender);
     print(dropdownvalue);
     print(data['gender']);
     print(globals.currentUser.email);
@@ -515,6 +575,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       data["email"] = prfl_email.text;
     }
     print(data['email']);
+    if(globals.currentUser.provider != null) {
+
+      if(globals.currentUser.provider.service_radius.toString() != prfl_radius.text && globals.currentUser.provider.service_radius != null) {
+
+        data["service_radius"] = prfl_radius.text;
+      }
+    }
+
     String lang = languages.join(',');
     if(globals.currentUser.languages != lang && globals.currentUser.languages != null) {
       data["languages"] = lang;

@@ -92,6 +92,7 @@ int swiperIndex =0;
  // }
   Widget setupVendor(Size screenSize )
   {
+    print("NAME == ${this.provider.first_name}");
     String name = "";
     if(this.provider.organisation != null) {
       name = this.provider.organisation.name;
@@ -162,12 +163,24 @@ int swiperIndex =0;
 
 
   Widget _buildProfileImage(){
-    String img = (this.provider.image != null && this.provider.image.contains("http"))
-        ? this.provider.image : Configurations.BASE_URL +this.provider.image;
+
+
+    String img = "";
+//    (this.provider.image != null && this.provider.image.contains("http"))
+//        ? this.provider.image : Configurations.BASE_URL + this.provider.image;
+
+    if( (this.provider.image != null && this.provider.image.contains("http"))) {
+      img = this.provider.image;
+    } else if(this.provider.image == null) {
+      img = null;
+    } else {
+      img =  Configurations.BASE_URL + this.provider.image;
+    }
     if(this.provider.organisation != null) {
       img = (this.provider.organisation.logo != null && this.provider.organisation.logo.contains("http"))
           ? this.provider.organisation.logo : Configurations.BASE_URL +this.provider.organisation.logo;
     }
+  print("IM == ${img}");
 
 
     return Center(
