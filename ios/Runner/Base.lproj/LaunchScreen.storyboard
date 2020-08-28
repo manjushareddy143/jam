@@ -19,17 +19,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" image="LaunchImage" highlightedImage="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" highlightedImage="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="koM-Jq-dOU">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="YRO-k0-Ey4" secondAttribute="trailing" id="6qm-LG-UIW"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="LWT-s2-crc"/>
-                            <constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="XNl-Wi-R25"/>
-                            <constraint firstAttribute="bottom" secondItem="YRO-k0-Ey4" secondAttribute="bottom" id="hFn-Tk-oYy"/>
+                            <constraint firstItem="koM-Jq-dOU" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Bfl-lv-mfB"/>
+                            <constraint firstAttribute="bottom" secondItem="koM-Jq-dOU" secondAttribute="bottom" id="cKF-aH-qog"/>
+                            <constraint firstAttribute="trailing" secondItem="koM-Jq-dOU" secondAttribute="trailing" id="l7w-RS-aBV"/>
+                            <constraint firstItem="koM-Jq-dOU" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="lXU-27-yM8"/>
                         </constraints>
                     </view>
                 </viewController>
