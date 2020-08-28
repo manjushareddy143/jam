@@ -3,11 +3,21 @@ import 'package:jam/login/login.dart';
 import 'package:jam/login/masterSignupScreen.dart';
 import 'package:jam/slider_layout.dart';
 import 'package:jam/slider_model.dart';
+import 'package:jam/slider_dots.dart';
 
 class SliderScreen extends StatefulWidget {
   _sliderScreen createState() => new _sliderScreen();
 }
 class _sliderScreen extends State<SliderScreen>{
+  int current = 0;
+  @override
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _pageController.dispose();
+  }
   final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
@@ -26,11 +36,27 @@ class _sliderScreen extends State<SliderScreen>{
                   )
               ),
             ),
-           PageView.builder(
-             scrollDirection: Axis.horizontal,
-               controller: _pageController,
-               itemCount: slideList.length,
-               itemBuilder:(ctx, i)=> SliderLayout(i)),
+           Container(height: 380,
+             child: Stack(alignment: Alignment.bottomCenter,
+               children:[PageView.builder(
+                   scrollDirection: Axis.horizontal,
+                   controller: _pageController,
+                   itemCount: slideList.length,
+                   itemBuilder:(ctx, i)=> SliderLayout(i)),
+               Stack(
+                 alignment: Alignment.bottomCenter,
+                 children: [
+                   for( int i1 = 0; i1 < slideList.length; i1 ++)
+                     if(i1 == current)
+                       SliderDots(true)
+                     else
+                       SliderDots(false)
+
+                 ],
+               )]
+             ),
+           ),
+            SizedBox(height: 40,),
             Column( mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
