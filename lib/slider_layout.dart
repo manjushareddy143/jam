@@ -27,7 +27,7 @@ class SliderLayout extends StatelessWidget{
           padding: const EdgeInsets.fromLTRB(26,40,26,1),
           child: Text(slideList[index].header, textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 32.0,color: Colors.deepOrange)),
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 27.0,color: Colors.deepOrange)),
         ),
 
         Padding(
@@ -36,8 +36,9 @@ class SliderLayout extends StatelessWidget{
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0,color: Colors.black)),
-        )
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0,color: Colors.black)),
+        ),
+        SizedBox(height: 20,)
 
 
 

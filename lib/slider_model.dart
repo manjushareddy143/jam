@@ -13,11 +13,11 @@ class Slide {
 }
  final slideList =[
    Slide(img: 'assets/images/ImageLogin.png',
-           header: 'GET THINGS DONE FAST',
+           header: 'FIRST SCREEN',
            text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
    Slide(img: 'assets/images/ImageLogin.png',
        header: 'GET THINGS DONE FAST',
        text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
    Slide(img: 'assets/images/ImageLogin.png',
-       header: 'GET THINGS DONE FAST',
+       header: 'THIRD SCREEN',
        text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.')];

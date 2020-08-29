@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/login/masterSignupScreen.dart';
 import 'package:jam/slider_layout.dart';
@@ -9,8 +10,13 @@ class SliderScreen extends StatefulWidget {
   _sliderScreen createState() => new _sliderScreen();
 }
 class _sliderScreen extends State<SliderScreen>{
-  int current = 0;
-  @override
+  int current= 0;
+  _onPageChanged(int index){
+    setState(() {
+      current = index;
+    });
+  }
+
 
   @override
   void dispose() {
@@ -27,7 +33,7 @@ class _sliderScreen extends State<SliderScreen>{
         child: Column(
           children: [
             Container(
-              height: 200,
+              height: 170,
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
@@ -36,27 +42,36 @@ class _sliderScreen extends State<SliderScreen>{
                   )
               ),
             ),
-           Container(height: 380,
-             child: Stack(alignment: Alignment.bottomCenter,
+           Container(height: 430,
+             child: Stack(alignment: AlignmentDirectional.bottomCenter,
                children:[PageView.builder(
                    scrollDirection: Axis.horizontal,
                    controller: _pageController,
+                   onPageChanged: _onPageChanged,
                    itemCount: slideList.length,
-                   itemBuilder:(ctx, i)=> SliderLayout(i)),
+                   itemBuilder:(ctx, i)=> SliderLayout(i)
+               ),
                Stack(
-                 alignment: Alignment.bottomCenter,
+                 alignment: AlignmentDirectional.topStart,
                  children: [
-                   for( int i1 = 0; i1 < slideList.length; i1 ++)
-                     if(i1 == current)
-                       SliderDots(true)
-                     else
-                       SliderDots(false)
+                   Container( margin: const EdgeInsets.only(bottom: 35),
+                   child:  Row(mainAxisSize: MainAxisSize.min,
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       for( int i1 = 0; i1 < slideList.length; i1 ++)
+                         if(i1 == current)
+                           SliderDots(true)
+                         else
+                           SliderDots(false)
+                     ],
+                   ),)
+
 
                  ],
                )]
              ),
            ),
-            SizedBox(height: 40,),
+
             Column( mainAxisAlignment: MainAxisAlignment.center,
               children: [
 
@@ -64,7 +79,7 @@ class _sliderScreen extends State<SliderScreen>{
                FlatButton(
                   child: Text("Create an Account",style: TextStyle(color: Colors.white),),
                    shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(7)),
+                       borderRadius: BorderRadius.circular(14)),
                  color: Colors.deepOrangeAccent,
                  onPressed: (){Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => masterSignup()));
                   },
@@ -74,14 +89,14 @@ class _sliderScreen extends State<SliderScreen>{
                SizedBox(height: 10,),
 
                SizedBox(height: 20,
-                 child: Text("------------------------ OR ------------------------"),
+                 child: Text("------------------------ OR ------------------------", style: TextStyle(color: Colors.grey),),
                ),
                SizedBox(height: 10,),
                FlatButton( onPressed: (){
      Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
                },
                  child: Text("LOGIN NOW",
-                   textAlign: TextAlign.center,style: TextStyle( color: Colors.blueGrey,),),
+                   textAlign: TextAlign.center,style: TextStyle( color: Colors.blueGrey,fontWeight: FontWeight.w700),),
                 ),
 
 
