@@ -14,7 +14,7 @@ import 'package:jam/models/service.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:jam/screens/initial_profile.dart';
-import 'package:jam/screens/slider_screen.dart';
+import 'package:jam/screens/intro_screen.dart';
 import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';

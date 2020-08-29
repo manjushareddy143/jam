@@ -101,18 +101,32 @@ class _HomeUIPageState extends State<HomeUIPage> {
       );
     } else {
 //      if(listofServices.length > 0) {
-        return new Scaffold(
+        return new Scaffold(backgroundColor: Colors.orange[50],
           body: CustomScrollView(
             //view that contains an expanding app bar followed by a list & grid
             slivers: <Widget>[
-              makeHeader(""),
+             // makeHeader(""),
               //calling appbar method by passing the Text as argument.
               //Padding: const EdgeInsets.all(8.0),
+              SliverFixedExtentList(
+                itemExtent: 50.0,
+                delegate: SliverChildListDelegate(
+                  [
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15,10,10,0),
+                      child: Container(child: Text("Categories", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),)),
+                    ),
+                  ],
+                ),
+              ),
 
               if(listofServices != null)
               SliverGrid(
                   gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
+                    mainAxisSpacing: 2.0,
+                    crossAxisSpacing: 5.0,
                   ),
                   /*crossAxisCount: 3, // how many grid needed in a row
             mainAxisSpacing: 4.0,
@@ -121,55 +135,58 @@ class _HomeUIPageState extends State<HomeUIPage> {
                         (BuildContext context, int serviceIndex) {
                       return
                         // children: <Widget>[
-                        Container(
-                          alignment: FractionalOffset.center,
-                          height: 400.0,
-                          width: 400.0,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey[200]),
-                          ),
-                          child: new GestureDetector(
-                            //tapping to go the corresponding view linked with it using navigator
-                            onTap: () {
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(color: Colors.white,
+                            alignment: FractionalOffset.center,
+                            height: 50.0,
+                            width: 50.0,
+//                          decoration: BoxDecoration(
+//                            border: Border.all(color: Colors.white ),
+//                          ),
+                            child: new GestureDetector(
+                              //tapping to go the corresponding view linked with it using navigator
+                              onTap: () {
 
-                              printLog('click == ${listofServices[serviceIndex].name}');
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
+                                printLog('click == ${listofServices[serviceIndex].name}');
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
 //                                              ProfileUIPage()
-                                          ProviderListPage(service: listofServices[serviceIndex])
-                                  )
-                              );
-                              //, _service[serviceIndex]
-                            },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              //crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  width: 70.00,
-                                  height: 70.00,
-                                  child: Image.network(
-                                    listofServices[serviceIndex].icon_image,
-                                    fit: BoxFit.fill,
+                                            ProviderListPage(service: listofServices[serviceIndex])
+                                    )
+                                );
+                                //, _service[serviceIndex]
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                //crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    width: 45.00,
+                                    height: 45.00,
+                                    child: Image.network(
+                                      listofServices[serviceIndex].icon_image,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ), //new Icon(Icons.face),
+
+                                 Padding(padding: EdgeInsets.all(5.0)),
+
+
+                                  Flexible(
+                                    child: Text(listofServices[serviceIndex].name,
+                                      maxLines: 2,
+                                      style: TextStyle(fontSize: 10,letterSpacing: 0.8,color: Colors.black,fontWeight: FontWeight.w600),
+
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+
+                                    ),
                                   ),
-                                ), //new Icon(Icons.face),
-
-                               Padding(padding: EdgeInsets.all(1.0)),
-
-
-                                Flexible(
-                                  child: Text(listofServices[serviceIndex].name,
-                                    maxLines: 2,
-                                    style: TextStyle(fontSize: 13,letterSpacing: 0.8,color: Colors.black.withOpacity(0.6)),
-
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );
