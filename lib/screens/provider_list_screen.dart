@@ -115,25 +115,35 @@ class _ProviderListState extends State<ProviderListPage> {
   Widget build(BuildContext context) {
 
     if (listofProviders == null) {
-      return new Scaffold(
-        appBar: new AppBar(
+      return new Scaffold(backgroundColor: Colors.orange[50],
+        appBar: new AppBar(backgroundColor: Colors.deepOrange,
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
+
         ),
       );
     } else {
-      return Scaffold(
+      return Scaffold( backgroundColor: Colors.orange[50],
           appBar: AppBar(
-            backgroundColor: Colors.white70,
-            title: Text(
-              listofProviders.length.toString() + ' ' + this.service.name,
+            automaticallyImplyLeading: true,
+            backgroundColor: Colors.deepOrange,
+            centerTitle: true,
+
+            title: Text("Vendor List",
+              //listofProviders.length.toString() + ' ' + this.service.name,
               textAlign: TextAlign.left,
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w400,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(Icons.search),
+              )
+            ],
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -162,32 +172,32 @@ class _ProviderListState extends State<ProviderListPage> {
   List<Widget> listOfCards() {
     List<Widget> list = new List();
 
-    list.add(Image.network(
-      this.service.banner_image,
-      fit: BoxFit.fill,
-      width: MediaQuery. of(context). size. width,
-      height: 100,
-    ));
-
-    if(this.service.categories.length > 0) {
-      list.add(
-          Row(
-            children:[
-              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-              SizedBox(width: 20,),
-              Expanded(child:  DropdownButton(
-                  underline: SizedBox(),
-                  isExpanded: true,
-                  value: selectedSubCategory,
-                  icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
-                  items: _dropDownSubCategory,
-                  onChanged: changedDropDownItem),
-              ),
-
-            ],
-          )
-      );
-    }
+//    list.add(Image.network(
+//      this.service.banner_image,
+//      fit: BoxFit.fill,
+//      width: MediaQuery. of(context). size. width,
+//      height: 100,
+//    ));
+//
+//    if(this.service.categories.length > 0) {
+//      list.add(
+//          Row(
+//            children:[
+//              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+//              SizedBox(width: 20,),
+//              Expanded(child:  DropdownButton(
+//                  underline: SizedBox(),
+//                  isExpanded: true,
+//                  value: selectedSubCategory,
+//                  icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+//                  items: _dropDownSubCategory,
+//                  onChanged: changedDropDownItem),
+//              ),
+//
+//            ],
+//          )
+//      );
+//    }
 
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
@@ -236,141 +246,190 @@ class _ProviderListState extends State<ProviderListPage> {
 
     print("img === ${img}");
     return
-      new Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.fromLTRB(30, 0, 0, 0),
-            onTap: ()=> {
+      Padding(
+        padding: const EdgeInsets.fromLTRB(20,6,20,6),
+        child: new Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            ListTile(
+              //contentPadding: EdgeInsets.fromLTRB(3, 10, 0, 10),
+              onTap: ()=> {
 //            print("USERSS ${user.services}"),
-            print("USERSS ${user.image}"),
-           Navigator.push(
-           context,
-          MaterialPageRoute (
-              builder: (context) =>
-              VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
-            )
-           ),
-            },
-            leading: Container(
-              width: 60,
-              height: 100,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: new DecorationImage(
-                    image: (img != null)?
-                    NetworkImage(img) : setImgPlaceholder(),
-                    fit: BoxFit.fill,
-                  )),
-            ),
-            title: Text(name),
-//            Column(
-//              crossAxisAlignment: CrossAxisAlignment.start,
-//              children: <Widget>[
-//              Text(user.first_name),
-//              Text(user.first_name)
-//            ],),
-            subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years'),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SmoothStarRating(
-                  allowHalfRating: false,
-                  starCount: 5,
-                  rating: rating,
-                  size: 20.0,
-                  filledIconData: Icons.star,
-                  halfFilledIconData: Icons.star,
-                  color: Colors.amber,
-                  borderColor: Colors.amber,
-                  //unfilledStar: Icon(Icons., color: Colors.grey),
-                  spacing:0.0,
-                  onRatingChanged: (v) {},
-                ),
-                Text( " " + review + " " + AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Cost  ",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold),
-                ),
-                Text(user.price,
-                  style: TextStyle(
-                    color: Colors.red, fontWeight: FontWeight.bold
-                  ),
-                ),
-                Text("/hr",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Align(
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: FlatButton.icon(
-                        icon: Icon(Icons.monetization_on, color: Configurations.themColor),
-                        label: Text(AppLocalizations.of(context).translate('quotes'), style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
-                                color: Configurations.themColor)),
-                        onPressed: () {
-                         if(globals.guest == true){
-                            show();
-                          } else {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        InquiryPage(service: this.service, provider: user,
-                                        category: selectedSubCategory)
-                                )
-                            );
-                          }
-                        },
-                      ),
-                  ),
-
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
-                    child: FlatButton.icon(
-                      icon: Icon(
-                          Icons.call, color: Configurations.themColor
-                      ),
-                      label: Text(
-                          AppLocalizations.of(context).translate('call'),
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400,
-                              color: Configurations.themColor
-                          )
-                      ),
-                      onPressed: () {
-                      },
-                    ),
-                  )
-                ],
+              print("USERSS ${user.image}"),
+             Navigator.push(
+             context,
+            MaterialPageRoute (
+                builder: (context) =>
+                VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
               )
-          ),
-        ],
-      ),
-    );
+             ),
+              },
+              leading: Container(
+                width: 80,
+                height: 100,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    image: new DecorationImage(
+                      image: (img != null)?
+                      NetworkImage(img) : setImgPlaceholder(),
+                      fit: BoxFit.fill,
+                    )),
+              ),
+              title:Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+//              Column(
+//                children: [Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+//                  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+//                  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),],
+//              ),
+            //  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+
+              subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years', style: TextStyle(fontSize: 13),),
+          trailing:
+
+                Container( width: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:15.0, left: 10),
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+
+                      child: Column(
+                        children: <Widget>[
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 30,)),
+                          Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton(onPressed:(){},
+                                icon:Icon(Icons.call, color: Colors.black, size: 30,)),
+                              Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton( onPressed:(){
+                               if(globals.guest == true){
+                             show();
+                           } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          InquiryPage(service: this.service, provider: user,
+                                          category: selectedSubCategory)
+                                  )
+                              );
+                            }
+                            },
+                              icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
+
+                              Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+            ),
+
+//            Container(
+//              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  SmoothStarRating(
+//                    allowHalfRating: false,
+//                    starCount: 5,
+//                    rating: rating,
+//                    size: 20.0,
+//                    filledIconData: Icons.star,
+//                    halfFilledIconData: Icons.star,
+//                    color: Colors.amber,
+//                    borderColor: Colors.amber,
+//                    //unfilledStar: Icon(Icons., color: Colors.grey),
+//                    spacing:0.0,
+//                    onRatingChanged: (v) {},
+//                  ),
+//                  Text( " " + review + " " + AppLocalizations.of(context).translate('reviews'),textAlign: TextAlign.left,
+//                    overflow: TextOverflow.ellipsis,
+//                    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15.0,color: Colors.blueGrey),),
+//                ],
+//              ),
+//            ),
+//            Container(
+//              padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+//              child: Row(
+//                mainAxisAlignment: MainAxisAlignment.center,
+//                children: <Widget>[
+//                  Text("Cost  ",
+//                    style: TextStyle(
+//                      fontWeight: FontWeight.bold),
+//                  ),
+//                  Text(user.price,
+//                    style: TextStyle(
+//                      color: Colors.red, fontWeight: FontWeight.bold
+//                    ),
+//                  ),
+//                  Text("/hr",
+//                    style: TextStyle(
+//                        fontWeight: FontWeight.bold
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            ),
+
+//            Align(
+//                child: Row(
+//                  children: <Widget>[
+//                    Expanded(
+//                        child: FlatButton.icon(
+//                          icon: Icon(Icons.monetization_on, color: Configurations.themColor),
+//                          label: Text(AppLocalizations.of(context).translate('quotes'), style: TextStyle(
+//                                  fontSize: 15.0,
+//                                  fontWeight: FontWeight.w400,
+//                                  color: Configurations.themColor)),
+//                          onPressed: () {
+//                           if(globals.guest == true){
+//                              show();
+//                            } else {
+//                              Navigator.push(
+//                                  context,
+//                                  MaterialPageRoute(
+//                                      builder: (context) =>
+//                                          InquiryPage(service: this.service, provider: user,
+//                                          category: selectedSubCategory)
+//                                  )
+//                              );
+//                            }
+//                          },
+//                        ),
+//                    ),
+//
+//                    Padding(
+//                      padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+//                      child: FlatButton.icon(
+//                        icon: Icon(
+//                            Icons.call, color: Configurations.themColor
+//                        ),
+//                        label: Text(
+//                            AppLocalizations.of(context).translate('call'),
+//                            style: TextStyle(
+//                                fontSize: 15.0,
+//                                fontWeight: FontWeight.w400,
+//                                color: Configurations.themColor
+//                            )
+//                        ),
+//                        onPressed: () {
+//                        },
+//                      ),
+//                    )
+//                  ],
+//                )
+//            ),
+          ],
+        ),
+    ),
+      );
   }
 
   void show(){

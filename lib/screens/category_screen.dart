@@ -102,15 +102,15 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     if (isLoadin) {
-      return new Scaffold(
-        appBar: new AppBar(
+      return new Scaffold(backgroundColor: Colors.orange[50],
+        appBar: new AppBar(backgroundColor: Colors.deepOrange,
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {
 //      if(listofServices.length > 0) {
-      return new Scaffold(
+      return new Scaffold(backgroundColor: Colors.orange[50],
         body: SingleChildScrollView(
        // if(listofServices != null)
          child:  Column(children:

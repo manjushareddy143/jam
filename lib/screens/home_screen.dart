@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
 //    printLog(globals.addressLocation);
 //    printLog(globals.newAddress);
 //    printLog(globals.addressChange);
-    return new Scaffold(
+    return new Scaffold(backgroundColor: Colors.orange[50],
       appBar: PreferredSize( preferredSize: Size.fromHeight(80),
         child: AppBar(
 

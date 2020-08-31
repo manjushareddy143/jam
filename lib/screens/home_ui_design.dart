@@ -93,8 +93,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
   @override
   Widget build(BuildContext context) {
     if (isLoadin) {
-      return new Scaffold(
-        appBar: new AppBar(
+      return new Scaffold(backgroundColor: Colors.orange[50],
+        appBar: new AppBar(backgroundColor: Colors.deepOrange,
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
