@@ -12,12 +12,12 @@ class Slide {
 });
 }
  final slideList =[
-   Slide(img: 'assets/images/ImageLogin.png',
-           header: 'FIRST SCREEN',
+   Slide(img: 'assets/images/slider1.png',
+           header: 'GET THINGS DONE FAST',
            text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
-   Slide(img: 'assets/images/ImageLogin.png',
+   Slide(img: 'assets/images/slider2.png',
        header: 'GET THINGS DONE FAST',
        text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
-   Slide(img: 'assets/images/ImageLogin.png',
-       header: 'THIRD SCREEN',
+   Slide(img: 'assets/images/slider3.png',
+       header: 'GET THINGS DONE FAST',
        text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.')];

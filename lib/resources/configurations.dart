@@ -26,7 +26,7 @@ class Configurations {
 
 
 
-  static Color themColor = Hexcolor('#0ca798');
+  static Color themColor = Hexcolor('#FB6907');
   //IN SECONDS
   static const int CHECK_INTERNET_TIMEOUT = 15;
 

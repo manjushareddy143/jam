@@ -109,56 +109,62 @@ class _user extends State<UserLogin>{
             child: new Column(
 //                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  new Image.asset("assets/images/BG-1x.jpg",
-                    height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-//                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      DropdownButton(
-                        underline: SizedBox(),
-                        onChanged: ( Language language){
-                          _changeLanguage(language);
-                        },
-                        icon: Icon(Icons.language, color: Configurations.themColor,),
-                        items: Language.languageList()
-                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                          value:  lang,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget> [
-                              Text(lang.flag),
-                              Text(lang.name)
-                            ],
-                          ) ,
-                        )).toList(),
-                      ),
-                    ],
-                  ),
+//                  new Image.asset("assets/images/BG-1x.jpg",
+//                    height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
+//                  Row(
+//                    mainAxisAlignment: MainAxisAlignment.start,
+////                    crossAxisAlignment: CrossAxisAlignment.start,
+//                    children: <Widget>[
+//                      DropdownButton(
+//                        underline: SizedBox(),
+//                        onChanged: ( Language language){
+//                          _changeLanguage(language);
+//                        },
+//                        icon: Icon(Icons.language, color: Configurations.themColor,),
+//                        items: Language.languageList()
+//                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+//                          value:  lang,
+//                          child: Row(
+//                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+//                            children: <Widget> [
+//                              Text(lang.flag),
+//                              Text(lang.name)
+//                            ],
+//                          ) ,
+//                        )).toList(),
+//                      ),
+//                    ],
+//                  ),
+                SizedBox(height: 100,),
 
-                  Row(
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0,5,0,19),
+                    child: Row(
 //                    crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset("assets/images/jamLogo.png",
-                        height: 40.0, width: 80.0 , fit: BoxFit.fill, ),
-                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset("assets/images/jamLogo.png",
+                          height: 58.0, width: 110.0 , fit: BoxFit.fill, ),
+                      ],
+                    ),
                   ),
+                   SizedBox(height: 10,),
                    Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: <Widget>[
-                       Text(
-                         AppLocalizations.of(context).translate('txt_loginuser'),
+                       Text("User Login",
+                         //AppLocalizations.of(context).translate('txt_loginuser'),
                          textAlign: TextAlign.center,
                          overflow: TextOverflow.ellipsis,
-                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 32.0,),
+                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0, color: Colors.deepOrangeAccent),
                        )
                      ],
                    ),
 
-                  SizedBox(height: 30),
+                //  SizedBox(height: 30),
 
-                  Container( padding: new  EdgeInsets.all(20),
+                  Container( padding: new  EdgeInsets.all(10),
+                    margin: EdgeInsets.only(left: 15, right: 15),
                     child:
                     Column(children: <Widget>[
                       TextFormField(
@@ -170,16 +176,21 @@ class _user extends State<UserLogin>{
                           }
                           return validateEmail(value);
                         },
+                        cursorColor: Configurations.themColor,
 
                         obscureText: false,
-                        decoration: InputDecoration( suffixIcon: Icon(Icons.face),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(focusColor: Configurations.themColor,
+                          //suffixIcon: Icon(Icons.face),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                            color: Configurations.themColor,
+                            width: 0.9,
+                          ), borderRadius: BorderRadius.circular(9.0),),
                           labelText: //"Email or Username"
                            AppLocalizations.of(context).translate('email_placeholder'),
                         ),
 
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 15),
                       new TextFormField(
                         focusNode: focus_pwd,
                         controller: txtPass,
@@ -191,8 +202,11 @@ class _user extends State<UserLogin>{
                         },
 
                         obscureText: true,
-                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock),focusColor: Configurations.themColor,
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                            color: Configurations.themColor,
+                            width: 0.9,
+                          ), borderRadius: BorderRadius.circular(9.0),),
                           labelText:  AppLocalizations.of(context).translate('pwd_placeholder'),
                         ),
                       ),
@@ -202,8 +216,9 @@ class _user extends State<UserLogin>{
 
                   Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
                     children: <Widget>[
-                      Checkbox(value: _value1, onChanged: _value1Changed),
-                      Text(AppLocalizations.of(context).translate('txt_remember'), ),
+                         Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
+                           child: Checkbox(value: _value1, onChanged: _value1Changed), ),
+                      Text(AppLocalizations.of(context).translate('txt_remember'),style: TextStyle(color: Colors.black), ),
                       Spacer(),
                       FlatButton(onPressed:(){
                         showDialog(context:  context,
@@ -215,12 +230,16 @@ class _user extends State<UserLogin>{
                   ButtonTheme(
                     minWidth: 300,
                     child: new  RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                           // side: BorderSide(color: Colors.red)
+                        ),
 
                         color: Configurations.themColor,
                         textColor: Colors.white,
                         padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        child:  Text(
-                            AppLocalizations.of(context).translate('btn_login'),
+                        child:  Text("LOGIN",
+                            //AppLocalizations.of(context).translate('btn_login'),
                             style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
                         ),
                         onPressed: () {
@@ -250,29 +269,33 @@ class _user extends State<UserLogin>{
                       )
                     ],
                   ),),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 16,),
 
                   SizedBox(height: 20,
                     child: Text("------------------------ OR ------------------------"),
+                  ),
+                  SizedBox(height: 16),
+
+                  SignInButton(
+                    Buttons.Facebook,
+                    text: "Sign in with Facebook",
+
+                   // padding: EdgeInsets.fromLTRB(120,10,120,10),
+                    onPressed: () {
+                      signinWithFacebook();
+                    },
                   ),
                   SizedBox(height: 10,),
 
                   SignInButton(
                     Buttons.Google,
                     text: "Sign in with Google",
+                    //padding: EdgeInsets.fromLTRB(120,10,120,10),
                     onPressed: () {
                       signinWithGmail();
                     },
                   ),
-                  SizedBox(height: 10),
 
-                  SignInButton(
-                    Buttons.Facebook,
-                    text: "Sign in with Facebook",
-                    onPressed: () {
-                      signinWithFacebook();
-                    },
-                  ),
 
                   SizedBox(height: 30,),
                   FlatButton( onPressed: (){
@@ -287,6 +310,8 @@ class _user extends State<UserLogin>{
                     child: Text(AppLocalizations.of(context).translate('txt_skip'),
                         textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
                   ),
+            new Image.asset("assets/images/bottomLogin.png",
+                    height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
 
 
 
@@ -664,7 +689,7 @@ class _user extends State<UserLogin>{
           "Find Your Account",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.orangeAccent,
+            color: Configurations.themColor,
           ),
         ),
       ),
@@ -681,14 +706,17 @@ class _user extends State<UserLogin>{
                       obscureText: false,
                       decoration: InputDecoration(
                           suffixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                            color: Configurations.themColor,
+                            width: 0.9,
+                          ),
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                           labelText: "Enter your email")
                   ),
                 ),
                 Text("OR",style: TextStyle(
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.bold, color: Colors.grey
                 ),
                 ),
                 Padding(
@@ -699,7 +727,11 @@ class _user extends State<UserLogin>{
                     obscureText: false,
                     decoration: InputDecoration(
                         suffixIcon: Icon(Icons.phone),
-                        border: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Configurations.themColor,
+                            width: 0.9,
+                          ),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         labelText: "Enter your number"),
@@ -709,6 +741,10 @@ class _user extends State<UserLogin>{
                 SizedBox(height: 10,),
                 ButtonTheme(minWidth: 300,
                   child: RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                      // side: BorderSide(color: Colors.red)
+                    ),
                     color: Configurations.themColor,
                     textColor: Colors.white,
                     child: Text("Submit"),

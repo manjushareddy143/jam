@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/login/customerSignup.dart';
 import 'package:jam/models/user.dart';
+import 'package:jam/models/service.dart';
 import 'package:jam/screens/home_screen.dart';
 import 'package:geopoint/geopoint.dart';
 import 'package:geopoint_location/geopoint_location.dart';
@@ -30,6 +31,7 @@ String customContact;
 String customFirstName;
 List<String> customLanguage = new List<String>();
 List<Order> listofOrders;
+
 
 
 bool isVendor = false;

@@ -37,7 +37,7 @@ class _sliderScreen extends State<SliderScreen>{
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage('assets/images/slider1.jpg'),
+                      image: AssetImage('assets/images/topLogin.jpg'),
                       fit: BoxFit.cover
                   )
               ),
@@ -79,7 +79,7 @@ class _sliderScreen extends State<SliderScreen>{
                FlatButton(
                   child: Text("Create an Account",style: TextStyle(color: Colors.white),),
                    shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(14)),
+                       borderRadius: BorderRadius.circular(5)),
                  color: Colors.deepOrangeAccent,
                  onPressed: (){Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => masterSignup()));
                   },

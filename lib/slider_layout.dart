@@ -36,7 +36,7 @@ class SliderLayout extends StatelessWidget{
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0,color: Colors.black)),
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0,color: Colors.black)),
         ),
         SizedBox(height: 20,)
 

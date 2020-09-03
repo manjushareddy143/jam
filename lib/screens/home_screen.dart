@@ -76,186 +76,139 @@ class _HomePageState extends State<HomePage> {
 //    printLog(globals.newAddress);
 //    printLog(globals.addressChange);
     return new Scaffold(backgroundColor: Colors.orange[50],
-      appBar: PreferredSize( preferredSize: Size.fromHeight(80),
-        child: AppBar(
 
-          backgroundColor: Colors.deepOrange,
-          automaticallyImplyLeading: false,
-//           leading: GestureDetector(onTap: (){},
-//           child: Icon(Icons.menu, color: Colors.white,),),
-          centerTitle: true,
-          title:
-           Column(mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-             children: [
-               SizedBox(height: 5,),
+      appBar: new AppBar(
+        backgroundColor: Colors.deepOrange,
+        automaticallyImplyLeading: false,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            if (_currentIndex == 0)
 
+              Text(
+                AppLocalizations.of(context).translate('home_txt_location'),
+                textAlign: TextAlign.left,
 
+                style: TextStyle(
+                  fontSize: 14.0,
 
-                 Center(child: Text("Dashboard",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w300),)),
-
-               SizedBox(height: 5,),
-
-
-          Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Container( height: 30,
-              child: TextField( maxLines: 1,
-                obscureText: false,
-                decoration: InputDecoration( suffixIcon: Icon(Icons.search,color: Colors.grey,),fillColor: Colors.white, filled: true,
-                  border: OutlineInputBorder(borderRadius: const BorderRadius.all(
-                  const Radius.circular(32.0),),borderSide: new BorderSide(
+                  fontWeight: FontWeight.w400,
                   color: Colors.white,
-                   width: 0.3,
-                 ),
-                 //labelText: "Search Category "
+                ),
+              ),
+            if (_currentIndex == 0)
+             Container(
+                child: new GestureDetector(
+                  //tapping to go the corresponding view linked with it using navigator
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NewPage()));
+                  },
+                  child: Row(
+                    children: <Widget>[
+                      Flexible(
+                        child:
+                        Text(
+                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
+
+                          globals.addressLocation.addressLine.toString(),
+
+
+                           //newAddress.addressL// current location
+                         maxLines: 2,
+
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              letterSpacing: 0.5,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white),
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.white,
+
+                      )
+                    ],
                   ),
-                    labelText: 'Search Category ',
-                    labelStyle:new TextStyle(color: Colors.grey, fontSize: 10.0),
-                contentPadding: EdgeInsets.fromLTRB(20.0, 1.0, 20.0, 1.0),
+                ),
+              ),
+            if (_currentIndex == 1)
+              setHeader(AppLocalizations.of(context).translate('tab_categories',),),
+            if (_currentIndex == 2)
+              setHeader(AppLocalizations.of(context).translate('tab_account')),
+            if (_currentIndex == 3)
+              setHeader(AppLocalizations.of(context).translate('tab_orders')),
 
-
-               ),
-             ),
-           ),
-         ),
-
-         ],
-          )
+          ],
         ),
-      ),
-//      appBar: new AppBar(
-//        backgroundColor: Colors.white,
-//        automaticallyImplyLeading: false,
-//        title: Column(
-//          crossAxisAlignment: CrossAxisAlignment.start,
-//          children: <Widget>[
-//            if (_currentIndex == 0)
-//
-//              Text(
-//                AppLocalizations.of(context).translate('home_txt_location'),
-//                textAlign: TextAlign.left,
-//
-//                style: TextStyle(
-//                  fontSize: 14.0,
-//
-//                  fontWeight: FontWeight.w400,
-//                  color: Colors.grey,
-//                ),
-//              ),
-//            if (_currentIndex == 0)
-//              Container(
-//                child: new GestureDetector(
-//                  //tapping to go the corresponding view linked with it using navigator
-//                  onTap: () {
-//                    Navigator.push(context,
-//                        MaterialPageRoute(builder: (context) => NewPage()));
-//                  },
-//                  child: Row(
-//                    children: <Widget>[
-//                      Flexible(
-//                        child:
-//                        Text(
-//                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
-//
-//                          globals.addressLocation.addressLine.toString(),
-//
-//
-//                           //newAddress.addressL// current location
-//                         maxLines: 2,
-//
-//                          style: TextStyle(
-//                              fontSize: 14.0,
-//                              letterSpacing: 0.5,
-//                              fontWeight: FontWeight.w400,
-//                              color: Colors.black),
-//                        ),
-//                      ),
-//                      Icon(
-//                        Icons.arrow_drop_down,
-//                        color: Configurations.themColor,
-//
-//                      )
-//                    ],
-//                  ),
-//                ),
-//              ),
-//            if (_currentIndex == 1)
-//              setHeader(AppLocalizations.of(context).translate('tab_categories')),
-//            if (_currentIndex == 2)
-//              setHeader(AppLocalizations.of(context).translate('tab_account')),
-//            if (_currentIndex == 3)
-//              setHeader(AppLocalizations.of(context).translate('tab_orders')),
-//
-//          ],
-//        ),
-//        actions: <Widget>[
-//          if (_currentIndex == 0)
-//          new IconButton(
-//            icon: (globals.guest == true) ? Icon(Icons.exit_to_app) : Icon(Icons.shopping_cart),
-//            onPressed: () {
-//
-//              if(globals.guest == true) {
-//                globals.guest = false;
-//                globals.isCustomer = true;
-//                globals.currentUser = null;
-//                Navigator.pushReplacement(context,
-//                    MaterialPageRoute(builder: (context) => UserLogin()));
-//              }
-////              Preferences.removePreference("user");
-////              Navigator.pushReplacement(context,
-////                  MaterialPageRoute(builder: (context) => UserLogin()));
-//            },
-//          ),
-//          if (_currentIndex == 2)
-//          new IconButton(
-//            icon: new Icon(editIcon),
-//            onPressed: () {
-//              setState(() {
-//                if(editIcon == Icons.mode_edit) {
-//                  editIcon = Icons.done;
-//                } else {
-//                  editIcon = Icons.mode_edit;
-//                }
-//                key.currentState.validateform();
-//              });
-//
-//            },
-//          ),
-//          if (_currentIndex == 2)
-//          new IconButton(
-//            icon: new Icon(Icons.exit_to_app),
-//            onPressed: () {
+        actions: <Widget>[
+          if (_currentIndex == 0)
+          new IconButton(
+            icon: (globals.guest == true) ? Icon(Icons.exit_to_app,color: Colors.white,) : Icon(Icons.shopping_cart, color: Colors.white,),
+            onPressed: () {
+
+              if(globals.guest == true) {
+                globals.guest = false;
+                globals.isCustomer = true;
+                globals.currentUser = null;
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => UserLogin()));
+              }
 //              Preferences.removePreference("user");
-//              Preferences.removePreference("profile");
-//
-//              if(globals.currentUser.social_signin == "facebook") {
-//                logoutFacebook();
-//              } else if(globals.currentUser.social_signin == "gmail") {
-//                signOutGoogle();
-//              }
-//              globals.isCustomer = true;
-//              globals.currentUser = null;
-//              globals.customRadius = null;
-//              globals.customImage = null;
-//              globals.customGender = null;
-//              globals.customContact = null;
-//              globals.customFirstName = null;
-//              globals.customLanguage = null;
-//              ServiceSelectionUIPageState.serviceNamesString = null;
-//              ServiceSelectionUIPageState.selectedServices = null;
 //              Navigator.pushReplacement(context,
 //                  MaterialPageRoute(builder: (context) => UserLogin()));
-//            },
-//          ),
-//
-//
-//
-//        ],
-//        iconTheme: IconThemeData(
-//          color: Colors.grey,
-//        ),
-//      ),
+            },
+          ),
+          if (_currentIndex == 2)
+         new IconButton(
+            icon: new Icon(editIcon),
+            onPressed: () {
+              setState(() {
+                if(editIcon == Icons.mode_edit) {
+                  editIcon = Icons.done;
+                } else {
+                  editIcon = Icons.mode_edit;
+                }
+                key.currentState.validateform();
+              });
+
+            },
+          ),
+          if (_currentIndex == 2)
+          new IconButton(
+            icon: new Icon(Icons.exit_to_app),
+            onPressed: () {
+              Preferences.removePreference("user");
+              Preferences.removePreference("profile");
+
+              if(globals.currentUser.social_signin == "facebook") {
+                logoutFacebook();
+              } else if(globals.currentUser.social_signin == "gmail") {
+                signOutGoogle();
+              }
+              globals.isCustomer = true;
+              globals.currentUser = null;
+              globals.customRadius = null;
+              globals.customImage = null;
+              globals.customGender = null;
+              globals.customContact = null;
+              globals.customFirstName = null;
+              globals.customLanguage = null;
+              ServiceSelectionUIPageState.serviceNamesString = null;
+              ServiceSelectionUIPageState.selectedServices = null;
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => UserLogin()));
+           },
+         ),
+
+
+
+        ],
+        iconTheme: IconThemeData(
+          color: Colors.grey,
+        ),
+      ),
       // Middle Body
       body: (globals.guest == true) ? _guestChildren[_currentIndex] : _children[_currentIndex],
 
