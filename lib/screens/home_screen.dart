@@ -136,9 +136,9 @@ class _HomePageState extends State<HomePage> {
             if (_currentIndex == 1)
               setHeader(AppLocalizations.of(context).translate('tab_categories',),),
             if (_currentIndex == 2)
-              setHeader(AppLocalizations.of(context).translate('tab_account')),
-            if (_currentIndex == 3)
               setHeader(AppLocalizations.of(context).translate('tab_orders')),
+            if (_currentIndex == 3)
+              setHeader(AppLocalizations.of(context).translate('tab_account')),
 
           ],
         ),
