@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
 //                  MaterialPageRoute(builder: (context) => UserLogin()));
             },
           ),
-          if (_currentIndex == 2)
+          if (_currentIndex == 3)
          new IconButton(
             icon: new Icon(editIcon),
             onPressed: () {
@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
 
             },
           ),
-          if (_currentIndex == 2)
+          if (_currentIndex == 3)
           new IconButton(
             icon: new Icon(Icons.exit_to_app),
             onPressed: () {
