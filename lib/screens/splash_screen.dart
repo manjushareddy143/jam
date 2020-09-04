@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:jam/utils/utils.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:geopoint/geopoint.dart';
 import 'package:geopoint_location/geopoint_location.dart';
+import 'package:location/location.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -43,8 +45,44 @@ class SplashScreenState extends State<SplashScreen> {
   Future getcordinates() async {
     printLog("getcordinates");
 
+
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+          printLog("NOT ENABLE");
+          exit(0);
+        return;
+      } else {
+        printLog("ENABLE");
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        printLog("PERMISSION");
+        printLog("NOT ENABLE");
+        showInfoAlert(context, "Please go inside app settings and allow location permissions to JAM");
+//        exit(0);
+        return;
+      }
+    }
+
+    _locationData = await location.getLocation();
+
+
+
+
     GeoPoint geoPoint = await geoPointFromLocation(
-        name: "Current position", withAddress: true, verbose: false);
+        name: "Current position", withAddress: false, verbose: true );
     printLog("geoPoint === ${geoPoint.country}" );
     globals.longitude = geoPoint.longitude;
     globals.latitude = geoPoint.latitude;
