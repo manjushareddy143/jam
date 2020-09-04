@@ -89,114 +89,138 @@ class _customerSignup extends State<CustomerSignup>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Form(
-      key: _formKey,
-      autovalidate: _autoValidate,
-      child: customerScreenUI(),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: customerScreenUI(),
+        ),
+      ),
     );
   }
 
   Widget customerScreenUI(){
-    return Container(
-      margin: EdgeInsets.fromLTRB(5, 20, 5, 10),
-      child: Column( children: <Widget>[
+    return Column(
+      children: <Widget>[
 
-        Row(
-          children: <Widget>[
-            SizedBox(
+        SizedBox(height: 40,),
+        new Image.asset("assets/images/jamLogo.png",
+          height: 40.0, width: 95.0 , fit: BoxFit.fill,),
+        SizedBox(height: 20,),
+        Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
+          child: new Text(
+            "Customer Sign up",
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0,color: Configurations.themColor),
+          ),
+        ),
+      SizedBox(height: 10,),
+
+      Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 20),
+            child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+            border: Border.all(width: 0.9,color: Configurations.themColor)),
               width: 100,
-              child: Material(elevation: 10.0,shadowColor: Colors.grey,
-                child:
-                CountryCodePicker(
-                  onChanged: _onCountryChange,
-                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                  initialSelection: 'QA',
-                  favorite: ['+974','+91'],
-                  // optional. Shows only country name and flag
-                  showCountryOnly: false,
-                  // optional. Shows only country name and flag when popup is closed.
-                  showOnlyCountryWhenClosed: false,
-                  // optional. aligns the flag and the Text left
-                  alignLeft: false,
-                  showFlag: true,
-                  onInit: _initCountryCode,
-                ),
+              child: CountryCodePicker(
+                onChanged: _onCountryChange,
+                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                initialSelection: 'QA',
+                favorite: ['+974','+91'],
+                // optional. Shows only country name and flag
+                showCountryOnly: false,
+                // optional. Shows only country name and flag when popup is closed.
+                showOnlyCountryWhenClosed: false,
+                // optional. aligns the flag and the Text left
+                alignLeft: false,
+                showFlag: true,
+                onInit: _initCountryCode,
               ),
             ),
+          ),
 
-            SizedBox( width: 10,),
-            SizedBox(
-              width: 198,
-              child: Material(elevation: 10.0,shadowColor: Colors.grey,
-                child: TextFormField(
-                  enabled: _fridgeEdit,
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                      labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
+          SizedBox( width: 10,),
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: SizedBox(
+              width: 222,
+              child: TextFormField(
+                enabled: _fridgeEdit,
+                decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                    contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
 
-                  keyboardType: TextInputType.phone,
-                  controller: txtContact,
+                keyboardType: TextInputType.phone,
+                controller: txtContact,
 
-                  validator: (value){
-                    if (value.isEmpty) {
-                      return AppLocalizations.of(context).translate('signup_txt_enterno');
-                    }
-                    return validatePhoneNumber(value);
-                  },
+                validator: (value){
+                  if (value.isEmpty) {
+                    return AppLocalizations.of(context).translate('signup_txt_enterno');
+                  }
+                  return validatePhoneNumber(value);
+                },
 
-                ),
               ),
-            )
-
-          ],
-        ),
-        SizedBox(height: 10,),
-
-        Material(elevation: 10.0,shadowColor: Colors.grey,
-          child: TextFormField(
-            enabled: _fridgeEdit,
-            obscureText: true,
-            decoration: InputDecoration( suffixIcon: Icon(Icons.security),
-                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder')),
-            controller: txtPass,//..text = 'KAR-MT30',
-            validator: (value){
-              if (value.isEmpty) {
-                return AppLocalizations.of(context).translate('signup_txt_enterpwd');
-              }
-              return null;
-            },
-
-
-          ),
-        ),
-        SizedBox(height: 10,),
-
-        Material(elevation: 10.0,shadowColor: Colors.grey,
-          child: TextFormField(
-            enabled: _fridgeEdit,
-            obscureText: true,
-            decoration: InputDecoration(
-              suffixIcon: Icon(Icons.security, ),
-                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                labelText: "Confirm Password",
             ),
-            validator: (value){
-              if (value != txtPass.text) {
-                return "Confirm password mismatch";
-              }
-              return null;
-            },
-          ),
-        ),
-        SizedBox(height: 10),
+          )
 
-        Row(mainAxisAlignment: MainAxisAlignment.center,
+        ],
+      ),
+      SizedBox(height: 10,),
+
+      Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: TextFormField(
+          enabled: _fridgeEdit,
+          obscureText: true,
+          decoration: InputDecoration( suffixIcon: Icon(Icons.security),
+              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder')),
+          controller: txtPass,//..text = 'KAR-MT30',
+          validator: (value){
+            if (value.isEmpty) {
+              return AppLocalizations.of(context).translate('signup_txt_enterpwd');
+            }
+            return null;
+          },
+
+
+        ),
+      ),
+      SizedBox(height: 10,),
+
+      Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: TextFormField(
+          enabled: _fridgeEdit,
+          obscureText: true,
+          decoration: InputDecoration(
+            suffixIcon: Icon(Icons.security, ),
+              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+              labelText: "Confirm Password",
+          ),
+          validator: (value){
+            if (value != txtPass.text) {
+              return "Confirm password mismatch";
+            }
+            return null;
+          },
+        ),
+      ),
+
+
+      Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Row(mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              Checkbox(value: _value1, onChanged: _value1Changed),
+              Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
+                  child: Checkbox(value: _value1, onChanged: _value1Changed)),
               if(globals.isCustomer ==true)
                 Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
               if(globals.isCustomer ==true)
@@ -225,114 +249,124 @@ class _customerSignup extends State<CustomerSignup>{
                 ),
             ]
         ),
-        // SizedBox(height: 10,),
+      ),
+      // SizedBox(height: 10,),
 
-        ButtonTheme(
-          minWidth: 300.0,
-          child:  RaisedButton(
-              color: Configurations.themColor,
-              textColor: Colors.white,
-              child:  Text(
-                  AppLocalizations.of(context).translate('signin_btn_signup'),
-                  style: TextStyle(fontSize: 16.5)
-              ),
-              onPressed: () {
-                _validateInputs();
-              }
-          ),
+      ButtonTheme(
+        minWidth: 310.0, height: 40,
+        child:  RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+              // side: BorderSide(color: Colors.red)
+            ),
+            color: Configurations.themColor,
+            textColor: Colors.white,
+            child:  Text( "SIGN UP",
+             //   AppLocalizations.of(context).translate('signin_btn_signup'),
+                style: TextStyle(fontSize: 16.5)
+            ),
+            onPressed: () {
+              _validateInputs();
+            }
         ),
+      ),
 
-        Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text("Already have an account?"),
-            FlatButton( onPressed:() {
-              Navigator.push(
-                  context, new MaterialPageRoute(
-                builder: (BuildContext context) => UserLogin(),
-              )
-              );
-            },
-              child: Text(
-                  AppLocalizations.of(context).translate('btn_login'),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                      color: Colors.orangeAccent)
-              ),
+      Center(child:  Row(mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("Already have an account?"),
+          FlatButton( onPressed:() {
+            Navigator.push(
+                context, new MaterialPageRoute(
+              builder: (BuildContext context) => UserLogin(),
             )
-          ],
-        ),),
+            );
+          },
+            child: Text(
+                AppLocalizations.of(context).translate('btn_login'),
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold,
+                    color: Colors.orangeAccent)
+            ),
+          )
+        ],
+      ),),
+      SizedBox(height: 20,),
 
-        Visibility(child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      Visibility(child: Column(
+       // mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
+          SizedBox(height: 20,
+            child: Text("------------------------ OR ------------------------"),
+          ),
+          SizedBox(height: 20),
+
+          SignInButton(
+            Buttons.Facebook,
+            text: "Sign in with Facebook",
+            onPressed: () {
+              signinWithFacebook();
+            },
+          ),
+          SizedBox(height: 10,),
+          SignInButton(
+            Buttons.Google,
+            text: "Sign in with Google",
+            onPressed: () {
+              signinWithGmail();
+            },
+          ),
+
+        ],
+      ),
+        visible: _hideSocialSignin,),
+
+      /// OTP ENTERY
+      Visibility(
+        visible: _showOTPField,
+        //visible:true,
+        child:
+        Column(mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 20,
-              child: Text("------------------------ OR ------------------------"),
+            SizedBox(height: 30),
+            Text(
+              'ENTER OTP',
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
             ),
-            SignInButton(
-              Buttons.Google,
-              text: "Sign in with Google",
-              onPressed: () {
-                signinWithGmail();
-              },
+            Container(padding: EdgeInsets.all(0),
+              width: 320,
+              height: 50,
+              child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
+                showFieldAsBox: false,
+                fields: 6,
+                onSubmit: submitPin,
+              ),
             ),
+
             SizedBox(height: 10),
 
-            SignInButton(
-              Buttons.Facebook,
-              text: "Sign in with Facebook",
-              onPressed: () {
-                signinWithFacebook();
-              },
+            ButtonTheme(
+              minWidth: 300.0,
+              child:  RaisedButton(
+                  color: Configurations.themColor,
+                  textColor: Colors.white,
+                  child: const Text(
+                      'Next',
+                      style: TextStyle(fontSize: 16.5)
+                  ),
+                  onPressed: () {
+                    otpVerification();
+                  }
+              ),
             ),
           ],
         ),
-          visible: _hideSocialSignin,),
-
-        /// OTP ENTERY
-        Visibility(
-          visible: _showOTPField,
-          //visible:true,
-          child:
-          Column(mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(height: 30),
-              Text(
-                'ENTER OTP',
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
-              ),
-              Container(padding: EdgeInsets.all(0),
-                width: 320,
-                height: 50,
-                child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
-                  showFieldAsBox: false,
-                  fields: 6,
-                  onSubmit: submitPin,
-                ),
-              ),
-
-              SizedBox(height: 10),
-
-              ButtonTheme(
-                minWidth: 300.0,
-                child:  RaisedButton(
-                    color: Configurations.themColor,
-                    textColor: Colors.white,
-                    child: const Text(
-                        'Next',
-                        style: TextStyle(fontSize: 16.5)
-                    ),
-                    onPressed: () {
-                      otpVerification();
-                    }
-                ),
-              ),
-            ],
-          ),
-        )
-      ],)
-      ,);
+      ),
+        new Image.asset("assets/images/bottomSignup.png",
+          height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
+    ],);
   }
 
   String selecteCode = "";

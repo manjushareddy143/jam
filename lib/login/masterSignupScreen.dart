@@ -60,76 +60,144 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
-          child: Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 30,),
-                  new Image.asset("assets/images/jamLogo.png",
-                    height: 40.0, width: 95.0 , fit: BoxFit.fill,),
-                  Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
-                    child: new Text(
-                      headerTitle,
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontWeight: FontWeight.w400, fontSize: 20.0,),
-                    ),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(height: 30,),
+                new Image.asset("assets/images/jamLogo.png",
+                  height: 40.0, width: 95.0 , fit: BoxFit.fill,),
+
+                SizedBox(height: 10,),
+                Padding(
+                  padding: EdgeInsets.only(left: 30, right: 30),
+                  child: Container(
+                    child: new Image.asset("assets/images/signupMain.png",
+                      height: 350.0, width: double.infinity, fit: BoxFit.fill, ),
                   ),
-                  Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
-                    child: Container(
-                      height:60, decoration:BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                      child: TabBar(
-                        dragStartBehavior: DragStartBehavior.start,
-//                        isScrollable: true,
-                        controller: _tabController,
-                        onTap:  onTap,
-                        isScrollable: false,
-                        indicatorColor: Configurations.themColor,
-                        labelColor: Colors.black,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicator: BoxDecoration(
-                            color: Configurations.themColor,
-                            borderRadius:BorderRadius.only(
-                                topRight: Radius.circular(10),
-                                topLeft: Radius.circular(10)
-                            )
+                ),
+                SizedBox(height: 30,),
+                Padding(padding: EdgeInsets.only(left: 20, right: 20),
+                  child: Center(
+                    child: Text("Sign up as", style: TextStyle(color: Configurations.themColor, fontWeight:
+                    FontWeight.w600, fontSize: 18),),
+                  ),
+
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: ButtonTheme(
+                    minWidth: 300,
+                    child: new  RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          // side: BorderSide(color: Colors.red)
                         ),
-                        tabs:  <Widget>[
-                          Tab(icon: Icon(Icons.person), text: "Customer"),
-                          Tab(icon: Icon(MaterialIcons.work), text: "Service Provider"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
-                    child: Container(
-                      height: viewHeight,
-//                        height: MediaQuery.of(context).size.height,
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Configurations.themColor, width: 1
-                          ),
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(10),
-                              bottomRight: Radius.circular(10)
+
+                        color: Configurations.themColor,
+                        textColor: Colors.white,
+                        //padding: EdgeInsets.fromLTRB(120,10,120,10),
+                        child:  Text("Customer",
+                          //AppLocalizations.of(context).translate('btn_login'),
+                          style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis,
+                        ),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.push(
+                              context, new MaterialPageRoute(
+                              builder: (BuildContext context) => CustomerSignup(fcm_token: fcmToken,)
                           )
-                      ),
-                      child:
-                      TabBarView(
-                        physics: NeverScrollableScrollPhysics(),
-                        controller:_tabController,
-                        children: <Widget>[
-                          CustomerSignup(fcm_token: fcmToken,),
-//                          CustomerSignup(fcm_token: fcmToken,),
-                        VendorSignup(fcm_token: fcmToken,),
-//                          vendor(),
-                        ],
-                      ),
+                          );
+
+                        }
                     ),
                   ),
-                ]
-            ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  child: ButtonTheme(
+                    minWidth: 300,
+                    child: new  RaisedButton(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                          // side: BorderSide(color: Colors.red)
+                        ),
+
+                        color: Configurations.themColor,
+                        textColor: Colors.white,
+                        //padding: EdgeInsets.fromLTRB(120,10,120,10),
+                        child:  Text("Service Provider",
+                          //AppLocalizations.of(context).translate('btn_login'),
+                          style: TextStyle(fontSize: 14.0), overflow: TextOverflow.ellipsis,
+                        ),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.push(
+                              context, new MaterialPageRoute(
+                              builder: (BuildContext context) => VendorSignup(fcm_token: fcmToken,)
+                          )
+                          );
+
+                        }
+                    ),
+                  ),
+                ),
+                new Image.asset("assets/images/bottomSignup.png",
+                  height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
+
+//                  Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
+//                    child: Container(
+//                      height:60, decoration:BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
+//                        borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+//                      child: TabBar(
+//                        dragStartBehavior: DragStartBehavior.start,
+////                        isScrollable: true,
+//                        controller: _tabController,
+//                        onTap:  onTap,
+//                        isScrollable: false,
+//                        indicatorColor: Configurations.themColor,
+//                        labelColor: Colors.black,
+//                        indicatorSize: TabBarIndicatorSize.tab,
+//                        indicator: BoxDecoration(
+//                            color: Configurations.themColor,
+//                            borderRadius:BorderRadius.only(
+//                                topRight: Radius.circular(10),
+//                                topLeft: Radius.circular(10)
+//                            )
+//                        ),
+//                        tabs:  <Widget>[
+//                          Tab(icon: Icon(Icons.person), text: "Customer"),
+//                          Tab(icon: Icon(MaterialIcons.work), text: "Service Provider"),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
+//                  Padding(padding: EdgeInsets.fromLTRB(10, 0, 10,10),
+//                    child: Container(
+//                      height: viewHeight,
+////                        height: MediaQuery.of(context).size.height,
+//                      decoration: BoxDecoration(
+//                          border: Border.all(
+//                              color: Configurations.themColor, width: 1
+//                          ),
+//                          borderRadius: BorderRadius.only(
+//                              bottomLeft: Radius.circular(10),
+//                              bottomRight: Radius.circular(10)
+//                          )
+//                      ),
+//                      child:
+//                      TabBarView(
+//                        physics: NeverScrollableScrollPhysics(),
+//                        controller:_tabController,
+//                        children: <Widget>[
+//                          CustomerSignup(fcm_token: fcmToken,),
+////                          CustomerSignup(fcm_token: fcmToken,),
+//                        VendorSignup(fcm_token: fcmToken,),
+////                          vendor(),
+//                        ],
+//                      ),
+//                    ),
+//                  ),
+              ]
           ),
         ),
       ),
