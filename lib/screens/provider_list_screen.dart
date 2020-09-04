@@ -215,9 +215,8 @@ class _ProviderListState extends State<ProviderListPage> {
   }
 
 
+
   Widget setupCard(User user, Service service) {
-
-
 
     double rating = (user.rate.length == 0)? 0.0 : double.parse(user.rate[0].rate).floorToDouble(); //double.parse(provider.rate).floorToDouble();
     String review = (user.rate.length == 0)? "0" : user.rate[0].reviews.toString(); //double.parse(provider.rate).floorToDouble();
@@ -246,25 +245,261 @@ class _ProviderListState extends State<ProviderListPage> {
 
     print("img === ${img}");
     return
+      Container(
+                height: 100.0,
+                margin: const EdgeInsets.symmetric(
+                vertical: 16.0,
+                horizontal: 24.0,
+            ),
+    child: new Stack(
+    children: <Widget>[
+          vendorCard(user, service, name),
+          vendorThumbnail(img),
+      ],
+    )
+     );
+    Padding(padding: const EdgeInsets.fromLTRB(20,6,20,6),
+    child: Container(
+      color: Colors.transparent,
+      clipBehavior: Clip.none,
+      transform: Matrix4.identity(),
+      child: Row(
+
+//        crossAxisAlignment: CrossAxisAlignment.center,
+//      mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+              width: 50,
+              height: 90,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  image: new DecorationImage(
+                    image: (img != null)?
+                    NetworkImage(img) : setImgPlaceholder(),
+                    fit: BoxFit.fill,
+                  )),
+            ),
+            flex: 1,
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              color: Colors.white,
+            width: 200,
+              height: 100,
+              child: ListTile(
+                onTap: ()=> {
+//            print("USERSS ${user.services}"),
+                  print("USERSS ${user.image}"),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute (
+                          builder: (context) =>
+                              VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
+                      )
+                  ),
+                },
+                dense: false,
+                isThreeLine: true,
+                title:Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+                subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years', style: TextStyle(fontSize: 13),),
+                trailing:
+
+                Container( width: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:15.0, left: 10),
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+
+                      child: Column(
+                        children: <Widget>[
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 30,)),
+                              Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton(onPressed:(){},
+                                icon:Icon(Icons.call, color: Colors.black, size: 30,)),
+                              Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton( onPressed:(){
+                              if(globals.guest == true){
+                                show();
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            InquiryPage(service: this.service, provider: user,
+                                                category: selectedSubCategory)
+                                    )
+                                );
+                              }
+                            },
+                              icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
+
+                              Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              ),
+            ),
+          ),
+//          Padding(padding: const EdgeInsets.fromLTRB(20,6,20,6),
+//          child: Row(
+//            children: <Widget>[
+//
+//
+        ],
+//          ),
+      )
+    )
+    );
+      Row(
+
+//        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+              width: 80,
+              height: 100,
+              decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  image: new DecorationImage(
+                    image: (img != null)?
+                    NetworkImage(img) : setImgPlaceholder(),
+                    fit: BoxFit.fill,
+                  )),
+            ),
+            flex: 1,
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
+              color: Colors.white,
+//              width: 80,
+              height: 80,
+              child: ListTile(
+//                contentPadding: EdgeInsets.fromLTRB(3, 10, 0, 10),
+                onTap: ()=> {
+//            print("USERSS ${user.services}"),
+                  print("USERSS ${user.image}"),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute (
+                          builder: (context) =>
+                              VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
+                      )
+                  ),
+                },
+                dense: false,
+                isThreeLine: true,
+                title:Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+                subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years', style: TextStyle(fontSize: 13),),
+                trailing:
+
+                Container( width: 80,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right:15.0, left: 10),
+                    child: FittedBox(
+                      fit: BoxFit.fill,
+
+                      child: Column(
+                        children: <Widget>[
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 30,)),
+                              Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton(onPressed:(){},
+                                icon:Icon(Icons.call, color: Colors.black, size: 30,)),
+                              Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [IconButton( onPressed:(){
+                              if(globals.guest == true){
+                                show();
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            InquiryPage(service: this.service, provider: user,
+                                                category: selectedSubCategory)
+                                    )
+                                );
+                              }
+                            },
+                              icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
+
+                              Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+
+
+
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
+              ),
+            ),
+          ),
+//          Padding(padding: const EdgeInsets.fromLTRB(20,6,20,6),
+//          child: Row(
+//            children: <Widget>[
+//
+//
+            ],
+//          ),
+          );
+
+
+//        ],
+//      );
+    
+
+
       Padding(
         padding: const EdgeInsets.fromLTRB(20,6,20,6),
         child: new Card(
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
+
+//            Container(
+//              width: 80,
+//              height: 100,
+//              decoration: BoxDecoration(
+//                  shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(8.0)),
+//                  image: new DecorationImage(
+//                    image: (img != null)?
+//                    NetworkImage(img) : setImgPlaceholder(),
+//                    fit: BoxFit.fill,
+//                  )),
+//            ),
+
             ListTile(
-              //contentPadding: EdgeInsets.fromLTRB(3, 10, 0, 10),
+              contentPadding: EdgeInsets.fromLTRB(3, 10, 0, 10),
               onTap: ()=> {
 //            print("USERSS ${user.services}"),
-              print("USERSS ${user.image}"),
-             Navigator.push(
-             context,
-            MaterialPageRoute (
-                builder: (context) =>
-                VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
-              )
-             ),
+                print("USERSS ${user.image}"),
+                Navigator.push(
+                    context,
+                    MaterialPageRoute (
+                        builder: (context) =>
+                            VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
+                    )
+                ),
               },
+              dense: false,
+              isThreeLine: true,
+//              contentPadding: EdgeInsets.all(10),
               leading: Container(
                 width: 80,
                 height: 100,
@@ -282,54 +517,56 @@ class _ProviderListState extends State<ProviderListPage> {
 //                  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
 //                  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),],
 //              ),
-            //  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+              //  Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
 
               subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years', style: TextStyle(fontSize: 13),),
-          trailing:
+              trailing:
 
-                Container( width: 80,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right:15.0, left: 10),
-                    child: FittedBox(
-                      fit: BoxFit.fill,
+              Container( width: 80,
+                child: Padding(
+                  padding: const EdgeInsets.only(right:15.0, left: 10),
+                  child: FittedBox(
+                    fit: BoxFit.fill,
 
-                      child: Column(
-                        children: <Widget>[
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 30,)),
-                          Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [IconButton(onPressed:(){},
-                                icon:Icon(Icons.call, color: Colors.black, size: 30,)),
-                              Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [IconButton( onPressed:(){
-                               if(globals.guest == true){
-                             show();
-                           } else {
+                    child: Column(
+                      children: <Widget>[
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 30,)),
+                            Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [IconButton(onPressed:(){},
+                              icon:Icon(Icons.call, color: Colors.black, size: 30,)),
+                            Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [IconButton( onPressed:(){
+                            if(globals.guest == true){
+                              show();
+                            } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           InquiryPage(service: this.service, provider: user,
-                                          category: selectedSubCategory)
+                                              category: selectedSubCategory)
                                   )
                               );
                             }
-                            },
-                              icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
+                          },
+                            icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
 
-                              Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                            Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
 
 
 
-                        ],
-                      ),
+                      ],
                     ),
                   ),
                 ),
+              ),
 
             ),
+
+
 
 //            Container(
 //              padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
@@ -431,6 +668,160 @@ class _ProviderListState extends State<ProviderListPage> {
     ),
       );
   }
+
+  Widget vendorThumbnail(String img)  {
+
+    return new Container(
+      margin: new EdgeInsets.symmetric(
+          vertical: 8.0
+      ),
+      alignment: FractionalOffset.centerLeft,
+      child: Container(
+        width: 100,
+        height: 150,
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            image: new DecorationImage(
+              image: (img != null)?
+              NetworkImage(img) : setImgPlaceholder(),
+              fit: BoxFit.cover,
+            )),
+      ),
+    );
+
+  }
+
+  Widget vendorCard(User user, Service service, String name) {
+    return new Container(
+      height: 104.0,
+      margin: new EdgeInsets.only(left: 46.0),
+      decoration: new BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: new BorderRadius.circular(8.0),
+      ),
+      child: ListTile(
+        contentPadding: EdgeInsets.fromLTRB(3, 10, 0, 10),
+        onTap: ()=> {
+          Navigator.push(
+              context,
+              MaterialPageRoute (
+                  builder: (context) =>
+                      VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
+              )
+          ),
+        },
+//        dense: false,
+//        isThreeLine: true,
+        leading: Text(""),
+        title:Text(name, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15), ),
+
+        subtitle:   Text(AppLocalizations.of(context).translate('experience') +' 2 Years', style: TextStyle(fontSize: 13),),
+        trailing: Column(
+//            mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: Row(
+                children: <Widget>[
+                  FlatButton.icon(onPressed: null,
+                    icon: Icon(Icons.star_border, color: Colors.black, size: 20,),
+                    label: Text("4.0/5", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                  )
+                ],
+              ),
+              width: 90,
+              height: 18,
+            ),
+            Container(
+              child: Row(
+                children: <Widget>[
+                  FlatButton.icon(onPressed: null,
+                    icon: Icon(Icons.call, color: Colors.black, size: 20,),
+                    label: Text("Call", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                  )
+
+                ],
+              ),
+              width: 90,
+              height: 19,
+            ),
+            Container(
+              child: FlatButton.icon(onPressed:(){
+                  if(globals.guest == true){
+                      show();
+                  } else {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) =>
+                      InquiryPage(service: this.service, provider: user,
+                      category: selectedSubCategory)
+                      )
+                      );
+                  }
+                },
+                icon: Icon(Icons.calendar_today, color: Colors.black, size: 20,),
+                label: Text("Book", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+              ),
+              width: 90,
+              height: 19,
+            )
+
+
+          ],
+        )
+
+
+
+    /*    Container(
+          width: 80,
+          height: 50,
+          child: Padding(
+            padding: const EdgeInsets.only(right:5.0, left: 5),
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Column(
+                children: <Widget>[
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [IconButton(icon:Icon(Icons.star_border, color: Colors.black, size: 40,)),
+                      Text('4.0/5', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [IconButton(onPressed:(){},
+                        icon:Icon(Icons.call, color: Colors.black, size: 30,)),
+                      Text('Call', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [IconButton( onPressed:(){
+                      if(globals.guest == true){
+                        show();
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    InquiryPage(service: this.service, provider: user,
+                                        category: selectedSubCategory)
+                            )
+                        );
+                      }
+                    },
+                      icon: Icon(Icons.calendar_today, color: Colors.black, size: 30,),),
+
+                      Text('Book', style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),)],),
+
+
+
+                ],
+              ),
+            ),
+          ),
+        ), */
+
+      ),
+    );
+  }
+
+
+
 
   void show(){
     showDialog(context: context,
