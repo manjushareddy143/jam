@@ -288,7 +288,7 @@ class _vendorSignup extends State<VendorSignup>{
       ),
       SizedBox(height: 10,),
 
-      if(globals.isCustomer == false)
+      //if(globals.isCustomer == false)
         setCountry(),
 
       Padding(
@@ -703,10 +703,13 @@ class _vendorSignup extends State<VendorSignup>{
   Widget setCountry() {
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 20),
-      child: Container(
+      child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+          border: Border.all(width: 0.9,color: Configurations.themColor)),
+
 
         child: Row(
           children: [
+            SizedBox(width: 5,),
             Text(
               "Select Country",
               style: TextStyle(color: Colors.grey),

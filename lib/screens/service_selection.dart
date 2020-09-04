@@ -95,7 +95,7 @@ bool Value = false;
 
     if (listofServices == null) {
       return new Scaffold(
-        appBar: new AppBar(
+        appBar: new AppBar(backgroundColor: Configurations.themColor,
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
@@ -103,7 +103,7 @@ bool Value = false;
     } else {
       return new Scaffold(
 
-        appBar: new AppBar(
+        appBar: new AppBar(backgroundColor: Configurations.themColor,
           title: new Text("Select Services"),
         ),
         body: SingleChildScrollView(
@@ -170,9 +170,13 @@ bool Value = false;
   bool isClickCard = false;
   Widget ParentWithChild(Service service) {
     return Parent(
-      parent: Container(
-        child: Card(elevation: 3.0,
-          margin: EdgeInsets.fromLTRB(0.5, 5, 0.5, 5),
+      parent: Padding(
+        padding: EdgeInsets.only(left: 20,top: 5,bottom: 5, right: 20),
+        child: Container(
+          decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+              border: Border.all(width: 0.9,color: Configurations.themColor)),
+
+
           child: Row(
               children: <Widget>[
                 IconButton(
@@ -217,8 +221,8 @@ bool Value = false;
                     ),
                   ),
                 ),]),
-        ),
 
+        ),
       ),
 
       childList: ChildList(
@@ -239,10 +243,13 @@ bool Value = false;
 
   Widget ChildCard(SubCategory category,Service service ) {
 
-    return Container(
-      margin: const EdgeInsets.only(left: 25.0),
-      child: Card(elevation: 2.0,
-        margin: EdgeInsets.fromLTRB(0.5, 5, 0.5, 5),
+    return Padding(
+      padding: EdgeInsets.only(left: 20,top: 5,bottom: 5, right: 20),
+      child: Container(
+        decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+            border: Border.all(width: 0.9,color: Configurations.themColor)),
+
+        margin: const EdgeInsets.only(left: 25.0),
         child: Row(
             children: <Widget>[
               Checkbox(
@@ -286,8 +293,8 @@ bool Value = false;
                     keyboardType: TextInputType.number,
                   ),),
               )
-            ]),
-      ),);
+            ]),),
+    );
   }
 
 
@@ -295,9 +302,12 @@ bool Value = false;
 
   Widget parentNoChild(Service service) {
     return Parent(
-      parent: Container(
-        child: Card(elevation: 3.0,
-          margin: EdgeInsets.fromLTRB(0.5, 5, 0.5, 5),
+      parent: Padding(
+        padding: EdgeInsets.only(left: 20,top: 5,bottom: 5, right: 20),
+        child: Container(
+          decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+              border: Border.all(width: 0.9,color: Configurations.themColor)),
+
           child: Row(
               children: <Widget>[
                 Checkbox(

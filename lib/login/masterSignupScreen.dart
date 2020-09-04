@@ -101,6 +101,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                           style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis,
                         ),
                         onPressed: () {
+                          globals.isCustomer = true;
                           FocusScope.of(context).unfocus();
                           Navigator.push(
                               context, new MaterialPageRoute(
@@ -130,6 +131,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                           style: TextStyle(fontSize: 14.0), overflow: TextOverflow.ellipsis,
                         ),
                         onPressed: () {
+                          globals.isCustomer = false;
                           FocusScope.of(context).unfocus();
                           Navigator.push(
                               context, new MaterialPageRoute(
@@ -204,19 +206,19 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
     );
   }
 
-  void onTap(val) {
-    setState(() {
-      if(val == 0) {
-        globals.isCustomer = true;
-        headerTitle= "CUSTOMER SIGN-UP";
-        viewHeight = 730;
-
-      } else {
-        globals.isCustomer = false;
-        headerTitle= "SERVICE PROVIDER SIGN-UP";
-        viewHeight = 800;
-      }
-    });
-  }
+//  void onTap(val) {
+//    setState(() {
+//      if(val == 0) {
+//        globals.isCustomer = true;
+//        headerTitle= "CUSTOMER SIGN-UP";
+//        viewHeight = 730;
+//
+//      } else {
+//        globals.isCustomer = false;
+//        headerTitle= "SERVICE PROVIDER SIGN-UP";
+//        viewHeight = 800;
+//      }
+//    });
+//  }
 
 }
