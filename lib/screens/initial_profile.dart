@@ -352,7 +352,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
-//      mainAxisAlignment: MainAxisAlignment.center,
     mainAxisSize: MainAxisSize.max,
       children: <Widget>[
 
@@ -376,6 +375,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
         Stack(
           alignment: Alignment.topCenter,
+
           children: <Widget>[
             Container(color: Colors.grey[800], height: 150,),
 
@@ -385,350 +385,385 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
             Padding(
               padding: EdgeInsets.only(top: circleRadius / 2.0, left: 10, right: 10),
+
+
               child: Container(
-                //replace this Container with your Card
-                color: Colors.transparent,
-//                height: 200.0,
+//                  color: Colors.transparent,
+
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(16.0),
+                        topRight: Radius.circular( 16.0)
+                    )
+                ),
+
+
                 child: Column(
                   children: <Widget>[
 
-                    Material( elevation: 5.0,
-                      shadowColor: Colors.grey,
-                      child: Column(
-                        children: <Widget>[
+                    Column(
+                      children: <Widget>[
 
-                          // First Name
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20,top: 8),
-                            child: TextFormField(
-                              focusNode: focus_fname,
-                              controller: (firstName == "") ? prfl_fname : prfl_fname
-                                ..text = firstName,
-                              decoration: InputDecoration(
-                                //                          prefixIcon: Icon(Icons.person,
-                                //                            textDirection: TextDirection.rtl,
-                                //                          ),
-                                //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Configurations.themColor,
-                                      width: 1,
+                        Material( elevation: 5.0,
+                          shadowColor: Colors.grey,
+                          child: Column(
+                            children: <Widget>[
+
+                              // First Name
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20,top: 55),
+                                child: TextFormField(
+                                  focusNode: focus_fname,
+                                  controller: (firstName == "") ? prfl_fname : prfl_fname
+                                    ..text = firstName,
+                                  decoration: InputDecoration(
+                                    //                          prefixIcon: Icon(Icons.person,
+                                    //                            textDirection: TextDirection.rtl,
+                                    //                          ),
+                                    //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Configurations.themColor,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('signin_firstname_placeholder'),
+                                      hasFloatingPlaceholder: false),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return AppLocalizations.of(context)
+                                          .translate('signup_txt_enterlast');
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: setFirstName,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              // Last Name
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: TextFormField(
+                                  focusNode: focus_lname,
+                                  controller: (lastName == "") ? prfl_lname : prfl_lname
+                                    ..text = lastName,
+                                  decoration: InputDecoration(
+                                    //                        prefixIcon: Icon(
+                                    //                          Icons.person,
+                                    //                        ),
+                                    //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Configurations.themColor,
+                                        width: 1,
+                                      ),
                                     ),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('signin_lastname_placeholder'),
+                                    hasFloatingPlaceholder: false,
                                   ),
-                                  labelText: AppLocalizations.of(context)
-                                      .translate('signin_firstname_placeholder'),
-                                  hasFloatingPlaceholder: false),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return AppLocalizations.of(context)
-                                      .translate('signup_txt_enterlast');
-                                }
-                                return null;
-                              },
-                              onChanged: setFirstName,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return AppLocalizations.of(context)
+                                          .translate('signup_txt_enterlast');
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
 
-                          // Last Name
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            child: TextFormField(
-                              focusNode: focus_lname,
-                              controller: (lastName == "") ? prfl_lname : prfl_lname
-                                ..text = lastName,
-                              decoration: InputDecoration(
-                                //                        prefixIcon: Icon(
-                                //                          Icons.person,
-                                //                        ),
-                                //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Configurations.themColor,
-                                    width: 1,
+                              // Mobile
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: TextFormField(
+                                  focusNode: focus_phnno,
+                                  controller: (phoneNumber == "") ? prfl_phone : prfl_phone
+                                    ..text = phoneNumber,
+                                  keyboardType: TextInputType.phone,
+                                  onChanged: setContact,
+                                  decoration: InputDecoration(
+                                    suffixIcon:
+                                    Icon(Icons.phone, textDirection: TextDirection.rtl),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Configurations.themColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('signin_phone_placeholder'),
+                                    hasFloatingPlaceholder: false,
+
                                   ),
                                 ),
-                                labelText: AppLocalizations.of(context)
-                                    .translate('signin_lastname_placeholder'),
-                                hasFloatingPlaceholder: false,
                               ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return AppLocalizations.of(context)
-                                      .translate('signup_txt_enterlast');
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
+                              SizedBox(
+                                height: 20,
+                              ),
 
-                          // Mobile
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            child: TextFormField(
-                              focusNode: focus_phnno,
-                              controller: (phoneNumber == "") ? prfl_phone : prfl_phone
-                                ..text = phoneNumber,
-                              keyboardType: TextInputType.phone,
-                              onChanged: setContact,
-                              decoration: InputDecoration(
-                                suffixIcon:
-                                Icon(Icons.phone, textDirection: TextDirection.rtl),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Configurations.themColor,
-                                    width: 1,
+                              // Email
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+                                child: TextFormField(focusNode: focus_mail,
+                                  controller: (email == "") ? prfl_email : prfl_email
+                                    ..text = email,
+                                  decoration: InputDecoration(
+                                    suffixIcon: Icon(
+                                      Icons.email,
+                                    ),
+                                    //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Configurations.themColor,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    labelText: AppLocalizations.of(context)
+                                        .translate('profile_email_placeholder'),
+                                    hasFloatingPlaceholder: false,
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return AppLocalizations.of(context)
+                                          .translate('profile_txt_enteremail');
+                                    }
+                                    return validateEmail(value);
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              // Gender
+                              setDropDown(),
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              // languages
+                              Padding(
+                                padding: EdgeInsets.only(left: 20, right: 20),
+
+                                child: Container(
+                                  decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+                                      border: Border.all(width: 0.9,color: Configurations.themColor)),
+                                  child: Row(
+
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      SizedBox(width: 4,),
+                                      Icon(Icons.language),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text("English"),
+                                      Checkbox(
+                                        value: _english, onChanged: _selecteEnglish , focusNode: focus_language,),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
+                                      Text("Arabic"),
+                                      Checkbox(value: _arabic, onChanged: _selecteArabic, focusNode: focus_language,),
+                                    ],
                                   ),
                                 ),
-                                labelText: AppLocalizations.of(context)
-                                    .translate('signin_phone_placeholder'),
-                                hasFloatingPlaceholder: false,
-
                               ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
 
-                          // Email
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20),
-                            child: TextFormField(focusNode: focus_mail,
-                              controller: (email == "") ? prfl_email : prfl_email
-                                ..text = email,
-                              decoration: InputDecoration(
-                                suffixIcon: Icon(
-                                  Icons.email,
+                              if (globals.currentUser.roles[0].slug == "provider")
+                                SizedBox(
+                                  height: 20,
                                 ),
-                                //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Configurations.themColor,
-                                    width: 1,
-                                  ),
-                                ),
-                                labelText: AppLocalizations.of(context)
-                                    .translate('profile_email_placeholder'),
-                                hasFloatingPlaceholder: false,
-                              ),
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return AppLocalizations.of(context)
-                                      .translate('profile_txt_enteremail');
-                                }
-                                return validateEmail(value);
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          // Gender
-                          setDropDown(),
-                          SizedBox(
-                            height: 20,
-                          ),
-
-                          // languages
-                          Padding(
-                            padding: EdgeInsets.only(left: 20, right: 20),
-
-                            child: Container(
-                              decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                                  border: Border.all(width: 0.9,color: Configurations.themColor)),
-                              child: Row(
-
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(width: 4,),
-                                  Icon(Icons.language),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text("English"),
-                                  Checkbox(
-                                    value: _english, onChanged: _selecteEnglish , focusNode: focus_language,),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text("Arabic"),
-                                  Checkbox(value: _arabic, onChanged: _selecteArabic, focusNode: focus_language,),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          if (globals.currentUser.roles[0].slug == "provider")
-                            SizedBox(
-                              height: 20,
-                            ),
 
 
-                          /*
+                              /*
 
                 * */
-                          // Service Radius
-                          if (globals.currentUser.roles[0].slug == "provider")
-                            Padding(
-                              padding: EdgeInsets.only(left: 20, right: 20),
-                              child: TextFormField(
-                                focusNode: focus_radius,
-                                controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
-                                  ..text = globals.customRadius,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.location_searching,
-                                  ),
+                              // Service Radius
+                              if (globals.currentUser.roles[0].slug == "provider")
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20, right: 20),
+                                  child: TextFormField(
+                                    focusNode: focus_radius,
+                                    controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
+                                      ..text = globals.customRadius,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.location_searching,
+                                      ),
 
-                                  //                        suffix: Text("KM"),
-                                  suffixText: "KM  ",
-                                  //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Configurations.themColor,
-                                      width: 1,
+                                      //                        suffix: Text("KM"),
+                                      suffixText: "KM  ",
+                                      //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Configurations.themColor,
+                                          width: 1,
+                                        ),
+                                      ),
+                                      labelText: 'Service Radius',
+                                      hasFloatingPlaceholder: false,
+                                    ),
+                                    validator: (value) {
+                                      if (value.isEmpty) {
+                                        return 'Please enter service radius';
+                                      }
+                                      return null;
+                                    },
+
+                                    onChanged: setRadius,
+                                  ),
+                                ),
+                              if (globals.currentUser.roles[0].slug == "provider")
+                                SizedBox(
+                                  height: 20,
+                                ),
+
+                              // SERVICE
+                              if (globals.currentUser.roles[0].slug == "provider")
+                                Padding(
+                                  padding: EdgeInsets.only(left: 20, right: 20),
+                                  child: Container(
+                                    decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+                                        border: Border.all(width: 0.9,color: Configurations.themColor)),
+
+                                    child: ListTile(
+                                      onTap: enterServices,
+                                      leading: Icon(Icons.work),
+                                      title: Text(
+                                          (ServiceSelectionUIPageState.serviceNamesString == "")
+                                              ? "Select Services"
+                                              : "Your Services"),
+                                      subtitle:
+                                      Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
                                     ),
                                   ),
-                                  labelText: 'Service Radius',
-                                  hasFloatingPlaceholder: false,
                                 ),
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter service radius';
-                                  }
-                                  return null;
-                                },
 
-                                onChanged: setRadius,
-                              ),
-                            ),
-                          if (globals.currentUser.roles[0].slug == "provider")
-                            SizedBox(
-                              height: 20,
-                            ),
-
-                          // SERVICE
-                          if (globals.currentUser.roles[0].slug == "provider")
-                            Padding(
-                              padding: EdgeInsets.only(left: 20, right: 20),
-                              child: Container(
-                                decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                                    border: Border.all(width: 0.9,color: Configurations.themColor)),
-
-                                child: ListTile(
-                                  onTap: enterServices,
-                                  leading: Icon(Icons.work),
-                                  title: Text(
-                                      (ServiceSelectionUIPageState.serviceNamesString == "")
-                                          ? "Select Services"
-                                          : "Your Services"),
-                                  subtitle:
-                                  Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
-                                ),
-                              ),
-                            ),
-
-                          // ADDRESS
-                          Padding(
-                            padding: EdgeInsets.only(left: 20,top: 20,bottom: 20, right: 20),
-                            child: Container(
-                              decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                                  border: Border.all(width: 0.9,color: Configurations.themColor)),
+                              // ADDRESS
+                              Padding(
+                                padding: EdgeInsets.only(left: 20,top: 20,bottom: 20, right: 20),
+                                child: Container(
+                                  decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+                                      border: Border.all(width: 0.9,color: Configurations.themColor)),
 
 
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  ListTile(
-
-                                    onTap: addressEnter,
-                                    leading: Icon(Icons.location_on),
-                                    title: Text((adrs_name.text == "")
-                                        ? AppLocalizations.of(context).translate('address')
-                                        : adrs_name.text),
-                                    subtitle: Text(addressString),
-                                  ),
-                                  ButtonBar(
-
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
-                                      FlatButton( focusNode: focus_adress,
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.my_location,
-                                              color: Configurations.themColor,
-                                              size: 15,
+                                      ListTile(
+
+                                        onTap: addressEnter,
+                                        leading: Icon(Icons.location_on),
+                                        title: Text((adrs_name.text == "")
+                                            ? AppLocalizations.of(context).translate('address')
+                                            : adrs_name.text),
+                                        subtitle: Text(addressString),
+                                      ),
+                                      ButtonBar(
+
+                                        children: <Widget>[
+                                          FlatButton( focusNode: focus_adress,
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  Icons.my_location,
+                                                  color: Configurations.themColor,
+                                                  size: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Text(
+                                                  AppLocalizations.of(context)
+                                                      .translate('profile_txt_location'),
+                                                  style:
+                                                  TextStyle(color: Configurations.themColor),
+                                                )
+                                              ],
                                             ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              AppLocalizations.of(context)
-                                                  .translate('profile_txt_location'),
-                                              style:
-                                              TextStyle(color: Configurations.themColor),
-                                            )
-                                          ],
-                                        ),
-                                        onPressed: () {
-                                          /* ... */
-                                          addressEnter();
-                                        },
+                                            onPressed: () {
+                                              /* ... */
+                                              addressEnter();
+                                            },
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                          ),
 
-                        ],
-                      ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(height: 7,),
+
+                        RaisedButton(
+                            color: Configurations.themColor,
+                            textColor: Colors.white,
+                            child: Text(
+                                AppLocalizations.of(context).translate('btn_save'),
+                                style: TextStyle(fontSize: 16.5)),
+                            onPressed: () {
+
+                              print("api call");
+                              initialProfileCall();
+//                  _validateInputs();
+                            }),
+
+
+                        FlatButton(
+
+                            child: Text("Skip",
+                              textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+                            onPressed: () {
+                              Preferences.saveObject("profile", "0");
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => HomeScreen(),
+                                  ));
+                            }),
+
+                        SizedBox(height: 120,),
+                      ],
                     ),
 
-                    SizedBox(height: 7,),
-
-                    RaisedButton(
-                        color: Configurations.themColor,
-                        textColor: Colors.white,
-                        child: Text(
-                            AppLocalizations.of(context).translate('btn_save'),
-                            style: TextStyle(fontSize: 16.5)),
-                        onPressed: () {
-
-                          print("api call");
-                          initialProfileCall();
-//                  _validateInputs();
-                        }),
-
-
-                    FlatButton(
-
-                        child: Text("Skip",
-                          textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
-                        onPressed: () {
-                          Preferences.saveObject("profile", "0");
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ));
-                        }),
-                    new Image.asset("assets/images/bottomSignup.png",
-                      height: 130.0, width: double.infinity, fit: BoxFit.fill, ),
 
                   ],
                 ),
               ),
             ),
+
+
+
+            Positioned(child: new Image.asset("assets/images/bottomSignup.png",
+              height: 130.0, width: double.infinity, fit: BoxFit.fill, ),
+              bottom: 0,
+              left: 0,
+              right: 0,
+            ),
+
+
+
+
+
+
+
+//    Padding(padding: EdgeInsets.only(top: ),
+//              child: ,),
+
 
 
 
@@ -738,424 +773,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               decoration:
               ShapeDecoration(shape: CircleBorder(), color: Colors.white),
               child: Stack(
-                  children: [
+                children: [
                   if (imageUrl == null) _buildProfileImage(),
                   if (imageUrl != null) _buildProfileImageForSocial(),
-
-                  ],
-                  ),
+                ],
+              ),
             ),
+
 
 
           ],
         ),
 
-      ],
-    );
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          color: Colors.transparent,
-          height: 237,
-          child: Stack(
-            children: [
-              Container(color: Colors.grey[800], height: 170,),
-              Positioned(
-                  child:Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 50
-                    ,width: 18,
-                  ),
-                top: 30,
-                left: 30,
-                right: 30,
-              ),
-              Positioned(
-
-                child: Text("Profile", style: TextStyle(color: Colors.white, fontSize: 16,
-                fontWeight: FontWeight.w500),),
-                left: 15.0,
-                bottom: 100.0,
-              ),
-              Positioned(
-            top: 115.0,
-            left: MediaQuery.of(context).size.width / 2 - 70 / 1.2,
-
-            child: Stack(
-              children: [
-                if (imageUrl == null) _buildProfileImage(),
-                if (imageUrl != null) _buildProfileImageForSocial(),
-
-              ],
-            ),
-
-          ),
-            ],
-          ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          child: Column(
-            children: <Widget>[
-
-              Material( elevation: 5.0,
-                shadowColor: Colors.grey,
-                child: Column(
-                  children: <Widget>[
-
-                    // First Name
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20,top: 8),
-                      child: TextFormField(
-                        focusNode: focus_fname,
-                        controller: (firstName == "") ? prfl_fname : prfl_fname
-                          ..text = firstName,
-                        decoration: InputDecoration(
-  //                          prefixIcon: Icon(Icons.person,
-  //                            textDirection: TextDirection.rtl,
-  //                          ),
-  //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Configurations.themColor,
-                                width: 1,
-                              ),
-                            ),
-                            labelText: AppLocalizations.of(context)
-                                .translate('signin_firstname_placeholder'),
-                            hasFloatingPlaceholder: false),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context)
-                                .translate('signup_txt_enterlast');
-                          }
-                          return null;
-                        },
-                        onChanged: setFirstName,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // Last Name
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: TextFormField(
-                        focusNode: focus_lname,
-                        controller: (lastName == "") ? prfl_lname : prfl_lname
-                          ..text = lastName,
-                        decoration: InputDecoration(
-  //                        prefixIcon: Icon(
-  //                          Icons.person,
-  //                        ),
-  //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Configurations.themColor,
-                              width: 1,
-                            ),
-                          ),
-                          labelText: AppLocalizations.of(context)
-                              .translate('signin_lastname_placeholder'),
-                          hasFloatingPlaceholder: false,
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context)
-                                .translate('signup_txt_enterlast');
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // Mobile
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: TextFormField(
-                        focusNode: focus_phnno,
-                        controller: (phoneNumber == "") ? prfl_phone : prfl_phone
-                          ..text = phoneNumber,
-                        keyboardType: TextInputType.phone,
-                        onChanged: setContact,
-                        decoration: InputDecoration(
-                          suffixIcon:
-                          Icon(Icons.phone, textDirection: TextDirection.rtl),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Configurations.themColor,
-                              width: 1,
-                            ),
-                          ),
-                          labelText: AppLocalizations.of(context)
-                              .translate('signin_phone_placeholder'),
-                          hasFloatingPlaceholder: false,
-
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // Email
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-                      child: TextFormField(focusNode: focus_mail,
-                        controller: (email == "") ? prfl_email : prfl_email
-                          ..text = email,
-                        decoration: InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.email,
-                          ),
-  //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Configurations.themColor,
-                              width: 1,
-                            ),
-                          ),
-                          labelText: AppLocalizations.of(context)
-                              .translate('profile_email_placeholder'),
-                          hasFloatingPlaceholder: false,
-                        ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context)
-                                .translate('profile_txt_enteremail');
-                          }
-                          return validateEmail(value);
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // Gender
-                    setDropDown(),
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    // languages
-                    Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20),
-
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                            border: Border.all(width: 0.9,color: Configurations.themColor)),
-                        child: Row(
-
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(width: 4,),
-                            Icon(Icons.language),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text("English"),
-                            Checkbox(
-                              value: _english, onChanged: _selecteEnglish , focusNode: focus_language,),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text("Arabic"),
-                            Checkbox(value: _arabic, onChanged: _selecteArabic, focusNode: focus_language,),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    if (globals.currentUser.roles[0].slug == "provider")
-                      SizedBox(
-                        height: 20,
-                      ),
-
-
-                    /*
-
-                * */
-                    // Service Radius
-                    if (globals.currentUser.roles[0].slug == "provider")
-                      Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: TextFormField(
-                          focusNode: focus_radius,
-                          controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
-                            ..text = globals.customRadius,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.location_searching,
-                            ),
-
-  //                        suffix: Text("KM"),
-                            suffixText: "KM  ",
-  //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Configurations.themColor,
-                                width: 1,
-                              ),
-                            ),
-                            labelText: 'Service Radius',
-                            hasFloatingPlaceholder: false,
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter service radius';
-                            }
-                            return null;
-                          },
-
-                          onChanged: setRadius,
-                        ),
-                      ),
-                    if (globals.currentUser.roles[0].slug == "provider")
-                      SizedBox(
-                        height: 20,
-                      ),
-
-                    // SERVICE
-                    if (globals.currentUser.roles[0].slug == "provider")
-                      Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        child: Container(
-                          decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                              border: Border.all(width: 0.9,color: Configurations.themColor)),
-
-                          child: ListTile(
-                            onTap: enterServices,
-                            leading: Icon(Icons.work),
-                            title: Text(
-                                (ServiceSelectionUIPageState.serviceNamesString == "")
-                                    ? "Select Services"
-                                    : "Your Services"),
-                            subtitle:
-                            Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
-                          ),
-                        ),
-                      ),
-
-                    // ADDRESS
-                    Padding(
-                      padding: EdgeInsets.only(left: 20,top: 20,bottom: 20, right: 20),
-                      child: Container(
-                        decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                            border: Border.all(width: 0.9,color: Configurations.themColor)),
-
-
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-
-                              onTap: addressEnter,
-                              leading: Icon(Icons.location_on),
-                              title: Text((adrs_name.text == "")
-                                  ? AppLocalizations.of(context).translate('address')
-                                  : adrs_name.text),
-                              subtitle: Text(addressString),
-                            ),
-                            ButtonBar(
-
-                              children: <Widget>[
-                                FlatButton( focusNode: focus_adress,
-                                  child: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.my_location,
-                                        color: Configurations.themColor,
-                                        size: 15,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)
-                                            .translate('profile_txt_location'),
-                                        style:
-                                        TextStyle(color: Configurations.themColor),
-                                      )
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    /* ... */
-                                    addressEnter();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-              ),
-
-              SizedBox(height: 7,),
-
-              RaisedButton(
-                color: Configurations.themColor,
-                textColor: Colors.white,
-                child: Text(
-                    AppLocalizations.of(context).translate('btn_save'),
-                    style: TextStyle(fontSize: 16.5)),
-                onPressed: () {
-
-                  print("api call");
-                  initialProfileCall();
-//                  _validateInputs();
-                }),
-
-            ],
-          ),
-        ),
-
-
-
-        // Temporary
-//            if(globals.currentUser.roles[0].slug == "provider")
-//              Padding(
-//                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-//                child: Card(
-//                  elevation: 5.0,
-//                  child: ListTile(
-//                    onTap: orderDetails,
-//                    leading: Icon(Icons.list),
-//                    title: Text("Order Detail"),
-//                    subtitle: Text(ServiceSelectionUIPageState.serviceNamesString),
-//                  ),
-//                ),
-//              ),
-
-
-//        SizedBox(
-//          height: 20,
-//        ),
-
-        FlatButton(
-
-            child: Text("Skip",
-              textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
-            onPressed: () {
-              Preferences.saveObject("profile", "0");
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(),
-                  ));
-            }),
-        new Image.asset("assets/images/bottomSignup.png",
-          height: 130.0, width: double.infinity, fit: BoxFit.fill, ),
       ],
     );
   }
@@ -1173,12 +802,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   List<String> language = new List<String>();
   void initialProfileCall() async {
-//  if(globals.isCustomer == false)
-//    if (_image == null) {
-//      _buildCoverImage(MediaQuery.of(context).size);
-//    }
-    print("CHECK ${ServiceSelectionUIPageState.selectedServices}");
-    if (ServiceSelectionUIPageState.selectedServices == null &&
+    printLog("test = ${ServiceSelectionUIPageState.selectedServices}");
+    if (ServiceSelectionUIPageState.selectedServices == null || ServiceSelectionUIPageState.selectedServices.length == 0 &&
         globals.currentUser.roles[0].slug == "provider") {
       print("provider");
 //      ServiceSelectionUIPageState.selectedServices.length == 0 ||
