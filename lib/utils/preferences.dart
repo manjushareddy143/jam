@@ -13,8 +13,9 @@ class Preferences {
     return await prefs.setString(key, value);
   }
 
-  static saveObject(String key, value) async {
+  static saveObject(String key, String value) async {
     SharedPreferences prefs = await getPrefs();
+
     prefs.setString(key, value);
   }
 

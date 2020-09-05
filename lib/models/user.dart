@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:jam/models/UserRole.dart';
 import 'package:jam/models/address.dart';
 import 'package:jam/models/organisation.dart';
@@ -69,10 +71,6 @@ class User {
         services = ((json.containsKey('services') && json['services'] != null )
             ? json['services'].map<UserServices>((json) => new UserServices.fromJson(json)).toList() : null),
         jobs_count = json['jobs_count'];
-//        jobs = ((json.containsKey('jobs') && json['jobs'] != null )
-//  ? json['jobs'].map<Jobs>((json) => new Jobs.fromJson(json)).toList() : null);
-        //json['address'].map<Address>((json) => new Address.fromJson(json)).toList();
-        //((json.containsKey('address') && json['address'] != null ) ? Address.fromJson(json['address']) : null);
 
   Map<String, dynamic> toJson() => {
     'id': id, 'first_name': first_name,
@@ -83,7 +81,14 @@ class User {
     'type_id': type_id,'resident_country': resident_country,
     'roles': roles, 'social_signin': social_signin,
     'existing_user': existing_user,
-    'address': (address != null) ? address : null ,
+    'address': (address != null) ? Address.processListOfAddressList(address) : null ,
+    'services': (services != null) ? UserServices.processListOfUserServices(services) : null ,
+//    'jobs_count': (jobs_count != null) ? jobs_count : null ,
+//    'reviews': (reviews != null) ? reviews : null ,
+//    'organisation': (organisation != null) ? organisation : null ,
+//    'servicePrice': (servicePrice != null) ? servicePrice : null ,
+//    'provider': (provider != null) ? provider : null ,
+//    'rate': (rate != null) ? rate : null ,
   };
 
   static List<User> processListOfUser(List users) {

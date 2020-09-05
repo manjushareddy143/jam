@@ -22,4 +22,20 @@ class UserServices {
         categories = ((json.containsKey('categories') && json['categories'] != null )
             ? SubCategory.fromJson(json['categories']) : null);
 
+
+  Map<String, dynamic> toJson() => {
+    'id': id, 'user_id': user_id, 'service_id': service_id,
+    'category_id': category_id, 'price': price,
+    'service': service.toJson(), 'categories': categories.toJson()
+  };
+
+
+  static List processListOfUserServices(List<UserServices> userServices) {
+    List list = new List();
+    for(var i = 0; i < userServices.length; i++){
+      list.add(userServices[i].toJson());
+    }
+    return list;
+  }
+
 }

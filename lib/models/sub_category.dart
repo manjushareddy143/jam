@@ -13,6 +13,12 @@ class SubCategory {
         image = json['image'],
         description = json['description'];
 
+
+  Map<String, dynamic> toJson() => {
+    'id': id, 'name': name, 'image': image,
+    'description': description
+  };
+
   static List<SubCategory> processSubCategories(List category) {
     return category.map<SubCategory>((json) => new SubCategory.fromJson(json)).toList();
   }
