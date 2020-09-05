@@ -146,7 +146,7 @@ class _customerSignup extends State<CustomerSignup>{
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: SizedBox(
-              width: 222,
+              width: 210,
               child: TextFormField(
                 enabled: _fridgeEdit,
                 decoration: InputDecoration( suffixIcon: Icon(Icons.phone),

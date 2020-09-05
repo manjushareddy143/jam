@@ -29,6 +29,14 @@ class Address {
     'user_id': user_id
   };
 
+  static List processListOfAddressList(List<Address> address) {
+    List list = new List();
+    for(var i = 0; i < address.length; i++){
+      list.add(address[i].toJson());
+    }
+    return list;
+  }
+
   static List<Address> processListOfAddress(List addresses) {
     return addresses.map<Address>((json) => new Address.fromJson(json)).toList();
   }

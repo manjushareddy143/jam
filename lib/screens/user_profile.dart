@@ -58,7 +58,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
-    print("PROFILE ${globals.currentUser.toJson()}");
+//    print("PROFILE ${globals.currentUser.toJson()}");
+    print("PROFILE ${globals.currentUser.services}");
     globals.context = context;
     if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
       singleAddress = globals.currentUser.address[0];
@@ -77,7 +78,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     focus_address = FocusNode();
     isEditProfile = false;
 
-//    print("languages  = ${globals.currentUser.languages}");
     if(globals.currentUser.languages != null) {
       List langs = globals.currentUser.languages.split(',');
       langs.forEach((element) {
@@ -91,7 +91,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           languages.add("Arabic");
         }
       });
-      print("languages  = ${globals.currentUser.languages.split(',')}");
     }
 
 
@@ -129,14 +128,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
-  void getProfile() async  {
-    await Preferences.readObject("user").then((onValue) async {
-      var userdata = json.decode(onValue);
-      setState(() {
-        globals.currentUser = User.fromJson(userdata);
-      });
-    });
-  }
+//  void getProfile() async  {
+//    await Preferences.readObject("user").then((onValue) async {
+//      var userdata = json.decode(onValue);
+//      setState(() {
+//        globals.currentUser = User.fromJson(userdata);
+//      });
+//    });
+//  }
 
   String imageUrl = "";
   Future getImage() async {

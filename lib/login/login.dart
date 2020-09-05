@@ -396,6 +396,7 @@ class _user extends State<UserLogin>{
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
+        print("come for response ==  ${data}");
         globals.currentUser = User.fromJson(data);
         globals.guest = false;
         Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
@@ -604,12 +605,13 @@ class _user extends State<UserLogin>{
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("data::::::::$data");
+
         globals.currentUser = User.fromJson(data);
+        print("currentUser ==  ${User.fromJson(data).toJson()}");
         globals.guest = false;
         if(globals.currentUser.address.length == 0) {
           print('NO ADDRESS');
-          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+          Preferences.saveObject("user", jsonEncode(User.fromJson(data)));
           Preferences.saveObject("profile", "1");
           Navigator.pushReplacement(
               context,
@@ -618,8 +620,8 @@ class _user extends State<UserLogin>{
               ));
         } else {
           // location
-          print('HMMM ADDRESS');
-          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+          print('HMMM ADDRESS ${jsonEncode(globals.currentUser.toJson())}');
+          Preferences.saveObject("user", jsonEncode(User.fromJson(data)));
           Preferences.saveObject("profile", "0");
           Navigator.pushReplacement(
               context,

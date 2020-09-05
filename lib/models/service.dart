@@ -27,6 +27,11 @@ class Service {
         json['categories'].map<SubCategory>((json) => new SubCategory.fromJson(json)).toList() :
         null);
 
+  Map<String, dynamic> toJson() => {
+    'id': id, 'name': name, 'icon_image': icon_image,
+    'banner_image': banner_image, 'categories': categories,
+    'description': description
+  };
 
   static List<Service> processServices(List services) {
     //printLog("reached here");
