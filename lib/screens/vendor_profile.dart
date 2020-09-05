@@ -70,7 +70,7 @@ int swiperIndex =0;
     // TODO: implement build
     var r = this.provider.rate;
       return Scaffold(backgroundColor: Colors.orange[50],
-        appBar: AppBar(backgroundColor: Colors.white70,
+        appBar: AppBar(backgroundColor: Colors.deepOrange,
         title: Text("Vendor Profile", style: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w400,
@@ -83,7 +83,7 @@ int swiperIndex =0;
             children: <Widget>[
 
               setupProfile(),
-             // setReviews(),
+              setReviews(),
 
 
 
@@ -872,12 +872,14 @@ int swiperIndex =0;
           SizedBox(
             height: 20,
           ),
-          for(int providerCount = 0; providerCount< provider.reviews.length; providerCount++)
+          for(int index = 0; index< provider.reviews.length; index++)
 
           Visibility(child: Container(
-            height: 300,
-            child: Card(
-             // itemBuilder: (BuildContext context, int index) {
+            height: 60,
+
+            child:
+            Card(color: Colors.white,
+
                 child: Column(
                     children: <Widget>[
                       Padding(padding: EdgeInsets.only(top: 10, bottom: 5),
@@ -904,37 +906,40 @@ int swiperIndex =0;
 
 
                       SizedBox(height: 20,),
-                      Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Text(this.provider.reviews[index].rate_by.first_name, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8,0,8,0),
-                                child: SmoothStarRating(
-                                  allowHalfRating: false,
-                                  starCount: 5,
-                                  rating:  this.provider.reviews[index].rating.toDouble(),
-                                  size: 20.0,
-                                  filledIconData: Icons.star,
-                                  halfFilledIconData: Icons.star,
-                                  color: Colors.orangeAccent,
-                                  borderColor: Colors.orangeAccent,
-                                  spacing:0.0,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Text(this.provider.reviews[index].rate_by.first_name, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(8,0,8,0),
+                                  child: SmoothStarRating(
+                                    allowHalfRating: false,
+                                    starCount: 5,
+                                    rating:  this.provider.reviews[index].rating.toDouble(),
+                                    size: 20.0,
+                                    filledIconData: Icons.star,
+                                    halfFilledIconData: Icons.star,
+                                    color: Colors.orangeAccent,
+                                    borderColor: Colors.orangeAccent,
+                                    spacing:0.0,
 
 
 
+                                  ),
                                 ),
-                              ),
 
 
-                            ],
-                          ),
+                              ],
+                            ),
 
-                          Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
+                            Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
 
 
-                        ],
+                          ],
+                        ),
                       ),
                       SizedBox(height: 10,),
                       SizedBox(
@@ -947,9 +952,9 @@ int swiperIndex =0;
                       SizedBox(height: 10,),
 
 
-                    ]);
+                    ]),
 
-              } ,
+
 
             ),
           ),

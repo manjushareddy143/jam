@@ -54,7 +54,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "");
 
-
+  var editIcon = Icons.mode_edit;
 
   @override
   void initState(){
@@ -193,12 +193,326 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             child: new Form(
               key: _formKey,
               autovalidate: _autoValidate,
+
               child: myProfileUI(),
             ),
           )
       ),
     );
   }
+  Widget profile(){
+
+    return Column(
+      children: [
+        Visibility( visible: !isEditProfile,
+            child: myProfile()),
+        Visibility( visible: isEditProfile,
+            child: myProfileUI())
+
+      ],
+    );
+  }
+  Widget myProfile(){
+    return Container(
+        height: 600.0,
+        margin: const EdgeInsets.symmetric(
+        vertical: 16.0,
+        horizontal: 16.0,
+    ),
+      child: Stack(
+        children: [
+          setProfileCard(),
+          setProfilePic()
+        ],
+      )
+    );
+  }
+ Widget setProfileCard(){
+   if(globals.currentUser.address != null) {
+     print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
+     if(globals.currentUser.address.length > 0) {
+       addressString = singleAddress.address_line1;
+       if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
+         addressString += ", " + singleAddress.address_line2;
+       }
+
+       if(singleAddress.landmark != "" && singleAddress.landmark != null) {
+         addressString += ", " + singleAddress.landmark;
+       }
+       addressString += ", " + singleAddress.district
+           + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
+     }
+   }
+
+   print("addressString===== $addressString");
+
+   String ServiceRadiusHint = "Service Radius";
+   if(globals.currentUser.provider != null) {
+
+     ServiceRadiusHint = globals.currentUser.provider.service_radius.toString();
+   }
+
+   String services = "";
+   if(globals.currentUser.services  != null) {
+     globals.currentUser.services.forEach((element) {
+       if (services.isEmpty) {
+         services = element.service.name;
+       } else {
+         if(!services.contains(element.service.name)) {
+           services += ", " +element.service.name;
+         }
+       }
+
+       if(element.categories != null) {
+         if (services.isEmpty) {
+           services = " - " + element.categories.name;
+         } else {
+           services += " - " +element.categories.name;
+         }
+       }
+     });
+   }
+
+String name = globals.currentUser.first_name+" " +globals.currentUser.last_name;
+String gender = globals.currentUser.gender;
+String num = globals.currentUser.contact;
+String email = globals.currentUser.email;
+int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
+   print("AddressLength == ${AddressLength}");
+//String address = ;
+//String servicee = ;
+
+
+   return Container(
+      height: 900,
+      margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
+      decoration: new BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.rectangle,
+        borderRadius: new BorderRadius.circular(8.0),),
+      child: Padding(
+        padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+       // padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            SizedBox(height: 50,),
+
+
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+                Text((name == "")? "No Name Set" : name, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),),
+
+//                IconButton(
+//                  icon: new Icon(editIcon),
+//                  onPressed: () {
+//                    setState(() {
+//                      if(editIcon == Icons.mode_edit) {
+//                        editIcon = Icons.done;
+//                      } else {
+//                        editIcon = Icons.mode_edit;
+//                      }
+//                      validateform();
+//                    });
+//
+//                  },
+//                ),
+              ]
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
+              child: Row(children :[
+                Text((gender == "")? "Gender" : gender, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+                SizedBox(width: 10,),
+                Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
+              ]
+              ),
+            ),
+            SizedBox(height: 20,),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.call, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((num == "")? "Not Set" : num, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+
+              ]
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.email, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((email == "")? "Not Set" : email, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+
+              ]
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.language, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((globals.currentUser.languages == "")? "No Name Set" : globals.currentUser.languages, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+
+              ]
+              ),
+            ),
+            if(globals.currentUser.roles[0].slug == "provider")
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.settings, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((services == "")? "No Services Set" : services, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 14),),
+
+              ]
+              ),
+            ),
+            if(globals.currentUser.roles[0].slug == "provider")
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.location_searching, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((ServiceRadiusHint == "")? "Set Radius" : ServiceRadiusHint, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+
+              ]
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+
+                Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
+                SizedBox(width: 10,),
+                Text((addressString == "")? "No Address Set" : addressString, style:
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
+                maxLines: 3,),
+
+              ]
+              ),
+            ),
+            SizedBox(height: 30,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(children :[
+                Text("Address", style:
+                TextStyle(color: Colors.deepOrange,
+                    fontWeight: FontWeight.w600,fontSize: 18),),
+
+                IconButton(
+                  onPressed: () {
+                    addressEnter(true);
+                  },
+                  icon: Icon(Icons.add),
+                )
+              ]
+              ),
+            ),
+
+            if(AddressLength > 0)
+              for(int i =0; i <= AddressLength ; i++)
+                Card(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+                        child: Row(children :[
+
+                          Icon(Icons.location_on, color: Colors.grey, size: 18,),
+                          SizedBox(width: 10,),
+                          Text(addressListString(globals.currentUser.address[i]), style:
+                          TextStyle(color: Colors.deepOrange,
+                              fontWeight: FontWeight.w600,fontSize: 18),),
+
+                        ]
+                        ),
+                      ),
+                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+                        child: SizedBox(
+                          height: 1.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                              height: 0.4,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+
+
+
+
+
+
+
+
+          ],
+        ),
+      ),
+    );
+
+  }
+
+  Widget setProfilePic(){
+    return Positioned( top: 30, right: 20,
+      child: Container(
+
+        child: GestureDetector(
+          onTap: () {
+            print("object");
+            if(isEditProfile) {
+              getImage();
+            }else {
+              showInfoAlert(context, "Please enable edit mode");
+            }
+
+          }, // handle your image tap here
+        ),
+        width: 110.0,
+        height: 110.0,
+        decoration: BoxDecoration(
+          image:
+          DecorationImage(
+            image:
+            (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+            fit: BoxFit.cover,
+          ),
+          borderRadius: BorderRadius.circular(80.0),
+          border: Border.all(
+            color: Configurations.themColor,
+            width: 0.9,
+          ),
+        ),
+      ),
+    );
+
+  }
+
+
 
   Widget myProfileUI() {
     return Container(
@@ -231,6 +545,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               color: Colors.white),
         ),
             //SizedBox(height: 5),
+
          GestureDetector(
            onTap: () {
              if(isEditProfile) {
@@ -258,6 +573,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       return Expanded(
         child: Center(
           child: Container(
+
             child: GestureDetector(
               onTap: () {
                 print("object");
@@ -386,8 +702,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         children: <Widget>[
           // FistName
           TextField(
-            focusNode: focus_fName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.first_name == null || globals.currentUser.first_name == "" ) ? "First Name" : globals.currentUser.first_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            focusNode: focus_fName,style: (isEditProfile) ?
+          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            decoration: InputDecoration(hintText: (globals.currentUser.first_name == null
+                || globals.currentUser.first_name == "" ) ?
+            "First Name" : globals.currentUser.first_name,
+                prefixIcon: Icon(Icons.person),enabled: isEditProfile),
             controller: (globals.currentUser.first_name == "")
                 ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
           ),
@@ -402,9 +722,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
           // EMAIL
           TextField(
-            focusNode: focus_email,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            focusNode: focus_email,style: (isEditProfile) ?
+          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email,
-                prefixIcon: Icon(Icons.email),enabled: isEditProfile),
+                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: isEditProfile),
 
             controller: (globals.currentUser.email == "")
                 ? prfl_email : prfl_email ..text = globals.currentUser.email,
@@ -414,7 +735,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           // PHONE
           TextField(
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact, prefixIcon: Icon(Icons.call),enabled: isEditProfile, ),
+            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact,
+              prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile, ),
             controller: (globals.currentUser.contact == "")
                 ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,keyboardType: TextInputType.phone,
           ),
@@ -423,11 +745,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             // Gender
             child: TextField(
               decoration: InputDecoration(
-                  hintText: ( gender == null) ? "NOT SELECTED" : globals.currentUser.gender, prefixIcon: Icon(Icons.face), enabled: isEditProfile
+                  hintText: ( gender == null) ? "NOT SELECTED" : globals.currentUser.gender,
+                  prefixIcon: Icon(Icons.face), enabled: isEditProfile
               ),
             ),
           ),
-
+       //   setDropDown(),
           Visibility(
             visible: isEditProfile,
             child: setDropDown(),
@@ -435,13 +758,28 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
 
-          // Language
+         //  Language
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages,
                   prefixIcon: Icon(Icons.language), enabled: isEditProfile),
             ),
           ),
+//          Container(
+//              decoration: myBoxDecoration(),
+//              child: Padding(padding: EdgeInsets.all(1),
+//                child: Row(
+//                  mainAxisAlignment: MainAxisAlignment.start,
+//                  children: <Widget>[
+//                    Icon(Icons.language),
+//                    SizedBox(width: 10,),
+//                    Text("English"),
+//                    Checkbox(value: _english, onChanged: _selecteEnglish),
+//                    SizedBox(width: 1,),
+//                    Text("Arabic"),
+//                    Checkbox(value: _arabic, onChanged: _selecteArabic),
+//                  ],
+//                ),)),
 
           Visibility( visible: isEditProfile,
            child: Container(
@@ -484,7 +822,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,keyboardType: TextInputType.number,
           ),
 
-          // Address
+         //  Address
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
@@ -492,7 +830,49 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               helperMaxLines: 5, hintMaxLines: 5),
             ),
           ),
-
+//          Padding(
+//            padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+//            child: Column(
+//              mainAxisSize: MainAxisSize.min,
+//              children: <Widget>[
+//                ListTile(
+//                  onTap: showAddress,
+//                  leading: Icon(Icons.location_on),
+//                  title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
+//                  subtitle: Text(addressString),
+//                ),
+//                ButtonBar(
+//                  children: <Widget>[
+//                    FlatButton(
+//                      child: Row(
+//                        children: <Widget>[
+//                          Icon(
+//                            Icons.my_location,
+//                            color: Configurations.themColor,
+//                            size: 15,
+//                          ),
+//                          SizedBox(
+//                            width: 10,
+//                          ),
+//                          Text(
+//                            AppLocalizations.of(context)
+//                                .translate('profile_txt_location'),
+//                            style:
+//                            TextStyle(color: Configurations.themColor),
+//                          )
+//                        ],
+//                      ),
+//                      onPressed: () {
+//                        /* ... */
+//                        addressEnter(false);
+//                      },
+//                    ),
+//                  ],
+//                ),
+//              ],
+//            ),
+//          ),
+//
           Visibility(visible: isEditProfile,
           child: Padding(
             padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
