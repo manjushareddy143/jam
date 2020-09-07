@@ -103,16 +103,11 @@ class _HomeUIPageState extends State<HomeUIPage> {
 //      if(listofServices.length > 0) {
         return new Scaffold(backgroundColor: Colors.orange[50],
           body: CustomScrollView(
-            //view that contains an expanding app bar followed by a list & grid
             slivers: <Widget>[
-             // makeHeader(""),
-              //calling appbar method by passing the Text as argument.
-              //Padding: const EdgeInsets.all(8.0),
               SliverFixedExtentList(
                 itemExtent: 50.0,
                 delegate: SliverChildListDelegate(
                   [
-
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15,10,10,0),
                       child: Container(child: Text("Categories", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),)),

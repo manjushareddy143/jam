@@ -109,23 +109,71 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     if (globals.listofOrders == null) {
       return new Scaffold(
         appBar: new AppBar(
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {
       return Scaffold(
+        appBar: new AppBar(
+          automaticallyImplyLeading: true,
+          title: new Text(AppLocalizations.of(context).translate('tab_orders')),
+          backgroundColor: Configurations.themColor,
+        ),
           body:
           SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-//                mainAxisSize: MainAxisSize.min,
-                children: listOfCards()
-            ),
+            child: OrderListUI()
+//            Column(
+//              mainAxisSize: MainAxisSize.min,
+////                mainAxisSize: MainAxisSize.min,
+//                children: listOfCards()
+//            ),
           )
       );
     }
 
+  }
+
+  Widget OrderListUI() {
+    return Stack(
+        children: [
+          new Container(
+            height: MediaQuery.of(context).size.height * .30,
+            width: MediaQuery.of(context).size.height * .50,
+            color: Colors.grey[800],
+            child: Container(
+                padding: EdgeInsets.only(left: 50, right: 50, bottom: 50, top: 50),
+                child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 100,
+                      width: 100.0,
+                    ),
+                  ],
+                )
+            ),
+          ),
+
+          new Container(
+              alignment: Alignment.topCenter,
+              padding: new EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * .20,
+                  right: 2.0,
+                  left: 2.0),
+              child: Column(
+                children: listOfCards()
+              )
+//          new Container(
+////            height: 80.0,
+//            width: MediaQuery.of(context).size.width,
+//            child: ,
+//          ),
+          ),
+
+
+        ]
+    );
   }
 
   List<Widget> listOfCards() {
@@ -231,7 +279,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
             child: Row(
               children: <Widget>[
 
-                Container(
+                Expanded(child: Container(
                   margin: EdgeInsets.all(15),
                   width: 80.0,
                   height: 80.0,
@@ -243,81 +291,149 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(80.0),
+                    border: Border.all(
+                      color: Configurations.themColor,
+                      width: 1.5,
+                    ),
+//                    color:
+
+
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.5, 10, 0.5, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    textBaseline: TextBaseline.ideographic,
-                    children: <Widget>[
-                      Text(name,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                        textWidthBasis: TextWidthBasis.parent,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                flex: 0,),
 
-                      Container(
-                        width: 150,
-                        child: Text(order.service.name,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5),
-                      ),
-                      Text(AppLocalizations.of(context).translate('order') + order.id.toString(),),
-                      Row(
-                        children: <Widget>[
-                          Text(order.booking_date,),
-                          SizedBox(width: 10,),
-                          SmoothStarRating(
-                            allowHalfRating: false,
-                            starCount: 5,
-                            rating: rating,
-                            size: 20.0,
-                            filledIconData: Icons.star,
-                            halfFilledIconData: Icons.star,
-                            color: Colors.amber,
-                            borderColor: Colors.amber,
-                            //unfilledStar: Icon(Icons., color: Colors.grey),
-                            spacing:0.0,
-                            onRatingChanged: (v) {
+                Expanded(child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  textBaseline: TextBaseline.ideographic,
+                  children: <Widget>[
+
+                    Text(capitalize(name),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textWidthBasis: TextWidthBasis.parent,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+
+                    Container(
+                      width: 150,
+                      child: Text(order.service.name,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5),
+                    ),
+
+                    Text(AppLocalizations.of(context).translate('order') + order.id.toString(),),
+
+                    Text(order.booking_date,),
+                    SizedBox(height: 5.0,),
+                    SmoothStarRating(
+                      allowHalfRating: false,
+                      starCount: 5,
+                      rating: rating,
+                      size: 20.0,
+                      filledIconData: Icons.star,
+                      halfFilledIconData: Icons.star,
+                      color: Colors.amber,
+                      borderColor: Colors.amber,
+                      //unfilledStar: Icon(Icons., color: Colors.grey),
+                      spacing:0.0,
+                      onRatingChanged: (v) {
 //                    rating = v;
-                              setState(() {});
-                            },
-                          ),
-                        ],
-                      ),
+                        setState(() {});
+                      },
+                    ),
+//                      Row(
+//                        children: <Widget>[
+//
+//                        ],
+//                      ),
 
-                      Row(
-                        children: <Widget>[
-                          SizedBox(child: Row(
-                            children: <Widget>[
-                              FlatButton(
+                  ],
+                ),
+                flex: 2,),
+
+                Container(
+                  color: Configurations.themColor,
+//                  alignment: Alignment.bottomRight,
+//                  height: 60,
+//                  width: 120,
+                  margin: EdgeInsets.only(bottom: 0, top: 50, left: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(status_icon, color: status_color, size: 14,),
+                      FlatButton(
 //                              onPressed:  () {
 //                                print('Call Press');
 //                              },
-                                  padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                  child: Text(statusString,
-                                    style: TextStyle(
-                                        fontSize: 11.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: status_color),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 5,
-                                  )
-                              ),
-                              SizedBox(width: MediaQuery. of(context). size. width / 7.8,),
-                              Icon(status_icon, color: status_color, size: 14,),
-                            ],
-                          ),
-                          ),
-
-
-                        ],
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Text(statusString,
+                            style: TextStyle(
+                                fontSize: 11.0,
+                                fontWeight: FontWeight.bold,
+                                color: status_color),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                          )
                       ),
                     ],
                   ),
                 ),
+
+//                Expanded(child: Container(
+//                  color: Configurations.themColor,
+//                  alignment: Alignment.centerRight,
+////                      padding: EdgeInsets.only(bottom: 0, top: 50),
+//                  child: Row(
+//                    children: <Widget>[
+//                      Text("data1"),
+//                      Text("data2"),
+//                    ],
+//                  ),
+//                ),
+
+//                Stack(
+//                  alignment: Alignment.centerRight,
+//
+//                  children: <Widget>[
+//
+//                  ],
+//                ),
+
+
+          /*      Row(
+                  children: <Widget>[
+                    SizedBox(child: Row(
+                      children: <Widget>[
+                        FlatButton(
+//                              onPressed:  () {
+//                                print('Call Press');
+//                              },
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Text(statusString,
+                              style: TextStyle(
+                                  fontSize: 11.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: status_color),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 5,
+                            )
+                        ),
+                        SizedBox(width: MediaQuery. of(context). size. width / 7.8,),
+                        Icon(status_icon, color: status_color, size: 14,),
+                      ],
+                    ),
+                    ),
+
+
+                  ],
+                ),
+                */
+
+//                flex: 1,)
+
+
+
               ],
             )
         ),

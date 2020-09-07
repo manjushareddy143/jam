@@ -97,80 +97,117 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
 
   Widget setOrderUI() {
     return Stack(
+
       children: <Widget>[
         new Column(
           children: <Widget>[
 
             new Container(
-              height: MediaQuery.of(context).size.height * .25,
+              height: MediaQuery.of(context).size.height * .30,
               width: MediaQuery.of(context).size.height * .50,
               color: Colors.grey[800],
               child: Container(
-                padding: EdgeInsets.only(left: 50, right: 50, bottom: 90, top: 20),
-                child: Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 20,
-                  width: 20.0,
-                ),
+                  padding: EdgeInsets.only(left: 50, right: 50, bottom: 50, top: 50),
+                  child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 100,
+                        width: 100.0,
+                      ),
+                    ],
+                  )
               ),
             ),
 
             new Container(
-//              height: MediaQuery.of(context).size.height * .75,
-              color: Colors.white,
-            )
+                alignment: Alignment.topCenter,
+                padding: new EdgeInsets.only(
+//                    top: MediaQuery.of(context).size.height * .20,
+                    right: 2.0,
+                    left: 2.0),
+                child: Column(
+                  children: <Widget>[
+
+
+
+//                    SelectOrderMenu()
+
+//                    Visibility( visible: !isEditProfile,
+//                        child: myProfile()),
+//                    Visibility( visible: isEditProfile,
+//                        child: myProfileUI())
+
+                  ],
+                )
+//          new Container(
+////            height: 80.0,
+//            width: MediaQuery.of(context).size.width,
+//            child: ,
+//          ),
+            ),
+
+//            new Container(
+////              height: MediaQuery.of(context).size.height * .75,
+//              color: Colors.white,
+//            )
           ],
         ),
+
 
         new Container(
           alignment: Alignment.topCenter,
           padding: new EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * .18,
+              top: MediaQuery.of(context).size.height * .25,
+//              top: 50,
               right: 20.0,
               left: 20.0),
           child: new Container(
             height: 80.0,
             width: MediaQuery.of(context).size.width,
             child: new Card(
-              color: Colors.white,
-              elevation: 4.0,
-              child: GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(child: Padding(padding: EdgeInsets.only(left: 0.0),
-                      child: Image.asset("assets/images/icon_orders@2x.png", fit: BoxFit.contain, height: 30,
+                color: Colors.white,
+                elevation: 4.0,
+                child: GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(child: Padding(padding: EdgeInsets.only(left: 0.0),
+                        child: Image.asset("assets/images/icon_orders@2x.png", fit: BoxFit.contain, height: 30,
+                          width: 30.0,
+                          color: Hexcolor('#FB6907'),
+                        ),
+                      ),
+                        flex: 1,),
+                      Expanded(child: Text("Yours Booking"),
+                        flex: 4,),
+                      Expanded(child: Image.asset("assets/images/icon_orders@2x.png", fit: BoxFit.contain, height: 30,
                         width: 30.0,
                         color: Hexcolor('#FB6907'),
                       ),
-                    ),
-                      flex: 1,),
-                    Expanded(child: Text("Yours Booking"),
-                      flex: 4,),
-                    Expanded(child: Image.asset("assets/images/icon_orders@2x.png", fit: BoxFit.contain, height: 30,
-                      width: 30.0,
-                      color: Hexcolor('#FB6907'),
-                    ),
-                      flex: 1,),
-                  ],
-                ),
-                onTap: () => {
-                  globals.isVendor = false,
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
+                        flex: 1,),
+                    ],
+                  ),
+                  onTap: () => {
+                    globals.isVendor = false,
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
                           builder: (context) =>
                               OrderUIPage(url: Configurations.BOOKING_URL, isCustomer: true,),
-                      )
-                  )
-                },
-              )
+                        )
+                    )
+                  },
+                )
             ),
           ),
         ),
 
+
         new Container(
           alignment: Alignment.topCenter,
           padding: new EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * .34,
+              top: MediaQuery.of(context).size.height * .38,
               right: 20.0,
               left: 20.0),
           child: new Container(
@@ -220,6 +257,36 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
 
     );
   }
+
+//  Widget SelectOrderMenu(){
+//    print("MAYUR");
+//    return Container(
+//
+//        height: 600.0,
+//        margin: EdgeInsets.symmetric(
+//          vertical: 16.0,
+//          horizontal: 16.0,
+//        ),
+//        child: Stack(
+//          children: [
+//         Container(
+////      height: 500,
+//    margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
+//    decoration: new BoxDecoration(
+//    color: Colors.white,
+//    shape: BoxShape.rectangle,
+//    borderRadius: new BorderRadius.circular(8.0),),
+//    child: Padding(
+//    padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+//    // padding: const EdgeInsets.all(10.0),
+//    child: Column(
+//    children: [
+//      Text("dfsdf");
+//    ])))
+//          ],
+//        )
+//    );
+//  }
 
     void onTap(val) {
     print(val);

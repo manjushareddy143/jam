@@ -1,16 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/models/address.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/service_selection.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -188,34 +193,134 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         }
       },
       child: Scaffold(
+
         resizeToAvoidBottomPadding: false,
           body: SingleChildScrollView(
             child: new Form(
               key: _formKey,
               autovalidate: _autoValidate,
 
-              child: myProfileUI(),
+              child: profile(),
+              //myProfileUI(),
             ),
           )
       ),
     );
   }
+
+  static final FacebookLogin facebookSignIn = new FacebookLogin();
+
+  Future<Null> logoutFacebook() async {
+    await facebookSignIn.logOut();
+//    _showMessage('Logged out.');
+  }
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  void signOutGoogle() async{
+    await googleSignIn.signOut();
+    print("User Sign Out");
+  }
+
+  void logOut_app() {
+    Preferences.removePreference("user");
+    Preferences.removePreference("profile");
+
+    if(globals.currentUser.social_signin == "facebook") {
+      logoutFacebook();
+    } else if(globals.currentUser.social_signin == "gmail") {
+      signOutGoogle();
+    }
+    globals.isCustomer = true;
+    globals.currentUser = null;
+    globals.customRadius = null;
+    globals.customImage = null;
+    globals.customGender = null;
+    globals.customContact = null;
+    globals.customFirstName = null;
+    globals.customLanguage = null;
+    ServiceSelectionUIPageState.serviceNamesString = null;
+    ServiceSelectionUIPageState.selectedServices = null;
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => UserLogin()));
+  }
   Widget profile(){
 
-    return Column(
-      children: [
-        Visibility( visible: !isEditProfile,
-            child: myProfile()),
-        Visibility( visible: isEditProfile,
-            child: myProfileUI())
+    print("isEditProfile = ${isEditProfile}");
+
+    return Stack(
+
+      children:
+      [
+
+        new Container(
+          height: MediaQuery.of(context).size.height * .30,
+          width: MediaQuery.of(context).size.height * .50,
+          color: Colors.grey[800],
+          child: Container(
+            padding: EdgeInsets.only(left: 50, right: 50, bottom: 50, top: 50),
+            child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 100,
+                  width: 100.0,
+                ),
+              ],
+            )
+          ),
+        ),
+
+
+        if(isEditProfile)
+        Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width - 100,top: 50),
+
+        child: IconButton(icon: Icon(Icons.done, size: 30, color: Configurations.themColor,), onPressed: ()=> {
+          validateform()
+        }),),
+
+        Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width - 50, top: 50),
+
+          child: IconButton(icon: Icon(Icons.exit_to_app, size: 30, color: Configurations.themColor, ), onPressed: ()=> {
+            logOut_app()
+          }),),
+
+        new Container(
+          alignment: Alignment.topCenter,
+          padding: new EdgeInsets.only(
+              top: MediaQuery.of(context).size.height * .20,
+              right: 2.0,
+              left: 2.0),
+          child: Column(
+            children: <Widget>[
+
+              Visibility( visible: !isEditProfile,
+                  child: myProfile()),
+              Visibility( visible: isEditProfile,
+                  child: myProfileUI())
+
+            ],
+          )
+//          new Container(
+////            height: 80.0,
+//            width: MediaQuery.of(context).size.width,
+//            child: ,
+//          ),
+        ),
+
+//        new Container(
+////              height: MediaQuery.of(context).size.height * .75,
+//          color: Colors.white,
+//        ),
+
 
       ],
     );
   }
   Widget myProfile(){
+    print("MAYUR");
     return Container(
+
         height: 600.0,
-        margin: const EdgeInsets.symmetric(
+        margin: EdgeInsets.symmetric(
         vertical: 16.0,
         horizontal: 16.0,
     ),
@@ -278,14 +383,11 @@ String gender = globals.currentUser.gender;
 String num = globals.currentUser.contact;
 String email = globals.currentUser.email;
 int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
-   print("AddressLength == ${AddressLength}");
-//String address = ;
-//String servicee = ;
 
 
    return Container(
-      height: 900,
-      margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
+//      height: 500,
+      margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
       decoration: new BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
@@ -297,13 +399,15 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           children: [
             SizedBox(height: 50,),
 
-
-
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(children :[
                 Text((name == "")? "No Name Set" : name, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),),
+                TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                ),
+                IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
+                  validateform()
+                })
 
 //                IconButton(
 //                  icon: new Icon(editIcon),
@@ -374,15 +478,30 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             ),
             if(globals.currentUser.roles[0].slug == "provider")
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+              padding: EdgeInsets.fromLTRB(0,8.0,0,0),
+              child: Row(
+//                mainAxisSize: MainAxisSize.max,
+//                  mainAxisAlignment: MainAxisAlignment.center,
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                  textBaseline: TextBaseline.alphabetic,
 
-                Icon(Icons.settings, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Text((services == "")? "No Services Set" : services, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 14),),
+                  children :[
+                    Icon(Icons.settings, color: Configurations.themColor, size: 14,),
+                    SizedBox(width: 10,),
+                    Expanded(
+                      child: Text(
+                        (services == "") ? "No Services Set" : services,
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 14),
+//                      overflow: TextOverflow.ellipsis,
+//                      maxLines: 0,
+//                      softWrap: true,
+                      ),
+                    )
 
-              ]
+                  ]
               ),
             ),
             if(globals.currentUser.roles[0].slug == "provider")
@@ -404,9 +523,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((addressString == "")? "No Address Set" : addressString, style:
+                Expanded(child: Text((addressString == "")? "No Address Set" : addressString, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
-                maxLines: 3,),
+                  maxLines: 3,)),
 
               ]
               ),
@@ -429,36 +548,40 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
               ),
             ),
 
-            if(AddressLength > 0)
-              for(int i =0; i <= AddressLength ; i++)
+            if(globals.currentUser.address.length > 0)
+              for(int i =0; i < globals.currentUser.address.length ; i++)
                 Card(
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+                        padding: const EdgeInsets.fromLTRB(0,10.0,0,10.0),
                         child: Row(children :[
 
-                          Icon(Icons.location_on, color: Colors.grey, size: 18,),
+                          Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
                           SizedBox(width: 10,),
-                          Text(addressListString(globals.currentUser.address[i]), style:
+                          Expanded(child: Text(addressListString(globals.currentUser.address[i]), style:
                           TextStyle(color: Colors.deepOrange,
-                              fontWeight: FontWeight.w600,fontSize: 18),),
+                              fontWeight: FontWeight.w600,fontSize: 18),),)
+
 
                         ]
                         ),
                       ),
-                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: SizedBox(
-                          height: 1.0,
-                          child: new Center(
-                            child: new Container(
-                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                              height: 0.4,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
+//                      SizedBox(
+//                        height: 10.0,
+//                      )
+//                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+//                        child: SizedBox(
+//                          height: 1.0,
+//                          child: new Center(
+//                            child: new Container(
+//                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+//                              height: 0.4,
+//                              color: Colors.grey,
+//                            ),
+//                          ),
+//                        ),
+//                      ),
                     ],
                   ),
                 )
@@ -492,8 +615,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
           }, // handle your image tap here
         ),
-        width: 110.0,
-        height: 110.0,
+        width: 120.0,
+        height: 120.0,
         decoration: BoxDecoration(
           image:
           DecorationImage(
@@ -533,6 +656,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height /3.6,
+//      color: Colors.transparent,
       child: Padding( padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
         child: Column(
           children: <Widget>[
@@ -562,9 +686,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           ],
         ),
       ),
-      decoration: BoxDecoration(
-        color: Colors.black,
-      ),
+//      decoration: BoxDecoration(
+//        color: Colors.transparent,
+//      ),
     );
   }
 

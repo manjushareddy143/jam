@@ -60,6 +60,8 @@ class _HomePageState extends State<HomePage> {
     printLog("LOADDD");
     editIcon = Icons.mode_edit;
     globals.context = context;
+    _currentIndex = 0;
+    isShowAppBar = true;
 //    print(globals.currentUser.roles[0].slug);
   }
 
@@ -70,6 +72,7 @@ class _HomePageState extends State<HomePage> {
 
 
   var editIcon = Icons.mode_edit;
+  bool isShowAppBar = false;
 
   Widget build(BuildContext context) {
 //    printLog(globals.addressLocation);
@@ -77,7 +80,9 @@ class _HomePageState extends State<HomePage> {
 //    printLog(globals.addressChange);
     return new Scaffold(backgroundColor: Colors.orange[50],
 
-      appBar: new AppBar(
+      appBar: isShowAppBar ?
+
+      new AppBar(
         backgroundColor: Colors.deepOrange,
         automaticallyImplyLeading: false,
         title: Column(
@@ -137,7 +142,7 @@ class _HomePageState extends State<HomePage> {
               setHeader(AppLocalizations.of(context).translate('tab_categories',),),
             if (_currentIndex == 2)
 
-              setHeader(AppLocalizations.of(context).translate('tab_orders')),
+//              setHeader(AppLocalizations.of(context).translate('tab_orders')),
             if (_currentIndex == 3)
               setHeader(AppLocalizations.of(context).translate('tab_account')),
 
@@ -161,47 +166,48 @@ class _HomePageState extends State<HomePage> {
 //                  MaterialPageRoute(builder: (context) => UserLogin()));
             },
           ),
-          if (_currentIndex == 3)
-         new IconButton(
-            icon: new Icon(editIcon),
-            onPressed: () {
-              setState(() {
-                if(editIcon == Icons.mode_edit) {
-                  editIcon = Icons.done;
-                } else {
-                  editIcon = Icons.mode_edit;
-                }
-                key.currentState.validateform();
-              });
+//          if (_currentIndex == 3)
 
-            },
-          ),
-          if (_currentIndex == 3)
-          new IconButton(
-            icon: new Icon(Icons.exit_to_app),
-            onPressed: () {
-              Preferences.removePreference("user");
-              Preferences.removePreference("profile");
-
-              if(globals.currentUser.social_signin == "facebook") {
-                logoutFacebook();
-              } else if(globals.currentUser.social_signin == "gmail") {
-                signOutGoogle();
-              }
-              globals.isCustomer = true;
-              globals.currentUser = null;
-              globals.customRadius = null;
-              globals.customImage = null;
-              globals.customGender = null;
-              globals.customContact = null;
-              globals.customFirstName = null;
-              globals.customLanguage = null;
-              ServiceSelectionUIPageState.serviceNamesString = null;
-              ServiceSelectionUIPageState.selectedServices = null;
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => UserLogin()));
-           },
-         ),
+//         new IconButton(
+//            icon: new Icon(editIcon),
+//            onPressed: () {
+//              setState(() {
+//                if(editIcon == Icons.mode_edit) {
+//                  editIcon = Icons.done;
+//                } else {
+//                  editIcon = Icons.mode_edit;
+//                }
+//                key.currentState.validateform();
+//              });
+//
+//            },
+//          ),
+//          if (_currentIndex == 3)
+//          new IconButton(
+//            icon: new Icon(Icons.exit_to_app),
+//            onPressed: () {
+//              Preferences.removePreference("user");
+//              Preferences.removePreference("profile");
+//
+//              if(globals.currentUser.social_signin == "facebook") {
+//                logoutFacebook();
+//              } else if(globals.currentUser.social_signin == "gmail") {
+//                signOutGoogle();
+//              }
+//              globals.isCustomer = true;
+//              globals.currentUser = null;
+//              globals.customRadius = null;
+//              globals.customImage = null;
+//              globals.customGender = null;
+//              globals.customContact = null;
+//              globals.customFirstName = null;
+//              globals.customLanguage = null;
+//              ServiceSelectionUIPageState.serviceNamesString = null;
+//              ServiceSelectionUIPageState.selectedServices = null;
+//              Navigator.pushReplacement(context,
+//                  MaterialPageRoute(builder: (context) => UserLogin()));
+//           },
+//         ),
 
 
 
@@ -209,8 +215,10 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(
           color: Colors.grey,
         ),
-      ),
-      // Middle Body
+      )
+
+            : null,
+        // Middle Body
       body: (globals.guest == true) ? _guestChildren[_currentIndex] : _children[_currentIndex],
 
       bottomNavigationBar: BottomNavigationBar(
@@ -258,12 +266,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  static final FacebookLogin facebookSignIn = new FacebookLogin();
 
-  Future<Null> logoutFacebook() async {
-    await facebookSignIn.logOut();
-//    _showMessage('Logged out.');
-  }
 
 
     Widget setHeader(String title) {
@@ -274,11 +277,7 @@ class _HomePageState extends State<HomePage> {
               textAlign: TextAlign.center)),
     );
   }
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-  void signOutGoogle() async{
-    await googleSignIn.signOut();
-    print("User Sign Out");
-  }
+
 
 
   final List<Widget> _guestChildren = [
@@ -311,6 +310,14 @@ class _HomePageState extends State<HomePage> {
 
   void onTabTapped(int index) {
     setState(() {
+      if(index == 0)
+        isShowAppBar = true;
+      if(index == 1)
+        isShowAppBar = true;
+      if(index == 2)
+        isShowAppBar = false;
+      if(index == 3)
+        isShowAppBar = false;
       _currentIndex = index;
     });
   }
