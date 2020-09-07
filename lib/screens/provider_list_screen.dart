@@ -180,25 +180,25 @@ class _ProviderListState extends State<ProviderListPage> {
 //      height: 100,
 //    ));
 //
-//    if(this.service.categories.length > 0) {
-//      list.add(
-//          Row(
-//            children:[
-//              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-//              SizedBox(width: 20,),
-//              Expanded(child:  DropdownButton(
-//                  underline: SizedBox(),
-//                  isExpanded: true,
-//                  value: selectedSubCategory,
-//                  icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
-//                  items: _dropDownSubCategory,
-//                  onChanged: changedDropDownItem),
-//              ),
-//
-//            ],
-//          )
-//      );
-//    }
+    if(this.service.categories.length > 0) {
+      list.add(
+          Row(
+            children:[
+              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+              SizedBox(width: 20,),
+              Expanded(child:  DropdownButton(
+                  underline: SizedBox(),
+                  isExpanded: true,
+                  value: selectedSubCategory,
+                  icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+                  items: _dropDownSubCategory,
+                  onChanged: changedDropDownItem),
+              ),
+
+            ],
+          )
+      );
+    }
 
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
@@ -253,7 +253,7 @@ class _ProviderListState extends State<ProviderListPage> {
     child: new Stack(
     children: <Widget>[
           GestureDetector(
-            child: vendorCard(user, service, name),
+            child: vendorCard(user, service, capitalize(name)),
             onTap: ()=> {
               Navigator.push(
                   context,

@@ -47,6 +47,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.orange[50],
 
       body: SingleChildScrollView(
         child: setOrderUI(),

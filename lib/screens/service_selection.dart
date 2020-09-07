@@ -22,20 +22,36 @@ import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
 import 'package:jam/screens/initial_profile.dart';
 
-class ServiceSelection extends StatelessWidget{
-
-  @override
-  Widget build(BuildContext context) {
-    return ServiceSelectionUIPage();
-  }
-}
+//class ServiceSelection extends StatelessWidget{
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return ServiceSelectionUIPage();
+//  }
+//}
 class ServiceSelectionUIPage extends StatefulWidget {
 
-  ServiceSelectionUIPage({ Key key }) : super(key: key);
+
+//  final int isInitialScreen;
+//  @override
+//  ServiceSelectionUIPage({Key key, @required this.isInitialScreen}) : super(key: key);
+//
+//  @override
+//  _ProviderListState createState() => _ProviderListState(service: this.service);
+
+
+  final int isInitialScreen;
+  ServiceSelectionUIPage({Key key, @required this.isInitialScreen}) : super(key: key);
+
   @override
-  ServiceSelectionUIPageState createState() => new ServiceSelectionUIPageState();
+  ServiceSelectionUIPageState createState() => ServiceSelectionUIPageState(isInitialScreen: this.isInitialScreen);
+
+
 }
 class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with TickerProviderStateMixin {
+
+  final int isInitialScreen;
+  ServiceSelectionUIPageState({Key key, @required this.isInitialScreen});
 
   List<Service> selectedListOfService;
   static List<SelectedService> selectedServices;
@@ -69,6 +85,7 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
       }
     }
   }
+
   void processServiceResponse(Response res) {
     if (res != null) {
       if (res.statusCode == 200) {
@@ -479,11 +496,25 @@ bool Value = false;
           }
         }
       });
-      Navigator.pushReplacement(
+
+      if(this.isInitialScreen == 0) {
+//        Navigator.pushReplacement(
+//            context,
+//            MaterialPageRoute(
+//              builder: (context) => InitialProfileScreen(),
+//            ));
+        Navigator.pop(context);
+
+      } else {
+
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => InitialProfileScreen(),
             ));
+
+      }
+
     }
   }
 }

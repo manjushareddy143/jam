@@ -69,7 +69,8 @@ int swiperIndex =0;
   Widget build(BuildContext context) {
     // TODO: implement build
     var r = this.provider.rate;
-      return Scaffold(backgroundColor: Colors.orange[50],
+      return Scaffold(
+        backgroundColor: Colors.orange[50],
         appBar: AppBar(backgroundColor: Colors.deepOrange,
         title: Text("Vendor Profile", style: TextStyle(
           fontSize: 20.0,
@@ -861,107 +862,130 @@ int swiperIndex =0;
     showReview = (this.provider.reviews.length == 0) ? false : true;
     showReview = (this.provider.reviews.length == 0) ? false : true;
   String title = (this.provider.reviews.length == 0) ? "No Ratings" : "Ratings & Reviews";
-    return Padding( padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 20),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+    return Column(crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+//          Text(
+//              title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15 ) ),
+//          SizedBox(
+//            height: 20,
+//          ),
+        for(int index = 0; index< provider.reviews.length; index++)
+          Visibility(child:
+          Container(
+//            height: 160,
+//            width: 320,
+            padding: EdgeInsets.only(right: 20, left: 20),
+            child:  Card(color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(padding: EdgeInsets.only(left: 10, right: 20, top: 10, bottom: 0),
+                        child: Text(
+                          this.provider.reviews[index].rating.toString() + ".0", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18 ),),),
+//                        Expanded(
+//                          child: ,
+//                          flex: 2,
+//                        ),
+//                      Padding(padding: EdgeInsets.only(top: 10, bottom: 5),
+//                        child: Row( mainAxisAlignment: MainAxisAlignment.center,
+//                          children: <Widget>[
+//                            Text(this.provider.reviews[index].rating.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
+//                            Icon(Icons.star, color: Colors.orangeAccent, size: 15,),
+//                            Text(this.provider.reviews.length.toString()+" Review"),
+//                          ],
+//                        ),
+//                      ),
+//                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
+//                        child: SizedBox(
+//                          height: 1.0,
+//                          child: new Center(
+//                            child: new Container(
+//                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+//                              height: 0.2,
+//                              color: Colors.grey,
+//                            ),
+//                          ),
+//                        ),
+//                      ),
 
 
-          Text(
-              title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15 ) ),
+//                    SizedBox(height: 20,),
 
-          SizedBox(
-            height: 20,
-          ),
-          for(int index = 0; index< provider.reviews.length; index++)
-
-          Visibility(child: Container(
-            height: 60,
-
-            child:
-            Card(color: Colors.white,
-
-                child: Column(
-                    children: <Widget>[
-                      Padding(padding: EdgeInsets.only(top: 10, bottom: 5),
-                        child: Row( mainAxisAlignment: MainAxisAlignment.center,
+                      Padding(padding: EdgeInsets.only(right: 20, top: 10, bottom: 0),
+                        child: Row(
                           children: <Widget>[
-                            Text(this.provider.reviews[index].rating.toString(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
-                            Icon(Icons.star, color: Colors.orangeAccent, size: 15,),
-                            Text(this.provider.reviews.length.toString()+" Review"),
+                            Text(capitalize(this.provider.reviews[index].rate_by.first_name), style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
+//                            Text(" / Posted on", style: TextStyle(fontWeight: FontWeight.w300,fontSize: 12,))
                           ],
                         ),
                       ),
-                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
-                        child: SizedBox(
-                          height: 1.0,
-                          child: new Center(
-                            child: new Container(
-                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-                              height: 0.2,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
+//                        Expanded(child: ,
+//                          flex: 3,),
+//                      Padding(
+//                        padding: const EdgeInsets.only(left: 8.0),
+//                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+//                          children: <Widget>[
+//                            Row(
+//                              children: <Widget>[
+//                                Text(this.provider.reviews[index].rate_by.first_name, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
+//                                Padding(
+//                                  padding: const EdgeInsets.fromLTRB(8,0,8,0),
+//                                  child: SmoothStarRating(
+//                                    allowHalfRating: false,
+//                                    starCount: 5,
+//                                    rating:  this.provider.reviews[index].rating.toDouble(),
+//                                    size: 20.0,
+//                                    filledIconData: Icons.star,
+//                                    halfFilledIconData: Icons.star,
+//                                    color: Colors.orangeAccent,
+//                                    borderColor: Colors.orangeAccent,
+//                                    spacing:0.0,
+//
+//
+//
+//                                  ),
+//                                ),
+//
+//
+//                              ],
+//                            ),
+//
+//                            Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
+//
+//
+//                          ],
+//                        ),
+//                      ),
+//                    SizedBox(height: 10,),
+//                    SizedBox(
+//                      height: 50,
+//                      child:
+//                    ),
+//                    SizedBox(height: 10,),
 
-
-                      SizedBox(height: 20,),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Text(this.provider.reviews[index].rate_by.first_name, style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(8,0,8,0),
-                                  child: SmoothStarRating(
-                                    allowHalfRating: false,
-                                    starCount: 5,
-                                    rating:  this.provider.reviews[index].rating.toDouble(),
-                                    size: 20.0,
-                                    filledIconData: Icons.star,
-                                    halfFilledIconData: Icons.star,
-                                    color: Colors.orangeAccent,
-                                    borderColor: Colors.orangeAccent,
-                                    spacing:0.0,
-
-
-
-                                  ),
-                                ),
-
-
-                              ],
-                            ),
-
-                            Text("27 Sep 2019 | Repairing work", style: TextStyle(fontWeight: FontWeight.w300, color: Colors.grey),)
-
-
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,),
-                      SizedBox(
-                        height: 50,
-                        child: Text( this.provider.reviews[index].comment,
-
-
+                      ]),
+                  Padding(padding: EdgeInsets.only(left: 55, bottom: 10),
+                    child: Row(
+                      children: <Widget>[
+                        Text( (this.provider.reviews[index].comment == null) ? "" : this.provider.reviews[index].comment,
                           maxLines: 14,style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),),
-                      ),
-                      SizedBox(height: 10,),
+                      ],
+                    ),
+                  ),
 
-
-                    ]),
+                ],
+              )
 
 
 
             ),
           ),
-          visible: showReview,),
+            visible: showReview,),
 
-        ],
-      ),
+      ],
     );
   }
 

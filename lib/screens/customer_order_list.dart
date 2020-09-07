@@ -118,6 +118,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       );
     } else {
       return Scaffold(
+          backgroundColor: Colors.orange[50],
         appBar: new AppBar(
           automaticallyImplyLeading: true,
           title: new Text(AppLocalizations.of(context).translate('tab_orders')),

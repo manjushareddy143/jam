@@ -83,12 +83,12 @@ class User {
     'existing_user': existing_user,
     'address': (address != null) ? Address.processListOfAddressList(address) : null ,
     'services': (services != null) ? UserServices.processListOfUserServices(services) : null ,
-//    'jobs_count': (jobs_count != null) ? jobs_count : null ,
-//    'reviews': (reviews != null) ? reviews : null ,
-//    'organisation': (organisation != null) ? organisation : null ,
-//    'servicePrice': (servicePrice != null) ? servicePrice : null ,
-//    'provider': (provider != null) ? provider : null ,
-//    'rate': (rate != null) ? rate : null ,
+    'jobs_count': (jobs_count != null) ? jobs_count : null ,
+    'reviews': (reviews != null) ? reviews : null ,
+    'organisation': (organisation != null) ? organisation : null ,
+    'servicePrice': (servicePrice != null) ? servicePrice : null ,
+    'provider': (provider != null) ? provider.toJson() : null ,
+    'rate': (rate != null) ? rate : null ,
   };
 
   static List<User> processListOfUser(List users) {
