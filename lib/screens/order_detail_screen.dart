@@ -95,13 +95,578 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
     // TODO: implement build
     return Scaffold(
-        appBar: new AppBar(leading: BackButton(color:Colors.black),
-    backgroundColor: Colors.white,
-    title: Text("Order Detail", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),),),
-      body: detailUI(),
+//        appBar: new AppBar(leading: BackButton(color:Colors.black),
+//    backgroundColor: Colors.white,
+//    title: Text("Order Detail", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),),),
+      body: SingleChildScrollView(child: detail()),
+
+      //detailUI(),
 
     );
   }
+   Widget detail(){
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * .30,
+//          width: MediaQuery.of(context).size.height * .50,
+          color: Colors.grey[800],
+          child: Container(
+              padding: EdgeInsets.only(left: 50, right: 50, top: 5, bottom: 90 ),
+              child: Row(
+//              crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 100,
+                    width: 100.0,
+                  ),
+                ],
+              )
+          ),
+        ),
+        Positioned(left: 25, top: 120,
+          child: Text("ORDER DETAILS", style:
+          TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
+          ),
+        ),
+        Container(
+        alignment: Alignment.bottomCenter,
+     padding: new EdgeInsets.only(
+     top: MediaQuery.of(context).size.height * .22,
+     right: 2.0,
+     left: 2.0),
+        child: Column(
+          children: [
+            CardDetails(),
+
+           // detailUI()
+
+          ],
+        ),),
+
+
+      ],
+    );
+   }
+//   Widget CardFrame(){
+//    return Stack(
+//      children: [
+//
+//        SetImage1(),
+//        SetImage2()
+//      ],
+//    );
+//   }
+//   Widget SetImage1(){
+//    return SizedBox(height: 20,);
+//   }
+//  Widget SetImage2(){
+//    return SizedBox(height: 20,);
+//  }
+   Widget CardDetails (){
+     String statusString = "";
+     var status_color = null;
+     var status_icon = null;
+
+     switch(order.status)
+     {
+       case 1: statusString = 'Order Pending';
+       status_color = Colors.blue;
+       status_icon = Icons.pan_tool;
+       break;
+       case 2: statusString = 'Order Accept';
+       status_color = Colors.green;
+       status_icon = Icons.check_circle;
+       break;
+       case 3:
+         if(globals.currentUser.roles[0].slug == "customer") {
+           statusString = 'Order Cancel'; // You
+         } else {
+           statusString = 'Order Cancel';// + globals.order.orderer_name;
+         }
+
+         status_color = Colors.red;
+         status_icon = Icons.cancel;
+         break;
+       case 4:
+         if(globals.currentUser.roles[0].slug == "customer") {
+           statusString = 'Order Cancel by You';
+         } else {
+           statusString = 'Order Cancel by ' + globals.order.orderer_name;
+         }
+
+         status_color = Colors.red;
+         status_icon = Icons.cancel;
+         break;
+       case 5: statusString = 'Order Completed';
+       status_color = Colors.green;
+       status_icon = Icons.check_circle;
+       break;
+       case 6: statusString = 'Invoice Submitted';
+       status_color = Configurations.themColor;
+       status_icon = Icons.attach_money;
+       break;
+       default : statusString = 'Order Completed';
+       status_color = Colors.green;
+       status_icon = Icons.check_circle;
+     }
+     (globals.order.rating == null)? isRatingDisplay = false : isRatingDisplay = true;
+
+     String name = "";
+     if(order.provider.organisation != null) {
+       name = order.provider.organisation.name;
+     } else {
+       name = order.provider.first_name + " " + order.provider.last_name;
+     }
+
+//    print("RAT == ${globals.order.rating}");
+
+     String comment = "";// (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+
+     String addressString = "";
+     if(globals.order.address != null) {
+       addressString = globals.order.address.address_line1;
+       if(globals.order.address.address_line2 != "" && globals.order.address.address_line2 != null) {
+         addressString += ", " + globals.order.address.address_line2;
+       }
+
+       if(globals.order.address.landmark != "" && globals.order.address.landmark != null) {
+         addressString += ", " + globals.order.address.landmark;
+       }
+       addressString += ", " + globals.order.address.district
+           + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
+     }
+     return Positioned( left: 5, right: 5, top: 170,
+       child: Container(
+         height: 900.0,
+         margin: EdgeInsets.symmetric(
+           vertical: 16.0,
+           horizontal: 16.0,),
+         decoration: new BoxDecoration(
+           color: Colors.white,
+           shape: BoxShape.rectangle,
+           borderRadius: new BorderRadius.circular(8.0),),
+         child: Padding(
+           padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+           child: Column(
+             children: [
+
+               Padding(
+                 padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
+                 child: Row(children :[
+                   Text("Booking Detail", style:
+                   TextStyle(color: Configurations.themColor,
+                       fontWeight: FontWeight.w500,fontSize: 16),),
+                   Expanded(child: Divider(color: Colors.black,
+                     thickness: 0.5,
+                     height: 5,
+                     endIndent: 5.0,
+                     indent: 5.0,
+                   ),
+                     flex: 0,),
+
+                 ]
+                 ),
+               ),
+
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Order ID #  " + globals.order.id.toString(), style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Date:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.booking_date , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Time:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.end_time , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Order Status:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text( statusString, style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                 padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+                 child: Row(children :[
+                   Text("Service Detail", style:
+                   TextStyle(color: Configurations.themColor,
+                       fontWeight: FontWeight.w700,fontSize: 16),),
+//                          Divider(color: Colors.black,
+//                            thickness: 1,
+//                            height: 5,
+//
+//                            endIndent: 1.0,
+//                            indent: 1.0,)
+
+                 ]
+                 ),
+               ),
+
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text((this.isCustomer == true) ?"Vendor: " : "Customer: " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text((this.isCustomer == true) ? name : globals.order.orderer_name , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Services:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.service.name , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               if(globals.order.category != null)
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+
+                       Text("Category:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.category.name , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Visibility(visible: isRatingDisplay,
+                 child:Column(
+                   mainAxisAlignment: MainAxisAlignment.start,
+//              crossAxisAlignment: CrossAxisAlignment.start,
+                   children: <Widget>[
+                     Column(
+                       children: <Widget>[
+                         Padding(
+                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                           child:
+                           SmoothStarRating(
+                             allowHalfRating: false,
+                             starCount: 5,
+                             rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
+                             size: 20.0,
+                             filledIconData: Icons.star,
+                             halfFilledIconData: Icons.star,
+                             color: Colors.amber,
+                             borderColor: Colors.amber,
+                             spacing:0.0,
+                             onRatingChanged: (v) {
+                               setState(() {
+                                 printLog("RATE :: $v");
+                               });
+                             },
+                           ),
+                         ),
+                         Padding(
+                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                           child: Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
+                             overflow: TextOverflow.ellipsis,
+                             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                         ),
+                       ],
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                mainAxisAlignment: MainAxisAlignment.center,
+                     ),
+                     Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
+                       overflow: TextOverflow.ellipsis,
+                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                   ],
+                 ),
+
+               ),
+
+               /// SHOW OTP
+               if((order.status == 6 || order.status == 2) && this.isCustomer == true)
+                 Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: <Widget>[
+                     Visibility(child:
+                     Padding(
+                         padding: EdgeInsets.fromLTRB(0, 0, 0,0),
+                         child: OutlineButton(onPressed: () => {
+                           showBookingOTP()
+                         }, child: Text("GET OTP"),
+                             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                             borderSide: BorderSide(color: Configurations.themColor)
+                         )
+                     ),
+                       visible: !showOTP,
+                     ),
+
+                     Visibility(child: Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: <Widget>[
+                         SizedBox(height: 50,),
+                         Text("OTP: ", style: TextStyle(fontWeight: FontWeight.bold),),
+                         Text(globals.order.otp.toString(),  style: TextStyle(fontWeight: FontWeight.w400)),
+                       ],
+                     ),
+                       visible: showOTP,),
+
+
+                   ],
+                 ),
+
+               if(order.status == 5 && this.isCustomer == true)
+                 Visibility(visible: !isRatingDisplay,
+                   child: Row(
+                     children: <Widget>[
+                       Padding(
+                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+                           child: FlatButton(onPressed: () => {
+                             showDialog(
+                               context: context,
+                               builder: (BuildContext context) {
+                                 return buildRatingDialog(context);
+
+                               },
+                             )
+                           }, child: Text("Submit Rating"))
+                       ),
+                     ],
+                   ),
+                 ),
+
+               Padding(
+                 padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+                 child: Row(children :[
+                   Text("Customer Address", style:
+                   TextStyle(color: Configurations.themColor,
+                       fontWeight: FontWeight.w700,fontSize: 16),),
+//                          Divider(color: Colors.black,
+//                            thickness: 1,
+//                            height: 5,
+//
+//                            endIndent: 1.0,
+//                            indent: 1.0,)
+
+                 ]
+                 ),
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+                       Icon( Icons.location_on, color: Configurations.themColor,
+                         size: 18,),
+                       SizedBox(width: 5,),
+                       Text("Address:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Flexible(
+                         child: Text(addressString , maxLines:2,style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 13),),
+                       )
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+                       Icon( Icons.mail_outline, color: Configurations.themColor,
+                         size: 18,),
+                       SizedBox(width: 5,),
+                       Text("Email:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.email, style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+               Padding(
+                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                   child: Row(
+                     children: [
+                       Icon( Icons.phone_in_talk, color: Configurations.themColor,
+                         size: 18,),
+                       SizedBox(width: 5,),
+                       Text("Number:  " , style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w500,fontSize: 14),),
+                       Text(globals.order.contact, style:
+                       TextStyle(color: Colors.black,
+                           fontWeight: FontWeight.w300,fontSize: 14),)
+
+                     ],
+                   )
+
+               ),
+                Visibility(child: invoiceDetails(),
+                  visible: (order.status == 6 || order.status == 5) ? true : false,),
+
+                    if(order.status == 5)
+                 ButtonTheme(
+                    minWidth: 270.0,
+                       child:  RaisedButton(
+                               color: Configurations.themColor,
+                                  textColor: Colors.white,
+                                      child: const Text(
+                                            'Download Invoice',
+                                            style: TextStyle(fontSize: 16.5)
+                                               ),
+                                          onPressed: () async {
+                                          Widget_Helper.showLoading(context);
+                                          DownLoadHelper down = new DownLoadHelper();
+                                         String status = await down.downloadFile(setState, order.id.toString());
+                                           Widget_Helper.dismissLoading(context);
+                                         final result = await OpenFile.open(status);
+                                           },
+                                             ),
+                                       ),
+               Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                       if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+                         ButtonTheme(
+                                 child:  RaisedButton(
+                                          color: Configurations.themColor,
+                                        textColor: Colors.white,
+                                         child: Row(
+                                         children: <Widget>[
+                                             Icon(Icons.check_circle, color: Colors.white, size: 20,),
+                                               SizedBox(width: 10,),
+                                           Text('Accept', style: TextStyle(fontSize: 14)
+                                               ),],),
+                                     onPressed: () => {print("Accept"),
+                                        orderAccept()}),),
+
+                          if(order.status == 2 && this.isCustomer == false)
+                             ButtonTheme(child:  RaisedButton(
+                                 color: Configurations.themColor,
+                                      textColor: Colors.white,
+                                 child: Row(
+                                   children: <Widget>[
+                                             Icon(Icons.attach_money, color: Colors.white, size: 20,),
+                                              SizedBox(width: 8,),
+                                              Text('Submit Invoice', style: TextStyle(fontSize: 14)
+                                               ),],),
+                                           onPressed: () => {print("COmplete"),
+                                          insertIvoiceDetail(),
+//                         showDialog(
+//                           context: context,
+//                           builder: (BuildContext context) {
+//                             return buildCompleteDialog(context);
+//
+//                           },
+//                         )
+                        }),),
+                          if(order.status == 6 && this.isCustomer == false)
+                             ButtonTheme(
+                              child:  RaisedButton(color: Configurations.themColor,
+                                textColor: Colors.white,
+                                     child: Row(children: <Widget>[
+                                        Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+                                          SizedBox(width: 8,),
+                                         Text('Complete', style: TextStyle(fontSize: 14)
+                                          ),],),
+                                   onPressed: () => {print("COmplete"),
+
+                                           showDialog(context: context,
+                                         builder: (BuildContext context) {
+                                   return buildCompleteDialog(context);},)}),),
+                             if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+                                   SizedBox(width: 50,),
+                             if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+                                   ButtonTheme(
+                                       child:  RaisedButton(color: Configurations.themColor,
+                                         textColor: Colors.white,
+                                        child: Row(
+                                          children: <Widget>[
+                                                 Icon(Icons.cancel, color: Colors.white, size: 20,),
+                                                   SizedBox(width: 10,),
+                                                   Text('Cancel', style: TextStyle(fontSize: 14)
+                                                ),],),
+                                             onPressed: () => {
+                                                showDialog(
+                                                  context: context,
+                                                 builder: (BuildContext context) {
+                                                 return buildCancelDialog(context);
+                                                 },)}),
+                                ), ],)
+
+
+
+             ],
+           ),
+         ),
+
+       ),
+     );
+   }
 
   Widget detailUI(){
      return SingleChildScrollView(
@@ -1130,36 +1695,37 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
 
-    return Card(
-        margin: EdgeInsets.fromLTRB(30, 30, 30, 30),
-        elevation: 5,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Center(child: Text("Invoice Details",
-                  style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold,fontSize: 20))),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+          child: Text("Invoice Details",
+              style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.w700,fontSize: 16)),
+        ),
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Working Hours :   " + workingHour, ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 10,0),
-              child: Text("Materials : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(120,0,10,2),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+        Align(alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+            child: Text("Working Hours :   " + workingHour, ),
+          ),
+        ),
+//            Padding(
+//              padding: EdgeInsets.fromLTRB(30, 10, 10,0),
+//              child: Text("Materials : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+//            ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
-                children: <Widget>[
-                  Text("Quantity :   " + materialQTY, ),
-                  Text("Price :   " + materialCost, ),
-                ],
-              ),
-            ),
+            children: <Widget>[
+              Text("Materials ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+
+              Text("Quantity :   " + materialQTY, ),
+              Text("Price :   " + materialCost, ),
+            ],
+          ),
+        ),
 //            Column(
 //              children: <Widget>[
 //                Padding(
@@ -1179,30 +1745,29 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //                ),
 //
 //              ],),
-            Padding(
-                padding: EdgeInsets.fromLTRB(30, 10, 10,2),
-              child: Text("Discount :   " + discount, ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 2, 10,2),
-              child: Text("Tax :   " + tax, ),
-            ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+          child: Text("Discount :   " + discount, ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+          child: Text("Tax :   " + tax, ),
+        ),
 
 
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 2, 10,10),
-              child: Text("Additional Charge :   " + add_charge, ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(30, 10, 10,10),
-              child: Text("Total :   " + findTotal() + "  QAR",style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-            ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+          child: Text("Additional Charge :   " + add_charge, ),
+        ),
+        Align(alignment: Alignment.bottomRight,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(2,10.0,0,2),
+            child: Text("Total :   " + findTotal() + "  QAR",style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.bold)),
+          ),
+        ),
 
 
-          ],
-        )
-
-
+      ],
     );
 
   }
@@ -1211,7 +1776,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   Widget setOrderDetail(BuildContext context){
       return AlertDialog(
-          title:Center(child: Text("Order Detail"),
+          title:Center(child: Text("ORDER DETAIL", style: TextStyle(fontWeight: FontWeight.w600,
+              fontSize: 22,
+              color: Colors.deepOrange),),
           ),
           content: StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
@@ -1220,27 +1787,71 @@ class _DetailUIPageState extends State<DetailUIPage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(1.0),
-                        child: Text("Time Taken"),
+                      Padding( padding: EdgeInsets.only(top: 3, bottom: 5),
+                        child: SizedBox(
+                          height: 1.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                              height: 0.4,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
                       ),
-                      Datepick(),
+                      Padding(padding: const EdgeInsets.all(1.0),
+                      child: Row(
+                        children: [
+                          Text("Time Taken: "),
+                          Flexible(
+                            child: Container(height: 30, width: 40,
+
+                              child: TextFormField(controller:wrking_hr,cursorColor: Colors.black,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Configurations.themColor)
+                                )) ,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Please enter the working hours!!";
+                                  }
+                                  return null;
+                                },
+
+
+                                keyboardType: TextInputType.number,
+
+                              ),),
+                          ),
+                          SizedBox(width: 10,),
+                          Text("Hours", style: TextStyle(fontWeight: FontWeight.bold),)
+
+
+                        ],
+                      ),),
+//                      Padding(
+//                        padding: const EdgeInsets.all(1.0),
+//                        child: Text("Time Taken"),
+//                      ),
+//                     // Datepick(),
                       Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Row(
                           children: <Widget>[
-                            Checkbox(
-                              value: checkedValue,
-                              onChanged:  (newValue) {
-                                setState(() {
-                                  checkedValue = newValue;
-                                });
-                              },),
+                            Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
+                              child: Checkbox(
+                                value: checkedValue,
+                                onChanged:  (newValue) {
+                                  setState(() {
+                                    checkedValue = newValue;
+                                  });
+                                },),
+                            ),
                             Text("Material Used"),
                           ],
 
                         ),
                       ),
+
 
                       Visibility(
                         visible: checkedValue,
@@ -1248,6 +1859,18 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
 
                             children: <Widget>[
+                              Padding( padding: EdgeInsets.only(top: 3, bottom: 5),
+                                child: SizedBox(
+                                  height: 1.0,
+                                  child: new Center(
+                                    child: new Container(
+                                      margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                                      height: 0.4,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ),
 //                              Padding(
 //                                padding: const EdgeInsets.all(5.0),
 //                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1271,9 +1894,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                         child:Text("Quantity"),
                                       ),
                                       Flexible(
-                                        child: Container(height: 10, width: 60,
+                                        child: Container(height: 30, width: 40,
 
                                           child: TextField(controller: mtrl_qty..text='0',
+                                            decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Configurations.themColor)
+                                            )) ,
 
 
                                             keyboardType: TextInputType.number,
@@ -1291,12 +1917,15 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       child:Text("Price"),
                                     ),
                                       Flexible(
-                                        child: Container(height: 10, width: 60,
+                                        child: Container(height: 30, width: 40,
 
                                           child: TextField(
 
                                             controller: mtrl_price..text='0',
                                             keyboardType: TextInputType.number,
+                                            decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Configurations.themColor)
+                                            )) ,
 
                                           ),),
                                       ),
@@ -1306,16 +1935,28 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           ),
                         ),
                       ),
+                      Padding( padding: EdgeInsets.only(top: 3, bottom: 3),
+                        child: SizedBox(
+                          height: 1.0,
+                          child: new Center(
+                            child: new Container(
+                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
+                              height: 0.4,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
 
                       Padding(
                         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text("Discount:"),
-                            Container(width: 70, height: 30,
+                            Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
+                                  borderSide: BorderSide(color: Configurations.themColor)
                               )) ,
                                 controller: discnt..text='0',
 
@@ -1331,10 +1972,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text("Tax:"),
-                            Container(width: 70, height: 30,
+                            Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
+                                  borderSide: BorderSide(color: Configurations.themColor)
                               )) ,
                                 controller: tax..text='0',
 
@@ -1351,10 +1992,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                           children: <Widget>[
                             Text("Additional Charge"),
-                            Container(width: 70, height: 30,
+                            Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey)
+                                  borderSide: BorderSide(color: Configurations.themColor)
                               )) ,
                                 controller: add_charge..text='0',
 
@@ -1370,6 +2011,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: RaisedButton(
                             color: Configurations.themColor,
                             textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),),
                             child: Text(
                                 AppLocalizations.of(context).translate('btn_save'),
                                 style: TextStyle(fontSize: 16.5)),
