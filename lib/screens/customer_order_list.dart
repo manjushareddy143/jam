@@ -221,15 +221,15 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
     switch(order.status)
     {
-      case 1: statusString = 'Order Pending';
+      case 1: statusString = 'Pending';
       status_color = Colors.blue;
       status_icon = Icons.pan_tool;
       break;
-      case 2: statusString = 'Order Accept';
+      case 2: statusString = 'Accept';
       status_color = Colors.green;
       status_icon = Icons.check_circle;
       break;
-      case 3: statusString = 'Order Cancel'; //By + order.provider_first_name;
+      case 3: statusString = 'Cancelled'; //By + order.provider_first_name;
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
@@ -354,12 +354,10 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                 Container(
                   color: Configurations.themColor,
 //                  alignment: Alignment.bottomRight,
-//                  height: 60,
-//                  width: 120,
-                  margin: EdgeInsets.only(bottom: 0, top: 50, left: 5),
+                  height: 60,
+                  width: 120,
+                  margin: EdgeInsets.only(bottom: 0, top: 50, left: 0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Icon(status_icon, color: status_color, size: 14,),
                       FlatButton(

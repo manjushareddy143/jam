@@ -548,8 +548,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
               ),
             ),
 
-            if(globals.currentUser.address.length > 0)
-              for(int i =0; i < globals.currentUser.address.length ; i++)
+            if(AddressLength > 0)
+              for(int i =0; i < AddressLength ; i++)
                 Card(
                   child: Column(
                     children: [
