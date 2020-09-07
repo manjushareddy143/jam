@@ -165,7 +165,7 @@ class _InquiryPageState extends State<InquiryPage> {
       },
 
       child: Scaffold(
-        appBar: new AppBar(leading: BackButton(color:Colors.black),title: Text("Inquiry Form", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),), backgroundColor: Colors.white,
+        appBar: new AppBar(leading: BackButton(color:Colors.white),title: Text("BOOK APPOINTMENT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),), backgroundColor: Configurations.themColor,
 
           ),
         body: SingleChildScrollView(
@@ -178,13 +178,63 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
     );
   }
+  AssetImage setImgPlaceholder() {
+    return AssetImage("assets/images/BG-1x.jpg");
+  }
 
   Widget inquiryScreenUI() {
+    String img = "";
+    if( (this.provider.image != null && this.provider.image.contains("http"))) {
+      img = this.provider.image;
+    } else if(this.provider.image == null) {
+      img = null;
+    } else {
+      img =  Configurations.BASE_URL + this.provider.image;
+    }
+    if(this.provider.organisation != null) {
+      img = (this.provider.organisation.logo != null && this.provider.organisation.logo.contains("http"))
+          ? this.provider.organisation.logo : Configurations.BASE_URL +this.provider.organisation.logo;
+    }
+    print("IM == ${img}");
+    print("NAME == ${this.provider.first_name}");
+    String name = "";
+    if(this.provider.organisation != null) {
+      name = this.provider.organisation.name;
+    } else {
+      name = this.provider.first_name + " " + this.provider.last_name;
+    }
+
     return Container(margin: EdgeInsets.all(20),
     child:
     Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: <Widget>[
+      Center(
+        child: Container(
+          width: 75,
+          height: 67,
+          decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(8.0),),
+
+                //  border: Border.all(width: 0.9,color: Configurations.themColor),
+
+              image: new DecorationImage(
+                image: (img != null)?
+                NetworkImage(img) : setImgPlaceholder(),
+                fit: BoxFit.cover,
+              )),
+        ),
+      ),
+      SizedBox(height: 10,),
+      Center(
+        child: Text(name,
+          textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
+          style: TextStyle( fontSize: 17.0,fontWeight: FontWeight.w600,
+              color: Colors.black),
+        ),
+      ),
+      SizedBox(height: 15,),
 
       setDropDown(),
       SizedBox(height: 10,),
@@ -193,66 +243,60 @@ class _InquiryPageState extends State<InquiryPage> {
           child: setDropDown1()),
       SizedBox(height: 10,),
 
-      Material(elevation: 5.0,shadowColor: Colors.grey,
-        child: TextFormField(
-          focusNode: focus_name,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.person),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ),),
-            labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname')),
-          controller: (txtName == "") ? txtName : txtName..text = firstName,
-          //txtName,//..text = 'KAR-MT30',
-          validator: (value){
-            if (value.isEmpty) {
-              return 'Please enter name!!';
-            }
-            return null;
-          },
-        ),
+      TextFormField(
+        focusNode: focus_name,
+        decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname')),
+        controller: (txtName == "") ? txtName : txtName..text = firstName,
+        //txtName,//..text = 'KAR-MT30',
+        validator: (value){
+          if (value.isEmpty) {
+            return 'Please enter name!!';
+          }
+          return null;
+        },
       ),
       SizedBox(height: 10,),
 
-      Material(elevation: 5.0,shadowColor: Colors.grey,
-        child: TextFormField(
-          focusNode: focus_mail,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.email),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-            labelText: AppLocalizations.of(context).translate('inquiry_txt_email')),
-          controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
-          //txtEmail,//..text = 'KAR-MT30',
-          keyboardType: TextInputType.emailAddress,
-          validator: (value){
-            if (value.isEmpty) {
-              return 'Please enter email!!';
-            }
-            return validateEmail(value);
-          },
-          onSaved: (String val) {
+      TextFormField(
+        focusNode: focus_mail,
+        decoration: InputDecoration( suffixIcon: Icon(Icons.email),
+          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_email')),
+        controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
+        //txtEmail,//..text = 'KAR-MT30',
+        keyboardType: TextInputType.emailAddress,
+        validator: (value){
+          if (value.isEmpty) {
+            return 'Please enter email!!';
+          }
+          return validateEmail(value);
+        },
+        onSaved: (String val) {
 //            _account = val;
-          },
-        ),
+        },
       ),
       SizedBox(height: 10,),
 
-      Material(elevation: 5.0,shadowColor: Colors.grey,
-        child: TextFormField(
-          focusNode: focus_no,
+      TextFormField(
+        focusNode: focus_no,
 
-          decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
-            contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-            labelText: AppLocalizations.of(context).translate('inquiry_txt_phone')),
-          controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
-          //txtContact,//..text = 'KAR-MT30',
-          keyboardType: TextInputType.phone,
-          validator: (value){
-            if (value.isEmpty) {
-              return 'Please enter contact number!!';
-            }
-            return null;
-          },
-        ),
+        decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_phone')),
+        controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
+        //txtContact,//..text = 'KAR-MT30',
+        keyboardType: TextInputType.phone,
+        validator: (value){
+          if (value.isEmpty) {
+            return 'Please enter contact number!!';
+          }
+          return null;
+        },
       ),
       SizedBox(height: 10,),
 
@@ -262,25 +306,27 @@ class _InquiryPageState extends State<InquiryPage> {
       setTime(),
       SizedBox(height: 10,),
 
-      Material(elevation: 5.0,shadowColor: Colors.grey,
-        child: TextField(
-          focusNode: focus_remark,
-          controller: txtRemark,
-            maxLines: 5,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-            hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'),
-              contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
-      ),),
+      TextField(
+        focusNode: focus_remark,
+        controller: txtRemark,
+          maxLines: 5,
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+          hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'),
+            contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
+      ),
       SizedBox(height: 30,),
 
       ButtonTheme(
         minWidth: 400.0,
         child:  RaisedButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(7.0),),
             color: Configurations.themColor,
             textColor: Colors.white,
-            child:  Text(
-                AppLocalizations.of(context).translate('inquiry_btn_booking'),
+            child:  Text("Book Appointment",
+                //AppLocalizations.of(context).translate('inquiry_btn_booking'),
                 style: TextStyle(fontSize: 16.5)
             ),
             onPressed: () {
@@ -354,24 +400,24 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
   Widget setDropDown() {
-    return Material(elevation: 5.0,shadowColor: Colors.grey,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(10,0,0,0),
-        child: Row(
-          children:[
-            Text(AppLocalizations.of(context).translate('inquiry_txt_primary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-            SizedBox(width: 20,),
-            Expanded(child: DropdownButton(
-                underline: SizedBox(),
-                isExpanded: true,
-                value: selectedService,
-                icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
-                items: _dropDownService,
-                onChanged: changedDropDownItem),
-            ),
+    return Container(
+      decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+          border: Border.all(width: 0.9,color: Configurations.themColor)),
+      padding: const EdgeInsets.fromLTRB(10,0,0,0),
+      child: Row(
+        children:[
+          Text(AppLocalizations.of(context).translate('inquiry_txt_primary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+          SizedBox(width: 20,),
+          Expanded(child: DropdownButton(
+              underline: SizedBox(),
+              isExpanded: true,
+              value: selectedService,
+              icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+              items: _dropDownService,
+              onChanged: changedDropDownItem),
+          ),
 
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -394,24 +440,24 @@ class _InquiryPageState extends State<InquiryPage> {
 
   Widget setDropDown1() {
     print(selectedSubCategory);
-    return Material(elevation: 5.0,shadowColor: Colors.grey,
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(10,0,0,0),
-        child: Row(
-          children:[
-            Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-            SizedBox(width: 20,),
-            Expanded(child: DropdownButton(
-                underline: SizedBox(),
-                isExpanded: true,
-                value: (selectedSubCategory != null) ? selectedSubCategory.toUpperCase() : "",
-                icon: Icon(Icons.arrow_drop_down, color: Colors.teal,),
-                items: _dropDownSubCategory,
-                onChanged: changedDropDownItem1),
-            ),
+    return Container(
+      decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+          border: Border.all(width: 0.9,color: Configurations.themColor)),
+      padding: const EdgeInsets.fromLTRB(10,0,0,0),
+      child: Row(
+        children:[
+          Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+          SizedBox(width: 20,),
+          Expanded(child: DropdownButton(
+              underline: SizedBox(),
+              isExpanded: true,
+              value: (selectedSubCategory != null) ? selectedSubCategory.toUpperCase() : "",
+              icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+              items: _dropDownSubCategory,
+              onChanged: changedDropDownItem1),
+          ),
 
-          ],
-        ),
+        ],
       ),
     );
   }
@@ -437,31 +483,30 @@ final formatt= DateFormat("h:mm a");
 
 
   Widget setDate(){
-    return Material(elevation: 5.0,shadowColor: Colors.grey,
-        child: Container(
-        padding: EdgeInsets.fromLTRB(0,0,0,0),
-          height: 50,
-          child: DateTimeField(
+    return Container(
+    padding: EdgeInsets.fromLTRB(0,0,0,0),
+      height: 50,
+      child: DateTimeField(
 
-            initialValue: _currentDt,
-            format: format,
-            decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
-                 onShowPicker: (context, currentValue) {
-                 return showDatePicker(
-                  context: context,
-                 firstDate: _currentDt.add(Duration(days: -365)),
-              initialDate: currentValue ?? DateTime.now(),
-               lastDate: DateTime(2021)
-                 );
-            },
-            onChanged: (val) => {
-              selecteDate = val
-            },
+        initialValue: _currentDt,
+        format: format,
+        decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
+             onShowPicker: (context, currentValue) {
+             return showDatePicker(
+              context: context,
+             firstDate: _currentDt.add(Duration(days: -365)),
+          initialDate: currentValue ?? DateTime.now(),
+           lastDate: DateTime(2021)
+             );
+        },
+        onChanged: (val) => {
+          selecteDate = val
+        },
 
-          ),
-    ),);
+      ),
+    );
   }
 
   Widget setTime(){
@@ -474,13 +519,12 @@ final formatt= DateFormat("h:mm a");
           children: <Widget>[
             Flexible(
               flex: 4,
-              child: Material(elevation: 5.0,shadowColor: Colors.grey,
-                child: DateTimeField(
+              child: DateTimeField(
 
-                  initialValue: _currentDt,
-                  format: formatt,
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
-                    hasFloatingPlaceholder: false,
+                initialValue: _currentDt,
+                format: formatt,
+                decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
+                  hasFloatingPlaceholder: false,
 //                    errorStyle: TextStyle(
 //                      color: Colors.red,
 //                      wordSpacing: 5.0,
@@ -492,66 +536,63 @@ final formatt= DateFormat("h:mm a");
 //                    hintStyle: TextStyle(
 //                        letterSpacing: 1.3
 //                    ),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                  ),
-                  onShowPicker: (context, currentValue) async {
-                    final time = await showTimePicker(
-                      context: context,
-                     // initialTime: TimeOfDay(hour: 12, minute: 00),
-                      initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-
-                    );
-                    return DateTimeField.convert(time);
-
-
-
-                  },
-
-                  onChanged: (val) => {
-                    printLog(val),
-                    start_time = val// TimeOfDay.fromDateTime(val ?? DateTime.now()).toString(),
-                  },
-                  validator:  (value){
-                    if (value.isAfter(end_time)) {
-                      return AppLocalizations.of(context).translate('inquiry_time');
-                    }
-                    return null;
-                  },
-
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
                 ),
+                onShowPicker: (context, currentValue) async {
+                  final time = await showTimePicker(
+                    context: context,
+                   // initialTime: TimeOfDay(hour: 12, minute: 00),
+                    initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+
+                  );
+                  return DateTimeField.convert(time);
+
+
+
+                },
+
+                onChanged: (val) => {
+                  printLog(val),
+                  start_time = val// TimeOfDay.fromDateTime(val ?? DateTime.now()).toString(),
+                },
+                validator:  (value){
+                  if (value.isAfter(end_time)) {
+                    return AppLocalizations.of(context).translate('inquiry_time');
+                  }
+                  return null;
+                },
+
               ),
             ),
             Flexible(flex: 1,child: Text("To")),
             Flexible(flex: 4,
-              child: Material(elevation: 5.0,shadowColor: Colors.grey,
-                child: DateTimeField(
-                  initialValue: _currentDt.add(Duration(hours: 1)),
-                  format: formatt,
-                  decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
-                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 1,  ), ),
-                  ),
-                  onShowPicker: (context, currentValue) async {
-
-                    final time = await showTimePicker(
-                      context: context,
-                      //initialTime: TimeOfDay(hour: 12, minute: 00),
-                     initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                    );
-                    return DateTimeField.convert(time);
-
-                      //DateTimeField.convert(time);
-                  },
-                  onChanged: (val) => {
-                    end_time = val //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
-//                    print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
-                  },
-                  validator:  (value){
-                    if (value.isBefore(start_time)) {
-                      return 'Invalid time!!';
-                    }
-                    return null;
-                  },
+              child: DateTimeField(
+                initialValue: _currentDt.add(Duration(hours: 1)),
+                format: formatt,
+                decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
                 ),
+                onShowPicker: (context, currentValue) async {
+
+                  final time = await showTimePicker(
+                    context: context,
+                    //initialTime: TimeOfDay(hour: 12, minute: 00),
+                   initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                  );
+                  return DateTimeField.convert(time);
+
+                    //DateTimeField.convert(time);
+                },
+                onChanged: (val) => {
+                  end_time = val //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
+//                    print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
+                },
+                validator:  (value){
+                  if (value.isBefore(start_time)) {
+                    return 'Invalid time!!';
+                  }
+                  return null;
+                },
               ),
             ),
 
