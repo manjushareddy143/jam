@@ -379,7 +379,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
       name = order.provider.first_name + " " + order.provider.last_name;
     }
 
-    String comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
+//    print("RAT == ${globals.order.rating}");
+
+    String comment = "";// (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
 
     return new Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),

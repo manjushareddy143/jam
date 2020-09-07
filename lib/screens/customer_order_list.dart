@@ -106,10 +106,12 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
   @override
   Widget build(BuildContext context) {
+
     // TODO: implement build
     if (globals.listofOrders == null) {
       return new Scaffold(
-        appBar: new AppBar(
+        appBar: globals.isCustomer ? null :
+        new AppBar(
           automaticallyImplyLeading: true,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
