@@ -379,6 +379,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
       name = order.provider.first_name + " " + order.provider.last_name;
     }
 
+    String comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
+
     return new Card(
       margin: EdgeInsets.fromLTRB(30, 0, 30, 30),
       elevation: 5,
@@ -429,7 +431,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                      child: Text((globals.order.rating == null) ? "" : globals.order.rating.comment,textAlign: TextAlign.left,
+                      child: Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
                     ),

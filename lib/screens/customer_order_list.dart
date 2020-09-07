@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/models/user.dart';
@@ -139,7 +140,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
         children: [
           new Container(
             height: MediaQuery.of(context).size.height * .30,
-            width: MediaQuery.of(context).size.height * .50,
+//            width: MediaQuery.of(context).size.height * .50,
             color: Colors.grey[800],
             child: Container(
                 padding: EdgeInsets.only(left: 50, right: 50, bottom: 50, top: 50),
@@ -222,7 +223,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     switch(order.status)
     {
       case 1: statusString = 'Pending';
-      status_color = Colors.blue;
+      status_color = Hexcolor('#EFB006');
       status_icon = Icons.pan_tool;
       break;
       case 2: statusString = 'Accept';
@@ -230,15 +231,15 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       status_icon = Icons.check_circle;
       break;
       case 3: statusString = 'Cancelled'; //By + order.provider_first_name;
-      status_color = Colors.red;
+      status_color = Hexcolor('#C72801');
       status_icon = Icons.cancel;
       break;
       case 4: statusString = 'Cancelled'; // By You
-      status_color = Colors.red;
+      status_color = Hexcolor('#C72801');
       status_icon = Icons.cancel;
       break;
       case 5: statusString = 'Completed';
-      status_color = Configurations.themColor;
+      status_color = Hexcolor('#67A702');
       status_icon = Icons.thumb_up;
       break;
       case 6: statusString = 'Invoice Submitted';
@@ -274,7 +275,11 @@ class _OrderUIPageState extends State<OrderUIPage>  {
           ),
         },
         child: Card(
-            margin: EdgeInsets.fromLTRB(1, 10, 1, 10),
+            margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+
             elevation: 5,
             child: Row(
               children: <Widget>[
@@ -351,13 +356,22 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                 ),
                 flex: 2,),
 
+
+
                 Container(
-                  color: status_color,
+//                  color: status_color,
 //                  alignment: Alignment.bottomRight,
-                  height: 60,
+                  height: 40,
                   width: 120,
-                  margin: EdgeInsets.only(bottom: 0, top: 50, left: 0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10.0),
+                        bottomRight: Radius.circular(10.0)),
+                    color: status_color,
+                  ),
+      margin: EdgeInsets.only(bottom: 0, top: 70, left: 0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Icon(status_icon, color: Colors.white, size: 14,),
                       FlatButton(
@@ -376,7 +390,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                       ),
                     ],
                   ),
-                ),
+                )
 
 //                Expanded(child: Container(
 //                  color: Configurations.themColor,
