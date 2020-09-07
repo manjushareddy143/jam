@@ -139,12 +139,12 @@ class _ProviderListState extends State<ProviderListPage> {
                 color: Colors.white,
               ),
             ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Icon(Icons.search),
-              )
-            ],
+//            actions: [
+//              Padding(
+//                padding: const EdgeInsets.all(10.0),
+//                child: Icon(Icons.search),
+//              )
+//            ],
           ),
           body: SingleChildScrollView(
             child: Column(

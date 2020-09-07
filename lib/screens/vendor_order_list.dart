@@ -56,15 +56,16 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
           child: Column( crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
-              child: Container(height:70,decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1),
+              child: Container(height:70,decoration: BoxDecoration(border: Border.all(color: Configurations.themColor, width: 1),
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
                 child: TabBar(
                   onTap:  onTap,
                   controller: _tabController,
-                  indicatorColor: Colors.teal,
-                  labelColor: Colors.black,
+                  indicatorColor: Configurations.themColor,
+                  unselectedLabelColor: Colors.black,
+                  labelColor: Colors.white,
                   indicatorSize: TabBarIndicatorSize.tab,
-                  indicator: BoxDecoration(color: Colors.teal, borderRadius:BorderRadius.only(topRight: Radius.circular(10),
+                  indicator: BoxDecoration(color: Configurations.themColor, borderRadius:BorderRadius.only(topRight: Radius.circular(10),
                       topLeft: Radius.circular(10))),
 
                   tabs:  <Widget>[
