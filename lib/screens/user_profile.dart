@@ -193,7 +193,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         }
       },
       child: Scaffold(
-
+          backgroundColor: Colors.orange[50],
         resizeToAvoidBottomPadding: false,
           body: SingleChildScrollView(
             child: new Form(
@@ -334,7 +334,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
  Widget setProfileCard(){
    if(globals.currentUser.address != null) {
-     print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
+
      if(globals.currentUser.address.length > 0) {
        addressString = singleAddress.address_line1;
        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
@@ -349,7 +349,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
      }
    }
 
-   print("addressString===== $addressString");
+
 
    String ServiceRadiusHint = "Service Radius";
    if(globals.currentUser.provider != null) {
@@ -787,7 +787,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       }
     }
 
-    print("addressString===== $addressString");
+    print("u detail ===== ${globals.currentUser.toJson()}");
 
     String ServiceRadiusHint = "Service Radius";
     if(globals.currentUser.provider != null) {
@@ -877,18 +877,18 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
        //   setDropDown(),
           Visibility(
             visible: isEditProfile,
-            child: setDropDown(),
+            child: Padding(padding: EdgeInsets.only(left: 10), child: setDropDown(),),
           ),
 
 
 
-         //  Language
-          Visibility( visible: !isEditProfile,
-            child: TextField(style: TextStyle(color: Colors.grey),
-              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages,
-                  prefixIcon: Icon(Icons.language), enabled: isEditProfile),
-            ),
-          ),
+//         //  Language
+//          Visibility( visible: !isEditProfile,
+//            child: TextField(style: TextStyle(color: Colors.grey),
+//              decoration: InputDecoration(hintText: (globals.currentUser.languages == null) ? "NOT SELECTED" : globals.currentUser.languages,
+//                  prefixIcon: Icon(Icons.language), enabled: isEditProfile),
+//            ),
+//          ),
 //          Container(
 //              decoration: myBoxDecoration(),
 //              child: Padding(padding: EdgeInsets.all(1),
@@ -908,7 +908,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           Visibility( visible: isEditProfile,
            child: Container(
                decoration: myBoxDecoration(),
-               child: Padding(padding: EdgeInsets.all(1),
+               child: Padding(padding: EdgeInsets.only(left: 10),
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.start,
                    children: <Widget>[
@@ -925,15 +925,15 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
           // Services
-          if(globals.currentUser.roles[0].slug == "provider")
-            Visibility( visible: !isEditProfile,
-              child:  TextField(style: TextStyle(color: Colors.grey),
-                focusNode: focus_address,
-                decoration: InputDecoration(hintText: (services == null || services == "") ? "NOT SET" : services,
-                    prefixIcon: Icon(Icons.settings),enabled: isEditProfile,
-                    helperMaxLines: 5, hintMaxLines: 5),
-              ),
-            ),
+//          if(globals.currentUser.roles[0].slug == "provider")
+//            Visibility( visible: !isEditProfile,
+//              child:  TextField(style: TextStyle(color: Colors.grey),
+//                focusNode: focus_address,
+//                decoration: InputDecoration(hintText: (services == null || services == "") ? "NOT SET" : services,
+//                    prefixIcon: Icon(Icons.settings),enabled: isEditProfile,
+//                    helperMaxLines: 5, hintMaxLines: 5),
+//              ),
+//            ),
 
 
           // Radius
@@ -946,11 +946,32 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                 ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,keyboardType: TextInputType.number,
           ),
 
+          // SERVICES
+          if (globals.currentUser.roles[0].slug == "provider")
+            Padding(
+              padding: EdgeInsets.only(left: 0, right: 0),
+              child: Container(
+//                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.9)),
+                child: ListTile(
+                  onTap: enterServices,
+                  leading: Icon(Icons.work),
+                  title: Text(
+                      (ServiceSelectionUIPageState.serviceNamesString == "")
+                          ? "Select Services"
+                          : "Your Services"),
+                  subtitle:
+                  Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
+                ),
+              ),
+            ),
+
          //  Address
           Visibility( visible: !isEditProfile,
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
-              decoration: InputDecoration(hintText: (addressString == null || addressString == "") ? "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
+              decoration: InputDecoration(hintText: (addressString == null || addressString == "") ?
+              "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
               helperMaxLines: 5, hintMaxLines: 5),
             ),
           ),
@@ -1046,6 +1067,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
     );
   }
 
+  void enterServices() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ServiceSelectionUIPage(isInitialScreen: 0,)));
+  }
+
   void showAddress() {
     addressEnter(false);
   }
@@ -1109,12 +1135,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
 
-//    if(globals.currentUser.roles[0].slug == "provider") {
-//      String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
-//      print(rawJson);
-//      data["services"] = rawJson;
-//      data["service_radius"] = prfl_servcerds.text;
-//    }
+    if(globals.currentUser.roles[0].slug == "provider") {
+      String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+      print(rawJson);
+      data["services"] = rawJson;
+    }
     print("data");
     printLog(data);
     if(data.isNotEmpty && data.length > 0) {
@@ -1140,11 +1165,15 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
   void processUpodateUserResponse(Map res) {
     if (res != null) {
+
       globals.currentUser = User.fromJson(res);
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
       _image = null;
-      build(context);
+      setState(() {
+        build(context);
+      });
+
     }
   }
 

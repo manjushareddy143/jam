@@ -369,10 +369,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           color: Colors.grey[800],
         ),
 
-
-
-
-
         Stack(
           alignment: Alignment.topCenter,
 
@@ -582,11 +578,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 SizedBox(
                                   height: 20,
                                 ),
-
-
-                              /*
-
-                * */
                               // Service Radius
                               if (globals.currentUser.roles[0].slug == "provider")
                                 Padding(
@@ -869,9 +860,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void apiCall(Map data) async {
     List<http.MultipartFile> files = new List<http.MultipartFile>();
 
-    print('img==== ${_image}');
+    print('img==== ${data}');
     if (_image != null) {
-      print('COME FOR API IMAGE');
+ //     print('COME FOR API IMAGE');
 //    files.add(await http.MultipartFile.fromPath('profile_photo', _image.path));
       files.add(http.MultipartFile.fromBytes(
           'profile_photo', _image.readAsBytesSync(),
@@ -887,11 +878,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   void processProfileResponse(Map res) {
-
-    print(res);
     if (res != null) {
-      print("come for response ==  ${res}");
-      globals.currentUser = User.fromJson(res);
+      print("come for response ==  ${globals.currentUser.toJson()}");
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
       if(ServiceSelectionUIPageState.selectedServices != null) {
@@ -921,7 +909,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final adrs_postalcode = TextEditingController();
 
   String mapAddressTitle = "Set Location Map";
-//  number + street + sublocality + locality(city) + region(state) + postal_code + country
   Widget _buildAddressDialog(BuildContext context) {
     print("showMap $showMap ::: ${globals.addressLocation.thoroughfare}");
     return AlertDialog(

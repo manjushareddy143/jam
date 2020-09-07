@@ -133,14 +133,11 @@ class HttpClient {
     //success
     else if (response.statusCode == 200) {
       final respStr = await response.stream.bytesToString();
-      print('mydata === $respStr');
-      print('mydata === ${response}');
       Map responseData = jsonDecode(respStr);
         return responseData;
 
     } else if (response.statusCode == 406) {
       final respStr = await response.stream.bytesToString();
-      print('ERROR DATA === $respStr');
       String errorMsg  =  "";
       Map data = jsonDecode(respStr);
       data['error'].forEach((key, val){

@@ -13,4 +13,11 @@ class ProviderDetail {
       : id = json['id'], user_id = json['user_id'], resident_country =
   json['resident_countryd'], proof_id = json['proof_id'], service_radius = json['service_radius'],
         verified = json['verified'];
+
+  Map<String, dynamic> toJson() => {
+    'id': id, 'user_id': user_id, 'resident_country': resident_country,
+    'proof_id': proof_id, 'verified': verified,
+    'service_radius': service_radius
+  };
+
 }
