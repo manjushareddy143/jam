@@ -1135,12 +1135,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
 
-//    if(globals.currentUser.roles[0].slug == "provider") {
-//      String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
-//      print(rawJson);
-//      data["services"] = rawJson;
-//      data["service_radius"] = prfl_servcerds.text;
-//    }
+    if(globals.currentUser.roles[0].slug == "provider") {
+      String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+      print(rawJson);
+      data["services"] = rawJson;
+    }
     print("data");
     printLog(data);
     if(data.isNotEmpty && data.length > 0) {
@@ -1171,7 +1170,10 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");
       _image = null;
-      build(context);
+      setState(() {
+        build(context);
+      });
+
     }
   }
 

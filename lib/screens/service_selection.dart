@@ -497,6 +497,8 @@ bool Value = false;
         }
       });
 
+
+
       if(this.isInitialScreen == 0) {
 //        Navigator.pushReplacement(
 //            context,
