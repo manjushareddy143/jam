@@ -267,7 +267,7 @@ class _InquiryPageState extends State<InquiryPage> {
           focusNode: focus_remark,
           controller: txtRemark,
             maxLines: 5,
-          keyboardType: TextInputType.multiline,
+          keyboardType: TextInputType.text,
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'),
               contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),

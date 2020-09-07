@@ -362,7 +362,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
         Container(
           width: 400,
-        height: 100,
+          height: 100,
           child: Image.asset("assets/images/jamLogoWhite.png", fit: BoxFit.contain, height: 50
             ,width: 18,
           ),
