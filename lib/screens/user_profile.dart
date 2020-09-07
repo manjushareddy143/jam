@@ -253,7 +253,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
         new Container(
           height: MediaQuery.of(context).size.height * .30,
-          width: MediaQuery.of(context).size.height * .50,
+//          width: MediaQuery.of(context).size.height * .50,
           color: Colors.grey[800],
           child: Container(
             padding: EdgeInsets.only(left: 50, right: 50, bottom: 50, top: 50),

@@ -233,11 +233,11 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
-      case 4: statusString = 'Order Cancel'; // By You
+      case 4: statusString = 'Cancelled'; // By You
       status_color = Colors.red;
       status_icon = Icons.cancel;
       break;
-      case 5: statusString = 'Order Completed';
+      case 5: statusString = 'Completed';
       status_color = Configurations.themColor;
       status_icon = Icons.thumb_up;
       break;
@@ -245,7 +245,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       status_color = Configurations.themColor;
       status_icon = Icons.attach_money;
       break;
-      default : statusString = 'Order Completed';
+      default : statusString = 'Completed';
       status_color = Configurations.themColor;
       status_icon = Icons.thumb_up;
     }
@@ -352,14 +352,14 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                 flex: 2,),
 
                 Container(
-                  color: Configurations.themColor,
+                  color: status_color,
 //                  alignment: Alignment.bottomRight,
                   height: 60,
                   width: 120,
                   margin: EdgeInsets.only(bottom: 0, top: 50, left: 0),
                   child: Row(
                     children: <Widget>[
-                      Icon(status_icon, color: status_color, size: 14,),
+                      Icon(status_icon, color: Colors.white, size: 14,),
                       FlatButton(
 //                              onPressed:  () {
 //                                print('Call Press');
@@ -369,7 +369,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                             style: TextStyle(
                                 fontSize: 11.0,
                                 fontWeight: FontWeight.bold,
-                                color: status_color),
+                                color: Colors.white),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,
                           )
