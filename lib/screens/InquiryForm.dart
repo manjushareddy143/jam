@@ -245,10 +245,13 @@ class _InquiryPageState extends State<InquiryPage> {
 
       TextFormField(
         focusNode: focus_name,
-        decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+        decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey),
           contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
-          labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname')),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname'), labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ),),cursorColor: Configurations.themColor,
         controller: (txtName == "") ? txtName : txtName..text = firstName,
         //txtName,//..text = 'KAR-MT30',
         validator: (value){
@@ -262,10 +265,14 @@ class _InquiryPageState extends State<InquiryPage> {
 
       TextFormField(
         focusNode: focus_mail,
-        decoration: InputDecoration( suffixIcon: Icon(Icons.email),
+        decoration: InputDecoration( suffixIcon: Icon(Icons.email, color:Colors.grey),
           contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-          labelText: AppLocalizations.of(context).translate('inquiry_txt_email')),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_email'),
+          labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ),),cursorColor: Configurations.themColor,
         controller: (txtEmail == "") ? txtEmail : txtEmail..text = email,
         //txtEmail,//..text = 'KAR-MT30',
         keyboardType: TextInputType.emailAddress,
@@ -284,10 +291,14 @@ class _InquiryPageState extends State<InquiryPage> {
       TextFormField(
         focusNode: focus_no,
 
-        decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+        decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color: Colors.grey),
           contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-          labelText: AppLocalizations.of(context).translate('inquiry_txt_phone')),
+          labelText: AppLocalizations.of(context).translate('inquiry_txt_phone'),
+          labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ),),cursorColor: Configurations.themColor,
         controller: (txtContact == "") ? txtContact : txtContact..text = phoneNumber,
         //txtContact,//..text = 'KAR-MT30',
         keyboardType: TextInputType.phone,
@@ -314,7 +325,10 @@ class _InquiryPageState extends State<InquiryPage> {
         decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
           hintText: AppLocalizations.of(context).translate('inquiry_txt_remark'),
-            contentPadding: EdgeInsets.only(left:10,top: 15, right: 10) ),
+            contentPadding: EdgeInsets.only(left:10,top: 15, right: 10), labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ), ),cursorColor: Configurations.themColor,
       ),
       SizedBox(height: 30,),
 

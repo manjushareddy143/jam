@@ -831,7 +831,10 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             decoration: InputDecoration(hintText: (globals.currentUser.first_name == null
                 || globals.currentUser.first_name == "" ) ?
             "First Name" : globals.currentUser.first_name,
-                prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+                prefixIcon: Icon(Icons.person, color: Colors.grey,),enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),),cursorColor: Configurations.themColor,
             controller: (globals.currentUser.first_name == "")
                 ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
           ),
@@ -839,7 +842,12 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           // LastName
           TextField(
             focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ? "Last Name" : globals.currentUser.last_name, prefixIcon: Icon(Icons.person),enabled: isEditProfile),
+            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ? "Last Name" : globals.currentUser.last_name,
+                prefixIcon: Icon(Icons.person,color: Colors.grey,),enabled: isEditProfile,
+              labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),),cursorColor: Configurations.themColor,
             controller: (globals.currentUser.last_name == "")
                 ? prfl_lname : prfl_lname ..text = globals.currentUser.last_name,
           ),
@@ -849,7 +857,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             focusNode: focus_email,style: (isEditProfile) ?
           TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email,
-                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: isEditProfile),
+                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: isEditProfile,
+              labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),), cursorColor: Configurations.themColor,
 
             controller: (globals.currentUser.email == "")
                 ? prfl_email : prfl_email ..text = globals.currentUser.email,
@@ -860,9 +872,13 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           TextField(
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact,
-              prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile, ),
+              prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile,  labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),), cursorColor: Configurations.themColor,
             controller: (globals.currentUser.contact == "")
-                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,keyboardType: TextInputType.phone,
+                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
+            keyboardType: TextInputType.phone,
           ),
 
           Visibility( visible: !isEditProfile,
@@ -870,8 +886,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             child: TextField(
               decoration: InputDecoration(
                   hintText: ( gender == null) ? "NOT SELECTED" : globals.currentUser.gender,
-                  prefixIcon: Icon(Icons.face), enabled: isEditProfile
-              ),
+                  prefixIcon: Icon(Icons.face,color: Colors.grey,), enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),
+              ),cursorColor: Configurations.themColor,
             ),
           ),
        //   setDropDown(),
@@ -941,7 +960,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           TextField(
             focusNode: focus_radius, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: ServiceRadiusHint,
-              prefixIcon: Icon(Icons.location_searching),enabled: isEditProfile, ),
+              prefixIcon: Icon(Icons.location_searching,color: Configurations.themColor),enabled: isEditProfile,
+              labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),),cursorColor: Configurations.themColor,
             controller: (ServiceRadiusHint == "0")
                 ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,keyboardType: TextInputType.number,
           ),
@@ -971,8 +994,12 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
               decoration: InputDecoration(hintText: (addressString == null || addressString == "") ?
-              "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on),enabled: isEditProfile,
-              helperMaxLines: 5, hintMaxLines: 5),
+              "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on, color: Colors.grey,),enabled: isEditProfile,
+              helperMaxLines: 5, hintMaxLines: 5,
+                labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),), cursorColor: Configurations.themColor,
             ),
           ),
 //          Padding(
@@ -1285,7 +1312,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                   decoration: InputDecoration(
                                     labelText: AppLocalizations.of(context)
                                         .translate('address_placeholder'),
-                                  ),
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Configurations.themColor),
+                                    ),
+                                  ),cursorColor: Configurations.themColor,
                                   controller: (singleAddress.name == "")
                                       ? adrs_name : adrs_name ..text = singleAddress.name,
                                   validator: (value) {
@@ -1306,7 +1337,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('address1_placeholder'),
-                                        ),
+                                          labelStyle: TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Configurations.themColor),
+                                          ),
+                                        ),cursorColor: Configurations.themColor,
                                         controller: (singleAddress.address_line1 == "")
                                             ? adrs_line1 : adrs_line1 ..text = singleAddress.address_line1,
                                         validator: (value) {
@@ -1328,7 +1363,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                           decoration: InputDecoration(
                                             labelText: AppLocalizations.of(context)
                                                 .translate('address2_placeholder'),
-                                          ),
+                                            labelStyle: TextStyle(color: Colors.grey),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(color: Configurations.themColor),
+                                            ),
+                                          ),cursorColor: Configurations.themColor,
                                           controller: (singleAddress.address_line2 == "") ? adrs_line2 : adrs_line2
                                             ..text = singleAddress.address_line2
                                       ),
@@ -1362,7 +1401,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('district_placeholder'),
-                                        ),
+                                          labelStyle: TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Configurations.themColor),
+                                          ),
+                                        ),cursorColor: Configurations.themColor,
                                         controller: (singleAddress.district == "") ?
                                         adrs_disctric : adrs_disctric
                                           ..text = singleAddress.district,
@@ -1380,7 +1423,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('city_placeholder'),
-                                        ),
+                                          labelStyle: TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Configurations.themColor),
+                                          ),
+                                        ),cursorColor: Configurations.themColor,
                                         controller: (singleAddress.city == "") ?
                                         adrs_city : adrs_city
                                           ..text = singleAddress.city,
@@ -1405,7 +1452,11 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('postalcode_placeholder'),
-                                        ),
+                                          labelStyle: TextStyle(color: Colors.grey),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Configurations.themColor),
+                                          ),
+                                        ),cursorColor: Configurations.themColor,
                                         controller: (singleAddress.postal_code == "") ?
                                         adrs_postalcode : adrs_postalcode
                                           ..text = singleAddress.postal_code,

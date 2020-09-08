@@ -125,12 +125,16 @@ class _vendorSignup extends State<VendorSignup>{
           padding: EdgeInsets.only(left: 20, right: 20),
           child: TextFormField(
             enabled: _fridgeEdit,
-            decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+            decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey,),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                   color: Configurations.themColor, width: 1,  ), ),
-                labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder')
-            ),
+                labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder'),
+              labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),
+            ),cursorColor: Configurations.themColor,
             controller: txtName,//..text = 'KAR-MT30',
             validator: (value){
               if (value.isEmpty) {
@@ -148,11 +152,15 @@ class _vendorSignup extends State<VendorSignup>{
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
           enabled: _fridgeEdit,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+          decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder')),
+              labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder'),
+            labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),), cursorColor: Configurations.themColor,
           controller: txtLname,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
@@ -169,12 +177,17 @@ class _vendorSignup extends State<VendorSignup>{
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
           enabled: _fridgeEdit,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.person),
+          decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey,),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('profile_email_placeholder')
+              labelText: AppLocalizations.of(context).translate('profile_email_placeholder'),
+            labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),
           ),
+          cursorColor: Configurations.themColor,
           controller: txtEmail,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
@@ -217,11 +230,17 @@ class _vendorSignup extends State<VendorSignup>{
               width: 210,
               child: TextFormField(
                 enabled: _fridgeEdit,
-                decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color: Colors.grey),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                       color: Configurations.themColor, width: 1,  ), ),
-                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
+                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),
+                  labelStyle: TextStyle(color: Colors.grey),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Configurations.themColor),
+                  ),),
+                cursorColor: Configurations.themColor,
+
 
                 keyboardType: TextInputType.phone,
                 controller: txtContact,//..text = 'KAR-MT30',
@@ -246,11 +265,17 @@ class _vendorSignup extends State<VendorSignup>{
         child: TextFormField(
           enabled: _fridgeEdit,
           obscureText: true,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.security),
+          decoration: InputDecoration( suffixIcon: Icon(Icons.security, color: Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder')),
+              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder'),
+            labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),),
+          cursorColor: Configurations.themColor,
+
           controller: txtPass,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
@@ -270,12 +295,17 @@ class _vendorSignup extends State<VendorSignup>{
           enabled: _fridgeEdit,
           obscureText: true,
           decoration: InputDecoration(
-            suffixIcon: Icon(Icons.security, ),
+            suffixIcon: Icon(Icons.security, color: Colors.grey, ),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
               labelText: "Confirm Password",
-          ),
+            labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),
+
+          ), cursorColor: Configurations.themColor,
           validator: (value){
             if (value != txtPass.text) {
               return "Confirm password mismatch";
