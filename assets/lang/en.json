@@ -98,6 +98,9 @@
   "call" : "Call",
   "order" : "Order#",
   "about" : "About",
-  "upload" : "Upload Photo"
+  "upload" : "Upload Photo",
+  "otp" : "Enter OTP",
+  "next": "Next"
+
 
 }
