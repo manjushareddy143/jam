@@ -254,8 +254,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     if(globals.localization == 'ar_SA') {
       margin1 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 100,top: 50);
-      margin2 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 50, top: 50);
-      margin3 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 150, top: 50);
+      margin2 = EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.87, top: 50);
+      margin3 = EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.55, top: 50);
     }
 
     return Stack(
@@ -668,6 +668,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
   }
 
   Widget profileImageView() {
+    print("ima == ${_image}");
     return Container(
 
       child: GestureDetector(
@@ -684,10 +685,14 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       width: 120.0,
       height: 120.0,
       decoration: BoxDecoration(
-        image:
+        image: (globals.currentUser.image == null) ? 
         DecorationImage(
           image:
           (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+          fit: BoxFit.cover,
+        ) : DecorationImage(
+          image:
+          (_image == null) ? NetworkImage(globals.currentUser.image) : FileImage(_image),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(80.0),
@@ -755,7 +760,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
     );
   }
 
-  Widget _buildProfileImage() {
+  Widget 
+  _buildProfileImage() {
     if(globals.currentUser.image == null) {
       return Expanded(
         child: Center(
@@ -1230,9 +1236,10 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
     if(globals.currentUser.roles[0].slug == "provider") {
-      String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
-      print(rawJson);
-      data["services"] = rawJson;
+      if(ServiceSelectionUIPageState.selectedServices.length > 0) {
+        String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+        data["services"] = rawJson;
+      }
     }
     print("data");
     printLog(data);

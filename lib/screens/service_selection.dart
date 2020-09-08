@@ -312,7 +312,8 @@ bool Value = false;
                     ) ,
                     onTap: () => getCategoryField(category, service),
                     onChanged: myCategory,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                    textInputAction: TextInputAction.done,
                   ),),
               )
             ]),),

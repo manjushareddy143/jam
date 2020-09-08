@@ -497,24 +497,33 @@ final formatt= DateFormat("h:mm a");
 
 
   Widget setDate(){
+
+//    Locale local = Locale('en', 'US');
+//    if(globals.localization == 'ar_SA') {
+//
+//      local = Locale('ar', 'SA');
+//
+//
+//    }
     return Container(
     padding: EdgeInsets.fromLTRB(0,0,0,0),
       height: 50,
       child: DateTimeField(
-
         initialValue: _currentDt,
         format: format,
-        decoration: InputDecoration( suffixIcon: Icon(Icons.calendar_today),
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-          labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
-             onShowPicker: (context, currentValue) {
-             return showDatePicker(
+        decoration: InputDecoration(
+            suffixIcon: Icon(Icons.calendar_today),
+            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+            labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
+        onShowPicker: (context, currentValue) {
+          return showDatePicker(
               context: context,
-             firstDate: _currentDt.add(Duration(days: -365)),
-          initialDate: currentValue ?? DateTime.now(),
-           lastDate: DateTime(2021)
+              firstDate: _currentDt.add(Duration(days: -365)),
+              initialDate: currentValue ?? DateTime.now(),
+              lastDate: DateTime(2021),
              );
         },
+
         onChanged: (val) => {
           selecteDate = val
         },
