@@ -2057,7 +2057,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 },
 
 
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                               ),),
                           ),
@@ -2147,7 +2147,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                               ),) ,cursorColor: Configurations.themColor,
 
 
-                                            keyboardType: TextInputType.number,
+                                            keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                                           ),),
                                       ),
@@ -2167,7 +2167,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                           child: TextField(
                                             textAlign: TextAlign.right,
                                             controller: mtrl_price..text='0',
-                                            keyboardType: TextInputType.number,
+                                            keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Configurations.themColor)
                                             ), labelStyle: TextStyle(color: Colors.grey),
@@ -2215,7 +2215,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 controller: discnt..text='0',
 
 
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                               ),),
                           ],
@@ -2238,7 +2238,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 ),) ,cursorColor: Configurations.themColor,
                                 controller: tax..text='0',
 
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                               ),),
 
@@ -2263,7 +2263,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 controller: add_charge..text='0',
 
 
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                               ),),
                           ],
@@ -2369,7 +2369,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
 
-                  keyboardType: TextInputType.number,
+                  keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
                 ),),
               SizedBox(width: 10,),
