@@ -616,7 +616,6 @@ class _user extends State<UserLogin>{
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-
         globals.currentUser = User.fromJson(data);
         print("currentUser ==  ${User.fromJson(data).toJson()}");
         globals.guest = false;

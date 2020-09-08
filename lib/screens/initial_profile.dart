@@ -909,6 +909,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   void processProfileResponse(Map res) {
     if (res != null) {
+      globals.currentUser = User.fromJson(res);
       print("come for response ==  ${globals.currentUser.toJson()}");
       Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
       Preferences.saveObject("profile", "0");

@@ -384,6 +384,7 @@ String num = globals.currentUser.contact;
 String email = globals.currentUser.email;
 int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
 
+  print(globals.currentUser.toJson());
 
    return Container(
 //      height: 500,
