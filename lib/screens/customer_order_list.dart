@@ -113,7 +113,8 @@ class _OrderUIPageState extends State<OrderUIPage>  {
         appBar: globals.isCustomer ? null :
         new AppBar(
           automaticallyImplyLeading: true,
-          title: new Text(AppLocalizations.of(context).translate('loading')),
+          title: new Text(AppLocalizations.of(context).translate('loading'),
+            style: TextStyle(color:Configurations.themColor),),
         ),
       );
     } else {

@@ -149,10 +149,15 @@ class _customerSignup extends State<CustomerSignup>{
               width: 210,
               child: TextFormField(
                 enabled: _fridgeEdit,
-                decoration: InputDecoration( suffixIcon: Icon(Icons.phone),
+                 cursorColor: Configurations.themColor,
+                decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color:
+                Colors.grey),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder')),
+                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),labelStyle: TextStyle(color: Colors.grey),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Configurations.themColor),
+                  ),),
 
                 keyboardType: TextInputType.phone,
                 controller: txtContact,
@@ -177,10 +182,14 @@ class _customerSignup extends State<CustomerSignup>{
         child: TextFormField(
           enabled: _fridgeEdit,
           obscureText: true,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.security),
+          cursorColor: Configurations.themColor,
+          decoration: InputDecoration( suffixIcon: Icon(Icons.security, color: Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder')),
+              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder',),labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),),
           controller: txtPass,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
@@ -200,11 +209,15 @@ class _customerSignup extends State<CustomerSignup>{
           enabled: _fridgeEdit,
           obscureText: true,
           decoration: InputDecoration(
-            suffixIcon: Icon(Icons.security, ),
+            suffixIcon: Icon(Icons.security, color:Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-              labelText: "Confirm Password",
+              labelText: "Confirm Password",labelStyle: TextStyle(color: Colors.grey),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Configurations.themColor),
+            ),
           ),
+          cursorColor: Configurations.themColor,
           validator: (value){
             if (value != txtPass.text) {
               return "Confirm password mismatch";

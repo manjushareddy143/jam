@@ -303,6 +303,10 @@ bool Value = false;
                   child: TextField(
                     decoration: InputDecoration(
                         suffix: Text("QR"),
+                        labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Configurations.themColor),
+                        ),
                         hintText: "QR"
                     ) ,
                     onTap: () => getCategoryField(category, service),
@@ -364,7 +368,10 @@ bool Value = false;
 
                       decoration: InputDecoration(
                       suffix: Text("QR"),
-                      hintText: "QR"
+                      hintText: "QR", labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Configurations.themColor),
+                        ),
 
                     ),
                       onTap: () => getSelectedField(service),

@@ -1807,10 +1807,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           Flexible(
                             child: Container(height: 30, width: 40,
 
-                              child: TextFormField(controller:wrking_hr,cursorColor: Colors.black,
+                              child: TextFormField(controller:wrking_hr,cursorColor: Configurations.themColor,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Configurations.themColor)
-                                )) ,
+                                ), labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Configurations.themColor),
+                                  ),) ,
                                 validator: (value) {
                                   if (value.isEmpty) {
                                     return "Please enter the working hours!!";
@@ -1900,7 +1903,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                           child: TextField(controller: mtrl_qty..text='0',
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Configurations.themColor)
-                                            )) ,
+                                            ), labelStyle: TextStyle(color: Colors.grey),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Configurations.themColor),
+                                              ),) ,cursorColor: Configurations.themColor,
 
 
                                             keyboardType: TextInputType.number,
@@ -1926,7 +1932,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Configurations.themColor)
-                                            )) ,
+                                            ), labelStyle: TextStyle(color: Colors.grey),
+                                              focusedBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(color: Configurations.themColor),
+                                              ),) ,cursorColor: Configurations.themColor,
 
                                           ),),
                                       ),
@@ -1958,7 +1967,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
-                              )) ,
+                              ),
+                                labelStyle: TextStyle(color: Colors.grey),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Configurations.themColor),
+                                ),) ,cursorColor: Configurations.themColor,
                                 controller: discnt..text='0',
 
 
@@ -1977,7 +1990,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
-                              )) ,
+                              ),
+                                labelStyle: TextStyle(color: Colors.grey),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Configurations.themColor),
+                                ),) ,cursorColor: Configurations.themColor,
                                 controller: tax..text='0',
 
                                 keyboardType: TextInputType.number,
@@ -1997,7 +2014,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
-                              )) ,
+                              ),  labelStyle: TextStyle(color: Colors.grey),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Configurations.themColor),
+                                ),) ,cursorColor: Configurations.themColor,
                                 controller: add_charge..text='0',
 
 

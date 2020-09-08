@@ -179,7 +179,8 @@ class _user extends State<UserLogin>{
                         cursorColor: Configurations.themColor,
 
                         obscureText: false,
-                        decoration: InputDecoration(focusColor: Configurations.themColor,
+                        decoration: InputDecoration(
+                          //focusColor: Configurations.themColor,
                           //suffixIcon: Icon(Icons.face),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                             color: Configurations.themColor,
@@ -187,6 +188,11 @@ class _user extends State<UserLogin>{
                           ), borderRadius: BorderRadius.circular(9.0),),
                           labelText: //"Email or Username"
                            AppLocalizations.of(context).translate('email_placeholder'),
+                          labelStyle: TextStyle(color: Colors.grey),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Configurations.themColor),
+                          ),
+
                         ),
 
                       ),
@@ -194,6 +200,8 @@ class _user extends State<UserLogin>{
                       new TextFormField(
                         focusNode: focus_pwd,
                         controller: txtPass,
+                        cursorColor: Configurations.themColor,
+
                         validator: (value){
                           if (value.isEmpty) {
                             return AppLocalizations.of(context).translate('login_txt_pwd');
@@ -202,12 +210,16 @@ class _user extends State<UserLogin>{
                         },
 
                         obscureText: true,
-                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock),focusColor: Configurations.themColor,
+                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock,color: Colors.grey,),focusColor: Configurations.themColor,
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                             color: Configurations.themColor,
                             width: 0.9,
                           ), borderRadius: BorderRadius.circular(9.0),),
                           labelText:  AppLocalizations.of(context).translate('pwd_placeholder'),
+                          labelStyle: TextStyle(color: Colors.grey),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Configurations.themColor),
+                          ),
                         ),
                       ),
                     ],
@@ -706,15 +718,19 @@ class _user extends State<UserLogin>{
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: TextFormField(controller: txtemail,
                       obscureText: false,
+                      cursorColor: Configurations.themColor,
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.email),
+                          suffixIcon: Icon(Icons.email, color: Configurations.themColor),
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                             color: Configurations.themColor,
                             width: 0.9,
                           ),
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "Enter your email")
+                          labelText: "Enter your email",labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Configurations.themColor),
+                        ),)
                   ),
                 ),
                 Text("OR",style: TextStyle(
@@ -728,7 +744,7 @@ class _user extends State<UserLogin>{
                     controller: txtno,
                     obscureText: false,
                     decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.phone),
+                        suffixIcon: Icon(Icons.phone, color: Configurations.themColor),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Configurations.themColor,
@@ -736,8 +752,12 @@ class _user extends State<UserLogin>{
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
-                        labelText: "Enter your number"),
+                        labelText: "Enter your number",labelStyle: TextStyle(color: Colors.grey),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Configurations.themColor),
+                      ),),
                     keyboardType: TextInputType.phone,
+                    cursorColor: Configurations.themColor,
                   ),
                 ),
                 SizedBox(height: 10,),
@@ -767,11 +787,15 @@ class _user extends State<UserLogin>{
                   child: TextFormField(controller: newPass,
                       obscureText: true,
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.lock),
+                          suffixIcon: Icon(Icons.lock, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "New Password")
+                          labelText: "New Password",
+                        labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Configurations.themColor),
+                        ),), cursorColor: Configurations.themColor,
                   ),
                 ),
                 Padding(
@@ -779,11 +803,15 @@ class _user extends State<UserLogin>{
                   child: TextFormField(controller: confPass,
                       obscureText: true,
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.lock),
+                          suffixIcon: Icon(Icons.lock, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "Confirm Password")
+                          labelText: "Confirm Password",
+                        labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Configurations.themColor),
+                        ),), cursorColor: Configurations.themColor,
                   ),
                 ),
                 SizedBox(height: 30,),

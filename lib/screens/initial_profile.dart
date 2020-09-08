@@ -426,7 +426,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       ),
                                       labelText: AppLocalizations.of(context)
                                           .translate('signin_firstname_placeholder'),
+
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
                                       hasFloatingPlaceholder: false),
+                                  cursorColor: Configurations.themColor,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return AppLocalizations.of(context)
@@ -461,8 +467,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     ),
                                     labelText: AppLocalizations.of(context)
                                         .translate('signin_lastname_placeholder'),
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Configurations.themColor),
+                                    ),
                                     hasFloatingPlaceholder: false,
                                   ),
+                                  cursorColor: Configurations.themColor,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return AppLocalizations.of(context)
@@ -487,7 +498,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                   onChanged: setContact,
                                   decoration: InputDecoration(
                                     suffixIcon:
-                                    Icon(Icons.phone, textDirection: TextDirection.rtl),
+                                    Icon(Icons.phone, color: Colors.grey,textDirection: TextDirection.rtl),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: Configurations.themColor,
@@ -496,9 +507,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     ),
                                     labelText: AppLocalizations.of(context)
                                         .translate('signin_phone_placeholder'),
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Configurations.themColor),
+                                    ),
                                     hasFloatingPlaceholder: false,
 
-                                  ),
+                                  ),cursorColor: Configurations.themColor,
                                 ),
                               ),
                               SizedBox(
@@ -513,7 +528,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     ..text = email,
                                   decoration: InputDecoration(
                                     suffixIcon: Icon(
-                                      Icons.email,
+                                      Icons.email,color: Colors.grey,
                                     ),
                                     //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                     enabledBorder: OutlineInputBorder(
@@ -524,8 +539,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     ),
                                     labelText: AppLocalizations.of(context)
                                         .translate('profile_email_placeholder'),
+                                    labelStyle: TextStyle(color: Colors.grey),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(color: Configurations.themColor),
+                                    ),
                                     hasFloatingPlaceholder: false,
-                                  ),
+                                  ),cursorColor: Configurations.themColor,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return AppLocalizations.of(context)
@@ -589,7 +608,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
-                                        Icons.location_searching,
+                                        Icons.location_searching,color: Colors.grey
                                       ),
 
                                       //                        suffix: Text("KM"),
@@ -602,8 +621,12 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                         ),
                                       ),
                                       labelText: 'Service Radius',
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
                                       hasFloatingPlaceholder: false,
-                                    ),
+                                    ), cursorColor: Configurations.themColor,
                                     validator: (value) {
                                       if (value.isEmpty) {
                                         return 'Please enter service radius';
@@ -983,10 +1006,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 decoration: InputDecoration(
                                   labelText: AppLocalizations.of(context)
                                       .translate('address_placeholder'),
+                                  labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Configurations.themColor),
+                                  ),
                                   contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                   enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                     color: Configurations.themColor, width: 1,  ), ),
-                                ),
+                                ),cursorColor: Configurations.themColor,
                                 controller: adrs_name,
                                 validator: (value) {
                                   if (value.isEmpty) {
@@ -1010,7 +1037,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                         color: Configurations.themColor, width: 1,  ), ),
-                                    ),
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
+                                    ),cursorColor: Configurations.themColor,
                                     controller: (globals
                                                 .addressLocation.featureName ==
                                             "")
@@ -1038,7 +1069,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                         contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                           color: Configurations.themColor, width: 1,  ), ),
-                                      ),
+                                        labelStyle: TextStyle(color: Colors.grey),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Configurations.themColor),
+                                        ),
+                                      ),cursorColor: Configurations.themColor,
                                       controller: (globals.addressLocation
                                                   .subLocality ==
                                               "")
@@ -1062,7 +1097,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                         contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                           color: Configurations.themColor, width: 1,  ), ),
-                                      ),
+                                        labelStyle: TextStyle(color: Colors.grey),
+                                        focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(color: Configurations.themColor),
+                                        ),
+                                      ),cursorColor: Configurations.themColor,
                                       controller: adrs_landmark),
                                 ),
 
@@ -1078,7 +1117,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                         color: Configurations.themColor, width: 1,  ), ),
-                                    ),
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
+                                    ),cursorColor: Configurations.themColor,
                                     controller: (globals
                                                 .addressLocation.subAdminArea ==
                                             "")
@@ -1102,7 +1145,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                         color: Configurations.themColor, width: 1,  ), ),
-                                    ),
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
+                                    ),cursorColor: Configurations.themColor,
                                     controller:
                                         (globals.addressLocation.locality == "")
                                             ? adrs_city
@@ -1129,10 +1176,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)
                                           .translate('postalcode_placeholder'),
+                                      labelStyle: TextStyle(color: Colors.grey),
+                                      focusedBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Configurations.themColor),
+                                      ),
                                       contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                         color: Configurations.themColor, width: 1,  ), ),
-                                    ),
+                                    ),cursorColor: Configurations.themColor,
                                     controller: (globals
                                                 .addressLocation.postalCode ==
                                             "")
