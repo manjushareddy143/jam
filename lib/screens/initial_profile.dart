@@ -497,7 +497,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                   focusNode: focus_phnno,
                                   controller: (phoneNumber == "") ? prfl_phone : prfl_phone
                                     ..text = phoneNumber,
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                   onChanged: setContact,
                                   decoration: InputDecoration(
                                     suffixIcon:
@@ -608,7 +608,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     focusNode: focus_radius,
                                     controller: (globals.customRadius == "") ? prfl_servcerds : prfl_servcerds
                                       ..text = globals.customRadius,
-                                    keyboardType: TextInputType.number,
+                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                     decoration: InputDecoration(
                                       prefixIcon: Icon(
                                         Icons.location_searching,color: Colors.grey
