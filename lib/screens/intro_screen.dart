@@ -29,6 +29,7 @@ class _sliderScreen extends State<SliderScreen>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -43,6 +44,7 @@ class _sliderScreen extends State<SliderScreen>{
               ),
             ),
            Container(height: 430,
+             color: Colors.white,
              child: Stack(alignment: AlignmentDirectional.bottomCenter,
                children:[PageView.builder(
                    scrollDirection: Axis.horizontal,
@@ -72,35 +74,38 @@ class _sliderScreen extends State<SliderScreen>{
              ),
            ),
 
-            Column( mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+            Container(
+              color: Colors.white,
+              child: Column( mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 
 
-               FlatButton(
-                  child: Text("Create an Account",style: TextStyle(color: Colors.white),),
-                   shape: RoundedRectangleBorder(
-                       borderRadius: BorderRadius.circular(5)),
-                 color: Colors.deepOrangeAccent,
-                 onPressed: (){Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => masterSignup()));
+                  FlatButton(
+                    child: Text("Create an Account",style: TextStyle(color: Colors.white),),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
+                    color: Colors.deepOrangeAccent,
+                    onPressed: (){Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => masterSignup()));
+                    },
+
+
+                  ),
+                  SizedBox(height: 10,),
+
+                  SizedBox(height: 20,
+                    child: Text("------------------------ OR ------------------------", style: TextStyle(color: Colors.grey),),
+                  ),
+                  SizedBox(height: 10,),
+                  FlatButton( onPressed: (){
+                    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
                   },
+                    child: Text("LOGIN NOW",
+                      textAlign: TextAlign.center,style: TextStyle( color: Colors.blueGrey,fontWeight: FontWeight.w700),),
+                  ),
 
 
-                ),
-               SizedBox(height: 10,),
-
-               SizedBox(height: 20,
-                 child: Text("------------------------ OR ------------------------", style: TextStyle(color: Colors.grey),),
-               ),
-               SizedBox(height: 10,),
-               FlatButton( onPressed: (){
-     Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
-               },
-                 child: Text("LOGIN NOW",
-                   textAlign: TextAlign.center,style: TextStyle( color: Colors.blueGrey,fontWeight: FontWeight.w700),),
-                ),
-
-
-              ],
+                ],
+              ),
             )
           ],
         ),
