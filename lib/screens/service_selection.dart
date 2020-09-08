@@ -378,7 +378,7 @@ bool Value = false;
                     ),
                       onTap: () => getSelectedField(service),
                       onChanged: myService,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                     ),
                   ),
                 )
