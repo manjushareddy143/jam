@@ -11,7 +11,9 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jam/classes/language.dart';
 import 'package:jam/login/login.dart';
+import 'package:jam/main.dart';
 import 'package:jam/models/address.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
@@ -248,10 +250,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     EdgeInsets margin1 = EdgeInsets.only(left: MediaQuery.of(context).size.width - 100,top: 50);
     EdgeInsets margin2 = EdgeInsets.only(left: MediaQuery.of(context).size.width - 50, top: 50);
+    EdgeInsets margin3 = EdgeInsets.only(left: MediaQuery.of(context).size.width - 150, top: 50);
 
     if(globals.localization == 'ar_SA') {
       margin1 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 100,top: 50);
       margin2 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 50, top: 50);
+      margin3 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 150, top: 50);
     }
 
     return Stack(
@@ -286,10 +290,30 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         }),),
 
         Padding(padding: margin2,
-
           child: IconButton(icon: Icon(Icons.exit_to_app, size: 30, color: Configurations.themColor, ), onPressed: ()=> {
             logOut_app()
           }),),
+
+        if(!isEditProfile)
+        Padding(padding: margin3,
+          child: DropdownButton(
+            underline: SizedBox(),
+            onChanged: ( Language language){
+              _changeLanguage(language);
+            },
+            icon: Icon(Icons.language, color: Configurations.themColor,),
+            items: Language.languageList()
+                .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+              value:  lang,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget> [
+                  Text(lang.flag),
+                  Text(lang.name)
+                ],
+              ) ,
+            )).toList(),
+          ),),
 
         new Container(
           alignment: Alignment.topCenter,
@@ -323,6 +347,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       ],
     );
   }
+
+  void _changeLanguage(Language language){
+    Locale _temp;
+    switch(language.languageCode){
+      case 'en': _temp = Locale(language.languageCode, 'US');
+      break;
+      case 'ar': _temp = Locale(language.languageCode, 'SA');
+      break;
+      default: _temp = Locale(language.languageCode, 'US');
+    }
+    printLog("testet"+_temp.languageCode);
+    Preferences.saveObject('lang', _temp.countryCode);
+    MyApp.setLocale(context, _temp);
+  }
+
+
   Widget myProfile(){
     print("MAYUR");
     return Container(

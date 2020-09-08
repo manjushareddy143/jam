@@ -115,7 +115,8 @@ class _user extends State<UserLogin>{
                     mainAxisAlignment: MainAxisAlignment.start,
 //                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      DropdownButton(
+                      Padding(padding: EdgeInsets.only(left: 10, top: 50),
+                      child: DropdownButton(
                         underline: SizedBox(),
                         onChanged: ( Language language){
                           _changeLanguage(language);
@@ -132,10 +133,10 @@ class _user extends State<UserLogin>{
                             ],
                           ) ,
                         )).toList(),
-                      ),
+                      ),)
                     ],
                   ),
-                SizedBox(height: 100,),
+//                SizedBox(height: 20,),
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0,5,0,19),
