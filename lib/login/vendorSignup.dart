@@ -199,35 +199,33 @@ class _vendorSignup extends State<VendorSignup>{
       ),
       SizedBox(height: 10,),
 
-      Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                border: Border.all(width: 0.9,color: Configurations.themColor)),
-              width: 100,
-              child: CountryCodePicker(
-                onChanged: _onCountryChange,
-                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                initialSelection: 'QA',
-                favorite: ['+974','+91'],
-                // optional. Shows only country name and flag
-                showCountryOnly: false,
-                // optional. Shows only country name and flag when popup is closed.
-                showOnlyCountryWhenClosed: false,
-                // optional. aligns the flag and the Text left
-                alignLeft: false,
-                showFlag: true,
-                onInit: _initCountryCode,
+      Padding(
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(flex: 2,
+              child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+                  border: Border.all(width: 0.9,color: Configurations.themColor)),
+                width: 100,
+                child: CountryCodePicker(
+                  onChanged: _onCountryChange,
+                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                  initialSelection: 'QA',
+                  favorite: ['+974','+91'],
+                  // optional. Shows only country name and flag
+                  showCountryOnly: false,
+                  // optional. Shows only country name and flag when popup is closed.
+                  showOnlyCountryWhenClosed: false,
+                  // optional. aligns the flag and the Text left
+                  alignLeft: false,
+                  showFlag: true,
+                  onInit: _initCountryCode,
+                ),
               ),
             ),
-          ),
 
-         // SizedBox( width: 10,),
-          Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
-            child: SizedBox(
-              width: 210,
+           // SizedBox( width: 10,),
+            Flexible( flex: 4,
               child: TextFormField(
                 enabled: _fridgeEdit,
                 decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color: Colors.grey),
@@ -253,10 +251,10 @@ class _vendorSignup extends State<VendorSignup>{
                 },
 
               ),
-            ),
-          )
+            )
 
-        ],
+          ],
+        ),
       ),
       SizedBox(height: 10,),
 
@@ -444,7 +442,7 @@ class _vendorSignup extends State<VendorSignup>{
           children: <Widget>[
             SizedBox(height: 30),
             Text(
-              'ENTER OTP',
+              AppLocalizations.of(context).translate('otp'),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
@@ -469,8 +467,8 @@ class _vendorSignup extends State<VendorSignup>{
               child:  RaisedButton(
                   color: Configurations.themColor,
                   textColor: Colors.white,
-                  child: const Text(
-                      'Next',
+                  child:  Text(
+                      AppLocalizations.of(context).translate('next'),
                       style: TextStyle(fontSize: 16.5)
                   ),
                   onPressed: () {
