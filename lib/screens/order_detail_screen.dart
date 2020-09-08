@@ -137,7 +137,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         ),
         // TITLE
         Positioned(left: 25, top: 120,
-          child: Text("ORDER DETAILS", style:
+          child: Text(AppLocalizations.of(context).translate('order_detail'), style:
           TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
           ),
         ),
@@ -165,7 +165,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           children: <Widget>[
                             Icon(Icons.attach_money, color: Configurations.themColor, size: 20,),
                             SizedBox(width: 8,),
-                            Text('Submit Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            Text(AppLocalizations.of(context).translate('submit_invoice'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                             ),
                           ],
                         ),
@@ -185,7 +185,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           children: <Widget>[
                             Icon(Icons.cancel, color: Configurations.themColor, size: 20,),
                             SizedBox(width: 8,),
-                            Text('Cancel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                            Text(AppLocalizations.of(context).translate('cancel'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                           ],
                         ),
                         onTap:  () => {print("COmplete"),
@@ -209,7 +209,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           children: <Widget>[
                             Icon(Icons.thumb_up, color: Configurations.themColor, size: 20,),
                             SizedBox(width: 8,),
-                            Text('Complete', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            Text(AppLocalizations.of(context).translate('complete'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                             ),],),
                         onTap: () => {print("COmplete"),
 
@@ -228,7 +228,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           children: <Widget>[
                             Icon(Icons.file_download, color: Configurations.themColor, size: 20,),
                             SizedBox(width: 8,),
-                            Text('Download Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            Text(AppLocalizations.of(context).translate('download_invoice'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                             ),],),
                         onTap: () async {
                           Widget_Helper.showLoading(context);
@@ -274,19 +274,19 @@ class _DetailUIPageState extends State<DetailUIPage> {
      var status_icon = null;
 
      switch(order.status) {
-       case 1: statusString = 'Order Pending';
+       case 1: statusString = AppLocalizations.of(context).translate('order_p');
        status_color = Colors.blue;
        status_icon = Icons.pan_tool;
        break;
-       case 2: statusString = 'Order Accept';
+       case 2: statusString = AppLocalizations.of(context).translate('order_a');
        status_color = Colors.green;
        status_icon = Icons.check_circle;
        break;
        case 3:
          if(globals.currentUser.roles[0].slug == "customer") {
-           statusString = 'Order Cancel'; // You
+           statusString = AppLocalizations.of(context).translate('order_cancel'); // You
          } else {
-           statusString = 'Order Cancel';// + globals.order.orderer_name;
+           statusString = AppLocalizations.of(context).translate('order_cancel');// + globals.order.orderer_name;
          }
 
          status_color = Colors.red;
@@ -294,23 +294,23 @@ class _DetailUIPageState extends State<DetailUIPage> {
          break;
        case 4:
          if(globals.currentUser.roles[0].slug == "customer") {
-           statusString = 'Order Cancel by You';
+           statusString = AppLocalizations.of(context).translate('order_cancel_b');
          } else {
-           statusString = 'Order Cancel by ' + globals.order.orderer_name;
+           statusString = AppLocalizations.of(context).translate('order_cancel_b')+" "+ globals.order.orderer_name;
          }
 
          status_color = Colors.red;
          status_icon = Icons.cancel;
          break;
-       case 5: statusString = 'Order Completed';
+       case 5: statusString = AppLocalizations.of(context).translate('order_c');
        status_color = Colors.green;
        status_icon = Icons.check_circle;
        break;
-       case 6: statusString = 'Invoice Submitted';
+       case 6: statusString = AppLocalizations.of(context).translate('invoice_sub');
        status_color = Configurations.themColor;
        status_icon = Icons.attach_money;
        break;
-       default : statusString = 'Order Completed';
+       default : statusString = AppLocalizations.of(context).translate('order_c');
        status_color = Colors.green;
        status_icon = Icons.check_circle;
      }
@@ -368,7 +368,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
                    child: Row(children :[
-                     Text("Booking Detail", style:
+                     Text(AppLocalizations.of(context).translate('txt_book_details'), style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w500,fontSize: 16),),
                      Padding(
@@ -393,7 +393,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text("Order ID #  " + globals.order.id.toString(), style:
+                         Text(AppLocalizations.of(context).translate('txt_order_id')+ " "+globals.order.id.toString(), style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
 
@@ -407,7 +407,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text("Date:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_dt')+ " " , style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.booking_date , style:
@@ -428,7 +428,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text("Time:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_tym')+ " " , style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.end_time , style:
@@ -445,7 +445,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text("Order Status:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_order_status')+ " " , style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text( statusString, style:
@@ -461,7 +461,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
                    child: Row(children :[
-                     Text("Service Detail", style:
+                     Text(AppLocalizations.of(context).translate('txt_service_detail')+ " ", style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w700,fontSize: 16),),
                      Padding(
@@ -486,7 +486,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text((this.isCustomer == true) ?"Vendor: " : "Customer: " , style:
+                         Text((this.isCustomer == true) ?AppLocalizations.of(context).translate('txt_vendor'):
+                         AppLocalizations.of(context).translate('txt_customer'), style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text((this.isCustomer == true) ? name : globals.order.orderer_name , style:
@@ -503,7 +504,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      child: Row(
                        children: [
 
-                         Text("Services:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_services')+" ", style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.service.name , style:
@@ -521,7 +522,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                        child: Row(
                          children: [
 
-                           Text("Category:  " , style:
+                           Text(AppLocalizations.of(context).translate('txt_category')+" " , style:
                            TextStyle(color: Colors.black,
                                fontWeight: FontWeight.w500,fontSize: 14),),
                            Text(globals.order.category.name , style:
@@ -555,9 +556,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            });
                          },
                        ),
-                       Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
+                       Text((globals.order.rating == null) ? "" : comment,
+                         textAlign: TextAlign.left,
                          overflow: TextOverflow.ellipsis,
-                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                         style: TextStyle(fontWeight: FontWeight.w400,
+                             fontSize: 12.0,color: Colors.blueGrey),),
 //                       Column(
 //                         children: <Widget>[
 //                           Padding(
@@ -591,7 +594,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            padding: EdgeInsets.fromLTRB(0, 0, 0,0),
                            child: OutlineButton(onPressed: () => {
                              showBookingOTP()
-                           }, child: Text("GET OTP"),
+                           }, child: Text(AppLocalizations.of(context).translate('txt_otp')),
 //                               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                              borderSide: BorderSide(style: BorderStyle.solid, color: Configurations.themColor),
                            )
@@ -603,7 +606,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: <Widget>[
                            SizedBox(height: 50,),
-                           Text("OTP: ", style: TextStyle(fontWeight: FontWeight.bold),),
+                           Text(AppLocalizations.of(context).translate('txt_otp1'), style: TextStyle(fontWeight: FontWeight.bold),),
                            Text(globals.order.otp.toString(),  style: TextStyle(fontWeight: FontWeight.w400)),
                          ],
                        ),
@@ -634,7 +637,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                },
                              )
                            },
-                           child: Text("Submit Rating"),
+                           child: Text(AppLocalizations.of(context).translate('txt_sub_rating')),
 
                          ),
 
@@ -649,7 +652,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
                    child: Row(children :[
-                     Text("Customer Address", style:
+                     Text(AppLocalizations.of(context).translate('txt_cust'), style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w700,fontSize: 16),),
                      Padding(
@@ -676,7 +679,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon( Icons.location_on, color: Configurations.themColor,
                            size: 18,),
                          SizedBox(width: 5,),
-                         Text("Address:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_add')+"  ", style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Flexible(
@@ -697,7 +700,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon( Icons.mail_outline, color: Configurations.themColor,
                            size: 18,),
                          SizedBox(width: 5,),
-                         Text("Email:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_email')+ "  ", style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.email, style:
@@ -716,7 +719,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon( Icons.phone_in_talk, color: Configurations.themColor,
                            size: 18,),
                          SizedBox(width: 5,),
-                         Text("Number:  " , style:
+                         Text(AppLocalizations.of(context).translate('txt_phn')+"  ", style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.contact, style:
@@ -759,7 +762,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          children: <Widget>[
                            Icon(Icons.check_circle, color: Colors.white, size: 20,),
                            SizedBox(width: 10,),
-                           Text('Accept', style: TextStyle(fontSize: 14)
+                           Text(AppLocalizations.of(context).translate('accept'), style: TextStyle(fontSize: 14)
                            ),],),
                        onPressed: () => {print("Accept"),
                          orderAccept()}),), flex: 2,),
@@ -775,7 +778,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          children: <Widget>[
                            Icon(Icons.check_circle, color: Colors.white, size: 20,),
                            SizedBox(width: 10,),
-                           Text('Accepted', style: TextStyle(fontSize: 14)
+                           Text(AppLocalizations.of(context).translate('accepted'), style: TextStyle(fontSize: 14)
                            ),],),
                        onPressed: () => {
                          print("Accept"),
@@ -831,7 +834,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          children: <Widget>[
                            Icon(Icons.cancel, color: Colors.white, size: 20,),
                            SizedBox(width: 5,),
-                           Text('Cancel', style: TextStyle(fontSize: 14)
+                           Text(AppLocalizations.of(context).translate('cancel'), style: TextStyle(fontSize: 14)
                            ),],
                        ),
                        onPressed: () => {
@@ -899,8 +902,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
              child:  RaisedButton(
                  color: Configurations.themColor,
                  textColor: Colors.white,
-                 child: const Text(
-                     'Download Invoice',
+                 child:  Text(
+                     AppLocalizations.of(context).translate('download_invoice'),
                      style: TextStyle(fontSize: 16.5)
                  ),
                onPressed: () async {
@@ -925,7 +928,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon(Icons.check_circle, color: Colors.white, size: 20,),
                          SizedBox(width: 10,),
                          Text(
-                             'Accept',
+                             AppLocalizations.of(context).translate('accept'),
                              style: TextStyle(fontSize: 14)
                          ),
                        ],
@@ -947,7 +950,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            Icon(Icons.attach_money, color: Colors.white, size: 20,),
                            SizedBox(width: 8,),
                            Text(
-                               'Submit Invoice',
+                               AppLocalizations.of(context).translate('submit_invoice'),
                                style: TextStyle(fontSize: 14)
                            ),
                          ],
@@ -975,7 +978,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            Icon(Icons.thumb_up, color: Colors.white, size: 20,),
                            SizedBox(width: 8,),
                            Text(
-                               'Complete',
+                               AppLocalizations.of(context).translate('complete'),
                                style: TextStyle(fontSize: 14)
                            ),
                          ],
@@ -1005,7 +1008,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon(Icons.cancel, color: Colors.white, size: 20,),
                          SizedBox(width: 10,),
                          Text(
-                             'Cancel',
+                             AppLocalizations.of(context).translate('cancel'),
                              style: TextStyle(fontSize: 14)
                          ),
                        ],
@@ -1593,7 +1596,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildCancelHeader("Service Cancellation Request", ),
+            buildCancelHeader(AppLocalizations.of(context).translate('service_can'), ),
 
             SizedBox(
               height: 10.0,
@@ -1688,7 +1691,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 }
                 orderStatusUpdate(data);
               },
-              child: const Text('OK', style: TextStyle(fontSize: 20,color: Colors.white)),
+              child:  Text(AppLocalizations.of(context).translate('ok'), style: TextStyle(fontSize: 20,color: Colors.white)),
             ),
           ),
         ],
