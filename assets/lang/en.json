@@ -100,7 +100,16 @@
   "about" : "About",
   "upload" : "Upload Photo",
   "otp" : "Enter OTP",
-  "next": "Next"
-
-
+  "next": "Next",
+  "txt_no_address_set": "No Address Set",
+  "txt_radius": "Set Radius",
+  "txt_no_service_set": "No Services Set",
+  "txt_no_name_set": "No Name Set",
+  "txt_no_email_set": "Not Set",
+  "txt_no_lang_set": "No Language Set",
+  "gender": "Gender",
+  "txt_edit_mode": "Please enable edit mode",
+  "txt_phn_no": "Phone Number",
+  "txt_not_selected": "Not Selected",
+  "txt_enter_location": "Enter Location"
 }

@@ -403,7 +403,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(children :[
-                Text((name == "")? "No Name Set" : name, style:
+                Text((name == "")? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
                 ),
                 IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
@@ -431,7 +431,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
               child: Row(children :[
-                Text((gender == "")? "Gender" : gender, style:
+                Text((gender == "")? AppLocalizations.of(context).translate('gender') : gender, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
                 SizedBox(width: 10,),
                 Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
@@ -446,7 +446,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.call, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((num == "")? "Not Set" : num, style:
+                Text((num == "")? AppLocalizations.of(context).translate('txt_no_email_set') : num, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -459,7 +459,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.email, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((email == "")? "Not Set" : email, style:
+                Text((email == "")? AppLocalizations.of(context).translate('txt_no_email_set') : email, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -471,7 +471,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.language, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((globals.currentUser.languages == "")? "No Name Set" : globals.currentUser.languages, style:
+                Text((globals.currentUser.languages == "")? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -491,7 +491,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                     SizedBox(width: 10,),
                     Expanded(
                       child: Text(
-                        (services == "") ? "No Services Set" : services,
+                        (services == "") ? AppLocalizations.of(context).translate('txt_no_service_set'): services,
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
@@ -512,7 +512,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.location_searching, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((ServiceRadiusHint == "")? "Set Radius" : ServiceRadiusHint, style:
+                Text((ServiceRadiusHint == "")? AppLocalizations.of(context).translate('txt_radius') : ServiceRadiusHint, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -524,7 +524,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Expanded(child: Text((addressString == "")? "No Address Set" : addressString, style:
+                Expanded(child: Text((addressString == "")? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
                   maxLines: 3,)),
 
@@ -535,7 +535,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(children :[
-                Text("Address", style:
+                Text(AppLocalizations.of(context).translate('address'), style:
                 TextStyle(color: Colors.deepOrange,
                     fontWeight: FontWeight.w600,fontSize: 18),),
 
@@ -562,7 +562,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                           SizedBox(width: 10,),
                           Expanded(child: Text(addressListString(globals.currentUser.address[i]), style:
                           TextStyle(color: Colors.deepOrange,
-                              fontWeight: FontWeight.w600,fontSize: 18),),)
+                              fontWeight: FontWeight.w300,fontSize: 16),),)
 
 
                         ]
@@ -831,7 +831,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: (globals.currentUser.first_name == null
                 || globals.currentUser.first_name == "" ) ?
-            "First Name" : globals.currentUser.first_name,
+            AppLocalizations.of(context).translate('signin_firstname_placeholder')  : globals.currentUser.first_name,
                 prefixIcon: Icon(Icons.person, color: Colors.grey,),enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Configurations.themColor),
@@ -843,7 +843,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           // LastName
           TextField(
             focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ? "Last Name" : globals.currentUser.last_name,
+            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ?
+            AppLocalizations.of(context).translate('signin_lastname_placeholder') : globals.currentUser.last_name,
                 prefixIcon: Icon(Icons.person,color: Colors.grey,),enabled: isEditProfile,
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
@@ -857,7 +858,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           TextField(
             focusNode: focus_email,style: (isEditProfile) ?
           TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? "Email" : globals.currentUser.email,
+            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? AppLocalizations.of(context).translate('inquiry_txt_email')  : globals.currentUser.email,
                 prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: isEditProfile,
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
@@ -872,7 +873,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           // PHONE
           TextField(
             focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? "Phone number" : globals.currentUser.contact,
+            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? AppLocalizations.of(context).translate('txt_phn_no')  : globals.currentUser.contact,
               prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile,  labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Configurations.themColor),
@@ -886,7 +887,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             // Gender
             child: TextField(
               decoration: InputDecoration(
-                  hintText: ( gender == null) ? "NOT SELECTED" : globals.currentUser.gender,
+                  hintText: ( gender == null) ? AppLocalizations.of(context).translate('txt_not_selected'): globals.currentUser.gender,
                   prefixIcon: Icon(Icons.face,color: Colors.grey,), enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Configurations.themColor),
@@ -959,15 +960,18 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           // Radius
           if(globals.currentUser.roles[0].slug == "provider")
           TextField(
-            focusNode: focus_radius, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+            focusNode: focus_radius, style: (isEditProfile) ?
+          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: ServiceRadiusHint,
-              prefixIcon: Icon(Icons.location_searching,color: Configurations.themColor),enabled: isEditProfile,
+              prefixIcon: Icon(Icons.location_searching,color: Configurations.themColor),
+              enabled: isEditProfile,
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Configurations.themColor),
               ),),cursorColor: Configurations.themColor,
             controller: (ServiceRadiusHint == "0")
-                ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,keyboardType: TextInputType.number,
+                ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,
+            keyboardType: TextInputType.number,
           ),
 
           // SERVICES
@@ -982,8 +986,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                   leading: Icon(Icons.work),
                   title: Text(
                       (ServiceSelectionUIPageState.serviceNamesString == "")
-                          ? "Select Services"
-                          : "Your Services"),
+                          ? AppLocalizations.of(context).translate('init_services')
+                          : AppLocalizations.of(context).translate('init_your_services')),
                   subtitle:
                   Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
                 ),
@@ -995,7 +999,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             child: TextField(style: TextStyle(color: Colors.grey),
               focusNode: focus_address,
               decoration: InputDecoration(hintText: (addressString == null || addressString == "") ?
-              "NOT SET" : addressString, prefixIcon: Icon(Icons.location_on, color: Colors.grey,),enabled: isEditProfile,
+              AppLocalizations.of(context).translate('txt_no_email_set'): addressString, prefixIcon: Icon(Icons.location_on, color: Colors.grey,),enabled: isEditProfile,
               helperMaxLines: 5, hintMaxLines: 5,
                 labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
@@ -1247,7 +1251,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           children: <Widget>[
             Icon(Icons.location_on),
             Text(
-              "Address",
+              AppLocalizations.of(context)
+                  .translate('address'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.orangeAccent,
@@ -1288,11 +1293,13 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                               if(showMap == true) {
                                 showMap = false;
                                 _markers.clear();
-                                mapAddressTitle = "Enter Location";
+                                mapAddressTitle = AppLocalizations.of(context)
+                                    .translate('txt_enter_location');
                               } else {
 
                                 showMap = true;
-                                mapAddressTitle = "Set Location Map";
+                                mapAddressTitle = AppLocalizations.of(context)
+                                    .translate('profile_txt_location');
 //                                setCustomMapPin(pinLocationIcon).then((onValue) {
 //                                  pinLocationIcon = onValue;
 //                                });

@@ -96,7 +96,18 @@
   "about" : "حول",
   "upload" : "حمل الصورة",
   "otp" : "أدخل OTP",
-  "next": "التالى"
+  "next": "التالى",
+  "txt_no_address_set": "لم يتم تعيين عنوان",
+  "txt_radius": "تعيين نصف القطر",
+  "txt_no_service_set": "لم يتم تعيين خدمات",
+  "txt_no_name_set": "لم يتم تعيين اسم",
+  "txt_no_email_set": "غير مضبوط",
+  "txt_no_lang_set": "لا توجد لغة محددة",
+  "gender": "جنس",
+  "txt_edit_mode": "الرجاء تمكين وضع التحرير",
+  "txt_phn_no": "رقم الهاتف",
+  "txt_not_selected": "لم يتم اختياره",
+  "txt_enter_location": "إدخال الدولة"
 
 
 
