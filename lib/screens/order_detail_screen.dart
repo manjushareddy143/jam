@@ -639,7 +639,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                          builder: (BuildContext context) {
                                    return buildCompleteDialog(context);},)}),),
                              if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
-                                   SizedBox(width: 50,),
+                                   SizedBox(width: 20,),
                              if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
                                    ButtonTheme(
                                        child:  RaisedButton(color: Configurations.themColor,
@@ -647,9 +647,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                         child: Row(
                                           children: <Widget>[
                                                  Icon(Icons.cancel, color: Colors.white, size: 20,),
-                                                   SizedBox(width: 10,),
+                                                   SizedBox(width: 5,),
                                                    Text('Cancel', style: TextStyle(fontSize: 14)
-                                                ),],),
+                                                ),],
+                                        ),
                                              onPressed: () => {
                                                 showDialog(
                                                   context: context,
