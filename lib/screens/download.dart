@@ -18,6 +18,7 @@ class DownLoadHelper {
 
    bool downloading = false;
   Future<String> downloadFile(StateSetter setState, String order_id) async {
+    print(order_id);
     var dirToSave = await getExternalStorageDirectory();
     Dio dio = Dio();
     final invoiceURL = Configurations.INVOICE_GENERATE_URL +  "?id=" + order_id;

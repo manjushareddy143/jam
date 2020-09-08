@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -98,7 +99,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //        appBar: new AppBar(leading: BackButton(color:Colors.black),
 //    backgroundColor: Colors.white,
 //    title: Text("Order Detail", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),),),
-      body: SingleChildScrollView(child: detail()),
+      body: SingleChildScrollView(
+          child: detail()
+      ),
 
       //detailUI(),
 
@@ -124,23 +127,117 @@ class _DetailUIPageState extends State<DetailUIPage> {
               )
           ),
         ),
+        // TITLE
         Positioned(left: 25, top: 120,
           child: Text("ORDER DETAILS", style:
           TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
           ),
         ),
+
         Container(
         alignment: Alignment.bottomCenter,
-     padding: new EdgeInsets.only(
-     top: MediaQuery.of(context).size.height * .22,
-     right: 2.0,
-     left: 2.0),
-        child: Column(
-          children: [
-            CardDetails(),
+        padding: new EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * .22,
+            right: 2.0,
+            left: 2.0),
+          child: Column(
+            children: [
+              CardDetails(),
 
-           // detailUI()
 
+
+              Row(
+                children: <Widget>[
+
+                  if(order.status == 2 && this.isCustomer == false)
+                    Expanded(
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.attach_money, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Submit Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),
+                          ],
+                        ),
+                        onTap:  () => {print("COmplete"),
+                          insertIvoiceDetail(),
+                        },
+                      ),
+                      flex: 2,),
+
+                  SizedBox(width: 2,),
+
+                  if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+                    Expanded(child: Container(
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.cancel, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Cancel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        onTap:  () => {print("COmplete"),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return buildCancelDialog(context);
+                            },
+                          )
+                        },
+                      ),
+                      color: Colors.transparent,
+                    ), flex: 2,),
+
+                  if(order.status == 6 && this.isCustomer == false)
+                    Expanded(child: Container(
+
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.thumb_up, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Complete', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),],),
+                        onTap: () => {print("COmplete"),
+
+                          showDialog(context: context,
+                            builder: (BuildContext context) {
+                              return buildCompleteDialog(context);},)} ,
+                      ), ),flex: 2,),
+
+
+                  if(order.status == 5)
+                    Expanded(child: Container(
+
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.file_download, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Download Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),],),
+                        onTap: () async {
+                          Widget_Helper.showLoading(context);
+                          DownLoadHelper down = new DownLoadHelper();
+                          String status = await down.downloadFile(setState, order.id.toString());
+
+                          Widget_Helper.dismissLoading(context);
+                          final result = await OpenFile.open(status);
+                          printLog(result);
+                        } ,
+                      ),
+                    ),
+                      flex: 2,),
+                ],
+              ),
+
+              SizedBox(height: 20,),
           ],
         ),),
 
@@ -168,8 +265,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
      var status_color = null;
      var status_icon = null;
 
-     switch(order.status)
-     {
+     switch(order.status) {
        case 1: statusString = 'Order Pending';
        status_color = Colors.blue;
        status_icon = Icons.pan_tool;
@@ -219,9 +315,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
        name = order.provider.first_name + " " + order.provider.last_name;
      }
 
-//    print("RAT == ${globals.order.rating}");
+     print(globals.order.rating);
+     String comment = "";
+     if(globals.order.rating != null) {
+       comment = (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+     }
 
-     String comment = "";// (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+
 
      String addressString = "";
      if(globals.order.address != null) {
@@ -236,106 +336,114 @@ class _DetailUIPageState extends State<DetailUIPage> {
        addressString += ", " + globals.order.address.district
            + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
      }
-     return Positioned( left: 5, right: 5, top: 170,
-       child: Container(
-         height: 900.0,
-         margin: EdgeInsets.symmetric(
-           vertical: 16.0,
-           horizontal: 16.0,),
-         decoration: new BoxDecoration(
-           color: Colors.white,
-           shape: BoxShape.rectangle,
-           borderRadius: new BorderRadius.circular(8.0),),
-         child: Padding(
-           padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
-           child: Column(
-             children: [
+     return Container(
+//         color: Colors.grey,
+//         height: 900.0,
+       margin: EdgeInsets.symmetric(
+         vertical: 16.0,
+         horizontal: 16.0,),
+       decoration: new BoxDecoration(
+         color: Colors.white,
+         shape: BoxShape.rectangle,
+         borderRadius: new BorderRadius.circular(10.0),),
 
-               Padding(
-                 padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
-                 child: Row(children :[
-                   Text("Booking Detail", style:
-                   TextStyle(color: Configurations.themColor,
-                       fontWeight: FontWeight.w500,fontSize: 16),),
-                   Expanded(child: Divider(color: Colors.black,
-                     thickness: 0.5,
-                     height: 5,
-                     endIndent: 5.0,
-                     indent: 5.0,
+       child: Column(
+         children: <Widget>[
+           Padding(
+             padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+             child: Column(
+               children: [
+                 // Booking Detail
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
+                   child: Row(children :[
+                     Text("Booking Detail", style:
+                     TextStyle(color: Configurations.themColor,
+                         fontWeight: FontWeight.w500,fontSize: 16),),
+                     Expanded(child: Divider(color: Colors.black,
+                       thickness: 0.5,
+                       height: 5,
+                       endIndent: 5.0,
+                       indent: 5.0,
+                     ),
+                       flex: 0,),
+
+                   ]
                    ),
-                     flex: 0,),
-
-                 ]
                  ),
-               ),
 
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
 
-                       Text("Order ID #  " + globals.order.id.toString(), style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text("Order ID #  " + globals.order.id.toString(), style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
 
-                     ],
-                   )
+                       ],
+                     )
 
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
+                 ),
 
-                       Text("Date:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.booking_date , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
 
-                     ],
-                   )
+                         Text("Date:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text(globals.order.booking_date , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
+                       ],
+                     )
 
-                       Text("Time:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.end_time , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                 ),
 
-                     ],
-                   )
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
 
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
+                         Text("Time:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text(globals.order.end_time , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-                       Text("Order Status:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text( statusString, style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                       ],
+                     )
 
-                     ],
-                   )
+                 ),
 
-               ),
-               Padding(
-                 padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
-                 child: Row(children :[
-                   Text("Service Detail", style:
-                   TextStyle(color: Configurations.themColor,
-                       fontWeight: FontWeight.w700,fontSize: 16),),
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
+
+                         Text("Order Status:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text( statusString, style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
+
+                       ],
+                     )
+
+                 ),
+
+                 // Service Detail
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+                   child: Row(children :[
+                     Text("Service Detail", style:
+                     TextStyle(color: Configurations.themColor,
+                         fontWeight: FontWeight.w700,fontSize: 16),),
 //                          Divider(color: Colors.black,
 //                            thickness: 1,
 //                            height: 5,
@@ -343,162 +451,181 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //                            endIndent: 1.0,
 //                            indent: 1.0,)
 
-                 ]
+                   ]
+                   ),
                  ),
-               ),
 
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
 
-                       Text((this.isCustomer == true) ?"Vendor: " : "Customer: " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text((this.isCustomer == true) ? name : globals.order.orderer_name , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                         Text((this.isCustomer == true) ?"Vendor: " : "Customer: " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text((this.isCustomer == true) ? name : globals.order.orderer_name , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-                     ],
-                   )
-
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
-
-                       Text("Services:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.service.name , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
-
-                     ],
-                   )
-
-               ),
-               if(globals.order.category != null)
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
-
-                       Text("Category:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.category.name , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
-
-                     ],
-                   )
-
-               ),
-               Visibility(visible: isRatingDisplay,
-                 child:Column(
-                   mainAxisAlignment: MainAxisAlignment.start,
-//              crossAxisAlignment: CrossAxisAlignment.start,
-                   children: <Widget>[
-                     Column(
-                       children: <Widget>[
-                         Padding(
-                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                           child:
-                           SmoothStarRating(
-                             allowHalfRating: false,
-                             starCount: 5,
-                             rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
-                             size: 20.0,
-                             filledIconData: Icons.star,
-                             halfFilledIconData: Icons.star,
-                             color: Colors.amber,
-                             borderColor: Colors.amber,
-                             spacing:0.0,
-                             onRatingChanged: (v) {
-                               setState(() {
-                                 printLog("RATE :: $v");
-                               });
-                             },
-                           ),
-                         ),
-                         Padding(
-                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                           child: Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
-                             overflow: TextOverflow.ellipsis,
-                             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
-                         ),
                        ],
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                mainAxisAlignment: MainAxisAlignment.center,
-                     ),
-                     Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
-                       overflow: TextOverflow.ellipsis,
-                       style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
-                   ],
+                     )
+
                  ),
 
-               ),
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
 
-               /// SHOW OTP
-               if((order.status == 6 || order.status == 2) && this.isCustomer == true)
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: <Widget>[
-                     Visibility(child:
-                     Padding(
-                         padding: EdgeInsets.fromLTRB(0, 0, 0,0),
-                         child: OutlineButton(onPressed: () => {
-                           showBookingOTP()
-                         }, child: Text("GET OTP"),
-                             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                             borderSide: BorderSide(color: Configurations.themColor)
-                         )
-                     ),
-                       visible: !showOTP,
-                     ),
+                         Text("Services:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text(globals.order.service.name , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-                     Visibility(child: Row(
+                       ],
+                     )
+
+                 ),
+
+                 if(globals.order.category != null)
+                   Padding(
+                       padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                       child: Row(
+                         children: [
+
+                           Text("Category:  " , style:
+                           TextStyle(color: Colors.black,
+                               fontWeight: FontWeight.w500,fontSize: 14),),
+                           Text(globals.order.category.name , style:
+                           TextStyle(color: Colors.black,
+                               fontWeight: FontWeight.w300,fontSize: 14),)
+
+                         ],
+                       )
+
+                   ),
+
+                 Visibility(visible: isRatingDisplay,
+                   child:Column(
+                     mainAxisAlignment: MainAxisAlignment.start,
+//              crossAxisAlignment: CrossAxisAlignment.start,
+                     children: <Widget>[
+                       SizedBox(height: 10,),
+                       SmoothStarRating(
+                         allowHalfRating: false,
+                         starCount: 5,
+                         rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
+                         size: 20.0,
+                         filledIconData: Icons.star,
+                         halfFilledIconData: Icons.star,
+                         color: Colors.amber,
+                         borderColor: Colors.amber,
+                         spacing:0.0,
+                         onRatingChanged: (v) {
+                           setState(() {
+                             printLog("RATE :: $v");
+                           });
+                         },
+                       ),
+                       Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
+                         overflow: TextOverflow.ellipsis,
+                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+//                       Column(
+//                         children: <Widget>[
+//                           Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+//                             child:
+//                             ,
+//                           ),
+//                           Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+//                             child:
+//                           ),
+//                         ],
+////                  crossAxisAlignment: CrossAxisAlignment.center,
+////                mainAxisAlignment: MainAxisAlignment.center,
+//                       ),
+//                       Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
+//                         overflow: TextOverflow.ellipsis,
+//                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+                     ],
+                   ),
+
+                 ),
+
+                 /// SHOW OTP
+                 if((order.status == 6 || order.status == 2) && this.isCustomer == true)
+                   Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: <Widget>[
+                       Visibility(child:
+                       Padding(
+                           padding: EdgeInsets.fromLTRB(0, 0, 0,0),
+                           child: OutlineButton(onPressed: () => {
+                             showBookingOTP()
+                           }, child: Text("GET OTP"),
+//                               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                             borderSide: BorderSide(style: BorderStyle.solid, color: Configurations.themColor),
+                           )
+                       ),
+                         visible: !showOTP,
+                       ),
+
+                       Visibility(child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           SizedBox(height: 50,),
+                           Text("OTP: ", style: TextStyle(fontWeight: FontWeight.bold),),
+                           Text(globals.order.otp.toString(),  style: TextStyle(fontWeight: FontWeight.w400)),
+                         ],
+                       ),
+                         visible: showOTP,),
+
+
+                     ],
+                   ),
+
+                 if(isRatingDisplay == true)
+                 SizedBox(height: 10,),
+
+                 if(order.status == 5 && this.isCustomer == true)
+                   Visibility(visible: !isRatingDisplay,
+                     child: Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
                        mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
-                         SizedBox(height: 50,),
-                         Text("OTP: ", style: TextStyle(fontWeight: FontWeight.bold),),
-                         Text(globals.order.otp.toString(),  style: TextStyle(fontWeight: FontWeight.w400)),
-                       ],
-                     ),
-                       visible: showOTP,),
 
+                         OutlineButton(
+                           borderSide: BorderSide(style: BorderStyle.solid, color: Configurations.themColor),
 
-                   ],
-                 ),
-
-               if(order.status == 5 && this.isCustomer == true)
-                 Visibility(visible: !isRatingDisplay,
-                   child: Row(
-                     children: <Widget>[
-                       Padding(
-                           padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                           child: FlatButton(onPressed: () => {
+                           onPressed: () => {
                              showDialog(
                                context: context,
                                builder: (BuildContext context) {
                                  return buildRatingDialog(context);
-
                                },
                              )
-                           }, child: Text("Submit Rating"))
-                       ),
-                     ],
-                   ),
-                 ),
+                           },
+                           child: Text("Submit Rating"),
 
-               Padding(
-                 padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
-                 child: Row(children :[
-                   Text("Customer Address", style:
-                   TextStyle(color: Configurations.themColor,
-                       fontWeight: FontWeight.w700,fontSize: 16),),
+                         ),
+
+//                         Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 10, 10,10),
+//                             child:
+//                         ),
+                       ],
+                     ),
+                   ),
+
+                 Padding(
+                   padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
+                   child: Row(children :[
+                     Text("Customer Address", style:
+                     TextStyle(color: Configurations.themColor,
+                         fontWeight: FontWeight.w700,fontSize: 16),),
 //                          Divider(color: Colors.black,
 //                            thickness: 1,
 //                            height: 5,
@@ -506,165 +633,199 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //                            endIndent: 1.0,
 //                            indent: 1.0,)
 
-                 ]
+                   ]
+                   ),
                  ),
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
-                       Icon( Icons.location_on, color: Configurations.themColor,
-                         size: 18,),
-                       SizedBox(width: 5,),
-                       Text("Address:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Flexible(
-                         child: Text(addressString , maxLines:2,style:
+
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
+                         Icon( Icons.location_on, color: Configurations.themColor,
+                           size: 18,),
+                         SizedBox(width: 5,),
+                         Text("Address:  " , style:
                          TextStyle(color: Colors.black,
-                             fontWeight: FontWeight.w300,fontSize: 13),),
-                       )
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Flexible(
+                           child: Text(addressString , maxLines:2,style:
+                           TextStyle(color: Colors.black,
+                               fontWeight: FontWeight.w300,fontSize: 13),),
+                         )
 
-                     ],
-                   )
+                       ],
+                     )
 
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
-                       Icon( Icons.mail_outline, color: Configurations.themColor,
-                         size: 18,),
-                       SizedBox(width: 5,),
-                       Text("Email:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.email, style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                 ),
 
-                     ],
-                   )
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
+                         Icon( Icons.mail_outline, color: Configurations.themColor,
+                           size: 18,),
+                         SizedBox(width: 5,),
+                         Text("Email:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text(globals.order.email, style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-               ),
-               Padding(
-                   padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-                   child: Row(
-                     children: [
-                       Icon( Icons.phone_in_talk, color: Configurations.themColor,
-                         size: 18,),
-                       SizedBox(width: 5,),
-                       Text("Number:  " , style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w500,fontSize: 14),),
-                       Text(globals.order.contact, style:
-                       TextStyle(color: Colors.black,
-                           fontWeight: FontWeight.w300,fontSize: 14),)
+                       ],
+                     )
 
-                     ],
-                   )
+                 ),
 
-               ),
-                Visibility(child: invoiceDetails(),
-                  visible: (order.status == 6 || order.status == 5) ? true : false,),
+                 Padding(
+                     padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
+                     child: Row(
+                       children: [
+                         Icon( Icons.phone_in_talk, color: Configurations.themColor,
+                           size: 18,),
+                         SizedBox(width: 5,),
+                         Text("Number:  " , style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w500,fontSize: 14),),
+                         Text(globals.order.contact, style:
+                         TextStyle(color: Colors.black,
+                             fontWeight: FontWeight.w300,fontSize: 14),)
 
-                    if(order.status == 5)
-                 ButtonTheme(
-                    minWidth: 270.0,
-                       child:  RaisedButton(
-                               color: Configurations.themColor,
-                                  textColor: Colors.white,
-                                      child: const Text(
-                                            'Download Invoice',
-                                            style: TextStyle(fontSize: 16.5)
-                                               ),
-                                          onPressed: () async {
-                                          Widget_Helper.showLoading(context);
-                                          DownLoadHelper down = new DownLoadHelper();
-                                         String status = await down.downloadFile(setState, order.id.toString());
-                                           Widget_Helper.dismissLoading(context);
-                                         final result = await OpenFile.open(status);
-                                           },
-                                             ),
-                                       ),
-               Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                       if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
-                         ButtonTheme(
-                                 child:  RaisedButton(
-                                          color: Configurations.themColor,
-                                        textColor: Colors.white,
-                                         child: Row(
-                                         children: <Widget>[
-                                             Icon(Icons.check_circle, color: Colors.white, size: 20,),
-                                               SizedBox(width: 10,),
-                                           Text('Accept', style: TextStyle(fontSize: 14)
-                                               ),],),
-                                     onPressed: () => {print("Accept"),
-                                        orderAccept()}),),
+                       ],
+                     )
 
-                          if(order.status == 2 && this.isCustomer == false)
-                             ButtonTheme(child:  RaisedButton(
-                                 color: Configurations.themColor,
-                                      textColor: Colors.white,
-                                 child: Row(
-                                   children: <Widget>[
-                                             Icon(Icons.attach_money, color: Colors.white, size: 20,),
-                                              SizedBox(width: 8,),
-                                              Text('Submit Invoice', style: TextStyle(fontSize: 14)
-                                               ),],),
-                                           onPressed: () => {print("COmplete"),
-                                          insertIvoiceDetail(),
-//                         showDialog(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return buildCompleteDialog(context);
+                 ),
+
+                 Visibility(child: invoiceDetails(),
+                   visible: (order.status == 6 || order.status == 5) ? true : false,),
+
+
+
+
+
+
+
+               ],
+             ),
+           ),
+
+           SizedBox(height: 20,),
+
+           Row(
+
+             mainAxisAlignment: MainAxisAlignment.center,
+//             crossAxisAlignment: CrossAxisAlignment.center,
+             children: <Widget>[
+               if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+                 Expanded(child: ButtonTheme(
+                   height: 50,
+                   child:  RaisedButton(
+                       color: Hexcolor('#70AF0D'),
+                       textColor: Colors.white,
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Icon(Icons.check_circle, color: Colors.white, size: 20,),
+                           SizedBox(width: 10,),
+                           Text('Accept', style: TextStyle(fontSize: 14)
+                           ),],),
+                       onPressed: () => {print("Accept"),
+                         orderAccept()}),), flex: 2,),
+
+               if(order.status == 2)
+                 Expanded(child: ButtonTheme(
+                   height: 50,
+                   child:  RaisedButton(
+                       color: Hexcolor('#70AF0D'),
+                       textColor: Colors.white,
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Icon(Icons.check_circle, color: Colors.white, size: 20,),
+                           SizedBox(width: 10,),
+                           Text('Accept', style: TextStyle(fontSize: 14)
+                           ),],),
+                       onPressed: () => {
+                         print("Accept"),
+//                         orderAccept()
+                       }
+                       ),
+                 ),
+                   flex: 2,),
+//                 Expanded(
+//                   child:
+//                 ButtonTheme(height: 50, child:  RaisedButton(
+//                     color: Configurations.themColor,
+//                     textColor: Colors.white,
 //
-//                           },
-//                         )
-                        }),),
-                          if(order.status == 6 && this.isCustomer == false)
-                             ButtonTheme(
-                              child:  RaisedButton(color: Configurations.themColor,
-                                textColor: Colors.white,
-                                     child: Row(children: <Widget>[
-                                        Icon(Icons.thumb_up, color: Colors.white, size: 20,),
-                                          SizedBox(width: 8,),
-                                         Text('Complete', style: TextStyle(fontSize: 14)
-                                          ),],),
-                                   onPressed: () => {print("COmplete"),
+//                     child: Row(
+//                       children: <Widget>[
+//                         Icon(Icons.attach_money, color: Colors.white, size: 20,),
+//                         SizedBox(width: 8,),
+//                         Text('Submit Invoice', style: TextStyle(fontSize: 14)
+//                         ),],),
+//                     onPressed: () => {print("COmplete"),
+//                       insertIvoiceDetail(),
+//                     })), flex: 2,),
 
-                                           showDialog(context: context,
-                                         builder: (BuildContext context) {
-                                   return buildCompleteDialog(context);},)}),),
-                             if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
-                                   SizedBox(width: 50,),
-                             if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
-                                   ButtonTheme(
-                                       child:  RaisedButton(color: Configurations.themColor,
-                                         textColor: Colors.white,
-                                        child: Row(
-                                          children: <Widget>[
-                                                 Icon(Icons.cancel, color: Colors.white, size: 20,),
-                                                   SizedBox(width: 10,),
-                                                   Text('Cancel', style: TextStyle(fontSize: 14)
-                                                ),],),
-                                             onPressed: () => {
-                                                showDialog(
-                                                  context: context,
-                                                 builder: (BuildContext context) {
-                                                 return buildCancelDialog(context);
-                                                 },)}),
-                                ), ],)
+//               if(order.status == 6 && this.isCustomer == false)
+//                 Expanded(child: ButtonTheme(
+//                   height: 50,
+//                   child:  RaisedButton(color: Configurations.themColor,
+//                       textColor: Colors.white,
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: <Widget>[
+//                         Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+//                         SizedBox(width: 8,),
+//                         Text('Complete', style: TextStyle(fontSize: 14)
+//                         ),],),
+//                       onPressed: () => {print("COmplete"),
+//
+//                         showDialog(context: context,
+//                           builder: (BuildContext context) {
+//                             return buildCompleteDialog(context);},)}),),flex: 2,),
 
+               if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+                 SizedBox(width: 2,),
 
-
+               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6 && order.status != 2)
+                 Expanded(child: ButtonTheme(
+                   height: 50,
+                   child:  RaisedButton(color: Hexcolor('#C12E0A'),
+                       textColor: Colors.white,
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Icon(Icons.cancel, color: Colors.white, size: 20,),
+                           SizedBox(width: 5,),
+                           Text('Cancel', style: TextStyle(fontSize: 14)
+                           ),],
+                       ),
+                       onPressed: () => {
+                         showDialog(
+                           context: context,
+                           builder: (BuildContext context) {
+                             return buildCancelDialog(context);
+                           },
+                         )
+                       }
+                   ),
+                 ), flex: 2,)
              ],
            ),
-         ),
 
-       ),
+
+
+
+
+
+
+
+         ],
+       )
+
+
      );
    }
 
@@ -1590,6 +1751,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         print("status change");
+        Navigator.of(context).pop();
         ///////// change globale variable
         setState(() {
           if(globals.currentUser.roles[0].slug == "provider") {
@@ -1608,7 +1770,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
           }
         });
 
-        Navigator.of(context).pop();
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);
@@ -1806,7 +1967,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           Flexible(
                             child: Container(height: 30, width: 40,
 
-                              child: TextFormField(controller:wrking_hr,cursorColor: Configurations.themColor,
+                              child: TextFormField(
+                                controller:wrking_hr,
+                                textAlign: TextAlign.right,
+                                cursorColor: Configurations.themColor,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Configurations.themColor)
                                 ), labelStyle: TextStyle(color: Colors.grey),
@@ -1899,7 +2063,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       Flexible(
                                         child: Container(height: 30, width: 40,
 
-                                          child: TextField(controller: mtrl_qty..text='0',
+                                          child: TextField(
+                                            controller: mtrl_qty..text='0',
+                                            textAlign: TextAlign.right,
+//                                            textDirection: TextDirection.rtl,
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Configurations.themColor)
                                             ), labelStyle: TextStyle(color: Colors.grey),
@@ -1926,7 +2093,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                         child: Container(height: 30, width: 40,
 
                                           child: TextField(
-
+                                            textAlign: TextAlign.right,
                                             controller: mtrl_price..text='0',
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
@@ -1964,7 +2131,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Discount:"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(
+                                textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -1987,7 +2156,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Tax:"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -2011,7 +2181,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Additional Charge"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),  labelStyle: TextStyle(color: Colors.grey),
                                 focusedBorder: UnderlineInputBorder(
@@ -2087,7 +2258,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print("data::::::::$data");
-        getOrderDetail();
+        setState(() {
+          getOrderDetail();
+        });
+
         printLog('reached here');
         Navigator.of(context).pop();
       }

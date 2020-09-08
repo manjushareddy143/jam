@@ -201,7 +201,6 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     var status_icon = null;
 
 
-    print("image === ${order.provider.image}");
     String img = "";
 //    (order.provider.image != null && order.provider.image.contains("http"))
 //        ? order.provider.image : Configurations.BASE_URL +order.provider.image;
@@ -221,8 +220,6 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       img = (order.provider.organisation.logo != null && order.provider.organisation.logo.contains("http"))
           ? order.provider.organisation.logo : Configurations.BASE_URL +order.provider.organisation.logo;
     }
-
-    print("IM == ${img}");
 
     switch(order.status)
     {
