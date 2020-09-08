@@ -143,6 +143,101 @@ class _DetailUIPageState extends State<DetailUIPage> {
           child: Column(
             children: [
               CardDetails(),
+
+
+
+              Row(
+                children: <Widget>[
+
+                  if(order.status == 2 && this.isCustomer == false)
+                    Expanded(
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.attach_money, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Submit Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),
+                          ],
+                        ),
+                        onTap:  () => {print("COmplete"),
+                          insertIvoiceDetail(),
+                        },
+                      ),
+                      flex: 2,),
+
+                  SizedBox(width: 2,),
+
+                  if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+                    Expanded(child: Container(
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.cancel, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Cancel', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        onTap:  () => {print("COmplete"),
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return buildCancelDialog(context);
+                            },
+                          )
+                        },
+                      ),
+                      color: Colors.transparent,
+                    ), flex: 2,),
+
+                  if(order.status == 6 && this.isCustomer == false)
+                    Expanded(child: Container(
+
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.thumb_up, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Complete', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),],),
+                        onTap: () => {print("COmplete"),
+
+                          showDialog(context: context,
+                            builder: (BuildContext context) {
+                              return buildCompleteDialog(context);},)} ,
+                      ), ),flex: 2,),
+
+
+                  if(order.status == 5)
+                    Expanded(child: Container(
+
+                      child: GestureDetector(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.file_download, color: Configurations.themColor, size: 20,),
+                            SizedBox(width: 8,),
+                            Text('Download Invoice', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            ),],),
+                        onTap: () async {
+                          Widget_Helper.showLoading(context);
+                          DownLoadHelper down = new DownLoadHelper();
+                          String status = await down.downloadFile(setState, order.id.toString());
+
+                          Widget_Helper.dismissLoading(context);
+                          final result = await OpenFile.open(status);
+                          printLog(result);
+                        } ,
+                      ),
+                    ),
+                      flex: 2,),
+                ],
+              ),
+
+              SizedBox(height: 20,),
           ],
         ),),
 
@@ -220,9 +315,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
        name = order.provider.first_name + " " + order.provider.last_name;
      }
 
-//    print("RAT == ${globals.order.rating}");
+     print(globals.order.rating);
+     String comment = "";
+     if(globals.order.rating != null) {
+       comment = (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+     }
 
-     String comment = "";// (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+
 
      String addressString = "";
      if(globals.order.address != null) {
@@ -413,41 +512,44 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      mainAxisAlignment: MainAxisAlignment.start,
 //              crossAxisAlignment: CrossAxisAlignment.start,
                      children: <Widget>[
-                       Column(
-                         children: <Widget>[
-                           Padding(
-                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                             child:
-                             SmoothStarRating(
-                               allowHalfRating: false,
-                               starCount: 5,
-                               rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
-                               size: 20.0,
-                               filledIconData: Icons.star,
-                               halfFilledIconData: Icons.star,
-                               color: Colors.amber,
-                               borderColor: Colors.amber,
-                               spacing:0.0,
-                               onRatingChanged: (v) {
-                                 setState(() {
-                                   printLog("RATE :: $v");
-                                 });
-                               },
-                             ),
-                           ),
-                           Padding(
-                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                             child: Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
-                               overflow: TextOverflow.ellipsis,
-                               style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
-                           ),
-                         ],
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                mainAxisAlignment: MainAxisAlignment.center,
+                       SizedBox(height: 10,),
+                       SmoothStarRating(
+                         allowHalfRating: false,
+                         starCount: 5,
+                         rating: (globals.order.rating == null)? 0.0 : globals.order.rating.rating.floorToDouble(),
+                         size: 20.0,
+                         filledIconData: Icons.star,
+                         halfFilledIconData: Icons.star,
+                         color: Colors.amber,
+                         borderColor: Colors.amber,
+                         spacing:0.0,
+                         onRatingChanged: (v) {
+                           setState(() {
+                             printLog("RATE :: $v");
+                           });
+                         },
                        ),
-                       Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
+                       Text((globals.order.rating == null) ? "" : comment,textAlign: TextAlign.left,
                          overflow: TextOverflow.ellipsis,
                          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
+//                       Column(
+//                         children: <Widget>[
+//                           Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+//                             child:
+//                             ,
+//                           ),
+//                           Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
+//                             child:
+//                           ),
+//                         ],
+////                  crossAxisAlignment: CrossAxisAlignment.center,
+////                mainAxisAlignment: MainAxisAlignment.center,
+//                       ),
+//                       Text((globals.order.comment == null) ? "" : globals.order.comment,textAlign: TextAlign.left,
+//                         overflow: TextOverflow.ellipsis,
+//                         style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.0,color: Colors.blueGrey),),
                      ],
                    ),
 
@@ -464,8 +566,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            child: OutlineButton(onPressed: () => {
                              showBookingOTP()
                            }, child: Text("GET OTP"),
-                               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-                               borderSide: BorderSide(color: Configurations.themColor)
+//                               shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                             borderSide: BorderSide(style: BorderStyle.solid, color: Configurations.themColor),
                            )
                        ),
                          visible: !showOTP,
@@ -485,22 +587,35 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      ],
                    ),
 
+                 if(isRatingDisplay == true)
+                 SizedBox(height: 10,),
+
                  if(order.status == 5 && this.isCustomer == true)
                    Visibility(visible: !isRatingDisplay,
                      child: Row(
+//                       crossAxisAlignment: CrossAxisAlignment.center,
+                       mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
-                         Padding(
-                             padding: EdgeInsets.fromLTRB(70, 5, 10,10),
-                             child: FlatButton(onPressed: () => {
-                               showDialog(
-                                 context: context,
-                                 builder: (BuildContext context) {
-                                   return buildRatingDialog(context);
 
-                                 },
-                               )
-                             }, child: Text("Submit Rating"))
+                         OutlineButton(
+                           borderSide: BorderSide(style: BorderStyle.solid, color: Configurations.themColor),
+
+                           onPressed: () => {
+                             showDialog(
+                               context: context,
+                               builder: (BuildContext context) {
+                                 return buildRatingDialog(context);
+                               },
+                             )
+                           },
+                           child: Text("Submit Rating"),
+
                          ),
+
+//                         Padding(
+//                             padding: EdgeInsets.fromLTRB(70, 10, 10,10),
+//                             child:
+//                         ),
                        ],
                      ),
                    ),
@@ -584,25 +699,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  Visibility(child: invoiceDetails(),
                    visible: (order.status == 6 || order.status == 5) ? true : false,),
 
-                 if(order.status == 5)
-                   ButtonTheme(
-                     minWidth: 270.0,
-                     child:  RaisedButton(
-                       color: Configurations.themColor,
-                       textColor: Colors.white,
-                       child: const Text(
-                           'Download Invoice',
-                           style: TextStyle(fontSize: 16.5)
-                       ),
-                       onPressed: () async {
-                         Widget_Helper.showLoading(context);
-                         DownLoadHelper down = new DownLoadHelper();
-                         String status = await down.downloadFile(setState, order.id.toString());
-                         Widget_Helper.dismissLoading(context);
-                         final result = await OpenFile.open(status);
-                       },
-                     ),
-                   ),
+
 
 
 
@@ -635,50 +732,64 @@ class _DetailUIPageState extends State<DetailUIPage> {
                        onPressed: () => {print("Accept"),
                          orderAccept()}),), flex: 2,),
 
-               if(order.status == 2 && this.isCustomer == false)
-                 Expanded(
-                   child:
-                 ButtonTheme(height: 50, child:  RaisedButton(
-                     color: Configurations.themColor,
-                     textColor: Colors.white,
-
-                     child: Row(
-                       children: <Widget>[
-                         Icon(Icons.attach_money, color: Colors.white, size: 20,),
-                         SizedBox(width: 8,),
-                         Text('Submit Invoice', style: TextStyle(fontSize: 14)
-                         ),],),
-                     onPressed: () => {print("COmplete"),
-                       insertIvoiceDetail(),
-//                         showDialog(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return buildCompleteDialog(context);
-//
-//                           },
-//                         )
-                     })), flex: 2,),
-
-               if(order.status == 6 && this.isCustomer == false)
+               if(order.status == 2)
                  Expanded(child: ButtonTheme(
                    height: 50,
-                   child:  RaisedButton(color: Configurations.themColor,
+                   child:  RaisedButton(
+                       color: Hexcolor('#70AF0D'),
                        textColor: Colors.white,
-                       child: Row(children: <Widget>[
-                         Icon(Icons.thumb_up, color: Colors.white, size: 20,),
-                         SizedBox(width: 8,),
-                         Text('Complete', style: TextStyle(fontSize: 14)
-                         ),],),
-                       onPressed: () => {print("COmplete"),
+                       child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: <Widget>[
+                           Icon(Icons.check_circle, color: Colors.white, size: 20,),
+                           SizedBox(width: 10,),
+                           Text('Accept', style: TextStyle(fontSize: 14)
+                           ),],),
+                       onPressed: () => {
+                         print("Accept"),
+//                         orderAccept()
+                       }
+                       ),
+                 ),
+                   flex: 2,),
+//                 Expanded(
+//                   child:
+//                 ButtonTheme(height: 50, child:  RaisedButton(
+//                     color: Configurations.themColor,
+//                     textColor: Colors.white,
+//
+//                     child: Row(
+//                       children: <Widget>[
+//                         Icon(Icons.attach_money, color: Colors.white, size: 20,),
+//                         SizedBox(width: 8,),
+//                         Text('Submit Invoice', style: TextStyle(fontSize: 14)
+//                         ),],),
+//                     onPressed: () => {print("COmplete"),
+//                       insertIvoiceDetail(),
+//                     })), flex: 2,),
 
-                         showDialog(context: context,
-                           builder: (BuildContext context) {
-                             return buildCompleteDialog(context);},)}),),flex: 2,),
+//               if(order.status == 6 && this.isCustomer == false)
+//                 Expanded(child: ButtonTheme(
+//                   height: 50,
+//                   child:  RaisedButton(color: Configurations.themColor,
+//                       textColor: Colors.white,
+//                       child: Row(
+//                         mainAxisAlignment: MainAxisAlignment.center,
+//                         children: <Widget>[
+//                         Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+//                         SizedBox(width: 8,),
+//                         Text('Complete', style: TextStyle(fontSize: 14)
+//                         ),],),
+//                       onPressed: () => {print("COmplete"),
+//
+//                         showDialog(context: context,
+//                           builder: (BuildContext context) {
+//                             return buildCompleteDialog(context);},)}),),flex: 2,),
 
                if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
                  SizedBox(width: 2,),
 
-               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6 && order.status != 2)
                  Expanded(child: ButtonTheme(
                    height: 50,
                    child:  RaisedButton(color: Hexcolor('#C12E0A'),
@@ -704,29 +815,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
              ],
            ),
 
-           SizedBox(height: 50,),
 
-           if(order.status == 2 && this.isCustomer == false)
-             ButtonTheme(child:  RaisedButton(
-                 color: Configurations.themColor,
-                 textColor: Colors.white,
 
-                 child: Row(
-                   children: <Widget>[
-                     Icon(Icons.attach_money, color: Colors.white, size: 20,),
-                     SizedBox(width: 8,),
-                     Text('Submit Invoice', style: TextStyle(fontSize: 14)
-                     ),],),
-                 onPressed: () => {print("COmplete"),
-                   insertIvoiceDetail(),
-//                         showDialog(
-//                           context: context,
-//                           builder: (BuildContext context) {
-//                             return buildCompleteDialog(context);
-//
-//                           },
-//                         )
-                 })),
+
+
+
+
 
          ],
        )
@@ -1657,6 +1751,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         print("status change");
+        Navigator.of(context).pop();
         ///////// change globale variable
         setState(() {
           if(globals.currentUser.roles[0].slug == "provider") {
@@ -1675,7 +1770,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
           }
         });
 
-        Navigator.of(context).pop();
       } else {
         printLog("login response code is not 200");
         var data = json.decode(res.body);
@@ -1873,7 +1967,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                           Flexible(
                             child: Container(height: 30, width: 40,
 
-                              child: TextFormField(controller:wrking_hr,cursorColor: Configurations.themColor,
+                              child: TextFormField(
+                                controller:wrking_hr,
+                                textAlign: TextAlign.right,
+                                cursorColor: Configurations.themColor,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(color: Configurations.themColor)
                                 ), labelStyle: TextStyle(color: Colors.grey),
@@ -1966,7 +2063,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       Flexible(
                                         child: Container(height: 30, width: 40,
 
-                                          child: TextField(controller: mtrl_qty..text='0',
+                                          child: TextField(
+                                            controller: mtrl_qty..text='0',
+                                            textAlign: TextAlign.right,
+//                                            textDirection: TextDirection.rtl,
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(color: Configurations.themColor)
                                             ), labelStyle: TextStyle(color: Colors.grey),
@@ -1993,7 +2093,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                         child: Container(height: 30, width: 40,
 
                                           child: TextField(
-
+                                            textAlign: TextAlign.right,
                                             controller: mtrl_price..text='0',
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(enabledBorder: OutlineInputBorder(
@@ -2031,7 +2131,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Discount:"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(
+                                textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -2054,7 +2156,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Tax:"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),
                                 labelStyle: TextStyle(color: Colors.grey),
@@ -2078,7 +2181,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text("Additional Charge"),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField( decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                              child: TextField(textAlign: TextAlign.right,
+                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Configurations.themColor)
                               ),  labelStyle: TextStyle(color: Colors.grey),
                                 focusedBorder: UnderlineInputBorder(
@@ -2154,7 +2258,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print("data::::::::$data");
-        getOrderDetail();
+        setState(() {
+          getOrderDetail();
+        });
+
         printLog('reached here');
         Navigator.of(context).pop();
       }
