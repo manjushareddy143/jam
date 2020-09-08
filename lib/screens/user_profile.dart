@@ -246,6 +246,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     print("isEditProfile = ${isEditProfile}");
 
+    EdgeInsets margin1 = EdgeInsets.only(left: MediaQuery.of(context).size.width - 100,top: 50);
+    EdgeInsets margin2 = EdgeInsets.only(left: MediaQuery.of(context).size.width - 50, top: 50);
+
+    if(globals.localization == 'ar_SA') {
+      margin1 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 100,top: 50);
+      margin2 = EdgeInsets.only(right: MediaQuery.of(context).size.width - 50, top: 50);
+    }
+
     return Stack(
 
       children:
@@ -271,13 +279,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
         if(isEditProfile)
-        Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width - 100,top: 50),
+        Padding(padding: margin1,
 
         child: IconButton(icon: Icon(Icons.done, size: 30, color: Configurations.themColor,), onPressed: ()=> {
           validateform()
         }),),
 
-        Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width - 50, top: 50),
+        Padding(padding: margin2,
 
           child: IconButton(icon: Icon(Icons.exit_to_app, size: 30, color: Configurations.themColor, ), onPressed: ()=> {
             logOut_app()
@@ -602,40 +610,54 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
   }
 
   Widget setProfilePic(){
-    return Positioned( top: 30, right: 20,
-      child: Container(
 
-        child: GestureDetector(
-          onTap: () {
-            print("object");
-            if(isEditProfile) {
-              getImage();
-            }else {
-              showInfoAlert(context, "Please enable edit mode");
-            }
-
-          }, // handle your image tap here
-        ),
-        width: 120.0,
-        height: 120.0,
-        decoration: BoxDecoration(
-          image:
-          DecorationImage(
-            image:
-            (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Configurations.themColor,
-            width: 0.9,
-          ),
-        ),
-      ),
-    );
+    if(globals.localization == 'ar_SA') {
+      return Positioned(
+        top: 30,
+        left: 20,
+        child: profileImageView(),
+      );
+    } else {
+      return Positioned(
+        top: 30,
+        right: 20,
+        child: profileImageView(),
+      );
+    }
 
   }
 
+  Widget profileImageView() {
+    return Container(
+
+      child: GestureDetector(
+        onTap: () {
+          print("object");
+          if(isEditProfile) {
+            getImage();
+          }else {
+            showInfoAlert(context, "Please enable edit mode");
+          }
+
+        }, // handle your image tap here
+      ),
+      width: 120.0,
+      height: 120.0,
+      decoration: BoxDecoration(
+        image:
+        DecorationImage(
+          image:
+          (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(80.0),
+        border: Border.all(
+          color: Configurations.themColor,
+          width: 0.9,
+        ),
+      ),
+    );
+  }
 
 
   Widget myProfileUI() {
