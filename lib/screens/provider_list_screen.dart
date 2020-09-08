@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
@@ -139,13 +141,8 @@ class _ProviderListState extends State<ProviderListPage> {
                 color: Colors.white,
               ),
             ),
-//            actions: [
-//              Padding(
-//                padding: const EdgeInsets.all(10.0),
-//                child: Icon(Icons.search),
-//              )
-//            ],
           ),
+
           body: SingleChildScrollView(
             child: Column(
               children: listOfCards(),
@@ -173,13 +170,6 @@ class _ProviderListState extends State<ProviderListPage> {
   List<Widget> listOfCards() {
     List<Widget> list = new List();
 
-//    list.add(Image.network(
-//      this.service.banner_image,
-//      fit: BoxFit.fill,
-//      width: MediaQuery. of(context). size. width,
-//      height: 100,
-//    ));
-//
     if(this.service.categories.length > 0) {
       list.add(
           Row(
@@ -202,7 +192,6 @@ class _ProviderListState extends State<ProviderListPage> {
 
 
     for(int providerCount = 0; providerCount< listofProviders.length; providerCount++) {
-      print("listofProviders === ${listofProviders[providerCount]}");
         User user = listofProviders[providerCount];
         list.add(setupCard(user, service));
     }
@@ -243,40 +232,58 @@ class _ProviderListState extends State<ProviderListPage> {
 
       name = user.first_name;
     }
-    return
-      Container(
-                height: 80.0,
-                margin: const EdgeInsets.symmetric(
-                vertical: 16.0,
-                horizontal: 24.0,
+    return new Container(
+        height: 80.0,
+
+        margin: const EdgeInsets.symmetric(
+          vertical: 16.0,
+          horizontal: 24.0,
+
+        ),
+
+        child: Stack(
+          alignment: Alignment.centerLeft,
+
+          children: <Widget>[
+            GestureDetector(
+              child: vendorCard(user, service, capitalize(name)),
+              onTap: ()=> {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute (
+                        builder: (context) =>
+                            VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
+                    )
+                ),
+              },
             ),
-    child: new Stack(
-    children: <Widget>[
-          GestureDetector(
-            child: vendorCard(user, service, capitalize(name)),
-            onTap: ()=> {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute (
-                      builder: (context) =>
-                          VendorProfileUIPage(provider: user, service: service, category: selectedSubCategory,) //provider.service
-                  )
-              ),
-            },
-          ),
-          vendorThumbnail(img, user),
-      ],
-    )
+            vendorThumbnail(img, user)
+          ],
+        ),
+
+
+
      );
   }
 
   Widget vendorThumbnail(String img, User user)  {
 
+    print(globals.localization);
+
+
+    FractionalOffset alignment = FractionalOffset.centerLeft;
+    if(globals.localization == 'ar_SA') {
+      alignment = FractionalOffset.centerRight;
+    }
+
+
+
+
     return new Container(
       margin: new EdgeInsets.symmetric(
           vertical: 8.0
       ),
-      alignment: FractionalOffset.centerLeft,
+      alignment: alignment,
       child: Container(
         width: 90,
         height: 150,
@@ -305,10 +312,18 @@ class _ProviderListState extends State<ProviderListPage> {
   }
 
   Widget vendorCard(User user, Service service, String name) {
+
+    EdgeInsets margin1 = EdgeInsets.only(left: 40.0);
+    EdgeInsets margin2 = EdgeInsets.only(left: 55.0, top: 10);
+    if(globals.localization == 'ar_SA') {
+      margin1 = EdgeInsets.only(right: 40.0);
+      margin2 = EdgeInsets.only(right: 55.0, top: 10);
+    }
+
     return
       new Container(
       height: 90.0,
-      margin: new EdgeInsets.only(left: 40.0),
+      margin: margin1,
       decoration: new BoxDecoration(
         color: Colors.white,
         shape: BoxShape.rectangle,
@@ -318,7 +333,7 @@ class _ProviderListState extends State<ProviderListPage> {
         children: <Widget>[
           Expanded(child: Container(
             width: 400,
-            margin: new EdgeInsets.only(left: 55.0, top: 10),
+            margin: margin2,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment:CrossAxisAlignment.start,

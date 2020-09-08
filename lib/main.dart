@@ -167,12 +167,14 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         printLog("*language locale set locale");
       _locale = locale;
+      globals.localization = locale.toString();
     });
   }
 
   @override
   Widget build(BuildContext context)  {
-    return MaterialApp(
+    return
+      MaterialApp(
 
       locale: _locale,
        localizationsDelegates:[
@@ -204,7 +206,6 @@ class _MyAppState extends State<MyApp> {
           printLog("*language to fallback ${supportedLocales.first}");
           return supportedLocales.first;
         },
-
 
         home:   SplashScreen());
   }
