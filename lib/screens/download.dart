@@ -21,7 +21,7 @@ class DownLoadHelper {
     print(order_id);
     var dirToSave = await getExternalStorageDirectory();
     Dio dio = Dio();
-    final invoiceURL = Configurations.INVOICE_GENERATE_URL +  "?id=" + order_id;
+    final invoiceURL = Configurations.INVOICE_DOWNLALD_URL +  "?id=" + order_id;
 
     await dio.download(invoiceURL, "${dirToSave.path}/invoice.pdf",
         onReceiveProgress: (rec, total){

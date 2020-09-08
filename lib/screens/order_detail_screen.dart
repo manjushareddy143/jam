@@ -10,6 +10,7 @@ import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/models/invoice.dart';
 import 'package:jam/models/order.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/pdf_view.dart';
@@ -108,6 +109,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
     );
   }
    Widget detail(){
+
+    print(order.status);
     return Stack(
       children: [
         Container(
@@ -126,6 +129,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 ],
               )
           ),
+        ),
+        Positioned(left: 15, top: 45,
+          child: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: () => {
+          Navigator.of(context).pop()
+          },),
         ),
         // TITLE
         Positioned(left: 25, top: 120,
@@ -169,7 +177,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                   SizedBox(width: 2,),
 
-                  if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+                  if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6 && order.status != 1)
                     Expanded(child: Container(
                       child: GestureDetector(
                         child: Row(
@@ -353,6 +361,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
              padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
              child: Column(
                children: [
+
+
+
                  // Booking Detail
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
@@ -360,17 +371,22 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      Text("Booking Detail", style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w500,fontSize: 16),),
-                     Expanded(child: Divider(color: Colors.black,
-                       thickness: 0.5,
-                       height: 5,
-                       endIndent: 5.0,
-                       indent: 5.0,
-                     ),
-                       flex: 0,),
-
+                     Padding(
+                       padding:EdgeInsets.symmetric(horizontal:10.0),
+                       child:Container(
+                         height:0.5,
+                         width:MediaQuery.of(context).size.width * 0.4,
+                         color:Colors.grey,),),
                    ]
                    ),
                  ),
+
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.end,
+//                   children: <Widget>[
+//                     setProfilePic()
+//                   ],
+//                 ),
 
                  Padding(
                      padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
@@ -396,12 +412,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
                              fontWeight: FontWeight.w500,fontSize: 14),),
                          Text(globals.order.booking_date , style:
                          TextStyle(color: Colors.black,
-                             fontWeight: FontWeight.w300,fontSize: 14),)
+                             fontWeight: FontWeight.w300,fontSize: 14),),
+
 
                        ],
                      )
 
                  ),
+
+
+
 
                  Padding(
                      padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
@@ -444,6 +464,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      Text("Service Detail", style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w700,fontSize: 16),),
+                     Padding(
+                       padding:EdgeInsets.symmetric(horizontal:10.0),
+                       child:Container(
+                         height:0.5,
+                         width:MediaQuery.of(context).size.width * 0.4,
+                         color:Colors.grey,),),
 //                          Divider(color: Colors.black,
 //                            thickness: 1,
 //                            height: 5,
@@ -626,6 +652,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
                      Text("Customer Address", style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w700,fontSize: 16),),
+                     Padding(
+                       padding:EdgeInsets.symmetric(horizontal:10.0),
+                       child:Container(
+                         height:0.5,
+                         width:MediaQuery.of(context).size.width * 0.3,
+                         color:Colors.grey,),),
 //                          Divider(color: Colors.black,
 //                            thickness: 1,
 //                            height: 5,
@@ -743,7 +775,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          children: <Widget>[
                            Icon(Icons.check_circle, color: Colors.white, size: 20,),
                            SizedBox(width: 10,),
-                           Text('Accept', style: TextStyle(fontSize: 14)
+                           Text('Accepted', style: TextStyle(fontSize: 14)
                            ),],),
                        onPressed: () => {
                          print("Accept"),
@@ -828,6 +860,27 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
      );
    }
+
+  Widget setProfilePic(){
+    return Container(
+      width: 80.0,
+      height: 80.0,
+      decoration: BoxDecoration(
+        image:
+        DecorationImage(
+          image:
+          AssetImage("assets/images/BG-1x.jpg"),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(80.0),
+        border: Border.all(
+          color: Configurations.themColor,
+          width: 0.9,
+        ),
+      ),
+    );
+
+  }
 
   Widget detailUI(){
      return SingleChildScrollView(
@@ -1859,11 +1912,27 @@ class _DetailUIPageState extends State<DetailUIPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
-          child: Text("Invoice Details",
+    Padding(
+      padding: const EdgeInsets.fromLTRB(0,10,0,0),
+      child: Row(
+        children: <Widget>[
+
+
+
+          Text("Invoice Details",
               style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.w700,fontSize: 16)),
-        ),
+          Padding(
+            padding:EdgeInsets.symmetric(horizontal:10.0),
+            child:Container(
+              height:0.5,
+              width:MediaQuery.of(context).size.width * 0.4,
+              color:Colors.grey,),),
+
+        ],
+      ),
+    ),
+
+
 
         Align(alignment: Alignment.centerLeft,
           child: Padding(
@@ -2207,7 +2276,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             child: Text(
                                 AppLocalizations.of(context).translate('btn_save'),
                                 style: TextStyle(fontSize: 16.5)),
-                            onPressed: () {callLoginAPI(); }),
+                            onPressed: () {callLoginAPI(setState); }),
                       ),
                     ],
                   ),
@@ -2226,7 +2295,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
   final discnt = TextEditingController();
 
 
-  Future callLoginAPI() async {
+  Future callLoginAPI(StateSetter setState) async {
     Map<String, String> data = new Map();
     data["order_id"] = globals.order.id.toString();
     data["working_hr"] = wrking_hr.text;
@@ -2245,7 +2314,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       HttpClient httpClient = new HttpClient();
       var syncUserResponse =
       await httpClient.postRequest(context, Configurations.INVOICE_GENERATE_URL, data, true);
-      processInvoiceResponse(syncUserResponse);
+      processInvoiceResponse(syncUserResponse, setState);
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -2253,17 +2322,21 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
 
   }
-  void processInvoiceResponse(Response res){
+  void processInvoiceResponse(Response res, StateSetter setState){
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("data::::::::$data");
+
+        print("order invoice response ::::::::$data");
+
         setState(() {
-          getOrderDetail();
+          globals.order.invoice = Invoice.fromJson(data);
+          Navigator.pop(context);
+//          getOrderDetail();
         });
 
         printLog('reached here');
-        Navigator.of(context).pop();
+
       }
     }
 
