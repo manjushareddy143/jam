@@ -273,7 +273,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
       child: Center(
           child: Text(title,
-              style: TextStyle(color: Colors.black, fontSize: 20),
+              style: TextStyle(color: Colors.white, fontSize: 20),
               textAlign: TextAlign.center)),
     );
   }

@@ -216,17 +216,20 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     final imageSrc = await showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Select the image source"),
+        title: Text( AppLocalizations.of(context)
+            .translate('profile_txt_img')),
         actions: <Widget>[
           MaterialButton(
-            child: Text("Camera"),
+            child: Text( AppLocalizations.of(context)
+                .translate('profile_camera')),
             onPressed: () => Navigator.pop(
               context,
               ImageSource.camera,
             ),
           ),
           MaterialButton(
-            child: Text("Gallery"),
+            child: Text( AppLocalizations.of(context)
+                .translate('profile_gallery')),
             onPressed: () => Navigator.pop(
               context,
               ImageSource.gallery,
@@ -620,7 +623,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                           width: 1,
                                         ),
                                       ),
-                                      labelText: 'Service Radius',
+                                      labelText: AppLocalizations.of(context)
+                                          .translate('init_radius'),
                                       labelStyle: TextStyle(color: Colors.grey),
                                       focusedBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(color: Configurations.themColor),
@@ -655,8 +659,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       leading: Icon(Icons.work),
                                       title: Text(
                                           (ServiceSelectionUIPageState.serviceNamesString == "")
-                                              ? "Select Services"
-                                              : "Your Services"),
+                                              ? AppLocalizations.of(context)
+                                              .translate('init_services')
+                                              : AppLocalizations.of(context)
+                                              .translate('init_your_services')),
                                       subtitle:
                                       Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
                                     ),
@@ -739,7 +745,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
                         FlatButton(
 
-                            child: Text("Skip",
+                            child: Text(AppLocalizations.of(context)
+                                .translate('init_skip'),
                               textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
                             onPressed: () {
                               Preferences.saveObject("profile", "0");
@@ -940,7 +947,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           children: <Widget>[
             Icon(Icons.location_on),
             Text(
-              "Address",
+              AppLocalizations.of(context)
+                  .translate('address'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Configurations.themColor,
@@ -969,7 +977,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                             width: 10,
                           ),
                           Text(
-                            "Set your location",
+                            AppLocalizations.of(context)
+                                .translate('profile_txt_location'),
                             style: TextStyle(color: Configurations.themColor),
                           )
                         ],

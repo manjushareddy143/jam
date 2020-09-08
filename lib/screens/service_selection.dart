@@ -121,7 +121,8 @@ bool Value = false;
       return new Scaffold(
 
         appBar: new AppBar(backgroundColor: Configurations.themColor,
-          title: new Text("Select Services"),
+          title: new Text(AppLocalizations.of(context)
+              .translate('init_services')),
         ),
         body: SingleChildScrollView(
           child: Column(

@@ -7,7 +7,7 @@ import 'package:jam/login/vendorSignup.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/globals.dart' as globals;
-
+import 'package:jam/app_localizations.dart';
 class masterSignup extends StatelessWidget{
   Widget build(BuildContext context) {
     return Center(child: masterSignupUIPage());
@@ -78,7 +78,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                 SizedBox(height: 30,),
                 Padding(padding: EdgeInsets.only(left: 20, right: 20),
                   child: Center(
-                    child: Text("Sign up as", style: TextStyle(color: Configurations.themColor, fontWeight:
+                    child: Text(AppLocalizations.of(context).translate('signin_txt_signup'), style: TextStyle(color: Configurations.themColor, fontWeight:
                     FontWeight.w600, fontSize: 18),),
                   ),
 
@@ -96,7 +96,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                         color: Configurations.themColor,
                         textColor: Colors.white,
                         //padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        child:  Text("Customer",
+                        child:  Text(AppLocalizations.of(context).translate('signin_btn_customer'),
                           //AppLocalizations.of(context).translate('btn_login'),
                           style: TextStyle(fontSize: 14), overflow: TextOverflow.ellipsis,
                         ),
@@ -126,7 +126,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                         color: Configurations.themColor,
                         textColor: Colors.white,
                         //padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        child:  Text("Service Provider",
+                        child:  Text(AppLocalizations.of(context).translate('signin_btn_serviceProvider'),
                           //AppLocalizations.of(context).translate('btn_login'),
                           style: TextStyle(fontSize: 14.0), overflow: TextOverflow.ellipsis,
                         ),

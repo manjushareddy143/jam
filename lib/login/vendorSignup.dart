@@ -113,7 +113,7 @@ class _vendorSignup extends State<VendorSignup>{
         SizedBox(height: 20,),
         Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
           child: new Text(
-            "Service Provider Sign up",
+            AppLocalizations.of(context).translate('signin_txt_ven'),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0,color: Configurations.themColor),
@@ -202,7 +202,7 @@ class _vendorSignup extends State<VendorSignup>{
       Row(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: EdgeInsets.only(left: 15, right: 15),
             child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
                 border: Border.all(width: 0.9,color: Configurations.themColor)),
               width: 100,
@@ -223,9 +223,9 @@ class _vendorSignup extends State<VendorSignup>{
             ),
           ),
 
-          SizedBox( width: 10,),
+         // SizedBox( width: 10,),
           Padding(
-            padding: EdgeInsets.only(right: 20),
+            padding: EdgeInsets.only(left: 15, right: 15),
             child: SizedBox(
               width: 210,
               child: TextFormField(
@@ -299,7 +299,7 @@ class _vendorSignup extends State<VendorSignup>{
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: "Confirm Password",
+              labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),
             labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
@@ -339,7 +339,7 @@ class _vendorSignup extends State<VendorSignup>{
 
               if(globals.isCustomer ==false)
                 Text(
-                  "Agree With ",
+                  AppLocalizations.of(context).translate('signin_txt_agree'),
                   style: TextStyle(color: Colors.grey),
                 ),
               if(globals.isCustomer ==false)
@@ -380,7 +380,7 @@ class _vendorSignup extends State<VendorSignup>{
 
       Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Already have an account?"),
+          Text(AppLocalizations.of(context).translate('signin_txt_text1')),
 
           FlatButton( onPressed:() {
             Navigator.push(
@@ -410,7 +410,7 @@ class _vendorSignup extends State<VendorSignup>{
           SizedBox(height: 10),
           SignInButton(
             Buttons.Facebook,
-            text: "Sign in with Facebook",
+            text:  AppLocalizations.of(context).translate('btn_facebook'),
             onPressed: () {
               signinWithFacebook();
             },
@@ -419,7 +419,7 @@ class _vendorSignup extends State<VendorSignup>{
 
           SignInButton(
             Buttons.Google,
-            text: "Sign in with Google",
+            text:  AppLocalizations.of(context).translate('btn_gmail'),
             onPressed: () {
               signinWithGmail();
             },
@@ -741,7 +741,7 @@ class _vendorSignup extends State<VendorSignup>{
           children: [
             SizedBox(width: 5,),
             Text(
-              "Select Country",
+              AppLocalizations.of(context).translate('signin_txt_country'),
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(
@@ -749,7 +749,7 @@ class _vendorSignup extends State<VendorSignup>{
             ),
             Expanded(
               child: DropdownButton(
-                  hint: Text('Select Country'),
+                  hint: Text(AppLocalizations.of(context).translate('signin_txt_country')),
                   underline: SizedBox(),
                   isExpanded: true,
                   value: selectedCountry,

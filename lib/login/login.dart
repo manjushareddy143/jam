@@ -111,30 +111,30 @@ class _user extends State<UserLogin>{
                 children: <Widget>[
 //                  new Image.asset("assets/images/BG-1x.jpg",
 //                    height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-//                  Row(
-//                    mainAxisAlignment: MainAxisAlignment.start,
-////                    crossAxisAlignment: CrossAxisAlignment.start,
-//                    children: <Widget>[
-//                      DropdownButton(
-//                        underline: SizedBox(),
-//                        onChanged: ( Language language){
-//                          _changeLanguage(language);
-//                        },
-//                        icon: Icon(Icons.language, color: Configurations.themColor,),
-//                        items: Language.languageList()
-//                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-//                          value:  lang,
-//                          child: Row(
-//                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                            children: <Widget> [
-//                              Text(lang.flag),
-//                              Text(lang.name)
-//                            ],
-//                          ) ,
-//                        )).toList(),
-//                      ),
-//                    ],
-//                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+//                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      DropdownButton(
+                        underline: SizedBox(),
+                        onChanged: ( Language language){
+                          _changeLanguage(language);
+                        },
+                        icon: Icon(Icons.language, color: Configurations.themColor,),
+                        items: Language.languageList()
+                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                          value:  lang,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget> [
+                              Text(lang.flag),
+                              Text(lang.name)
+                            ],
+                          ) ,
+                        )).toList(),
+                      ),
+                    ],
+                  ),
                 SizedBox(height: 100,),
 
                   Padding(
@@ -152,8 +152,7 @@ class _user extends State<UserLogin>{
                    Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: <Widget>[
-                       Text("User Login",
-                         //AppLocalizations.of(context).translate('txt_loginuser'),
+                       Text(AppLocalizations.of(context).translate('txt_loginuser'),
                          textAlign: TextAlign.center,
                          overflow: TextOverflow.ellipsis,
                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0, color: Colors.deepOrangeAccent),
@@ -250,8 +249,8 @@ class _user extends State<UserLogin>{
                         color: Configurations.themColor,
                         textColor: Colors.white,
                         padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        child:  Text("LOGIN",
-                            //AppLocalizations.of(context).translate('btn_login'),
+                        child:  Text(
+                            AppLocalizations.of(context).translate('btn_login'),
                             style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
                         ),
                         onPressed: () {
@@ -290,7 +289,7 @@ class _user extends State<UserLogin>{
 
                   SignInButton(
                     Buttons.Facebook,
-                    text: "Sign in with Facebook",
+                    text: AppLocalizations.of(context).translate('btn_facebook'),
 
                    // padding: EdgeInsets.fromLTRB(120,10,120,10),
                     onPressed: () {
@@ -301,7 +300,7 @@ class _user extends State<UserLogin>{
 
                   SignInButton(
                     Buttons.Google,
-                    text: "Sign in with Google",
+                    text: AppLocalizations.of(context).translate('btn_gmail'),
                     //padding: EdgeInsets.fromLTRB(120,10,120,10),
                     onPressed: () {
                       signinWithGmail();
@@ -700,7 +699,7 @@ class _user extends State<UserLogin>{
     return AlertDialog(
       title: Center(
         child: Text(
-          "Find Your Account",
+          AppLocalizations.of(context).translate('forgot_title'),
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Configurations.themColor,
@@ -727,13 +726,13 @@ class _user extends State<UserLogin>{
                           ),
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "Enter your email",labelStyle: TextStyle(color: Colors.grey),
+                          labelText: AppLocalizations.of(context).translate('forgot_email_placeholder'),labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Configurations.themColor),
                         ),)
                   ),
                 ),
-                Text("OR",style: TextStyle(
+                Text(AppLocalizations.of(context).translate('txt_or'),style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.grey
                 ),
                 ),
@@ -752,7 +751,7 @@ class _user extends State<UserLogin>{
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
-                        labelText: "Enter your number",labelStyle: TextStyle(color: Colors.grey),
+                        labelText: AppLocalizations.of(context).translate('forgot_number_placeholder'),labelStyle: TextStyle(color: Colors.grey),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Configurations.themColor),
                       ),),
@@ -769,7 +768,7 @@ class _user extends State<UserLogin>{
                     ),
                     color: Configurations.themColor,
                     textColor: Colors.white,
-                    child: Text("Submit"),
+                    child: Text(AppLocalizations.of(context).translate('btn_submit')),
                     onPressed: (){
                       validateer(setState);
                     },

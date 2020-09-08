@@ -110,7 +110,7 @@ class _customerSignup extends State<CustomerSignup>{
         SizedBox(height: 20,),
         Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
           child: new Text(
-            "Customer Sign up",
+            AppLocalizations.of(context).translate('signin_txt_cus'),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0,color: Configurations.themColor),
@@ -121,7 +121,7 @@ class _customerSignup extends State<CustomerSignup>{
       Row(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: EdgeInsets.only(left: 15, right: 15),
             child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
             border: Border.all(width: 0.9,color: Configurations.themColor)),
               width: 100,
@@ -142,9 +142,9 @@ class _customerSignup extends State<CustomerSignup>{
             ),
           ),
 
-          SizedBox( width: 10,),
+          //SizedBox( width: 10,),
           Padding(
-            padding: EdgeInsets.only(right: 20),
+            padding: EdgeInsets.only(right: 15, left: 15),
             child: SizedBox(
               width: 210,
               child: TextFormField(
@@ -212,7 +212,7 @@ class _customerSignup extends State<CustomerSignup>{
             suffixIcon: Icon(Icons.security, color:Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-              labelText: "Confirm Password",labelStyle: TextStyle(color: Colors.grey),
+              labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
             ),
@@ -247,7 +247,7 @@ class _customerSignup extends State<CustomerSignup>{
 
               if(globals.isCustomer ==false)
                 Text(
-                  "Agree With ",
+                  AppLocalizations.of(context).translate('signin_txt_agree'),
                   style: TextStyle(color: Colors.grey),
                 ),
               if(globals.isCustomer ==false)
@@ -274,8 +274,8 @@ class _customerSignup extends State<CustomerSignup>{
             ),
             color: Configurations.themColor,
             textColor: Colors.white,
-            child:  Text( "SIGN UP",
-             //   AppLocalizations.of(context).translate('signin_btn_signup'),
+            child:  Text(
+               AppLocalizations.of(context).translate('signin_btn_signup'),
                 style: TextStyle(fontSize: 16.5)
             ),
             onPressed: () {
@@ -286,7 +286,7 @@ class _customerSignup extends State<CustomerSignup>{
 
       Center(child:  Row(mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Already have an account?"),
+          Text(AppLocalizations.of(context).translate('signin_txt_text1')),
           FlatButton( onPressed:() {
             Navigator.push(
                 context, new MaterialPageRoute(
@@ -316,7 +316,7 @@ class _customerSignup extends State<CustomerSignup>{
 
           SignInButton(
             Buttons.Facebook,
-            text: "Sign in with Facebook",
+            text: AppLocalizations.of(context).translate('btn_facebook'),
             onPressed: () {
               signinWithFacebook();
             },
@@ -324,7 +324,7 @@ class _customerSignup extends State<CustomerSignup>{
           SizedBox(height: 10,),
           SignInButton(
             Buttons.Google,
-            text: "Sign in with Google",
+            text: AppLocalizations.of(context).translate('btn_gmail'),
             onPressed: () {
               signinWithGmail();
             },
