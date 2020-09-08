@@ -223,31 +223,31 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
     switch(order.status)
     {
-      case 1: statusString = 'Pending';
+      case 1: statusString = AppLocalizations.of(context).translate('pending');
       status_color = Hexcolor('#EFB006');
       status_icon = Icons.pan_tool;
       break;
-      case 2: statusString = 'Accept';
+      case 2: statusString = AppLocalizations.of(context).translate('accept');
       status_color = Colors.green;
       status_icon = Icons.check_circle;
       break;
-      case 3: statusString = 'Cancelled'; //By + order.provider_first_name;
+      case 3: statusString = AppLocalizations.of(context).translate('cancelled'); //By + order.provider_first_name;
       status_color = Hexcolor('#C72801');
       status_icon = Icons.cancel;
       break;
-      case 4: statusString = 'Cancelled'; // By You
+      case 4: statusString = AppLocalizations.of(context).translate('cancelled'); // By You
       status_color = Hexcolor('#C72801');
       status_icon = Icons.cancel;
       break;
-      case 5: statusString = 'Completed';
+      case 5: statusString = AppLocalizations.of(context).translate('completed');
       status_color = Hexcolor('#67A702');
       status_icon = Icons.thumb_up;
       break;
-      case 6: statusString = 'Invoice Submitted';
+      case 6: statusString = AppLocalizations.of(context).translate('invoice_sub');
       status_color = Configurations.themColor;
       status_icon = Icons.attach_money;
       break;
-      default : statusString = 'Completed';
+      default : statusString = AppLocalizations.of(context).translate('completed');
       status_color = Configurations.themColor;
       status_icon = Icons.thumb_up;
     }

@@ -377,7 +377,7 @@ class _ProviderListState extends State<ProviderListPage> {
                   children: <Widget>[
                     FlatButton.icon(onPressed: null,
                       icon: Icon(Icons.call, color: Colors.black, size: 20,),
-                      label: Text("Call", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                      label: Text(AppLocalizations.of(context).translate('call'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
                     )
                   ],
                 ),
@@ -403,7 +403,7 @@ class _ProviderListState extends State<ProviderListPage> {
                   }
                 },
                   icon: Icon(Icons.calendar_today, color: Colors.black, size: 20,),
-                  label: Text("Book", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                  label: Text(AppLocalizations.of(context).translate('book'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
                 ),
                 width: 100,
                 height: 18,
