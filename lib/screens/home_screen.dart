@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
           if (_currentIndex == 0)
             if(globals.guest == true)
           new IconButton(
-            icon:   Icon(Icons.exit_to_app,color: Colors.white,) ,
+            icon:  Icon(Icons.exit_to_app,color: Colors.white,) ,
             onPressed: () {
 
               if(globals.guest == true) {

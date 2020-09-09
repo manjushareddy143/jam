@@ -152,14 +152,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         title: Text("Select the image source"),
         actions: <Widget>[
           MaterialButton(
-            child: Text("Camera"),
+            child: Text(AppLocalizations.of(context).translate('profile_camera')),
             onPressed: () => Navigator.pop(
               context,
               ImageSource.camera,
             ),
           ),
           MaterialButton(
-            child: Text("Gallery"),
+            child: Text(AppLocalizations.of(context).translate('profile_gallery')),
             onPressed: () => Navigator.pop(
               context,
               ImageSource.gallery,
@@ -734,7 +734,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
         Text(globals.currentUser.first_name,
           textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
           style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
-              color: Colors.white),
+              color: Colors.black),
         ),
             //SizedBox(height: 5),
 
@@ -840,6 +840,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
   Widget setDetails(){
 
+
     if(globals.currentUser.address != null) {
       print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
@@ -864,7 +865,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       ServiceRadiusHint = globals.currentUser.provider.service_radius.toString();
     }
 
+
     String services = "";
+
     if(globals.currentUser.services  != null) {
       globals.currentUser.services.forEach((element) {
         if (services.isEmpty) {
@@ -884,6 +887,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
         }
       });
     }
+    print("SERVICE:-----"+ services);
 
 
 
@@ -1001,7 +1005,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.start,
                    children: <Widget>[
-                     Icon(Icons.language),
+                     Icon(Icons.language, color: Colors.grey,),
                      SizedBox(width: 10,),
                      Text("English"),
                      Checkbox(value: _english, onChanged: _selecteEnglish),
@@ -1031,7 +1035,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             focusNode: focus_radius, style: (isEditProfile) ?
           TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: ServiceRadiusHint,
-              prefixIcon: Icon(Icons.location_searching,color: Configurations.themColor),
+              prefixIcon: Icon(Icons.location_searching,color: Colors.grey),
               enabled: isEditProfile,
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
@@ -1044,6 +1048,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
           // SERVICES
           if (globals.currentUser.roles[0].slug == "provider")
+
             Padding(
               padding: EdgeInsets.only(left: 0, right: 0),
               child: Container(
@@ -1057,7 +1062,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                           ? AppLocalizations.of(context).translate('init_services')
                           : AppLocalizations.of(context).translate('init_your_services')),
                   subtitle:
-                  Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? "" : ServiceSelectionUIPageState.serviceNamesString),
+                  Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? services : ServiceSelectionUIPageState.serviceNamesString),
                 ),
               ),
             ),
@@ -1893,7 +1898,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
     }
   }
-  String dropdownvalue = "Male";
+
+  String dropdownvalue = globals.currentUser.gender;
 
   String gender= "";
   String address = "";
@@ -1907,7 +1913,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
     );
   }
   Widget setDropDown() {
-    return Container(
+    return
+
+      Container(
       decoration: myBoxDecoration(),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(1, 1, 1, 1),
