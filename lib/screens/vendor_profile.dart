@@ -72,10 +72,10 @@ int swiperIndex =0;
       return Scaffold(
         backgroundColor: Colors.orange[50],
         appBar: AppBar(backgroundColor: Colors.deepOrange,
-        title: Text("Vendor Profile", style: TextStyle(
+        title: Text(AppLocalizations.of(context).translate('vendorprofile'), style: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w400,
-          color: Colors.black,
+          color: Colors.white,
         ),),),
 
 
@@ -132,7 +132,7 @@ int swiperIndex =0;
 
                                 color: Configurations.themColor,
                                 textColor: Colors.white,
-         child: Text('Book Appointment', style: TextStyle(
+         child: Text(AppLocalizations.of(context).translate('bookappointment'), style: TextStyle(
               fontSize: 13.0,
               fontWeight: FontWeight.w500,
               color: Colors.white)), //`Text` to display
@@ -205,7 +205,7 @@ int swiperIndex =0;
 
                     FlatButton.icon(onPressed: null,
                       icon: Icon(Icons.call, color: Configurations.themColor, size: 13,),
-                      label: Text("Call", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
+                      label: Text(AppLocalizations.of(context).translate('call'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
                     ),
 
 
@@ -219,7 +219,7 @@ int swiperIndex =0;
                                 category: this.category,)));
                 },
                   icon: Icon(Icons.calendar_today, color: Configurations.themColor, size: 13,),
-                  label: Text("Book", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
+                  label: Text(AppLocalizations.of(context).translate('book'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
                 ),
             ]),
 
@@ -256,7 +256,7 @@ int swiperIndex =0;
                       Text((this.provider.jobs_count == 0) ? "0" :this.provider.jobs_count.toString() ,
                           style: TextStyle(color: Colors.black,fontSize: 13,
                               fontWeight: FontWeight.w600)),
-                      Text("Job done",style: TextStyle(color: Colors.black,
+                      Text(AppLocalizations.of(context).translate('jobdone'),style: TextStyle(color: Colors.black,
                           fontWeight: FontWeight.w400,fontSize: 11))
                     ],
 
@@ -271,7 +271,7 @@ int swiperIndex =0;
                                 fontWeight: FontWeight.w600)),
                         Icon(Icons.star, color: Colors.orangeAccent, size: 13,)
                       ]),
-                      Text("Rating",style: TextStyle(color: Colors.black,
+                      Text(AppLocalizations.of(context).translate('rating'),style: TextStyle(color: Colors.black,
                           fontWeight: FontWeight.w400,fontSize: 11))
                     ],
                   ),
@@ -279,7 +279,7 @@ int swiperIndex =0;
                     children: <Widget>[
                       Text("2 Yr.",style: TextStyle(color: Colors.black,fontSize: 13,
                           fontWeight: FontWeight.w600)),
-                      Text("Experience",style: TextStyle(color: Colors.black,
+                      Text(AppLocalizations.of(context).translate('experience'),style: TextStyle(color: Colors.black,
                           fontWeight: FontWeight.w400,fontSize: 11))
                     ],
                   ),

@@ -1709,7 +1709,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildCancelHeader("ENTER OTP"),
+            buildCancelHeader(AppLocalizations.of(context).translate('enter_otp')),
 
             SizedBox(
               height: 10.0,
@@ -1772,7 +1772,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 data["otp"] = otp;
                 orderStatusUpdate(data);
               },
-              child: Text('SUBMIT', style: TextStyle(fontSize: 20,color: Colors.white)),
+              child: Text(AppLocalizations.of(context).translate('submit'), style: TextStyle(fontSize: 20,color: Colors.white)),
             ),
           ),
         ],
@@ -1922,7 +1922,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
 
-          Text("Invoice Details",
+          Text(AppLocalizations.of(context).translate('invoice'),
               style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.w700,fontSize: 16)),
           Padding(
             padding:EdgeInsets.symmetric(horizontal:10.0),
@@ -1940,7 +1940,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         Align(alignment: Alignment.centerLeft,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-            child: Text("Working Hours :   " + workingHour, ),
+            child: Text(AppLocalizations.of(context).translate('workinghrs')+" : " + workingHour, ),
           ),
         ),
 //            Padding(
@@ -1952,10 +1952,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: <Widget>[
-              Text("Materials ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
+              Text(AppLocalizations.of(context).translate('materials') , style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
 
-              Text("Quantity :   " + materialQTY, ),
-              Text("Price :   " + materialCost, ),
+              Text(AppLocalizations.of(context).translate('qty')+" : " + materialQTY, ),
+              Text(AppLocalizations.of(context).translate('price')+" : " + materialCost, ),
             ],
           ),
         ),
@@ -1980,22 +1980,22 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //              ],),
         Padding(
           padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-          child: Text("Discount :   " + discount, ),
+          child: Text(AppLocalizations.of(context).translate('discount')+" : "  + discount, ),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-          child: Text("Tax :   " + tax, ),
+          child: Text(AppLocalizations.of(context).translate('tax') +" : " + tax, ),
         ),
 
 
         Padding(
           padding: const EdgeInsets.fromLTRB(2,10.0,0,0),
-          child: Text("Additional Charge :   " + add_charge, ),
+          child: Text(AppLocalizations.of(context).translate('addcharge')+" : "  + add_charge, ),
         ),
         Align(alignment: Alignment.bottomRight,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(2,10.0,0,2),
-            child: Text("Total :   " + findTotal() + "  QAR",style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.bold)),
+            child: Text(AppLocalizations.of(context).translate('total')+" : "  + findTotal() + "  QAR",style: TextStyle(color: Configurations.themColor, fontWeight: FontWeight.bold)),
           ),
         ),
 
@@ -2009,7 +2009,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   Widget setOrderDetail(BuildContext context){
       return AlertDialog(
-          title:Center(child: Text("ORDER DETAIL", style: TextStyle(fontWeight: FontWeight.w600,
+          title:Center(child: Text(AppLocalizations.of(context).translate('order_detail'), style: TextStyle(fontWeight: FontWeight.w600,
               fontSize: 22,
               color: Colors.deepOrange),),
           ),
@@ -2035,7 +2035,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       Padding(padding: const EdgeInsets.all(1.0),
                       child: Row(
                         children: [
-                          Text("Time Taken: "),
+                          Text(AppLocalizations.of(context).translate('timetaken')+" : "),
                           Flexible(
                             child: Container(height: 30, width: 40,
 
@@ -2051,7 +2051,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                   ),) ,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return "Please enter the working hours!!";
+                                    return AppLocalizations.of(context).translate('enterworkhrs');
                                   }
                                   return null;
                                 },
@@ -2062,7 +2062,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               ),),
                           ),
                           SizedBox(width: 10,),
-                          Text("Hours", style: TextStyle(fontWeight: FontWeight.bold),)
+                          Text(AppLocalizations.of(context).translate('hrs'), style: TextStyle(fontWeight: FontWeight.bold),)
 
 
                         ],
@@ -2085,7 +2085,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                   });
                                 },),
                             ),
-                            Text("Material Used"),
+                            Text(AppLocalizations.of(context).translate('materialused')),
                           ],
 
                         ),
@@ -2130,7 +2130,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Flexible(
-                                        child:Text("Quantity"),
+                                        child:Text(AppLocalizations.of(context).translate('qty')),
                                       ),
                                       Flexible(
                                         child: Container(height: 30, width: 40,
@@ -2159,7 +2159,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[ Flexible(
-                                      child:Text("Price"),
+                                      child:Text(AppLocalizations.of(context).translate('price')),
                                     ),
                                       Flexible(
                                         child: Container(height: 30, width: 40,
@@ -2200,7 +2200,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text("Discount:"),
+                            Text(AppLocalizations.of(context).translate('discount')+" : "),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(
@@ -2225,7 +2225,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         padding: const EdgeInsets.all(5.0),
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text("Tax:"),
+                            Text(AppLocalizations.of(context).translate('tax')+" : "),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(textAlign: TextAlign.right,
@@ -2250,7 +2250,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                           children: <Widget>[
-                            Text("Additional Charge"),
+                            Text(AppLocalizations.of(context).translate('addcharge')+" : "),
                             Container(width: 40, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(textAlign: TextAlign.right,

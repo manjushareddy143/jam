@@ -147,7 +147,7 @@ class _InquiryPageState extends State<InquiryPage> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value))
-      return 'Enter Valid Email';
+      return AppLocalizations.of(context).translate('login_txt_validuser');
     else
       return null;
   }
@@ -165,7 +165,7 @@ class _InquiryPageState extends State<InquiryPage> {
       },
 
       child: Scaffold(
-        appBar: new AppBar(leading: BackButton(color:Colors.white),title: Text("BOOK APPOINTMENT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),), backgroundColor: Configurations.themColor,
+        appBar: new AppBar(leading: BackButton(color:Colors.white),title: Text(AppLocalizations.of(context).translate('bookcaps'), style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400),), backgroundColor: Configurations.themColor,
 
           ),
         body: SingleChildScrollView(
@@ -256,7 +256,7 @@ class _InquiryPageState extends State<InquiryPage> {
         //txtName,//..text = 'KAR-MT30',
         validator: (value){
           if (value.isEmpty) {
-            return 'Please enter name!!';
+            return AppLocalizations.of(context).translate('signup_txt_enteruser');
           }
           return null;
         },
@@ -278,7 +278,7 @@ class _InquiryPageState extends State<InquiryPage> {
         keyboardType: TextInputType.emailAddress,
         validator: (value){
           if (value.isEmpty) {
-            return 'Please enter email!!';
+            return AppLocalizations.of(context).translate('signup_txt_enteremail');
           }
           return validateEmail(value);
         },
@@ -304,7 +304,7 @@ class _InquiryPageState extends State<InquiryPage> {
         keyboardType: TextInputType.phone,
         validator: (value){
           if (value.isEmpty) {
-            return 'Please enter contact number!!';
+            return AppLocalizations.of(context).translate('signup_txt_enterno');
           }
           return null;
         },
@@ -339,7 +339,7 @@ class _InquiryPageState extends State<InquiryPage> {
               borderRadius: BorderRadius.circular(7.0),),
             color: Configurations.themColor,
             textColor: Colors.white,
-            child:  Text("Book Appointment",
+            child:  Text(AppLocalizations.of(context).translate('bookappointment'),
                 //AppLocalizations.of(context).translate('inquiry_btn_booking'),
                 style: TextStyle(fontSize: 16.5)
             ),
@@ -587,7 +587,7 @@ final formatt= DateFormat("h:mm a");
 
               ),
             ),
-            Flexible(flex: 1,child: Text("To")),
+            Flexible(flex: 1,child: Text(AppLocalizations.of(context).translate('to'))),
             Flexible(flex: 4,
               child: DateTimeField(
                 initialValue: _currentDt.add(Duration(hours: 1)),
@@ -612,7 +612,7 @@ final formatt= DateFormat("h:mm a");
                 },
                 validator:  (value){
                   if (value.isBefore(start_time)) {
-                    return 'Invalid time!!';
+                    return AppLocalizations.of(context).translate('inquiry_time');
                   }
                   return null;
                 },

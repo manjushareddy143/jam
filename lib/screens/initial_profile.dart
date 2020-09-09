@@ -615,7 +615,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       ),
 
                                       //                        suffix: Text("KM"),
-                                      suffixText: "KM  ",
+                                      suffixText: AppLocalizations.of(context).translate('km'),
                                       //                    contentPadding: EdgeInsets.fromLTRB(10, 5, 0, 0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
@@ -633,7 +633,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                     ), cursorColor: Configurations.themColor,
                                     validator: (value) {
                                       if (value.isEmpty) {
-                                        return 'Please enter service radius';
+                                        return AppLocalizations.of(context).translate('rad');
                                       }
                                       return null;
                                     },
@@ -836,7 +836,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       print("LANAGNE CHECH");
       if (language.length == 0) {
         print("no language");
-        showInfoAlert(context, "Please selecte language");
+        showInfoAlert(context, AppLocalizations.of(context).translate('lang'));
       } else {
         print("DONe");
         if (_formKey.currentState.validate()) {
@@ -989,10 +989,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                           if (showMap == true) {
                             showMap = false;
                             _markers.clear();
-                            mapAddressTitle = "Set your location ";
+                            mapAddressTitle = AppLocalizations.of(context).translate('profile_txt_location');
                           } else {
                             showMap = true;
-                            mapAddressTitle = "Enter Location";
+                            mapAddressTitle = AppLocalizations.of(context).translate('txt_enter_location');
                             setCustomMapPin(pinLocationIcon).then((onValue) {
                               pinLocationIcon = onValue;
                             });

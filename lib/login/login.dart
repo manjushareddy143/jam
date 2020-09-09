@@ -666,10 +666,10 @@ class _user extends State<UserLogin>{
       Pattern pattern = r'^\+[1-9]{1}[0-9]{3,14}$'; //'(^(?:[+0]9)?[0-9]{10,12}$)';
       RegExp regex = new RegExp(pattern);
       if(!value.contains(new RegExp(r'\+[1-9]'), 0)) {
-        return "Invalid Phone Number. +XXX missing";
+        return AppLocalizations.of(context).translate('invalid_phnno')+" +XXX missing";
       }
       if (!regex.hasMatch(value))
-        return "Invalid Phone Number";
+        return AppLocalizations.of(context).translate('invalid_phnno');
       //return AppLocalizations.of(context).translate('login_txt_validuser');
       else
         return null;
@@ -678,7 +678,7 @@ class _user extends State<UserLogin>{
           r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
       RegExp regex = new RegExp(pattern);
       if (!regex.hasMatch(value))
-        return 'Invalid Email. ex: example@example.com';
+        return AppLocalizations.of(context).translate('invalid_email')+' ex: example@example.com';
       else
         return null;
     }
@@ -790,7 +790,7 @@ class _user extends State<UserLogin>{
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "New Password",
+                          labelText: AppLocalizations.of(context).translate('newpwd'),
                         labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Configurations.themColor),
@@ -806,7 +806,7 @@ class _user extends State<UserLogin>{
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
-                          labelText: "Confirm Password",
+                          labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),
                         labelStyle: TextStyle(color: Colors.grey),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Configurations.themColor),
@@ -818,7 +818,7 @@ class _user extends State<UserLogin>{
                   child: RaisedButton(
                     color: Configurations.themColor,
                     textColor: Colors.white,
-                    child: Text("Submit"),
+                    child: Text(AppLocalizations.of(context).translate('btn_submit')),
                     onPressed: (){
                       validatePassword(setState);
                     },
@@ -841,10 +841,10 @@ class _user extends State<UserLogin>{
 //    _forgetFormKey.currentState.validate();
 
     if((txtemail.text.isEmpty)&&(txtno.text.isEmpty) ) {
-      showInfoAlert(context, "please enter any one of the given!!");
+      showInfoAlert(context, AppLocalizations.of(context).translate('alert1'));
       print(email);
     } else if((txtemail.text.isNotEmpty)&&(txtno.text.isNotEmpty)) {
-      showInfoAlert(context, "please enter only one of the given!!");
+      showInfoAlert(context, AppLocalizations.of(context).translate('alert1'));
     }
     else{
       if((txtemail.text.isNotEmpty)){
@@ -908,11 +908,11 @@ class _user extends State<UserLogin>{
 
   void validatePassword(StateSetter setState) {
     if((newPass.text.isEmpty) && (newPass.text.isEmpty)) {
-      showInfoAlert(context, "Please enter password");
+      showInfoAlert(context, AppLocalizations.of(context).translate('signup_txt_enterpwd'));
     } else if((newPass.text.isEmpty) || (newPass.text.isEmpty)) {
-      showInfoAlert(context, "Please enter password");
+      showInfoAlert(context, AppLocalizations.of(context).translate('signup_txt_enterpwd'));
     } else if(newPass.text != confPass.text ) {
-      showInfoAlert(context, "Mismatch Confirm Password");
+      showInfoAlert(context, AppLocalizations.of(context).translate('mismatchpwd'));
     } else {
       changePassword(setState);
     }

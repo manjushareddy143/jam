@@ -114,7 +114,8 @@ class _HomePageState extends State<HomePage> {
                       Flexible(
                         child:
                         Text(
-                          (globals.addressChange == true) ? globals.newAddress.addressLine.toString():
+                          (globals.addressChange == true) ?
+                          globals.newAddress.addressLine.toString():
 
                           globals.addressLocation.addressLine.toString(),
 
@@ -150,8 +151,9 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: <Widget>[
           if (_currentIndex == 0)
+            if(globals.guest == true)
           new IconButton(
-            icon: (globals.guest == true) ? Icon(Icons.exit_to_app,color: Colors.white,) : Icon(Icons.shopping_cart, color: Colors.white,),
+            icon:   Icon(Icons.exit_to_app,color: Colors.white,) ,
             onPressed: () {
 
               if(globals.guest == true) {
