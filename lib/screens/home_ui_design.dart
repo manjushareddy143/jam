@@ -110,7 +110,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
                   [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15,10,10,0),
-                      child: Container(child: Text("Categories", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),)),
+                      child: Container(child: Text(AppLocalizations.of(context).translate('categories'),
+                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 15),)),
                     ),
                   ],
                 ),

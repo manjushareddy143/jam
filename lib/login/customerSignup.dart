@@ -225,7 +225,7 @@ class _customerSignup extends State<CustomerSignup>{
           cursorColor: Configurations.themColor,
           validator: (value){
             if (value != txtPass.text) {
-              return "Confirm password mismatch";
+              return AppLocalizations.of(context).translate('mismatchpwd');
             }
             return null;
           },
@@ -401,7 +401,7 @@ class _customerSignup extends State<CustomerSignup>{
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      throw AppLocalizations.of(context).translate('launch_url')+' $url';
     }
   }
 
@@ -420,7 +420,7 @@ class _customerSignup extends State<CustomerSignup>{
       Widget_Helper.showLoading(context);
       await _signInWithPhoneNumber(pinCode);
     } else {
-      showInfoAlert(context, "Please enter OTP");
+      showInfoAlert(context, AppLocalizations.of(context).translate('enter_otp'));
     }
 
   }
@@ -453,7 +453,7 @@ class _customerSignup extends State<CustomerSignup>{
         });
       } else {
         setState(() {
-          status = 'Invalid code/invalid authentication';
+          status = AppLocalizations.of(context).translate('invalid');
           Widget_Helper.dismissLoading(context);
           showInfoAlert(context, status);
         });
@@ -599,7 +599,7 @@ class _customerSignup extends State<CustomerSignup>{
         child: Row(
           children: [
             Text(
-              "Select Country",
+              AppLocalizations.of(context).translate('select_country'),
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(
@@ -607,7 +607,7 @@ class _customerSignup extends State<CustomerSignup>{
             ),
             Expanded(
               child: DropdownButton(
-                  hint: Text('Select Country'),
+                  hint: Text(AppLocalizations.of(context).translate('select_country')),
                   underline: SizedBox(),
                   isExpanded: true,
                   value: selectedCountry,
@@ -744,7 +744,7 @@ class _customerSignup extends State<CustomerSignup>{
   verificationCompleted (AuthCredential auth) {
     printLog(txtContact.text);
     setState(() {
-      status = 'Auto retrieving verification code';
+      status = AppLocalizations.of(context).translate('alert4');
     });
     _authCredential = auth;
   }
@@ -754,9 +754,9 @@ class _customerSignup extends State<CustomerSignup>{
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
       if (authException.message.contains('not authorized'))
-        status = 'Something has gone wrong, please try later';
+        status = AppLocalizations.of(context).translate('alert2');
       else if (authException.message.contains('Network'))
-        status = 'Please check your internet connection and try again';
+        status = AppLocalizations.of(context).translate('alert3');
       showInfoAlert(context, status);
     });
   }

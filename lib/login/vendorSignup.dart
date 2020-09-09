@@ -306,7 +306,7 @@ class _vendorSignup extends State<VendorSignup>{
           ), cursorColor: Configurations.themColor,
           validator: (value){
             if (value != txtPass.text) {
-              return "Confirm password mismatch";
+              return AppLocalizations.of(context).translate('mismatchpwd');
             }
             return null;
           },
@@ -581,13 +581,13 @@ class _vendorSignup extends State<VendorSignup>{
         });
       } else {
         setState(() {
-          status = 'Invalid code/invalid authentication';
+          status = AppLocalizations.of(context).translate('invalid');
           showInfoAlert(context, status);
         });
       }
     }).catchError((error) {
       setState(() {
-        status = 'Something has gone wrong, please try later';
+        status = AppLocalizations.of(context).translate('alert2');
         showInfoAlert(context, status);
       });
     });
@@ -902,7 +902,7 @@ class _vendorSignup extends State<VendorSignup>{
     setState(() {
       printLog("verificationCompleted ${auth.toString()}");
       printLog("verificationCompleted ${auth}");
-      status = 'Auto retrieving verification code';
+      status = AppLocalizations.of(context).translate('alert4');
     });
     _authCredential = auth;
   }
@@ -915,9 +915,9 @@ class _vendorSignup extends State<VendorSignup>{
       status = '${authException.message}';
       print("verificationFailed: " + status);
       if (authException.message.contains('not authorized'))
-        status = 'Something has gone wrong, please try later';
+        status = AppLocalizations.of(context).translate('alert2');
       else if (authException.message.contains('Network'))
-        status = 'Please check your internet connection and try again';
+        status = AppLocalizations.of(context).translate('alert3');
 //      else
 //        status = 'Something has gone wrong, please try later';
 

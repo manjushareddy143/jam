@@ -21,7 +21,7 @@ import 'package:jam/utils/preferences.dart';
 import 'package:jam/globals.dart' as globals;
 //import 'package:pulse/models/helper.dart' as helper;
 import 'package:meta/meta.dart';
-
+import 'package:jam/app_localizations.dart';
 
 List <Map> listCountry = [
 {"name": "Afghanistan", "code": "AF"},
@@ -410,7 +410,7 @@ void pushInfoAlert(BuildContext context, String title ,String message) {
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(
-            child: new Text("OK"),
+            child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
               Navigator.of(_keyLoader.currentContext, rootNavigator: true)
                   .pop();
@@ -435,7 +435,7 @@ void showInfoAlert(BuildContext context, String message) {
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(
-            child: new Text("OK"),
+            child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
               Navigator.of(_keyLoader.currentContext, rootNavigator: true)
                   .pop();

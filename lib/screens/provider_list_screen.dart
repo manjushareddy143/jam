@@ -132,7 +132,7 @@ class _ProviderListState extends State<ProviderListPage> {
             backgroundColor: Colors.deepOrange,
             centerTitle: true,
 
-            title: Text("Vendor List",
+            title: Text(AppLocalizations.of(context).translate('vendorlist'),
               //listofProviders.length.toString() + ' ' + this.service.name,
               textAlign: TextAlign.left,
               style: TextStyle(
@@ -174,7 +174,7 @@ class _ProviderListState extends State<ProviderListPage> {
       list.add(
           Row(
             children:[
-              Text("Subcategories" , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+              Text(AppLocalizations.of(context).translate('subcat') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
               SizedBox(width: 20,),
               Expanded(child:  DropdownButton(
                   underline: SizedBox(),
