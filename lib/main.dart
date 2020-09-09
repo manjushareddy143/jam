@@ -66,26 +66,68 @@ class _MyAppState extends State<MyApp> {
           print("PUSH NOTIFICATION 11: $message");
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           setState(() {
-            OrderDetail detail = new OrderDetail();
-            detail.build(globals.context);
-            Orders orderList = new Orders();
-            orderList.build(globals.context);
+//            OrderDetail detail = new OrderDetail();
+//            detail.build(globals.context);
+//            Orders orderList = new Orders();
+//            orderList.build(globals.context);
             Map data = message['data'];
             if(data.containsKey('status')) {
               globals.orderStatus = message['data']['status'];
 
-              print("data ========= ${data}");
+              print("data1 ========= ${data}");
 
-              if(globals.order != null) {
-                if(globals.order.id == int.parse(message['data']['order'])) {
+
+              if(globals.order == null) {
+
+                print("ELSE ========= ${globals.listofOrders.length}");
+
+                  print("AGAIN");
+                  print("AGAIN == ${int.parse(message['data']['status'])}");
+                  int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
+                  print(" AGAIN idx ${idx}");
+                  if(idx != null) {
+                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
+                    print("globals.order == ${globals.order.id}");
+                    globals.order.status = int.parse(message['data']['status']);
+                    print("globals.order status == ${globals.order.status}");
+                    print("new invoice == ");
+                    print("${data['invoice']}");
+                    if(globals.order.status.toString() == "6") {
+                      print("come for update ");
+                      var invoice = json.decode(message['data']['invoice']);
+                      print("working_hr -- ${invoice['working_hr']}");
+                      globals.order.invoice = Invoice(invoice['id'], invoice['additional_charges'], invoice['discount'], "", invoice['material_price'], invoice['material_quantity'], invoice['order_id'], invoice['tax'], invoice['working_hr'], 0);
+                      print("INVOICE -- AFTER ${globals.order.invoice.working_hr}");
+                    }
+                    //print("globals.order hours == ${globals.order.invoice.working_hr}");
+                    globals.listofOrders[idx] = globals.order;
+                    print("AGAIN  LIST UPDATE");
+                  }
+
+
+
+
+              } else
+                {
+                print("MSG ID  ========= ${int.parse(message['data']['order'])}");
+                print("ID ========= ${globals.order.id}");
+                if(globals.order.id == message['data']['order']) {
+
                   globals.order.status = int.parse(message['data']['status']);
-//                  print("globals.order.status ========= ${globals.order.status}");
-                  if(globals.order.status == 6) {
-                    print("INVOICE -- BEFORE ${globals.order.invoice.working_hr}");
-
+//                  if(globals.order.status.toString() == "6") {
+//                    print("INVOICE -- BEFORE ${globals.order.invoice.working_hr}");
+//
+//                    var invoice = json.decode(message['data']['invoice']);
+//                    print("working_hr -- ${invoice['working_hr']}");
+//                    globals.order.invoice = Invoice(invoice['id'], invoice['additional_charges'], invoice['discount'], "", invoice['material_price'], invoice['material_quantity'],
+//                        invoice['order_id'], invoice['tax'], invoice['working_hr'], 0);
+//                    print("INVOICE -- AFTER ${globals.order.invoice.working_hr}");
+//                  }
+                  if(globals.order.status.toString() == "6") {
+                    print("come for update ");
                     var invoice = json.decode(message['data']['invoice']);
                     print("working_hr -- ${invoice['working_hr']}");
-                    globals.order.invoice = Invoice(globals.order.invoice.id, int.parse(invoice['additional_charges']), int.parse(invoice['discount']), "", int.parse(invoice['material_price']), int.parse(invoice['material_quantity']), int.parse(invoice['order_id']), int.parse(invoice['tax']), int.parse(invoice['working_hr']), 0);
+                    globals.order.invoice = Invoice(invoice['id'], invoice['additional_charges'], invoice['discount'], "", invoice['material_price'], invoice['material_quantity'], invoice['order_id'], invoice['tax'], invoice['working_hr'], 0);
                     print("INVOICE -- AFTER ${globals.order.invoice.working_hr}");
                   }
                   int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
@@ -93,6 +135,8 @@ class _MyAppState extends State<MyApp> {
                     globals.listofOrders[idx] = globals.order;
                     print("LIST UPDATE");
                   }
+//                  print("globals.order.status ========= ${globals.order.status}");
+
                 }
                 else {
                   print("ELSE");
@@ -107,23 +151,12 @@ class _MyAppState extends State<MyApp> {
                     print("globals.order status == ${globals.order.status}");
                     globals.listofOrders[idx] = globals.order;
                     print("LIST UPDATE");
+
                   }
                 }
-              } else {
-                setState(() {
-                  print("AGAIN");
-                  print("AGAIN == ${int.parse(message['data']['status'])}");
-                  int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
-                  print(" AGAIN idx ${idx}");
-                  if(idx != null) {
-                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
-                    print("globals.order == ${globals.order.id}");
-                    globals.order.status = int.parse(message['data']['status']);
-                    print("globals.order status == ${globals.order.status}");
-                    globals.listofOrders[idx] = globals.order;
-                    print("AGAIN  LIST UPDATE");
-                  }
-                });
+
+
+
 
               }
 
