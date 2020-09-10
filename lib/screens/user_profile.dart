@@ -1193,7 +1193,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
     }
 
 
-    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact == null) {
+    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact == null && globals.currentUser.contact == "") {
       data["contact"] = prfl_contact.text;
     }
 
@@ -1241,10 +1241,14 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
     if(globals.currentUser.roles[0].slug == "provider") {
-      if(ServiceSelectionUIPageState.selectedServices.length > 0) {
-        String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
-        data["services"] = rawJson;
+      print("LENGTH == ${ServiceSelectionUIPageState.selectedServices}");
+      if(ServiceSelectionUIPageState.selectedServices != null) {
+        if(ServiceSelectionUIPageState.selectedServices.length > 0) {
+          String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+          data["services"] = rawJson;
+        }
       }
+
     }
     print("data");
     printLog(data);
