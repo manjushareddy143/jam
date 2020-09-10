@@ -700,14 +700,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Icon( Icons.mail_outline, color: Configurations.themColor,
                            size: 18,),
                          SizedBox(width: 5,),
-                         Text(AppLocalizations.of(context).translate('txt_email')+ "  ",
-                           maxLines: 3,
-                           overflow: TextOverflow.ellipsis,
-                           textAlign: TextAlign.start,
-                           style:
-                           TextStyle(color: Colors.black,
-                             fontWeight: FontWeight.w500,fontSize: 14),
-                           ),
+                         Flexible(
+                           child: Text(AppLocalizations.of(context).translate('txt_email')+ "  ",
+                             maxLines: 3,
+                             overflow: TextOverflow.ellipsis,
+                             textAlign: TextAlign.start,
+                             style:
+                             TextStyle(color: Colors.black,
+                               fontWeight: FontWeight.w500,fontSize: 14),
+                             ),
+                         ),
                          Text(globals.order.email, style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w300,fontSize: 14),)
