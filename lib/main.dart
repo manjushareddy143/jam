@@ -180,14 +180,13 @@ class _MyAppState extends State<MyApp> {
                   int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
                   print("idx ${idx}");
                   if(idx != null) {
-                  globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
-                  print("globals.order == ${globals.order.id}");
-                  globals.order.status = int.parse(message['data']['status']);
-                  print("globals.order status == ${globals.order.status}");
-                  globals.listofOrders[idx] = globals.order;
-                  print("LIST UPDATE");
-
-                }
+                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
+                    print("globals.order == ${globals.order.id}");
+                    globals.order.status = int.parse(message['data']['status']);
+                    print("globals.order status == ${globals.order.status}");
+                    globals.listofOrders[idx] = globals.order;
+                    print("LIST UPDATE");
+                  }
                 }
 
 

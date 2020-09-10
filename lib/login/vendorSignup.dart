@@ -83,6 +83,7 @@ class _vendorSignup extends State<VendorSignup>{
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
 
 //    globals.isCustomer == true;
 //    print("listCountry :: ${listCountry[0]["name"]}");
@@ -113,7 +114,7 @@ class _vendorSignup extends State<VendorSignup>{
         SizedBox(height: 20,),
         Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
           child: new Text(
-            AppLocalizations.of(context).translate('signin_txt_ven'),
+            AppLocalizations.of(globals.context).translate('signin_txt_ven'),
             textAlign: TextAlign.center,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0,color: Configurations.themColor),
@@ -129,7 +130,7 @@ class _vendorSignup extends State<VendorSignup>{
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                 enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                   color: Configurations.themColor, width: 1,  ), ),
-                labelText: AppLocalizations.of(context).translate('signin_firstname_placeholder'),
+                labelText: AppLocalizations.of(globals.context).translate('signin_firstname_placeholder'),
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Configurations.themColor),
@@ -138,7 +139,7 @@ class _vendorSignup extends State<VendorSignup>{
             controller: txtName,//..text = 'KAR-MT30',
             validator: (value){
               if (value.isEmpty) {
-                return AppLocalizations.of(context).translate('signup_txt_enteruser');
+                return AppLocalizations.of(globals.context).translate('signup_txt_enteruser');
               }
               return null;
             },
@@ -156,7 +157,7 @@ class _vendorSignup extends State<VendorSignup>{
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_lastname_placeholder'),
+              labelText: AppLocalizations.of(globals.context).translate('signin_lastname_placeholder'),
             labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
@@ -164,7 +165,7 @@ class _vendorSignup extends State<VendorSignup>{
           controller: txtLname,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
-              return AppLocalizations.of(context).translate('signup_txt_enterlast');
+              return AppLocalizations.of(globals.context).translate('signup_txt_enterlast');
             }
             return null;
           },
@@ -181,7 +182,7 @@ class _vendorSignup extends State<VendorSignup>{
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('profile_email_placeholder'),
+              labelText: AppLocalizations.of(globals.context).translate('profile_email_placeholder'),
             labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
@@ -191,7 +192,7 @@ class _vendorSignup extends State<VendorSignup>{
           controller: txtEmail,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
-              return AppLocalizations.of(context).translate('profile_txt_enteremail');
+              return AppLocalizations.of(globals.context).translate('profile_txt_enteremail');
             }
             return validateEmail(value);
           },
@@ -232,7 +233,7 @@ class _vendorSignup extends State<VendorSignup>{
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                       color: Configurations.themColor, width: 1,  ), ),
-                    labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),
+                    labelText: AppLocalizations.of(globals.context).translate('signin_phone_placeholder'),
                   labelStyle: TextStyle(color: Colors.grey),
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Configurations.themColor),
@@ -245,7 +246,7 @@ class _vendorSignup extends State<VendorSignup>{
 
                 validator: (value){
                   if (value.isEmpty) {
-                    return AppLocalizations.of(context).translate('signup_txt_enterno');
+                    return AppLocalizations.of(globals.context).translate('signup_txt_enterno');
                   }
                   return validatePhoneNumber(value);
                 },
@@ -267,7 +268,7 @@ class _vendorSignup extends State<VendorSignup>{
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder'),
+              labelText: AppLocalizations.of(globals.context).translate('signin_pwd_placeholder'),
             labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
@@ -277,7 +278,7 @@ class _vendorSignup extends State<VendorSignup>{
           controller: txtPass,//..text = 'KAR-MT30',
           validator: (value){
             if (value.isEmpty) {
-              return AppLocalizations.of(context).translate('signup_txt_enterpwd');
+              return AppLocalizations.of(globals.context).translate('signup_txt_enterpwd');
             }
             return null;
           },
@@ -297,7 +298,7 @@ class _vendorSignup extends State<VendorSignup>{
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),
+              labelText: AppLocalizations.of(globals.context).translate('signin_confirm_pwd'),
             labelStyle: TextStyle(color: Colors.grey),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Configurations.themColor),
@@ -306,7 +307,7 @@ class _vendorSignup extends State<VendorSignup>{
           ), cursorColor: Configurations.themColor,
           validator: (value){
             if (value != txtPass.text) {
-              return AppLocalizations.of(context).translate('mismatchpwd');
+              return AppLocalizations.of(globals.context).translate('mismatchpwd');
             }
             return null;
           },
@@ -325,11 +326,11 @@ class _vendorSignup extends State<VendorSignup>{
             children: <Widget>[
               Checkbox(value: _value1, onChanged: _value1Changed),
               if(globals.isCustomer ==true)
-                Text(AppLocalizations.of(context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
+                Text(AppLocalizations.of(globals.context).translate('signin_txt_agree'), style: TextStyle(color: Colors.grey),),
               if(globals.isCustomer ==true)
                 InkWell(
                   child: Text(
-                    AppLocalizations.of(context).translate('signin_txt_terms'),
+                    AppLocalizations.of(globals.context).translate('signin_txt_terms'),
                     style: TextStyle(decoration: TextDecoration.underline, color: Colors.orangeAccent),
                   ),
                   onTap: _launchURL,
@@ -337,13 +338,13 @@ class _vendorSignup extends State<VendorSignup>{
 
               if(globals.isCustomer ==false)
                 Text(
-                  AppLocalizations.of(context).translate('signin_txt_agree'),
+                  AppLocalizations.of(globals.context).translate('signin_txt_agree'),
                   style: TextStyle(color: Colors.grey),
                 ),
               if(globals.isCustomer ==false)
                 InkWell(
                   child: Text(
-                      AppLocalizations.of(context).translate('signin_txt_terms'),
+                      AppLocalizations.of(globals.context).translate('signin_txt_terms'),
                       style: TextStyle(
                         decoration: TextDecoration.underline,
                         color: Colors.orangeAccent,
@@ -365,7 +366,7 @@ class _vendorSignup extends State<VendorSignup>{
             textColor: Colors.white,
             child:  Text(
 
-                AppLocalizations.of(context).translate('signin_btn_signup'),
+                AppLocalizations.of(globals.context).translate('signin_btn_signup'),
                 style: TextStyle(fontSize: 16.5)
             ),
             onPressed: () {
@@ -378,7 +379,7 @@ class _vendorSignup extends State<VendorSignup>{
 
       Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(AppLocalizations.of(context).translate('signin_txt_text1')),
+          Text(AppLocalizations.of(globals.context).translate('signin_txt_text1')),
 
           FlatButton( onPressed:() {
             Navigator.push(
@@ -388,7 +389,7 @@ class _vendorSignup extends State<VendorSignup>{
             );
           },
             child: Text(
-                AppLocalizations.of(context).translate('btn_login'),
+                AppLocalizations.of(globals.context).translate('btn_login'),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold,
                     color: Colors.orangeAccent)
@@ -408,7 +409,7 @@ class _vendorSignup extends State<VendorSignup>{
           SizedBox(height: 10),
           SignInButton(
             Buttons.Facebook,
-            text:  AppLocalizations.of(context).translate('btn_facebook'),
+            text:  AppLocalizations.of(globals.context).translate('btn_facebook'),
             onPressed: () {
               signinWithFacebook();
             },
@@ -417,7 +418,7 @@ class _vendorSignup extends State<VendorSignup>{
 
           SignInButton(
             Buttons.Google,
-            text:  AppLocalizations.of(context).translate('btn_gmail'),
+            text:  AppLocalizations.of(globals.context).translate('btn_gmail'),
             onPressed: () {
               signinWithGmail();
             },
@@ -442,7 +443,7 @@ class _vendorSignup extends State<VendorSignup>{
           children: <Widget>[
             SizedBox(height: 30),
             Text(
-              AppLocalizations.of(context).translate('otp'),
+              AppLocalizations.of(globals.context).translate('otp'),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
@@ -468,7 +469,7 @@ class _vendorSignup extends State<VendorSignup>{
                   color: Configurations.themColor,
                   textColor: Colors.white,
                   child:  Text(
-                      AppLocalizations.of(context).translate('next'),
+                      AppLocalizations.of(globals.context).translate('next'),
                       style: TextStyle(fontSize: 16.5)
                   ),
                   onPressed: () {
@@ -581,13 +582,13 @@ class _vendorSignup extends State<VendorSignup>{
         });
       } else {
         setState(() {
-          status = AppLocalizations.of(context).translate('invalid');
+          status = AppLocalizations.of(globals.context).translate('invalid');
           showInfoAlert(context, status);
         });
       }
     }).catchError((error) {
       setState(() {
-        status = AppLocalizations.of(context).translate('alert2');
+        status = AppLocalizations.of(globals.context).translate('alert2');
         showInfoAlert(context, status);
       });
     });
@@ -623,7 +624,7 @@ class _vendorSignup extends State<VendorSignup>{
           callLoginAPI(data);
         }
       } else {
-        showInfoAlert(context, AppLocalizations.of(context).translate('terms'));
+        showInfoAlert(context, AppLocalizations.of(globals.context).translate('terms'));
       }
     } else {
       setState(() {
@@ -739,7 +740,7 @@ class _vendorSignup extends State<VendorSignup>{
           children: [
             SizedBox(width: 5,),
             Text(
-              AppLocalizations.of(context).translate('signin_txt_country'),
+              AppLocalizations.of(globals.context).translate('signin_txt_country'),
               style: TextStyle(color: Colors.grey),
             ),
             SizedBox(
@@ -747,7 +748,7 @@ class _vendorSignup extends State<VendorSignup>{
             ),
             Expanded(
               child: DropdownButton(
-                  hint: Text(AppLocalizations.of(context).translate('signin_txt_country')),
+                  hint: Text(AppLocalizations.of(globals.context).translate('signin_txt_country')),
                   underline: SizedBox(),
                   isExpanded: true,
                   value: selectedCountry,
@@ -902,7 +903,7 @@ class _vendorSignup extends State<VendorSignup>{
     setState(() {
       printLog("verificationCompleted ${auth.toString()}");
       printLog("verificationCompleted ${auth}");
-      status = AppLocalizations.of(context).translate('alert4');
+      status = AppLocalizations.of(globals.context).translate('alert4');
     });
     _authCredential = auth;
   }
@@ -915,9 +916,9 @@ class _vendorSignup extends State<VendorSignup>{
       status = '${authException.message}';
       print("verificationFailed: " + status);
       if (authException.message.contains('not authorized'))
-        status = AppLocalizations.of(context).translate('alert2');
+        status = AppLocalizations.of(globals.context).translate('alert2');
       else if (authException.message.contains('Network'))
-        status = AppLocalizations.of(context).translate('alert3');
+        status = AppLocalizations.of(globals.context).translate('alert3');
 //      else
 //        status = 'Something has gone wrong, please try later';
 

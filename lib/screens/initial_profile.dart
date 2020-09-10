@@ -750,11 +750,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                               textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
                             onPressed: () {
                               Preferences.saveObject("profile", "0");
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(),
-                                  ));
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                                      (route) => false);
+
+//                              Navigator.pushReplacement(
+//                                  context,
+//                                  MaterialPageRoute(
+//                                    builder: (context) => HomeScreen(),
+//                                  ));
                             }),
 
                         SizedBox(height: 120,),
@@ -829,12 +834,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       print("provider");
 
           enterServices();
-    } else if(ServiceSelectionUIPageState.selectedServices.length == 0 && globals.currentUser.roles[0].slug == "provider") {
-      enterServices();
-    } else if (_autoValidateAddress) {
+    }
+//    else if(ServiceSelectionUIPageState.selectedServices.length == 0 || globals.currentUser.roles[0].slug == "provider") {
+//      enterServices();
+//    }
+    else if (_autoValidateAddress) {
       print("address");
       addressEnter();
-    } else {
+    } else
+      {
       print("LANAGNE CHECH");
       if (language.length == 0) {
         print("no language");
@@ -919,11 +927,17 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         ServiceSelectionUIPageState.selectedServices.clear();
         ServiceSelectionUIPageState.serviceNamesString = "";
       }
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomeScreen(),
-          ));
+
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+        builder: (context) => HomeScreen(),
+      ),
+              (route) => false);
+
+//      Navigator.pushReplacement(
+//          context,
+//          MaterialPageRoute(
+//            builder: (context) => HomeScreen(),
+//          ));
     }
   }
 
