@@ -320,6 +320,9 @@ class _ProviderListState extends State<ProviderListPage> {
       margin2 = EdgeInsets.only(right: 55.0, top: 10);
     }
 
+    String rate = (user.rate.length > 0) ? user.rate[0].rate : "0";
+
+
     return
       new Container(
       height: 90.0,
@@ -362,7 +365,7 @@ class _ProviderListState extends State<ProviderListPage> {
                   children: <Widget>[
                     FlatButton.icon(onPressed: null,
                       icon: Icon(Icons.star_border, color: Colors.black, size: 20,),
-                      label: Text("4.0/5", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                      label: Text(rate + "/5", style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
                     )
                   ],
                 ),

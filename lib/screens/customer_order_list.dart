@@ -260,6 +260,16 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       name = order.provider.first_name + " " + order.provider.last_name;
     }
 
+    BorderRadius radius = BorderRadius.only(
+        topLeft: Radius.circular(10.0),
+        bottomRight: Radius.circular(10.0));
+
+    if(globals.localization == 'ar_SA') {
+      radius = BorderRadius.only(
+          bottomLeft: Radius.circular(10.0),
+          topRight: Radius.circular(10.0));
+    }
+
     return Container(
       child: GestureDetector(
         onTap: () async => {
@@ -366,9 +376,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
                   height: 40,
                   width: 120,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        bottomRight: Radius.circular(10.0)),
+                    borderRadius: radius,
                     color: status_color,
                   ),
       margin: EdgeInsets.only(bottom: 0, top: 70, left: 0),
