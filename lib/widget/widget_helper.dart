@@ -3,6 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
 
 
 // ignore: camel_case_types
@@ -72,8 +75,9 @@ class Widget_Helper {
                     padding: EdgeInsets.all(16.0),
                     child: new CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.tealAccent),
-                    )),
-                new Text("Please wait"),
+                    )
+                ),
+                new Text(AppLocalizations.of(globals.context).translate('alert_pleasewait')),
               ],
             ),
           );
