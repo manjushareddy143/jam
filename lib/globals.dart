@@ -17,6 +17,7 @@ String orderStatus;
 String fcmToken;
 bool isCustomer = true;
 Order order;
+int msgCount = 0;
 String localization;
 User currentUser;
 double longitude;

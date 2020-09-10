@@ -54,7 +54,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Locale _locale;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  static int msgCount = 0;
+//  static int msgCount = 0;
 //  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
   @override
   void initState() {
@@ -62,8 +62,9 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
-        if(msgCount%2==0) {
+        if(globals.msgCount%2==0) {
           print("PUSH NOTIFICATION 11: $message");
+
           pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           setState(() {
 //            OrderDetail detail = new OrderDetail();
@@ -111,7 +112,7 @@ class _MyAppState extends State<MyApp> {
                 {
                 print("MSG ID  ========= ${int.parse(message['data']['order'])}");
                 print("ID ========= ${globals.order.id}");
-                if(globals.order.id == message['data']['order']) {
+                if(globals.order.id.toString() == message['data']['order']) {
 
                   globals.order.status = int.parse(message['data']['status']);
 //                  if(globals.order.status.toString() == "6") {
@@ -145,14 +146,14 @@ class _MyAppState extends State<MyApp> {
                   int idx = globals.listofOrders.indexWhere((element) => element.id == int.parse(message['data']['order']));
                   print("idx ${idx}");
                   if(idx != null) {
-                    globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
-                    print("globals.order == ${globals.order.id}");
-                    globals.order.status = int.parse(message['data']['status']);
-                    print("globals.order status == ${globals.order.status}");
-                    globals.listofOrders[idx] = globals.order;
-                    print("LIST UPDATE");
+                  globals.order = globals.listofOrders.firstWhere((element) => element.id == int.parse(message['data']['order']));
+                  print("globals.order == ${globals.order.id}");
+                  globals.order.status = int.parse(message['data']['status']);
+                  print("globals.order status == ${globals.order.status}");
+                  globals.listofOrders[idx] = globals.order;
+                  print("LIST UPDATE");
 
-                  }
+                }
                 }
 
 
@@ -168,7 +169,7 @@ class _MyAppState extends State<MyApp> {
           });
           // something else you wanna execute
         };
-        msgCount++;
+        globals.msgCount++;
 
       },
       onLaunch: (Map<String, dynamic> message) async {
