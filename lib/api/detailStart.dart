@@ -84,6 +84,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:jam/api/i18n.dart';
+import 'package:jam/app_localizations.dart';
 
 import 'package:jam/globals.dart' as globals;
 import 'package:jam/screens/home_screen.dart';
@@ -160,9 +161,11 @@ class _LocationPageState extends State<LocationPage> {
 //        mapType: MapType.hybrid,
         markers: _markers,
         initialCameraPosition: initialLocation,
+        
         onMapCreated: (GoogleMapController controller) {
           print("ADDDRESS::: ${controller}");
           _controller.complete(controller);
+
 
 //          getAddress(globals.location);
           setState(() {
@@ -209,7 +212,8 @@ class _LocationPageState extends State<LocationPage> {
          Navigator.push(context,
              MaterialPageRoute(builder: (context) => HomeScreen()));
        }, //_goToTheLake,
-       label: Text('Save'),
+       label: Text(AppLocalizations.of(globals.context)
+           .translate('btn_save')),
        //icon: Icon(Icons.save),
        backgroundColor:Colors.teal,
 

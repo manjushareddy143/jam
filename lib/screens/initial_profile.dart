@@ -369,6 +369,18 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     final double circleBorderWidth = 8.0;
 
 
+    bool ishideService = false;
+    print("tes == ${globals.currentUser.services.length}");
+
+    if(globals.currentUser.services != null) {
+
+      if(globals.currentUser.services.length > 0) {
+        ishideService = true;
+      }
+
+
+    }
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -664,7 +676,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 ),
 
                               // SERVICE
-                              if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null)
+                              if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null && ishideService == false)
                                 Padding(
                                   padding: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
@@ -755,7 +767,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                             onPressed: () {
 
                               print("api call");
-                              initialProfileCall();
+                              initialProfileCall(ishideService);
 //                  _validateInputs();
                             }),
 
@@ -835,10 +847,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   List<String> language = new List<String>();
-  void initialProfileCall() async {
+  void initialProfileCall(ishideService) async {
     printLog("test = ${ServiceSelectionUIPageState.selectedServices}");
     if (ServiceSelectionUIPageState.selectedServices == null &&
-        globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null) {
+        globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null && ishideService == false) {
       print("provider");
 
           enterServices();
