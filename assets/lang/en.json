@@ -193,7 +193,9 @@
   "order_accept": "Order Accepted",
   "check_total_cost": "Check Total Cost",
   "order_complete": "Order Complete",
-  "otp_required": "The OTP field is required"
+  "otp_required": "The OTP field is required",
+  "order_cancel_user": "Order Cancel by User",
+  "order_cancel_vendor": "Order Cancel by Provider"
 
 
 
