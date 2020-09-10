@@ -1687,7 +1687,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               onPressed: () {
                 Map<String, String> data = new Map();
                 data["reason"] = cancelReason;
-                data["comment"] = txtCancel.text;
+                data["comment"] = (txtCancel.text.length ==0) ? "" : txtCancel.text;
                 data["booking_id"] = globals.order.id.toString();
                 if(globals.currentUser.roles[0].slug == "customer") {
                   data["status"] = "4";
