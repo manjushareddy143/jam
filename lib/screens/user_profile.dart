@@ -451,7 +451,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(children :[
-                Text((name == "")? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
                 ),
                 IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
@@ -479,7 +479,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
               child: Row(children :[
-                Text((gender == "")? AppLocalizations.of(context).translate('gender') : gender, style:
+                Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('gender') : gender, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
                 SizedBox(width: 10,),
                 Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
@@ -494,7 +494,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.call, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((num == "")? AppLocalizations.of(context).translate('txt_no_email_set') : num, style:
+                Text((num == "" || num == null)? AppLocalizations.of(context).translate('txt_no_email_set') : num, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -507,7 +507,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.email, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((email == "")? AppLocalizations.of(context).translate('txt_no_email_set') : email, style:
+                Text((email == "" || email == null)? AppLocalizations.of(context).translate('txt_no_email_set') : email, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -519,7 +519,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.language, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((globals.currentUser.languages == "")? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
+                Text((globals.currentUser.languages == "" || globals.currentUser.languages == null)? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -539,7 +539,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                     SizedBox(width: 10,),
                     Expanded(
                       child: Text(
-                        (services == "") ? AppLocalizations.of(context).translate('txt_no_service_set'): services,
+                        (services == "" ) ? AppLocalizations.of(context).translate('txt_no_service_set'): services,
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
@@ -560,7 +560,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.location_searching, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Text((ServiceRadiusHint == "")? AppLocalizations.of(context).translate('txt_radius') : ServiceRadiusHint, style:
+                Text((ServiceRadiusHint == "" )? AppLocalizations.of(context).translate('txt_radius') : ServiceRadiusHint, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
               ]
@@ -572,7 +572,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                 Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
                 SizedBox(width: 10,),
-                Expanded(child: Text((addressString == "")? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
+                Expanded(child: Text((addressString == "" || address == null )? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
                   maxLines: 3,)),
 

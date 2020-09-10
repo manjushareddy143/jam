@@ -742,7 +742,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 //                  _validateInputs();
                             }),
 
-
+                        if (globals.currentUser.roles[0].slug != "provider")
                         FlatButton(
 
                             child: Text(AppLocalizations.of(context)
