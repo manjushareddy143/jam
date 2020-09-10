@@ -260,6 +260,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildCoverImage(Size screenSize) {
+
+    print("_buildCoverImage");
+
     return Container(
       height: screenSize.height / 3.3,
       child: Column(
@@ -283,6 +286,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImageForSocial() {
+
+    print("_buildProfileImageForSocial == ${imageUrl}");
+
     return Center(
       child: Container(
         child: GestureDetector(
@@ -296,7 +302,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         height: 120.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: (imageUrl == null) ? getImage() : NetworkImage(imageUrl),
+            image: (imageUrl == null) ? getImage() : NetworkImage(Configurations.BASE_URL + imageUrl),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -315,6 +321,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   }
 
   Widget _buildProfileImage() {
+    print("_buildProfileImage");
     return Center(
       child: Container(
         child: GestureDetector(
@@ -326,7 +333,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         height: 120.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: (_image == null) ? setImgPlaceholder() : FileImage(_image),
+            image:
+//            (_image == null) ? setImgPlaceholder() :  NetworkImage(Configurations.BASE_URL + globals.currentUser.image),
+            (_image == null) ? setImgPlaceholder() : FileImage(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -358,6 +367,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   Widget profileUI() {
     final double circleRadius = 100.0;
     final double circleBorderWidth = 8.0;
+
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -787,17 +798,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
               right: 0,
             ),
 
-
-
-
-
-
-
 //    Padding(padding: EdgeInsets.only(top: ),
 //              child: ,),
-
-
-
 
             Container(
               width: circleRadius,
