@@ -206,6 +206,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 //        ? order.provider.image : Configurations.BASE_URL +order.provider.image;
 
 
+    print(order.provider);
     if( (order.provider.image != null && order.provider.image.contains("http"))) {
       img = order.provider.image;
     } else if(order.provider.image == null) {
