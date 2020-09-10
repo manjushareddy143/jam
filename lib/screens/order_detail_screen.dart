@@ -1886,19 +1886,19 @@ class _DetailUIPageState extends State<DetailUIPage> {
     if(order.invoice != null) {
       double cost = double.parse(order.provider.servicePrice.price);
       double serviceAmount = order.invoice.working_hr * cost;
-      print("serviceAmount = ${serviceAmount}");
+
       int meterialAmount = order.invoice.material_quantity * order.invoice.material_price;
-      print("meterialAmount = ${meterialAmount}");
+
       int additional_total = order.invoice.additional_charges * order.invoice.working_hr;
-      print("additional_total = ${additional_total}");
+
       double sub_total = serviceAmount + additional_total + meterialAmount;
-      print("sub_total = ${sub_total}");
+
       double total_discount = sub_total - order.invoice.discount;
-      print("total_discount = ${total_discount}");
+
 //      double totalWithDiscount =  sub_total -  total_discount;
       double taxCut =  total_discount * order.invoice.tax /100;
       double total = total_discount -  taxCut;
-      print("total ${total}");
+
       return total.toStringAsFixed(2);
     } else {
       return "";

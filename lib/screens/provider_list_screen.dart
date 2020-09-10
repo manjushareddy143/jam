@@ -320,7 +320,7 @@ class _ProviderListState extends State<ProviderListPage> {
       margin2 = EdgeInsets.only(right: 55.0, top: 10);
     }
 
-    String rate = (user.rate.length > 0) ? double.parse(user.rate[0].rate).toStringAsFixed(0) : "0";
+    String rate = (user.rate.length > 0) ? double.parse(user.rate[0].rate).floor().toStringAsFixed(0) : "0";
 
 
     return
