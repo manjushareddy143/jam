@@ -1899,7 +1899,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       double taxCut =  total_discount * order.invoice.tax /100;
       double total = total_discount -  taxCut;
       print("total ${total}");
-      return total.toString();
+      return total.toStringAsFixed(2);
     } else {
       return "";
     }
