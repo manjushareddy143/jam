@@ -820,7 +820,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           DecorationImage(
             image:
            // (globals.currentUser.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(globals.currentUser.image),
-            (_image == null) ? NetworkImage(globals.currentUser.image) : FileImage(_image),
+            (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) : NetworkImage(globals.currentUser.image) : FileImage(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
