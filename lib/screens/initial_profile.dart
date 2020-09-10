@@ -824,11 +824,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   List<String> language = new List<String>();
   void initialProfileCall() async {
     printLog("test = ${ServiceSelectionUIPageState.selectedServices}");
-    if (ServiceSelectionUIPageState.selectedServices == null || ServiceSelectionUIPageState.selectedServices.length == 0 &&
+    if (ServiceSelectionUIPageState.selectedServices == null &&
         globals.currentUser.roles[0].slug == "provider") {
       print("provider");
-//      ServiceSelectionUIPageState.selectedServices.length == 0 ||
+
           enterServices();
+    } else if(ServiceSelectionUIPageState.selectedServices.length == 0 && globals.currentUser.roles[0].slug == "provider") {
+      enterServices();
     } else if (_autoValidateAddress) {
       print("address");
       addressEnter();

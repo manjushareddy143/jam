@@ -857,7 +857,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       }
     }
 
-    print("u detail ===== ${globals.currentUser.toJson()}");
+
 
     String ServiceRadiusHint = "Service Radius";
     if(globals.currentUser.provider != null) {
@@ -887,10 +887,14 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
         }
       });
     }
-    print("SERVICE:-----"+ services);
 
-
-
+    print("SOCIAL == ${globals.currentUser.social_signin}");
+    bool enableEmail = false;
+    if(globals.currentUser.social_signin == null || globals.currentUser.social_signin == "") {
+      enableEmail = true;
+      print("enableEmail == ${enableEmail}");
+    }
+    print("after enableEmail == ${enableEmail}");
 
 
     return Padding(
@@ -928,10 +932,10 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
           // EMAIL
           TextField(
-            focusNode: focus_email,style: (isEditProfile) ?
+            focusNode: focus_email,style: (enableEmail) ?
           TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
             decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? AppLocalizations.of(context).translate('inquiry_txt_email')  : globals.currentUser.email,
-                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: isEditProfile,
+                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: enableEmail,
               labelStyle: TextStyle(color: Colors.grey),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Configurations.themColor),
