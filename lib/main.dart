@@ -65,13 +65,47 @@ class _MyAppState extends State<MyApp> {
         if(globals.msgCount%2==0) {
           print("PUSH NOTIFICATION 11: $message");
 
-          pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
+          Map data = message['data'];
+          if(data.containsKey('status')) {
+            printLog("COME FOR STAUTS");
+
+            String msg = "";
+            switch(message['data']['status']) {
+              case "1" :
+                msg = AppLocalizations.of(globals.context).translate('book_placed');
+                break;
+              case "2" :
+                printLog("ACCEPT");
+                msg = AppLocalizations.of(globals.context).translate('order_accept');
+                break;
+              case "3" :
+                msg = AppLocalizations.of(globals.context).translate('order_cancel_vendor');
+                break;
+                case "4" :
+                msg = AppLocalizations.of(globals.context).translate('order_cancel_user');
+                break;
+              case "5" :
+                msg = AppLocalizations.of(globals.context).translate('order_complete');
+                break;
+              case "6" :
+                msg = AppLocalizations.of(globals.context).translate('check_total_cost');
+                break;
+            }
+
+            printLog("MSG == ${msg}");
+
+            pushInfoAlert(globals.context, message['notification']['title'], msg);
+          } else {
+            pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
+          }
+
+
           setState(() {
 //            OrderDetail detail = new OrderDetail();
 //            detail.build(globals.context);
 //            Orders orderList = new Orders();
 //            orderList.build(globals.context);
-            Map data = message['data'];
+
             if(data.containsKey('status')) {
               globals.orderStatus = message['data']['status'];
 
