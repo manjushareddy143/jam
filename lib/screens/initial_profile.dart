@@ -92,10 +92,16 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       print("languages ${globals.currentUser.languages}");
       if(globals.currentUser.languages != null) {
       var lang = globals.currentUser.languages;
-       if (lang.contains("Arabic"))
+       if (lang.contains("Arabic")) {
          _arabic = true;
-       if(lang.contains("English"))
+         language.add("Arabic");
+       }
+
+       if(lang.contains("English")) {
          _english = true;
+         language.add("English");
+       }
+
       }
       if(globals.currentUser.gender != null){
         dropdownvalue =globals.currentUser.gender;
@@ -647,7 +653,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 ),
 
                               // SERVICE
-                              if (globals.currentUser.roles[0].slug == "provider")
+                              if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null)
                                 Padding(
                                   padding: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
@@ -830,7 +836,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void initialProfileCall() async {
     printLog("test = ${ServiceSelectionUIPageState.selectedServices}");
     if (ServiceSelectionUIPageState.selectedServices == null &&
-        globals.currentUser.roles[0].slug == "provider") {
+        globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null) {
       print("provider");
 
           enterServices();
@@ -879,10 +885,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["address"] = jsonEncode(addressData);
 
             if (globals.currentUser.roles[0].slug == "provider") {
-              String rawJson =
-                  jsonEncode(ServiceSelectionUIPageState.selectedServices);
-              print(rawJson);
-              data["services"] = rawJson;
+              if(globals.currentUser.org_id == null) {
+                String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+                print(rawJson);
+                data["services"] = rawJson;
+              }
               data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
@@ -902,7 +909,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
     print('img==== ${data}');
     if (_image != null) {
- //     print('COME FOR API IMAGE');
+      print('COME FOR API IMAGE');
 //    files.add(await http.MultipartFile.fromPath('profile_photo', _image.path));
       files.add(http.MultipartFile.fromBytes(
           'profile_photo', _image.readAsBytesSync(),
@@ -920,13 +927,15 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void processProfileResponse(Map res) {
     if (res != null) {
       globals.currentUser = User.fromJson(res);
-      print("come for response ==  ${globals.currentUser.toJson()}");
-      Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+      print("come for response ==  ${globals.currentUser}");
+      Preferences.saveObject("user", jsonEncode(res));
       Preferences.saveObject("profile", "0");
       if(ServiceSelectionUIPageState.selectedServices != null) {
         ServiceSelectionUIPageState.selectedServices.clear();
         ServiceSelectionUIPageState.serviceNamesString = "";
       }
+
+      print("TEST");
 
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
         builder: (context) => HomeScreen(),

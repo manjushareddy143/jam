@@ -27,7 +27,6 @@ class UserServices {
     'id': id, 'user_id': user_id, 'service_id': service_id,
     'category_id': category_id, 'price': price,
     'service': (service != null) ? service.toJson() : null , 'categories': (categories != null) ? categories.toJson() : null ,
-
   };
 
   static List processListOfUserServices(List<UserServices> userServices) {

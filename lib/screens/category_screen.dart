@@ -147,7 +147,7 @@ class _CategoryPageState extends State<CategoryPage> {
       child: Row(
         children: <Widget>[
           Container(padding: EdgeInsets.all(5),
-            child:  Image.network(
+            child:  Image.network( Configurations.BASE_URL +
               service.icon_image,
               height: 40.0, width: 80.0, fit: BoxFit.contain,),
           ),

@@ -17,4 +17,12 @@ class UserRole {
     'name': name,
     'slug': slug
   };
+
+  static List processListOfRoles(List<UserRole> roles) {
+    List list = new List();
+    for(var i = 0; i < roles.length; i++){
+      list.add(roles[i].toJson());
+    }
+    return list;
+  }
 }

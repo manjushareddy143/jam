@@ -372,12 +372,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         vertical: 16.0,
         horizontal: 16.0,
     ),
-      child: Stack(
-        children: [
-          setProfileCard(),
-          setProfilePic()
-        ],
-      )
+      child: SingleChildScrollView(
+          child: Stack(
+            children: [
+
+              setProfileCard(),
+              setProfilePic()
+            ],
+          )
+      ),
+
+
     );
   }
  Widget setProfileCard(){
@@ -435,7 +440,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
   print(globals.currentUser.toJson());
 
    return Container(
-//      height: 500,
+//      height: 900,
       margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
       decoration: new BoxDecoration(
         color: Colors.white,
@@ -529,11 +534,6 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(
-//                mainAxisSize: MainAxisSize.max,
-//                  mainAxisAlignment: MainAxisAlignment.center,
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  textBaseline: TextBaseline.alphabetic,
-
                   children :[
                     Icon(Icons.settings, color: Configurations.themColor, size: 14,),
                     SizedBox(width: 10,),
@@ -669,6 +669,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
   Widget profileImageView() {
     print("ima == ${_image}");
+    print("USER DETAIL == ${globals.currentUser.image}");
     return Container(
 
       child: GestureDetector(
@@ -685,14 +686,16 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
       width: 120.0,
       height: 120.0,
       decoration: BoxDecoration(
-        image: (globals.currentUser.image == null) ? 
+        image: (globals.currentUser.image == null) ?
         DecorationImage(
           image:
           (_image == null) ? AssetImage("assets/images/BG-1x.jpg") : FileImage(_image),
           fit: BoxFit.cover,
-        ) : DecorationImage(
+        ) :
+
+        DecorationImage(
           image:
-          (_image == null) ? NetworkImage(globals.currentUser.image) : FileImage(_image),
+          (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) : NetworkImage(globals.currentUser.image) : FileImage(_image),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(80.0),
@@ -1051,7 +1054,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           ),
 
           // SERVICES
-          if (globals.currentUser.roles[0].slug == "provider")
+          if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null)
 
             Padding(
               padding: EdgeInsets.only(left: 0, right: 0),

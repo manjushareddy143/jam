@@ -163,7 +163,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     width: 45.00,
                                     height: 45.00,
                                     child: Image.network(
-                                      listofServices[serviceIndex].icon_image,
+                                      Configurations.BASE_URL + listofServices[serviceIndex].icon_image,
                                       fit: BoxFit.fill,
                                     ),
                                   ), //new Icon(Icons.face),

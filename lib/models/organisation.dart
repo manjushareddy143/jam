@@ -17,6 +17,13 @@ class Organisation {
   admin = ((json.containsKey('admin') && json['admin'] != null ) ? User.fromJson(json['admin']) : null);
 
 
+  Map<String, dynamic> toJson() => {
+    'id': id, 'name': name, 'logo': logo,
+    'country': country, 'number_of_employee': number_of_employee,
+    'admin': admin,
+  };
+
+
 
 
 
