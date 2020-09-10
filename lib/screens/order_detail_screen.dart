@@ -326,7 +326,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
      print(globals.order.rating);
      String comment = "";
      if(globals.order.rating != null) {
-       comment = (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
+       comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
      }
 
 
