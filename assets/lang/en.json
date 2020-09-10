@@ -188,7 +188,12 @@
   "alert3": "Please check your internet connection and try again",
   "alert4": "Auto retrieving verification code",
   "select_country": "Select Country",
-  "set_map": "Set Location Map"
+  "set_map": "Set Location Map",
+  "book_placed": "Booking Placed",
+  "order_accept": "Order Accepted",
+  "check_total_cost": "Check Total Cost",
+  "order_complete": "Order Complete",
+  "otp_required": "The OTP field is required"
 
 
 
