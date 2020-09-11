@@ -64,12 +64,10 @@ class _HomeUIPageState extends State<HomeUIPage> {
     }
   }
   void processServiceResponse(Response res) {
-    print('get daily format');
     if (res != null) {
 
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
         List roles = data;
 
         setState(() {
@@ -84,8 +82,6 @@ class _HomeUIPageState extends State<HomeUIPage> {
         });
 
       }
-    } else {
-      print('no data');
     }
   }
 

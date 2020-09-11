@@ -254,7 +254,6 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
   }
 
 //  Widget SelectOrderMenu(){
-//    print("MAYUR");
 //    return Container(
 //
 //        height: 600.0,
@@ -284,7 +283,6 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
 //  }
 
     void onTap(val) {
-    print(val);
     setState(() {
       if(val == 0) {
 

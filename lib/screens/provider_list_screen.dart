@@ -49,8 +49,6 @@ class _ProviderListState extends State<ProviderListPage> {
     // TODO: implement initState
     super.initState();
     globals.context = context;
-//    print('service.name === ${service.categories.length}');
-//    print(service.id);
     if(service.categories.length > 0) {
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(service.categories);
       selectedSubCategory = _dropDownSubCategory[0].value;

@@ -92,15 +92,11 @@ class _InquiryPageState extends State<InquiryPage> {
 
   @override
   void initState() {
-
-    print("DATA === ${this.category}");
-
     super.initState();
     globals.context = context;
     focus_name = FocusNode();
     focus_mail = FocusNode();
     focus_no = FocusNode();
-    print("DATA === ${this.service}");
     focus_remark = FocusNode();
     _lstServices.add(this.service);
     if(this.category != null){
@@ -115,7 +111,6 @@ class _InquiryPageState extends State<InquiryPage> {
     }
 
     setProfile();
-    print(this.service.name);
     selecteDate = _currentDt;//format.format(_currentDt);
     start_time = _currentDt; //formatt.format(_currentDt); //TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
     end_time =_currentDt.add(Duration(hours: 1)); //formatt.format(_currentDt.add(Duration(hours: 1)));//TimeOfDay.fromDateTime(val ?? DateTime.now()).toString()
@@ -195,8 +190,6 @@ class _InquiryPageState extends State<InquiryPage> {
       img = (this.provider.organisation.logo != null && this.provider.organisation.logo.contains("http"))
           ? this.provider.organisation.logo : Configurations.BASE_URL +this.provider.organisation.logo;
     }
-    print("IM == ${img}");
-    print("NAME == ${this.provider.first_name}");
     String name = "";
     if(this.provider.organisation != null) {
       name = this.provider.organisation.name;
@@ -357,7 +350,6 @@ class _InquiryPageState extends State<InquiryPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _autoValidate = false;
-      print(provider);
       setState(() {
         Map<String, String> data = new Map();
         data["user_id"] = user_id;
@@ -387,7 +379,6 @@ class _InquiryPageState extends State<InquiryPage> {
   void apiCall(Map<String, String> data) async {
     try {
       HttpClient httpClient = new HttpClient();
-      print('api call start signup');
       var syncOrderResponse =
           await httpClient.postRequest(context, Configurations.BOOKING_URL, data, true);
       processOrderResponse(syncOrderResponse);
@@ -399,14 +390,11 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
   void processOrderResponse(Response res) {
-    print("come for response");
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
         Navigator.pop(context);
       } else {
-        printLog("login response code is not 200");
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");
       }
@@ -447,13 +435,11 @@ class _InquiryPageState extends State<InquiryPage> {
   void changedDropDownItem(String selectedItem) {
     setState(() {
       selectedService = selectedItem;
-      print(selectedService);
     });
   }
 
 
   Widget setDropDown1() {
-    print(selectedSubCategory);
     return Container(
       decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
           border: Border.all(width: 0.9,color: Configurations.themColor)),
@@ -487,7 +473,6 @@ class _InquiryPageState extends State<InquiryPage> {
   void changedDropDownItem1(String selectedItem) {
     setState(() {
       selectedSubCategory = selectedItem;
-      print(selectedSubCategory);
     });
   }
 

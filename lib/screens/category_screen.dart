@@ -78,11 +78,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void processServiceResponse(Response res) {
-    print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
         List roles = data;
         setState(() {
           listofServices = Service.processServices(roles);
@@ -94,8 +92,6 @@ class _CategoryPageState extends State<CategoryPage> {
           isLoadin = false;
         });
       }
-    } else {
-      print('no data');
     }
   }
 

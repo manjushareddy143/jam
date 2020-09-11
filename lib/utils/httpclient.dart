@@ -47,7 +47,6 @@ class HttpClient {
 
       printLog("FILES ${files}");
       if(files != null && files.length > 0) {
-        print('files ${files[0].filename}');
         request.files.addAll(files);
       }
 
@@ -81,7 +80,7 @@ class HttpClient {
 
 //      headers["Content-Type"] = "application/json";
 //      headers["Authorization"] = 'Basic';
-      print(apiUrl + " 123");
+      print(apiUrl);
 
       http.Response response =
           await http.post(apiUrl, headers: headers, body: data);

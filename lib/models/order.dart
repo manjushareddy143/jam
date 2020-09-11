@@ -80,7 +80,6 @@ class Order {
 
 
   static List<Order> processOrders(List orders) {
-    print("orders = $orders");
     return  orders.map<Order>((json) => new Order.fromJson(json)).toList();
   }
 
