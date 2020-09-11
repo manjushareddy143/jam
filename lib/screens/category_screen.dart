@@ -49,11 +49,12 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
     });
-    globals.context = context;
+
   }
 
   @override

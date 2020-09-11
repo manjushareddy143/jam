@@ -5,6 +5,7 @@ import 'package:jam/login/masterSignupScreen.dart';
 import 'package:jam/slider_layout.dart';
 import 'package:jam/slider_model.dart';
 import 'package:jam/slider_dots.dart';
+import 'package:jam/globals.dart' as globals;
 
 class SliderScreen extends StatefulWidget {
   _sliderScreen createState() => new _sliderScreen();
@@ -23,6 +24,13 @@ class _sliderScreen extends State<SliderScreen>{
     // TODO: implement dispose
     super.dispose();
     _pageController.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    globals.context = context;
   }
   final PageController _pageController = PageController(initialPage: 0);
   @override

@@ -1536,7 +1536,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     data["rate_by"] = globals.order.user_id.toString();
     data["booking_id"] = globals.order.id.toString();
     data["rate_to"] = globals.order.provider_id.toString();
-    data["comment"] = txtComment.text;
+    data["comment"] = (txtCancel.text.length ==0) ? "" : txtCancel.text;
     printLog(data);
     try {
       HttpClient httpClient = new HttpClient();
@@ -1897,7 +1897,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 //      double totalWithDiscount =  sub_total -  total_discount;
       double taxCut =  total_discount * order.invoice.tax /100;
-      double total = total_discount -  taxCut;
+      double total = total_discount +  taxCut;
 
       return total.toStringAsFixed(2);
     } else {
