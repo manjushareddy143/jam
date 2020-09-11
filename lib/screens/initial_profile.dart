@@ -370,9 +370,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
 
     bool ishideService = false;
-    print("tes == ${globals.currentUser.services.length}");
+  //  print("tes == ${globals.currentUser.services.length}");
 
     if(globals.currentUser.services != null) {
+      print("Services is present");
 
       if(globals.currentUser.services.length > 0) {
         ishideService = true;
@@ -676,7 +677,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 ),
 
                               // SERVICE
-                              if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null && ishideService == false)
+                              if (globals.currentUser.roles[0].slug == "provider"  && ishideService == false)
                                 Padding(
                                   padding: EdgeInsets.only(left: 20, right: 20),
                                   child: Container(
@@ -850,7 +851,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   void initialProfileCall(ishideService) async {
     printLog("test = ${ServiceSelectionUIPageState.selectedServices}");
     if (ServiceSelectionUIPageState.selectedServices == null &&
-        globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null && ishideService == false) {
+        globals.currentUser.roles[0].slug == "provider" && ishideService == false) {
       print("provider");
 
           enterServices();
@@ -899,11 +900,11 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["address"] = jsonEncode(addressData);
 
             if (globals.currentUser.roles[0].slug == "provider") {
-              if(globals.currentUser.org_id == null) {
+              //if(globals.currentUser.org_id == null) {
                 String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
                 print(rawJson);
                 data["services"] = rawJson;
-              }
+             // }
               data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
