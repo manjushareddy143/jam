@@ -645,21 +645,6 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                              ]
                          ),
                        ),
-//                      SizedBox(
-//                        height: 10.0,
-//                      )
-//                      Padding( padding: EdgeInsets.only(top: 10, bottom: 10),
-//                        child: SizedBox(
-//                          height: 1.0,
-//                          child: new Center(
-//                            child: new Container(
-//                              margin: new EdgeInsetsDirectional.only(start: 1.0, end: 1.0),
-//                              height: 0.4,
-//                              color: Colors.grey,
-//                            ),
-//                          ),
-//                        ),
-//                      ),
                      ],
                    ),
                  ),
