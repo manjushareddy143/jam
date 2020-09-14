@@ -609,8 +609,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
               for(int i =0; i < AddressLength ; i++)
                 Card(
                   child: Column(
-//                    mainAxisAlignment: MainAxisAlignment.start,
-//                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
 
                     children: [
 
@@ -630,7 +630,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
                           Expanded(child: Text(addressListString(globals.currentUser.address[i]), style:
                           TextStyle(color: Colors.deepOrange,
-                              fontWeight: FontWeight.w300,fontSize: 16),),)
+                              fontWeight: FontWeight.w300,fontSize: 16),),
+                          flex: 2,)
 
 
                         ]
