@@ -499,7 +499,7 @@ class _vendorSignup extends State<VendorSignup>{
         ),
       ),
         new Image.asset("assets/images/bottomSignup.png",
-          height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
+          height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
 
 
 

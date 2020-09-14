@@ -454,12 +454,19 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
               child: Row(children :[
-                Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                SizedBox(width: 120,
+                  child: Flexible(
+                    child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
+                    ),
+                  ),
                 ),
+                SizedBox(width: 10,),
                 IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
                   validateform()
-                })
+
+                }),
+
 
 //                IconButton(
 //                  icon: new Icon(editIcon),

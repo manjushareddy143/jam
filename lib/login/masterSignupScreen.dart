@@ -65,7 +65,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
               children: <Widget>[
                 SizedBox(height: 30,),
                 new Image.asset("assets/images/jamLogo.png",
-                  height: 40.0, width: 95.0 , fit: BoxFit.fill,),
+                  height: 65.0, width: 120.0 , fit: BoxFit.fill,),
 
                 SizedBox(height: 10,),
                 Padding(
@@ -144,7 +144,7 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                   ),
                 ),
                 new Image.asset("assets/images/bottomSignup.png",
-                  height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
+                  height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
 
 //                  Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
 //                    child: Container(
