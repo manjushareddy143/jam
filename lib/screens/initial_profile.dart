@@ -900,11 +900,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["address"] = jsonEncode(addressData);
 
             if (globals.currentUser.roles[0].slug == "provider") {
-              //if(globals.currentUser.org_id == null) {
-                String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
-                print(rawJson);
-                data["services"] = rawJson;
-             // }
+              if(ServiceSelectionUIPageState.selectedServices != null ) {
+                if(ServiceSelectionUIPageState.selectedServices.length > 0) {
+                  String rawJson = jsonEncode(ServiceSelectionUIPageState.selectedServices);
+                  print(rawJson);
+                  data["services"] = rawJson;
+                }
+
+              }
               data["service_radius"] = prfl_servcerds.text;
             }
             printLog(data);
