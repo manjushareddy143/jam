@@ -375,6 +375,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             children: [
 
               setProfileCard(),
+
+
               setProfilePic()
             ],
           )
@@ -435,7 +437,7 @@ String num = globals.currentUser.contact;
 String email = globals.currentUser.email;
 int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
 
-  print(globals.currentUser.toJson());
+//  print(globals.currentUser.toJson());
 
    return Container(
 //      height: 900,
@@ -453,18 +455,19 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
             Padding(
               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
-                SizedBox(width: 120,
-                  child: Flexible(
-                    child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
-                    ),
+              child: Row(
+                  children :[
+                    SizedBox(width: 100,
+                      child: Flexible(
+                        child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                        TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
+                        ),
+                    flex: 3,
                   ),
                 ),
                 SizedBox(width: 10,),
                 IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
                   validateform()
-
                 }),
 
 
@@ -606,13 +609,25 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
               for(int i =0; i < AddressLength ; i++)
                 Card(
                   child: Column(
+//                    mainAxisAlignment: MainAxisAlignment.start,
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+
                     children: [
+
+//                      Text(globals.currentUser.address[i].name, style:
+//                      TextStyle(color: Colors.deepOrange,
+//                          fontWeight: FontWeight.bold,fontSize: 16),),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0,10.0,0,10.0),
-                        child: Row(children :[
-
+                        child:
+                        Row(children :[
                           Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
                           SizedBox(width: 10,),
+
+
+
+
                           Expanded(child: Text(addressListString(globals.currentUser.address[i]), style:
                           TextStyle(color: Colors.deepOrange,
                               fontWeight: FontWeight.w300,fontSize: 16),),)
@@ -1826,7 +1841,6 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
   Widget setRichText()
   {
     int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
-    print("AddressLength == ${AddressLength}");
     return Container(
       padding: EdgeInsets.only(left:15, right: 15),
       child: Column(
