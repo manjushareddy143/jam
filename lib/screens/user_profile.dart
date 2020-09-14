@@ -371,6 +371,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         horizontal: 16.0,
     ),
       child: SingleChildScrollView(
+
           child: Stack(
             children: [
 
@@ -441,34 +442,34 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
    return Container(
 //      height: 900,
-      margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 22),
-      decoration: new BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.rectangle,
-        borderRadius: new BorderRadius.circular(8.0),),
-      child: Padding(
-        padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
+     margin: EdgeInsets.only(left: 5.0, right: 5.0, top: 5.0, bottom: 20),
+     decoration: new BoxDecoration(
+       color: Colors.white,
+       shape: BoxShape.rectangle,
+       borderRadius: new BorderRadius.circular(8.0),),
+     child: Padding(
+       padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
        // padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            SizedBox(height: 50,),
+       child: Column(
+         children: [
+           SizedBox(height: 50,),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(
-                  children :[
-                    SizedBox(width: 100,
-                      child: Flexible(
-                        child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
-                        TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
-                        ),
-                    flex: 3,
-                  ),
-                ),
-                SizedBox(width: 10,),
-                IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
-                  validateform()
-                }),
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(
+                 children :[
+                   SizedBox(width: 100,
+                     child: Flexible(
+                       child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                       TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
+                       ),
+                       flex: 3,
+                     ),
+                   ),
+                   SizedBox(width: 10,),
+                   IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
+                     validateform()
+                   }),
 
 
 //                IconButton(
@@ -485,158 +486,165 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 //
 //                  },
 //                ),
-              ]
-              ),
-            ),
+                 ]
+             ),
+           ),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
-              child: Row(children :[
-                Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('gender') : gender, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
-                SizedBox(width: 10,),
-                Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
-              ]
-              ),
-            ),
-            SizedBox(height: 20,),
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
+             child: Row(children :[
+               Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('gender') : gender, style:
+               TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+               SizedBox(width: 10,),
+               Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
+             ]
+             ),
+           ),
+           SizedBox(height: 20,),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(children :[
 
-                Icon(Icons.call, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Text((num == "" || num == null)? AppLocalizations.of(context).translate('txt_no_email_set') : num, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+               Icon(Icons.call, color: Configurations.themColor, size: 14,),
+               SizedBox(width: 10,),
+               Text((num == "" || num == null)? AppLocalizations.of(context).translate('txt_no_email_set') : num, style:
+               TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
-              ]
-              ),
-            ),
+             ]
+             ),
+           ),
 
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(children :[
 
-                Icon(Icons.email, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Text((email == "" || email == null)? AppLocalizations.of(context).translate('txt_no_email_set') : email, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+               Icon(Icons.email, color: Configurations.themColor, size: 14,),
+               SizedBox(width: 10,),
+               Text((email == "" || email == null)? AppLocalizations.of(context).translate('txt_no_email_set') : email, style:
+               TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
-              ]
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+             ]
+             ),
+           ),
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(children :[
 
-                Icon(Icons.language, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Text((globals.currentUser.languages == "" || globals.currentUser.languages == null)? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+               Icon(Icons.language, color: Configurations.themColor, size: 14,),
+               SizedBox(width: 10,),
+               Text((globals.currentUser.languages == "" || globals.currentUser.languages == null)? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
+               TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
-              ]
-              ),
-            ),
-            if(globals.currentUser.roles[0].slug == "provider")
-            Padding(
-              padding: EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(
-                  children :[
-                    Icon(Icons.settings, color: Configurations.themColor, size: 14,),
-                    SizedBox(width: 10,),
-                    Expanded(
-                      child: Text(
-                        (services == "" ) ? AppLocalizations.of(context).translate('txt_no_service_set'): services,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 14),
+             ]
+             ),
+           ),
+           if(globals.currentUser.roles[0].slug == "provider")
+             Padding(
+               padding: EdgeInsets.fromLTRB(0,8.0,0,0),
+               child: Row(
+                   children :[
+                     Icon(Icons.settings, color: Configurations.themColor, size: 14,),
+                     SizedBox(width: 10,),
+                     Expanded(
+                       child: Text(
+                         (services == "" ) ? AppLocalizations.of(context).translate('txt_no_service_set'): services,
+                         maxLines: 4,
+                         overflow: TextOverflow.ellipsis,
+                         textAlign: TextAlign.start,
+                         style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500,fontSize: 14),
 //                      overflow: TextOverflow.ellipsis,
 //                      maxLines: 0,
 //                      softWrap: true,
-                      ),
-                    )
+                       ),
+                     )
 
-                  ]
-              ),
-            ),
-            if(globals.currentUser.roles[0].slug == "provider")
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+                   ]
+               ),
+             ),
+           if(globals.currentUser.roles[0].slug == "provider")
+             Padding(
+               padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+               child: Row(children :[
 
-                Icon(Icons.location_searching, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Text((ServiceRadiusHint == "" )? AppLocalizations.of(context).translate('txt_radius') : ServiceRadiusHint, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
+                 Icon(Icons.location_searching, color: Configurations.themColor, size: 14,),
+                 SizedBox(width: 10,),
+                 Text((ServiceRadiusHint == "" )? AppLocalizations.of(context).translate('txt_radius') : ServiceRadiusHint, style:
+                 TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
-              ]
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
+               ]
+               ),
+             ),
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(children :[
 
-                Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
-                SizedBox(width: 10,),
-                Expanded(child: Text((addressString == "" || address == null )? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
-                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
-                  maxLines: 3,)),
+               Icon(Icons.location_on, color: Configurations.themColor, size: 14,),
+               SizedBox(width: 10,),
+               Expanded(child: Text((addressString == "" || address == null )? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
+               TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
+                 maxLines: 3,)),
 
-              ]
-              ),
-            ),
-            SizedBox(height: 30,),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
-              child: Row(children :[
-                Text(AppLocalizations.of(context).translate('address'), style:
-                TextStyle(color: Colors.deepOrange,
-                    fontWeight: FontWeight.w600,fontSize: 18),),
+             ]
+             ),
+           ),
+           SizedBox(height: 30,),
+           Padding(
+             padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
+             child: Row(children :[
+               Text(AppLocalizations.of(context).translate('address'), style:
+               TextStyle(color: Colors.deepOrange,
+                   fontWeight: FontWeight.w600,fontSize: 18),),
 
-                IconButton(
-                  onPressed: () {
-                    addressEnter(true);
-                  },
-                  icon: Icon(Icons.add),
-                )
-              ]
-              ),
-            ),
+               IconButton(
+                 onPressed: () {
+                   addressEnter(true);
+                 },
+                 icon: Icon(Icons.add),
+               )
+             ]
+             ),
+           ),
 
-            if(AddressLength > 0)
-              for(int i =0; i < AddressLength ; i++)
-                Card(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+           if(AddressLength > 0)
+             for(int i =0; i < AddressLength ; i++)
+               SingleChildScrollView(
+                 child: Card(
 
-                    children: [
+
+                   child: Column(
+//                    mainAxisAlignment: MainAxisAlignment.start,
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+
+                     children: [
 
 //                      Text(globals.currentUser.address[i].name, style:
 //                      TextStyle(color: Colors.deepOrange,
 //                          fontWeight: FontWeight.bold,fontSize: 16),),
 
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0,10.0,0,10.0),
-                        child:
-                        Row(children :[
-                          Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
-                          SizedBox(width: 10,),
+                       Padding(
+                         padding: const EdgeInsets.fromLTRB(0,10.0,0,10.0),
+                         child:
+                         Row(
+                             children :[
+                               Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
+                               SizedBox(width: 10,),
+                               Expanded(child: Column(
+                                 children: <Widget>[
+                                   Text(globals.currentUser.address[i].name, style:
+                                   TextStyle(color: Colors.deepOrange,
+                                       fontWeight: FontWeight.bold,fontSize: 16),),
+                                   Text(addressListString(globals.currentUser.address[i]),
+                                     style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w300,fontSize: 16),)
+                                 ],
+                               ),
+                                 flex: 2,)
 
 
 
-
-                          Expanded(child: Text(addressListString(globals.currentUser.address[i]), style:
-                          TextStyle(color: Colors.deepOrange,
-                              fontWeight: FontWeight.w300,fontSize: 16),),
-                          flex: 2,)
-
-
-                        ]
-                        ),
-                      ),
+                             ]
+                         ),
+                       ),
 //                      SizedBox(
 //                        height: 10.0,
 //                      )
@@ -652,21 +660,24 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 //                          ),
 //                        ),
 //                      ),
-                    ],
-                  ),
-                )
+                     ],
+                   ),
+                 ),
+               ),
+
+
+
+           SizedBox(height: 80,),
 
 
 
 
 
 
-
-
-          ],
-        ),
-      ),
-    );
+         ],
+       ),
+     ),
+   );
 
   }
 
