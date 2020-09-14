@@ -1350,7 +1350,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         print(adrs_line2.text);
         print(adrs_landmark.text);
 
-        addressString = adrs_line1.text;
+          addressString= adrs_name.text;
+
+        addressString += "\n" + adrs_line1.text;
         if (adrs_line2.text.isNotEmpty) {
           addressString += "\n" + adrs_line2.text;
         }
