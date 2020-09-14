@@ -115,7 +115,7 @@ class _user extends State<UserLogin>{
                     mainAxisAlignment: MainAxisAlignment.start,
 //                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(padding: EdgeInsets.only(left: 10, top: 50),
+                      Padding(padding: EdgeInsets.only(left: 10, top: 10),
                       child: DropdownButton(
                         underline: SizedBox(),
                         onChanged: ( Language language){
@@ -139,7 +139,7 @@ class _user extends State<UserLogin>{
 //                SizedBox(height: 20,),
 
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0,5,0,19),
+                    padding: const EdgeInsets.fromLTRB(0,5,0,10),
                     child: Row(
 //                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -226,7 +226,7 @@ class _user extends State<UserLogin>{
                     ),
                   ),
 
-                  Container( padding: new  EdgeInsets.fromLTRB(25,0,25,25), child:  Row(
+                  Container( padding: new  EdgeInsets.fromLTRB(25,0,25,10), child:  Row(
                     children: <Widget>[
                          Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
                            child: Checkbox(value: _value1, onChanged: _value1Changed), ),
@@ -238,7 +238,7 @@ class _user extends State<UserLogin>{
                       },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
                     ],
                   ),),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
                   ButtonTheme(
                     minWidth: 300,
                     child: new  RaisedButton(
@@ -286,7 +286,7 @@ class _user extends State<UserLogin>{
                   SizedBox(height: 20,
                     child: Text("------------------------ OR ------------------------"),
                   ),
-                  SizedBox(height: 16),
+                  SizedBox(height: 10),
 
                   SignInButton(
                     Buttons.Facebook,
@@ -309,7 +309,7 @@ class _user extends State<UserLogin>{
                   ),
 
 
-                  SizedBox(height: 30,),
+                  SizedBox(height: 10,),
                   FlatButton( onPressed: (){
                     globals.guest = true;
                     globals.isVendor = false;
@@ -323,7 +323,7 @@ class _user extends State<UserLogin>{
                         textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
                   ),
             new Image.asset("assets/images/bottomLogin.png",
-                    height: 150.0, width: double.infinity, fit: BoxFit.fill, ),
+                    height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
 
 
 
