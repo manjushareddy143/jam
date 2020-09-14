@@ -124,7 +124,7 @@ class SplashScreenState extends State<SplashScreen> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: AssetImage('assets/images/JamsplashScreen.png'),
+            image: AssetImage('assets/images/JamSplashScreen.png'),
             fit: BoxFit.fill),
       ),
     );
