@@ -62,6 +62,7 @@ class _customerSignup extends State<CustomerSignup>{
 
   _customerSignup({Key key, @required this.fcm_token});
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _autoValidate = false;
   bool _showOTPField = false;
   bool _hideSocialSignin = true;
@@ -90,6 +91,7 @@ class _customerSignup extends State<CustomerSignup>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,

@@ -128,21 +128,20 @@ bool Value = false;
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
+
+
               Container(
-                height: 500,
-                child: Stack(
-                  children: <Widget>[
-                    TreeView(
-                      hasScrollBar: true,
-                      parentList: setupParentList(),
-                    ),
-                  ],
+                height: MediaQuery.of(context).size.height * 0.7,
+                child:  TreeView(
+                  hasScrollBar: true,
+                  parentList: setupParentList(),
                 ),
               ),
-
               SizedBox(
                 height: 20,
               ),
+
+
               ButtonTheme(
                 minWidth: 300.0,
                 child: RaisedButton(
@@ -155,6 +154,10 @@ bool Value = false;
                       serviceSave();
                     }),
               ),
+//              SizedBox(
+//                height: 20,
+//              ),
+
 
             ],
           ),
@@ -185,10 +188,24 @@ bool Value = false;
     return list;
   }
 
-  var icon = Icons.chevron_right;
+
   bool isClickCard = false;
+
+  dynamic setStateOfArrow(bool isSelected) {
+
+    if(isSelected) {
+      return Icons.chevron_right;
+    } else {
+      return Icons.keyboard_arrow_down;
+    }
+
+  }
+
   Widget ParentWithChild(Service service) {
+    var icon = Icons.chevron_right;
+
     return Parent(
+
       parent: Padding(
         padding: EdgeInsets.only(left: 20,top: 5,bottom: 5, right: 20),
         child: Container(
@@ -198,14 +215,6 @@ bool Value = false;
 
           child: Row(
               children: <Widget>[
-                IconButton(
-                    icon: Icon(icon),
-                    onPressed: () {
-                      setState(() {
-
-                      });
-                  }
-                ),
 //                Checkbox(
 //                    value:  (selectedListOfService.contains(service)) ? true : false,
 //                    onChanged: (bool value) {
@@ -226,7 +235,7 @@ bool Value = false;
 //                    ),
                 Container( height: 40, width: 40,
                   padding: EdgeInsets.all(2),
-                  child: Image.network(service.icon_image),
+                  child: Image.network(Configurations.BASE_URL + service.icon_image),
                 ),
                 Flexible(
                   child: Padding(
@@ -239,21 +248,44 @@ bool Value = false;
                       textAlign: TextAlign.start,
                     ),
                   ),
-                ),]),
+                  flex: 4,
+                  fit: FlexFit.tight,
+                ),
+                Flexible(child: IconButton(
+                  color: Colors.black,
+//                  onlyPressed: () =>{
+////                    setStateOfArrow(true)
+//                  },
+                  icon: Icon(setStateOfArrow(true)),
+//                    onPressed: () {
+//                      setState(() {
+//                        if(icon == Icons.chevron_right) {
+//                          icon = Icons.keyboard_arrow_down;
+//                        } else {
+//                          icon = Icons.chevron_right;
+//                        }
+//                      });
+//                  }
+                ),
+//                  flex: 1,
+                  fit: FlexFit.tight,
+                )
+              ]),
 
         ),
       ),
-
       childList: ChildList(
-        children:setupChildList(service)
+        children:setupChildList(service),
       ),
       callback: (isSelected) {
         setState(() {
-          if(isSelected) {
-          icon = Icons.chevron_right;
-          } else {
-          icon = Icons.keyboard_arrow_down;
-          }
+          print(isSelected);
+          setStateOfArrow(isSelected);
+//          if(isSelected) {
+//          icon = Icons.chevron_right;
+//          } else {
+//          icon = Icons.keyboard_arrow_down;
+//          }
         });
       },
     );
@@ -349,7 +381,7 @@ bool Value = false;
                     ),
                 Container(height: 40, width: 40,
                   padding: EdgeInsets.all(2),
-                  child: Image.network(service.icon_image),
+                  child: Image.network(Configurations.BASE_URL + service.icon_image),
                 ),
                 Flexible(
                   child: Padding(

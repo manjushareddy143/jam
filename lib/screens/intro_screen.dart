@@ -42,7 +42,8 @@ class _sliderScreen extends State<SliderScreen>{
         child: Column(
           children: [
             Container(
-              height: 170,
+              height: MediaQuery.of(context).size.height * 0.23,
+              //170,
               width: double.infinity,
               decoration: BoxDecoration(
                   image: DecorationImage(
@@ -51,7 +52,8 @@ class _sliderScreen extends State<SliderScreen>{
                   )
               ),
             ),
-           Container(height: 430,
+           Container(
+             height: MediaQuery.of(context).size.height * 0.57,
              color: Colors.white,
              child: Stack(alignment: AlignmentDirectional.bottomCenter,
                children:[PageView.builder(

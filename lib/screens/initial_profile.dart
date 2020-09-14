@@ -302,7 +302,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         height: 120.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: (imageUrl == null) ? getImage() : NetworkImage(Configurations.BASE_URL + imageUrl),
+            image: (imageUrl == null) ? getImage() : NetworkImage(imageUrl),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),

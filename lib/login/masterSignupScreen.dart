@@ -143,8 +143,9 @@ class _masterUIPageState extends State<masterSignupUIPage> with TickerProviderSt
                     ),
                   ),
                 ),
+
                 new Image.asset("assets/images/bottomSignup.png",
-                  height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
+                   width: double.infinity, fit: BoxFit.fill, ),
 
 //                  Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,0),
 //                    child: Container(
