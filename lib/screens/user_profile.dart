@@ -852,7 +852,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
     if(globals.currentUser.address != null) {
       //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
-        addressString = singleAddress.address_line1;
+        addressString= singleAddress.name;
+        addressString += ", " +  singleAddress.address_line1;
         if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
           addressString += ", " + singleAddress.address_line2;
         }
@@ -1691,7 +1692,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
           }
           else {
             print("OLD ADDESSS");
-            addressString = adrs_line1.text;
+            addressString= adrs_name.text;
+
+            addressString += "\n" + adrs_line1.text;
             if (adrs_line2.text.isNotEmpty) {
               addressString += "\n" + adrs_line2.text;
             }
