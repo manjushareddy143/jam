@@ -372,15 +372,13 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
 
                 Container(
-//                  color: status_color,
-//                  alignment: Alignment.bottomRight,
                   height: 40,
                   width: 120,
                   decoration: BoxDecoration(
                     borderRadius: radius,
                     color: status_color,
                   ),
-      margin: EdgeInsets.only(bottom: 0, top: 70, left: 0),
+      margin: EdgeInsets.only(bottom: 0, top: 100, left: 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
