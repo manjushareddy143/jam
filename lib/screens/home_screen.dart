@@ -57,7 +57,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    printLog("LOADDD");
     editIcon = Icons.mode_edit;
     globals.context = context;
     _currentIndex = 0;

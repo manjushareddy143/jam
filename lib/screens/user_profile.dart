@@ -65,8 +65,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
-//    print("PROFILE ${globals.currentUser.toJson()}");
-    print("PROFILE ${globals.currentUser.services}");
     globals.context = context;
     if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
       singleAddress = globals.currentUser.address[0];
@@ -845,7 +843,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
 
     if(globals.currentUser.address != null) {
-      print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
+      //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
         addressString = singleAddress.address_line1;
         if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {

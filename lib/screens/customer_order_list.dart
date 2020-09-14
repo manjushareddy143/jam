@@ -56,8 +56,9 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     print("List order");
     // TODO: implement initState
     super.initState();
-    getProfile();
     globals.context = context;
+    getProfile();
+
   }
   void getProfile() async  {
     await Preferences.readObject("user").then((onValue) async {

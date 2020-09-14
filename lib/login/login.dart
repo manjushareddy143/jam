@@ -491,6 +491,7 @@ class _user extends State<UserLogin>{
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('Login cancelled by the user.');
+        Widget_Helper.dismissLoading(context);
         break;
       case FacebookLoginStatus.error:
         print('Something went wrong with the login process.\n'

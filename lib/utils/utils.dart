@@ -393,7 +393,7 @@ Future<BitmapDescriptor> setCustomMapPin(BitmapDescriptor pinLocationIcon) async
 Future<dynamic> getAddress(LatLng latLng) async {
   final coordinates = new Coordinates(latLng.latitude, latLng.longitude);
   var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  print("addresses::: ${addresses.first.toMap()}");
+//  print("addresses::: ${addresses.first.toMap()}");
   return addresses.first;
 }
 

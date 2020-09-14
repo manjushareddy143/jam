@@ -45,7 +45,6 @@ class vendor extends StatelessWidget {
 
   Widget build(BuildContext context) {
     // TODO: implement build
-    print("test == ${this.fcm_token}");
     return VendorSignup(fcm_token: this.fcm_token,);
   }
 }
@@ -84,9 +83,6 @@ class _vendorSignup extends State<VendorSignup>{
     // TODO: implement initState
     super.initState();
     globals.context = context;
-
-//    globals.isCustomer == true;
-//    print("listCountry :: ${listCountry[0]["name"]}");
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
   }
@@ -515,12 +511,10 @@ class _vendorSignup extends State<VendorSignup>{
   String selecteCode = "";
   void _initCountryCode(code) {
     selecteCode = code.toString();
-//    print("New Country selected: " + code.toString());
   }
   void _onCountryChange(countryCode) {
     //TODO : manipulate the selected country code here
     selecteCode = countryCode.toString();
-//    print("New Country selected: " + countryCode.toString());
   }
 
   _launchURL() async {
@@ -543,7 +537,6 @@ class _vendorSignup extends State<VendorSignup>{
 
 
   submitPin(String pin) {
-//    print(pin);
     pinCode = pin;
   }
 
@@ -674,7 +667,6 @@ class _vendorSignup extends State<VendorSignup>{
   }
 
   void processLoginResponse(Response res) {
-    print("come for response ${res.statusCode}");
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
@@ -770,7 +762,6 @@ class _vendorSignup extends State<VendorSignup>{
     signInWithGoogle()
         .whenComplete(() {
     }).then((onValue) {
-      print("RES === $onValue");
       if(onValue != null) {
         GoogleSignInAccount g_user = onValue[0];
         FirebaseUser  f_user = onValue[1];
@@ -791,7 +782,6 @@ class _vendorSignup extends State<VendorSignup>{
 
     }).catchError((onError) {
       Widget_Helper.dismissLoading(context);
-      print("onError === $onError");
     });
   }
 
@@ -802,9 +792,7 @@ class _vendorSignup extends State<VendorSignup>{
 
 
   Future<List> signInWithGoogle() async {
-    print("signInWithGoogle");
     googleSignInAccount = await googleSignIn.signIn();
-    print("signInWithGoogle---- ${googleSignInAccount}");
     if(googleSignInAccount.id != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
@@ -824,14 +812,10 @@ class _vendorSignup extends State<VendorSignup>{
 
       final FirebaseUser currentUser = await _auth.currentUser();
       assert(user.uid == currentUser.uid);
-      print("GMAIL == ${googleSignInAccount}");
-      print("GMAIL == ${currentUser.uid}");
-      print("GMAIL == ${user}");
       obj.add(googleSignInAccount);
       obj.add(user);
       return obj;
     } else {
-      print("NO DATA");
       return null;
     }
     //'signInWithGoogle succeeded: $user';
@@ -850,18 +834,14 @@ class _vendorSignup extends State<VendorSignup>{
             .signInWithCredential( FacebookAuthProvider.getCredential(
             accessToken: result.accessToken.token))
             .then((AuthResult authResult) async {
-              print(authResult.user);
           _createUserFromFacebookLogin(
               result, authResult.user.uid);
         });
         break;
       case FacebookLoginStatus.cancelledByUser:
-        print('Login cancelled by the user.');
         Widget_Helper.dismissLoading(context);
         break;
       case FacebookLoginStatus.error:
-        print('Something went wrong with the login process.\n'
-            'Here\'s the error Facebook gave us: ${result.errorMessage}');
         Widget_Helper.dismissLoading(context);
         break;
     }
@@ -873,7 +853,6 @@ class _vendorSignup extends State<VendorSignup>{
     final graphResponse = await http.get('https://graph.facebook.com/v2'
         '.12/me?fields=name,first_name,last_name,email,picture.type(large)&access_token=$token');
     final profile = json.decode(graphResponse.body);
-    print("profile :: $profile");
     Map<String, String> data = new Map();
     data["first_name"] = profile['first_name'];
     data["last_name"] = profile['last_name'];
@@ -908,13 +887,11 @@ class _vendorSignup extends State<VendorSignup>{
     _authCredential = auth;
   }
   verificationFailed (AuthException authException) {
-    print("authException.message :${authException.message}");
     printLog(txtContact.text);
     printLog(authException.message);
     setState(() {
       Widget_Helper.dismissLoading(context);
       status = '${authException.message}';
-      print("verificationFailed: " + status);
       if (authException.message.contains('not authorized'))
         status = AppLocalizations.of(globals.context).translate('alert2');
       else if (authException.message.contains('Network'))

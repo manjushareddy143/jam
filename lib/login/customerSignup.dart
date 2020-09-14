@@ -647,7 +647,6 @@ class _customerSignup extends State<CustomerSignup>{
 
     }).catchError((onError) {
       Widget_Helper.dismissLoading(context);
-      print("onError === $onError");
     });
   }
 
@@ -698,7 +697,6 @@ class _customerSignup extends State<CustomerSignup>{
             .signInWithCredential( FacebookAuthProvider.getCredential(
             accessToken: result.accessToken.token))
             .then((AuthResult authResult) async {
-              print(authResult.user);
           _createUserFromFacebookLogin(
               result, authResult.user.uid);
         });

@@ -49,11 +49,12 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.context = context;
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
     });
-    globals.context = context;
+
   }
 
   @override
@@ -77,11 +78,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void processServiceResponse(Response res) {
-    print('get daily format');
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print(data);
         List roles = data;
         setState(() {
           listofServices = Service.processServices(roles);
@@ -93,8 +92,6 @@ class _CategoryPageState extends State<CategoryPage> {
           isLoadin = false;
         });
       }
-    } else {
-      print('no data');
     }
   }
 

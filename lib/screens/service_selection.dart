@@ -62,6 +62,7 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
     selectedListOfService = new List<Service>();
     selectedServices = new List<SelectedService>();
     selectedListOfCategory = new List<SubCategory>();
+    globals.context = context;
 
     selectedServices.clear();
     serviceNamesString = "";

@@ -55,9 +55,7 @@ int swiperIndex =0;
     // TODO: implement initState
     super.initState();
     globals.context = context;
-    //tabList.add(new Tab(text: 'About',));
-//    tabList.add(new Tab(text: "Reviews",));
-//    _tabController= TabController(vsync: this, length: tabList.length);
+
   }
   @override
   void dispose() {

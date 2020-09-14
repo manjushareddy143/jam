@@ -161,7 +161,7 @@ class _LocationPageState extends State<LocationPage> {
 //        mapType: MapType.hybrid,
         markers: _markers,
         initialCameraPosition: initialLocation,
-        
+
         onMapCreated: (GoogleMapController controller) {
           print("ADDDRESS::: ${controller}");
           _controller.complete(controller);
@@ -212,7 +212,7 @@ class _LocationPageState extends State<LocationPage> {
          Navigator.push(context,
              MaterialPageRoute(builder: (context) => HomeScreen()));
        }, //_goToTheLake,
-       label: Text(AppLocalizations.of(globals.context)
+       label: Text(AppLocalizations.of(context)
            .translate('btn_save')),
        //icon: Icon(Icons.save),
        backgroundColor:Colors.teal,
