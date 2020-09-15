@@ -253,21 +253,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
       ],
     );
    }
-//   Widget CardFrame(){
-//    return Stack(
-//      children: [
-//
-//        SetImage1(),
-//        SetImage2()
-//      ],
-//    );
-//   }
-//   Widget SetImage1(){
-//    return SizedBox(height: 20,);
-//   }
-//  Widget SetImage2(){
-//    return SizedBox(height: 20,);
-//  }
+
    Widget CardDetails (){
      String statusString = "";
      var status_color = null;
@@ -328,6 +314,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
      if(globals.order.rating != null) {
        comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
      }
+     print(globals.order.rating.toString());
 
 
 
@@ -1539,7 +1526,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
     data["rate_by"] = globals.order.user_id.toString();
     data["booking_id"] = globals.order.id.toString();
     data["rate_to"] = globals.order.provider_id.toString();
-    data["comment"] = (txtCancel.text.length ==0) ? "" : txtCancel.text;
+    data["comment"] = (txtComment.text.length ==0) ? "" : txtComment.text;
     printLog(data);
     try {
       HttpClient httpClient = new HttpClient();

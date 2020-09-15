@@ -184,7 +184,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       dropdownvalue = _dropDownTypes[0].value;
     }
 
-    imageUrl = globals.currentUser.image;
+    if(globals.currentUser.image.contains('http')) {
+      imageUrl = globals.currentUser.image;
+
+    } else {
+      imageUrl = Configurations.BASE_URL + globals.currentUser.image;
+    }
+    print(imageUrl);
+
     if(globals.customImage != null) {
       _image = globals.customImage;
     }

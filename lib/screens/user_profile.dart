@@ -254,11 +254,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                       ServiceSelectionUIPageState.selectedServices = null;
 
 
+//                     Navigator.pushReplacement(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) => SliderScreen(),
+//                           // builder: (context) => UserLogin(),
+//                         )
+//                     );
+                  Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+
 
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => UserLogin()));
-
-
                 },
                 /*Navigator.of(context).pop(true)*/
                 child: Text('Yes'),

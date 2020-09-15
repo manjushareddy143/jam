@@ -126,52 +126,57 @@ class _customerSignup extends State<CustomerSignup>{
         Padding(padding: EdgeInsets.only(left: 20, right: 20),
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Flexible( flex: 2,
-              child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-                  border: Border.all(width: 0.9,color: Configurations.themColor)),
-                width: 100,
-                child: CountryCodePicker(
-                  onChanged: _onCountryChange,
-                  // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                  initialSelection: 'QA',
-                  favorite: ['+974','+91'],
-                  // optional. Shows only country name and flag
-                  showCountryOnly: false,
-                  // optional. Shows only country name and flag when popup is closed.
-                  showOnlyCountryWhenClosed: false,
-                  // optional. aligns the flag and the Text left
-                  alignLeft: false,
-                  showFlag: true,
-                  onInit: _initCountryCode,
-                ),
+            Expanded(child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+                border: Border.all(width: 0.9,color: Configurations.themColor)),
+              width: 100,
+              child: CountryCodePicker(
+                onChanged: _onCountryChange,
+                // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                initialSelection: 'QA',
+                favorite: ['+974','+91'],
+                // optional. Shows only country name and flag
+                showCountryOnly: false,
+                // optional. Shows only country name and flag when popup is closed.
+                showOnlyCountryWhenClosed: false,
+                // optional. aligns the flag and the Text left
+                alignLeft: false,
+                showFlag: true,
+                onInit: _initCountryCode,
               ),
-            ),
+            ), flex: 2,),
+//            Flexible(
+//              child: ,
+//            ),
 
-            Flexible( flex:4,
-            child: TextFormField(
-              enabled: _fridgeEdit,
-              cursorColor: Configurations.themColor,
-              decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color:
-              Colors.grey),
-                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-                labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Configurations.themColor),
-                ),),
+            SizedBox(width: 5,),
 
-              keyboardType: TextInputType.phone,
-              controller: txtContact,
+          Expanded(child: TextFormField(
+            enabled: _fridgeEdit,
+            cursorColor: Configurations.themColor,
+            decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color:
+            Colors.grey),
+              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+              labelText: AppLocalizations.of(context).translate('signin_phone_placeholder'),labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),),
 
-              validator: (value){
-                if (value.isEmpty) {
-                  return AppLocalizations.of(context).translate('signup_txt_enterno');
-                }
-                return validatePhoneNumber(value);
-              },
+            keyboardType: TextInputType.phone,
+            controller: txtContact,
 
-            ),
-          )
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('signup_txt_enterno');
+              }
+              return validatePhoneNumber(value);
+            },
+
+          ), flex: 4,),
+
+//            Flexible( flex:4,
+//            child:
+//          )
           ],
           ),
         ),
