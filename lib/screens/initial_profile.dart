@@ -193,6 +193,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       } else {
         imageUrl = Configurations.BASE_URL + globals.currentUser.image;
       }
+    } else {
+      imageUrl = null;
     }
 
 
