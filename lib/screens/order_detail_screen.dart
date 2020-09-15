@@ -2047,7 +2047,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         children: [
                           Text(AppLocalizations.of(context).translate('timetaken')+" : "),
                           Flexible(
-                            child: Container(height: 30, width: 40,
+                            child: Container(height: 30, width: 100,
 
                               child: TextFormField(
                                 controller:wrking_hr,
@@ -2143,7 +2143,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                         child:Text(AppLocalizations.of(context).translate('qty')),
                                       ),
                                       Flexible(
-                                        child: Container(height: 30, width: 40,
+                                        child: Container(height: 30, width: 100,
 
                                           child: TextField(
                                             controller: mtrl_qty..text='0',
@@ -2172,7 +2172,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                       child:Text(AppLocalizations.of(context).translate('price')),
                                     ),
                                       Flexible(
-                                        child: Container(height: 30, width: 40,
+                                        child: Container(height: 30, width: 100,
 
                                           child: TextField(
                                             textAlign: TextAlign.right,
@@ -2211,7 +2211,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('discount')+" : "),
-                            Container(width: 40, height: 30,
+                            Container(width: 100, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(
                                 textAlign: TextAlign.right,
@@ -2236,7 +2236,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('tax')+" : "),
-                            Container(width: 40, height: 30,
+                            Container(width: 100, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(textAlign: TextAlign.right,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
@@ -2261,7 +2261,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('addcharge')+" : "),
-                            Container(width: 40, height: 30,
+                            Container(width: 100, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(textAlign: TextAlign.right,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
