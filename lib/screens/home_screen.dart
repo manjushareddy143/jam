@@ -197,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                   globals.guest = false;
                   globals.isCustomer = true;
                   globals.currentUser = null;
+                  Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
 
 
                   Navigator.pushReplacement(context,
