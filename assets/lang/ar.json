@@ -191,5 +191,10 @@
   "order_complete": "الطلب جاهز",
   "otp_required": "مطلوب حقل OTP",
   "order_cancel_user": "طلب إلغاء بواسطة المستخدم",
-  "order_cancel_vendor": "طلب إلغاء من قبل المزود"
+  "order_cancel_vendor": "طلب إلغاء من قبل المزود",
+  "logout_prompt": "هل ترغب بالخروج",
+  "exit_prompt": "هل تريد الخروج من التطبيق",
+  "header": "هل أنت واثق؟",
+  "yes": "نعم",
+  "no": "لا"
 }
