@@ -221,26 +221,53 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
 
   void logOut_app() {
-    Preferences.removePreference("user");
-    Preferences.removePreference("profile");
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: Text('Are you sure?'),
+            content: Text('Do you want to logout'),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No'),
+              ),
+              FlatButton(
+                onPressed: ()  {
+                     Preferences.removePreference("user");
+                      Preferences.removePreference("profile");
 
-    if(globals.currentUser.social_signin == "facebook") {
-      logoutFacebook();
-    } else if(globals.currentUser.social_signin == "gmail") {
-      signOutGoogle();
-    }
-    globals.isCustomer = true;
-    globals.currentUser = null;
-    globals.customRadius = null;
-    globals.customImage = null;
-    globals.customGender = null;
-    globals.customContact = null;
-    globals.customFirstName = null;
-    globals.customLanguage = null;
-    ServiceSelectionUIPageState.serviceNamesString = null;
-    ServiceSelectionUIPageState.selectedServices = null;
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => UserLogin()));
+                         if(globals.currentUser.social_signin == "facebook") {
+                          logoutFacebook();
+                       } else if(globals.currentUser.social_signin == "gmail") {
+                        signOutGoogle();
+                         }
+                     globals.isCustomer = true;
+                         globals.currentUser = null;
+                     globals.customRadius = null;
+                     globals.customImage = null;
+                     globals.customGender = null;
+                     globals.customContact = null;
+                     globals.customFirstName = null;
+                     globals.customLanguage = null;
+                     ServiceSelectionUIPageState.serviceNamesString = null;
+                      ServiceSelectionUIPageState.selectedServices = null;
+
+
+
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => UserLogin()));
+
+
+                },
+                /*Navigator.of(context).pop(true)*/
+                child: Text('Yes'),
+              ),
+            ],
+          ),
+    );
+
+
   }
   Widget profile(){
 
@@ -362,7 +389,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
   Widget myProfile(){
-    print("MAYUR");
+
     return Container(
 
         height: 600.0,
@@ -390,7 +417,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
    if(globals.currentUser.address != null) {
 
      if(globals.currentUser.address.length > 0) {
-       addressString = singleAddress.address_line1;
+       addressString = singleAddress.name;
+       addressString += ", " + singleAddress.address_line1;
        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
          addressString += ", " + singleAddress.address_line2;
        }
@@ -602,7 +630,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
                IconButton(
                  onPressed: () {
-                   addressEnter(true);
+                   setState(() {
+                     addressEnter(true);
+                   });
+
                  },
                  icon: Icon(Icons.add),
                )
@@ -704,8 +735,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
         }, // handle your image tap here
       ),
-      width: 120.0,
-      height: 120.0,
+      width: 110.0,
+      height: 110.0,
       decoration: BoxDecoration(
         image: (globals.currentUser.image == null) ?
         DecorationImage(
@@ -1334,15 +1365,21 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   bool isAdddressUpdate = false;
   void addressEnter(bool isNewAddress) {
-    isAdddressUpdate = true;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => _buildAddressDialog(context, isNewAddress),
-    );
+
+      isAdddressUpdate = true;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => _buildAddressDialog(context, isNewAddress, setState),
+      );
+
+
+
   }
 
-  Widget _buildAddressDialog(BuildContext context, bool isNewAddress) {
+  Widget _buildAddressDialog(BuildContext context, bool isNewAddress,StateSetter setState) {
     if(isNewAddress) {
+//      singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
+//          adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
       singleAddress = Address(0, "", "", "",
           "", "", "", "", globals.currentUser.id, "");
     } else {
@@ -1687,6 +1724,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     _markers.clear();
 
     if(isMapAdrs == true) {
+      if(adrs_name.text == "" || adrs_name == null)
+
+
       print("isMapAdrs == $isMapAdrs");
       print("showMap == $showMap");
       setState(() {

@@ -26,14 +26,37 @@ import 'package:jam/globals.dart' as globals;
 import 'package:jam/screens/vendor_order_list.dart';
 
 class HomeScreen extends StatelessWidget {
-
+Future <bool> onBackPressed(){
+  return  showDialog(
+    context: globals.context,
+    builder: (context) =>
+        AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('Do you want to exit the app'),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+            ),
+            FlatButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              /*Navigator.of(context).pop(true)*/
+              child: Text('Yes'),
+            ),
+          ],
+        ),
+  );
+}
 
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: HomePage(title: 'Home'),
+    return WillPopScope(
+      onWillPop: onBackPressed,
+      child: Scaffold(
+        body: HomePage(title: 'Home'),
+      ),
     );
   }
 }
@@ -155,13 +178,39 @@ class _HomePageState extends State<HomePage> {
             icon:  Icon(Icons.exit_to_app,color: Colors.white,) ,
             onPressed: () {
 
-              if(globals.guest == true) {
-                globals.guest = false;
-                globals.isCustomer = true;
-                globals.currentUser = null;
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => UserLogin()));
-              }
+
+
+                showDialog(
+                    context: context,
+                    builder: (context) =>
+                        AlertDialog(
+                            title: Text('Are you sure?'),
+                            content: Text('Do you want to logout'),
+                            actions: <Widget>[
+                            FlatButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+              ),
+              FlatButton(
+              onPressed: ()  {
+                if(globals.guest == true) {
+                  globals.guest = false;
+                  globals.isCustomer = true;
+                  globals.currentUser = null;
+
+
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => UserLogin()));
+                }
+              },
+              /*Navigator.of(context).pop(true)*/
+              child: Text('Yes'),
+              ),
+              ],
+              ),
+              );
+
+
 //              Preferences.removePreference("user");
 //              Navigator.pushReplacement(context,
 //                  MaterialPageRoute(builder: (context) => UserLogin()));
