@@ -39,17 +39,17 @@ class InitialProfileScreen extends StatelessWidget {
       context: globals.context,
       builder: (context) =>
           AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to exit the app'),
+            title: Text(AppLocalizations.of(context).translate('header')),
+            content: Text(AppLocalizations.of(context).translate('exit_prompt')),
             actions: <Widget>[
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text('No'),
+                child: Text(AppLocalizations.of(context).translate('no')),
               ),
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(true),
                 /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
+                child: Text(AppLocalizations.of(context).translate('yes')),
               ),
             ],
           ),

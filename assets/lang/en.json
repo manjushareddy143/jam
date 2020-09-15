@@ -197,7 +197,12 @@
   "order_complete": "Order Complete",
   "otp_required": "The OTP field is required",
   "order_cancel_user": "Order Cancel by User",
-  "order_cancel_vendor": "Order Cancel by Provider"
+  "order_cancel_vendor": "Order Cancel by Provider",
+  "logout_prompt": "Do you want to logout",
+  "exit_prompt": "Do you want to exit the app",
+  "header": "Are you sure?",
+  "yes": "Yes",
+  "no": "No"
 
 
 

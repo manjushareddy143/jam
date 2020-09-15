@@ -68,8 +68,8 @@
   "home_txt_why" : "لماذا نحن؟",
   "home_txt_we" : "نحن نقدر عملائنا",
   "home_txt_verified" : "التحقق من المهنيين",
-  "support_email" : "Email",
-  "support_call" : "Call",
+  "support_email" : "البريد الإلكتروني",
+  "support_call" : "مكالمة",
   "home_txt_insured" : "عمل مؤمن عليه",
   "home_txt_professional" : "الدعم المهني",
   "inquiry_txt_primary" : "الخدمة الأولية",
@@ -193,5 +193,10 @@
   "order_complete": "الطلب جاهز",
   "otp_required": "مطلوب حقل OTP",
   "order_cancel_user": "طلب إلغاء بواسطة المستخدم",
-  "order_cancel_vendor": "طلب إلغاء من قبل المزود"
+  "order_cancel_vendor": "طلب إلغاء من قبل المزود",
+  "logout_prompt": "هل ترغب بالخروج",
+  "exit_prompt": "هل تريد الخروج من التطبيق",
+  "header": "هل أنت واثق؟",
+  "yes": "نعم",
+  "no": "لا"
 }

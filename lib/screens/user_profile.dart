@@ -225,12 +225,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       context: context,
       builder: (context) =>
           AlertDialog(
-            title: Text('Are you sure?'),
-            content: Text('Do you want to logout'),
+            title: Text(AppLocalizations.of(context).translate('header')),
+            content: Text(AppLocalizations.of(context).translate('logout_prompt')),
             actions: <Widget>[
               FlatButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text('No'),
+                child: Text(AppLocalizations.of(context).translate('no')),
               ),
               FlatButton(
                 onPressed: ()  {
@@ -250,6 +250,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                      globals.customContact = null;
                      globals.customFirstName = null;
                      globals.customLanguage = null;
+
+                   //  globals.currentUser.address =null;
                      ServiceSelectionUIPageState.serviceNamesString = null;
                       ServiceSelectionUIPageState.selectedServices = null;
 
@@ -268,7 +270,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                       MaterialPageRoute(builder: (context) => UserLogin()));
                 },
                 /*Navigator.of(context).pop(true)*/
-                child: Text('Yes'),
+                child: Text(AppLocalizations.of(context).translate('yes')),
               ),
             ],
           ),
