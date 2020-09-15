@@ -411,10 +411,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           child: Stack(
             children: [
 
+
+
               setProfileCard(),
 
 
-              setProfilePic()
+
+              setProfilePic(),
+
+              Padding(padding: EdgeInsets.only(left: MediaQuery.of(context).size.width - 85),
+              child: IconButton(icon: Icon(Icons.edit, size: 18,), onPressed: ()=> {
+                validateform()
+              }),)
             ],
           )
       ),
@@ -495,34 +503,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
              child: Row(
                  children :[
-                   SizedBox(width: 100,
-                     child: Flexible(
-                       child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
-                       TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
-                       ),
-                       flex: 3,
-                     ),
-                   ),
-                   SizedBox(width: 10,),
-                   IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
-                     validateform()
-                   }),
 
-
-//                IconButton(
-//                  icon: new Icon(editIcon),
-//                  onPressed: () {
-//                    setState(() {
-//                      if(editIcon == Icons.mode_edit) {
-//                        editIcon = Icons.done;
-//                      } else {
-//                        editIcon = Icons.mode_edit;
-//                      }
-//                      validateform();
-//                    });
+//                   Container(
+//                     width: 100,
+//                     child: ,
 //
-//                  },
-//                ),
+//                   ),
+                   Expanded(
+                     child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                     TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
+                     ),
+                     flex: 2,
+                   ),
+
+//                   Expanded(child: IconButton(icon: Icon(Icons.edit, size: 14,), onPressed: ()=> {
+//                     validateform()
+//                   }),flex: 1,),
                  ]
              ),
            ),
@@ -596,6 +592,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //                      maxLines: 0,
 //                      softWrap: true,
                        ),
+                       flex: 1,
                      )
 
                    ]
@@ -624,7 +621,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                SizedBox(width: 10,),
                Expanded(child: Text((addressString == "" || address == null )? AppLocalizations.of(context).translate('txt_no_address_set') : addressString, style:
                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),
-                 maxLines: 3,)),
+                 maxLines: 3,), flex: 2,),
 
              ]
              ),
@@ -859,6 +856,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             ),
           ),
         ),
+        flex: 1,
       );
     } else {
       return Center(
@@ -2035,7 +2033,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                     dropdownvalue = newValue;
                     gender = newValue;
                   });},
-              ),)
+              ),
+            flex: 1,)
           ],
         ),
       ),
