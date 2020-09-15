@@ -6,6 +6,8 @@ import 'package:jam/slider_layout.dart';
 import 'package:jam/slider_model.dart';
 import 'package:jam/slider_dots.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:jam/app_localizations.dart';
+import 'package:jam/screens/home_screen.dart';
 
 class SliderScreen extends StatefulWidget {
   _sliderScreen createState() => new _sliderScreen();
@@ -84,10 +86,23 @@ class _sliderScreen extends State<SliderScreen>{
              ),
            ),
 
+
             Container(
               color: Colors.white,
               child: Column( mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  FlatButton( onPressed: (){
+                    globals.guest = true;
+                    globals.isVendor = false;
+                    globals.isCustomer=false;
+                    print("I am a guest :)");
+
+
+                    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+                  },
+                    child: Text(AppLocalizations.of(context).translate('txt_skip'),
+                      textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
+                  ),
 
 
                   FlatButton(
