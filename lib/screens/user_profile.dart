@@ -390,7 +390,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
    if(globals.currentUser.address != null) {
 
      if(globals.currentUser.address.length > 0) {
-       addressString = singleAddress.address_line1;
+       addressString = singleAddress.name;
+       addressString += ", " + singleAddress.address_line1;
        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
          addressString += ", " + singleAddress.address_line2;
        }
@@ -700,8 +701,8 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
         }, // handle your image tap here
       ),
-      width: 120.0,
-      height: 120.0,
+      width: 110.0,
+      height: 110.0,
       decoration: BoxDecoration(
         image: (globals.currentUser.image == null) ?
         DecorationImage(
