@@ -66,7 +66,7 @@ class _sliderScreen extends State<SliderScreen>{
                Stack(
                  alignment: AlignmentDirectional.topStart,
                  children: [
-                   Container( margin: const EdgeInsets.only(bottom: 35),
+                   Container( margin: const EdgeInsets.only(bottom: 15),
                    child:  Row(mainAxisSize: MainAxisSize.min,
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
