@@ -35,6 +35,7 @@ import 'package:jam/app_localizations.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 
 class vendor extends StatelessWidget {
@@ -519,11 +520,11 @@ class _vendorSignup extends State<VendorSignup>{
 
   _launchURL() async {
     const url = "http://www.savitriya.com/privacy-policy/";
-//    if (await canLaunch(url)) {
-//      await launch(url);
-//    } else {
-//      throw 'Could not launch $url';
-//    }
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw AppLocalizations.of(context).translate('launch_url')+' $url';
+    }
   }
 
   void _value1Changed(bool value) => setState(() => _value1 = value);

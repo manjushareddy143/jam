@@ -184,14 +184,44 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
   List<Widget> listOfCards() {
     List<Widget> list = new List();
-    for(int orderCount = 0; orderCount< globals.listofOrders.length; orderCount++) {
-      list.add(setupCard(globals.listofOrders[orderCount]));
+    if(globals.listofOrders.length > 0) {
+      for(int orderCount = 0; orderCount< globals.listofOrders.length; orderCount++) {
+        list.add(setupCard(globals.listofOrders[orderCount]));
+      }
+    } else {
+      list.add(EmpyOrderCard());
     }
+
     return list;
   }
 
   AssetImage setImgPlaceholder() {
     return AssetImage("assets/images/BG-1x.jpg");
+  }
+
+  Widget EmpyOrderCard() {
+    return Container(
+      alignment: Alignment.topCenter,
+      padding: new EdgeInsets.only(
+          top: MediaQuery.of(context).size.height * .05,
+          right: 20.0,
+          left: 20.0),
+      child: new Container(
+        height: 80.0,
+        width: MediaQuery.of(context).size.width,
+        child: new Card(
+            color: Colors.white,
+            elevation: 4.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text("NO DATA FOUND", style: TextStyle(color: Hexcolor('#FB6907'), fontWeight: FontWeight.bold, ),),
+              ],
+            )
+        ),
+      ),
+    );
   }
 
   Widget setupCard(Order order) { //Order order

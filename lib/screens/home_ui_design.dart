@@ -17,6 +17,8 @@ import 'package:jam/utils/httpclient.dart';
 import 'package:jam/utils/utils.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:url_launcher/url_launcher.dart';
+
 
 class HomeUIDesign extends StatelessWidget {
   @override
@@ -231,53 +233,69 @@ class _HomeUIPageState extends State<HomeUIPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 SizedBox(width:  100,
-                                child:Container(
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    print("EMAIL TO SUPPORT"),
+                                  launch(_emailLaunchUri.toString())
+                                  },
+                                  child: Container(
 //                                  width: 50,
-                                  child: Column(
-                                    children: <Widget>[
-                                      Icon(Icons.account_box,
-                                          color: Configurations.themColor, size: 40.0),
-                                      Text(
-                                        AppLocalizations.of(context).translate('home_txt_verified'),
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  ),
-                                )
-                                  ,),
-
-                                SizedBox(width: 100,
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      Icon(Icons.assignment,
-                                          color: Configurations.themColor, size: 40.0),
-                                      Text(
-                                        AppLocalizations.of(context).translate('home_txt_insured'),
-                                        maxLines: 2,
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.ellipsis,
-                                      )
-                                    ],
-                                  ),
-                                ),),
-
-                                SizedBox(width: 100,  child: Container(
                                     child: Column(
                                       children: <Widget>[
-                                        Icon(MaterialIcons.person,
+                                        Icon(Icons.account_box,
                                             color: Configurations.themColor, size: 40.0),
                                         Text(
-                                          AppLocalizations.of(context).translate('home_txt_professional'),
-                                          overflow: TextOverflow.ellipsis,
+                                          AppLocalizations.of(context).translate('support_email'),
                                           maxLines: 2,
                                           textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
                                         )
                                       ],
-                                    )),)
+                                    ),
+                                  ),
+                                )
 
+
+                                  ,),
+
+//                                SizedBox(width: 100,
+//                                child: Container(
+//                                  child: Column(
+//                                    children: <Widget>[
+//                                      Icon(Icons.assignment,
+//                                          color: Configurations.themColor, size: 40.0),
+//                                      Text(
+//                                        AppLocalizations.of(context).translate('home_txt_insured'),
+//                                        maxLines: 2,
+//                                        textAlign: TextAlign.center,
+//                                        overflow: TextOverflow.ellipsis,
+//                                      )
+//                                    ],
+//                                  ),
+//                                ),),
+
+                                SizedBox(width: 100,
+                                  child: GestureDetector(
+                                    child: Container(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Icon(MaterialIcons.person,
+                                                color: Configurations.themColor, size: 40.0),
+                                            Text(
+                                              AppLocalizations.of(context).translate('support_call'),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        )
+                                    ),
+                                    onTap: () => {
+                                      print("CALL TO SUPPORT"),
+                                      launch(_makePhoneCall('tel:+917874xxxxxxx').toString())
+                                    },
+                                  ),
+                                )
                               ],
                             ),
                           ]),
@@ -292,6 +310,24 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
     }
   }
+  Future<void> _launched;
+
+  Future<void> _makePhoneCall(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  final Uri _emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: 'admin@jam.com',
+      queryParameters: {
+        'subject': 'JAM%20Support'
+      }
+  );
+
 
   SliverPersistentHeader makeHeader(String headerText) {
     return SliverPersistentHeader(
