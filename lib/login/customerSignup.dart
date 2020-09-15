@@ -91,7 +91,6 @@ class _customerSignup extends State<CustomerSignup>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -105,11 +104,13 @@ class _customerSignup extends State<CustomerSignup>{
   Widget customerScreenUI(){
     return Column(
       children: <Widget>[
-
         SizedBox(height: 40,),
-        new Image.asset("assets/images/jamLogo.png",
+
+        Image.asset("assets/images/jamLogo.png",
           height: 40.0, width: 95.0 , fit: BoxFit.fill,),
+
         SizedBox(height: 20,),
+
         Padding(padding: EdgeInsets.fromLTRB(10, 10, 10,10),
           child: new Text(
             AppLocalizations.of(context).translate('signin_txt_cus'),
@@ -118,10 +119,12 @@ class _customerSignup extends State<CustomerSignup>{
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20.0,color: Configurations.themColor),
           ),
         ),
-      SizedBox(height: 10,),
 
-      Padding(padding: EdgeInsets.only(left: 20, right: 20),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+        SizedBox(height: 10,),
+
+
+        Padding(padding: EdgeInsets.only(left: 20, right: 20),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Flexible( flex: 2,
               child: Container(decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
@@ -144,7 +147,7 @@ class _customerSignup extends State<CustomerSignup>{
               ),
             ),
 
-          Flexible( flex:4,
+            Flexible( flex:4,
             child: TextFormField(
               enabled: _fridgeEdit,
               cursorColor: Configurations.themColor,
@@ -169,48 +172,39 @@ class _customerSignup extends State<CustomerSignup>{
 
             ),
           )
-
-            //SizedBox( width: 10,),
-//          Padding(
-//            padding: EdgeInsets.only(right: 15, left: 15),
-//            child: SizedBox(
-//              width: 210,
-//              child: ,
-//            ),
-//          )
-
           ],
+          ),
         ),
-      ),
-      SizedBox(height: 10,),
+        SizedBox(height: 10,),
 
-      Padding(
-        padding: EdgeInsets.only(left: 20, right: 20),
-        child: TextFormField(
-          enabled: _fridgeEdit,
-          obscureText: true,
-          cursorColor: Configurations.themColor,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.security, color: Colors.grey),
-              contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
-              labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder',),labelStyle: TextStyle(color: Colors.grey),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Configurations.themColor),
-            ),),
-          controller: txtPass,//..text = 'KAR-MT30',
-          validator: (value){
-            if (value.isEmpty) {
-              return AppLocalizations.of(context).translate('signup_txt_enterpwd');
-            }
-            return null;
-          },
+        Padding(
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: TextFormField(
+            enabled: _fridgeEdit,
+            obscureText: true,
+            cursorColor: Configurations.themColor,
+            decoration: InputDecoration( suffixIcon: Icon(Icons.security, color: Colors.grey),
+                contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
+                labelText: AppLocalizations.of(context).translate('signin_pwd_placeholder',),labelStyle: TextStyle(color: Colors.grey),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Configurations.themColor),
+              ),),
+            controller: txtPass,//..text = 'KAR-MT30',
+            validator: (value){
+              if (value.isEmpty) {
+                return AppLocalizations.of(context).translate('signup_txt_enterpwd');
+              }
+              return null;
+            },
 
 
+          ),
         ),
-      ),
-      SizedBox(height: 10,),
 
-      Padding(
+        SizedBox(height: 10,),
+
+        Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
           enabled: _fridgeEdit,
@@ -235,7 +229,7 @@ class _customerSignup extends State<CustomerSignup>{
       ),
 
 
-      Padding(
+        Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: Row(mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -272,7 +266,7 @@ class _customerSignup extends State<CustomerSignup>{
       ),
       // SizedBox(height: 10,),
 
-      ButtonTheme(
+        ButtonTheme(
         minWidth: 310.0, height: 40,
         child:  RaisedButton(
             shape: RoundedRectangleBorder(
@@ -291,28 +285,28 @@ class _customerSignup extends State<CustomerSignup>{
         ),
       ),
 
-      Center(child:  Row(mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(AppLocalizations.of(context).translate('signin_txt_text1')),
-          FlatButton( onPressed:() {
-            Navigator.push(
-                context, new MaterialPageRoute(
-              builder: (BuildContext context) => UserLogin(),
+        Center(child:  Row(mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(AppLocalizations.of(context).translate('signin_txt_text1')),
+            FlatButton( onPressed:() {
+              Navigator.push(
+                  context, new MaterialPageRoute(
+                builder: (BuildContext context) => UserLogin(),
+              )
+              );
+            },
+              child: Text(
+                  AppLocalizations.of(context).translate('btn_login'),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                      color: Colors.orangeAccent)
+              ),
             )
-            );
-          },
-            child: Text(
-                AppLocalizations.of(context).translate('btn_login'),
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold,
-                    color: Colors.orangeAccent)
-            ),
-          )
-        ],
-      ),),
-      SizedBox(height: 20,),
+          ],
+        ),),
+        SizedBox(height: 20,),
 
-      Visibility(child: Column(
+        Visibility(child: Column(
        // mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
 
@@ -342,7 +336,7 @@ class _customerSignup extends State<CustomerSignup>{
         visible: _hideSocialSignin,),
 
       /// OTP ENTERY
-      Visibility(
+        Visibility(
         visible: _showOTPField,
         //visible:true,
         child:
@@ -384,7 +378,8 @@ class _customerSignup extends State<CustomerSignup>{
           ],
         ),
       ),
-        new Image.asset("assets/images/bottomSignup.png",
+
+        Image.asset("assets/images/bottomSignup.png",
           height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
     ],);
   }

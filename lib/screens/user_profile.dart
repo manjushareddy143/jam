@@ -462,11 +462,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
      });
    }
 
-String name = globals.currentUser.first_name+" " +globals.currentUser.last_name;
-String gender = globals.currentUser.gender;
-String num = globals.currentUser.contact;
-String email = globals.currentUser.email;
-int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
+    String name = globals.currentUser.first_name+" " +globals.currentUser.last_name;
+    String gender = globals.currentUser.gender;
+    String num = globals.currentUser.contact;
+    String email = globals.currentUser.email;
+    int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
 
 //  print(globals.currentUser.toJson());
 
@@ -557,6 +557,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
              ]
              ),
            ),
+
            Padding(
              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
              child: Row(children :[
@@ -569,8 +570,9 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
              ]
              ),
            ),
+
            if(globals.currentUser.roles[0].slug == "provider")
-             Padding(
+           Padding(
                padding: EdgeInsets.fromLTRB(0,8.0,0,0),
                child: Row(
                    children :[
@@ -592,6 +594,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                    ]
                ),
              ),
+
            if(globals.currentUser.roles[0].slug == "provider")
              Padding(
                padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
@@ -605,6 +608,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
                ]
                ),
              ),
+
            Padding(
              padding: const EdgeInsets.fromLTRB(0,8.0,0,0),
              child: Row(children :[
@@ -1720,6 +1724,7 @@ int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.current
 
   void addressSave(bool isNewAddress, StateSetter setState) {
     _markers.clear();
+
     if(isMapAdrs == true) {
       if(adrs_name.text == "" || adrs_name == null)
 
