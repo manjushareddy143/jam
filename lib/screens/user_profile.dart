@@ -52,7 +52,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   bool _autoValidate = false;
   bool isEditProfile = false;
 
-
+  bool _value1 = false;
+  void _value1Changed(bool value) => setState(() => _value1 = value);
 
   File _image;
  List<Tab> tabList = List();
@@ -1691,6 +1692,15 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                 ),
                               ],
                             )),
+                        Container( padding: new  EdgeInsets.fromLTRB(0,0,0,10),
+                          child:  Row(
+                          children: <Widget>[
+                            Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
+                              child: Checkbox(value: _value1, onChanged: _value1Changed), ),
+                            Text(AppLocalizations.of(context).translate('default'),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), ),
+
+                          ],
+                        ),),
 
 
 
