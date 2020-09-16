@@ -1819,6 +1819,17 @@ class _DetailUIPageState extends State<DetailUIPage> {
               print("LIST UPDATE");
             }
           } else {
+//
+          if(status == "4") {
+            showInfoAlert(context, AppLocalizations.of(context).translate('booking_cancel'));
+            int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+            if(idx != null) {
+              globals.order.status = 4;
+              globals.listofOrders[idx] = globals.order;
+            }
+          }
+
+
             print("ITS CUSTOMER");
           }
         });

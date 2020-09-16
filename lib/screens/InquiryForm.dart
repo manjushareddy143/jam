@@ -394,6 +394,7 @@ class _InquiryPageState extends State<InquiryPage> {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         Navigator.pop(context);
+        showInfoAlert(context, AppLocalizations.of(context).translate('booking_order'));
       } else {
         var data = json.decode(res.body);
         showInfoAlert(context, "ERROR");

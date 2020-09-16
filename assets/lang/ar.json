@@ -71,6 +71,8 @@
   "support_email" : "البريد الإلكتروني",
   "support_call" : "مكالمة",
   "support_chat" : "دردشة",
+  "booking_order" : "تم إرسال الطلب بنجاح",
+  "booking_cancel" : "تم إلغاء الطلب بنجاح",
   "home_txt_insured" : "عمل مؤمن عليه",
   "home_txt_professional" : "الدعم المهني",
   "inquiry_txt_primary" : "الخدمة الأولية",
