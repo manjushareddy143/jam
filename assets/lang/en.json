@@ -205,7 +205,9 @@
   "exit_prompt": "Do you want to exit the app",
   "header": "Are you sure?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "edit": "Edit",
+  "delete": "Delete"
 
 
 

@@ -637,7 +637,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                IconButton(
                  onPressed: () {
                    setState(() {
-                     addressEnter(true);
+                     addressEnter(true, null);
                    });
 
                  },
@@ -651,42 +651,58 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
              for(int i =0; i < AddressLength ; i++)
                SingleChildScrollView(
                  child: Card(
+                   child: Container(
 
 
-                   child: Column(
-//                    mainAxisAlignment: MainAxisAlignment.start,
-//                    crossAxisAlignment: CrossAxisAlignment.center,
+                     child: Row(
+                         children :[
+                           Expanded(child: Padding(
+                             padding: const EdgeInsets.all(8.0),
+                             child: Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
+                           ),flex: 0,),
+                           //SizedBox(width: 10,),
+                           Expanded(child: Column(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                             children: <Widget>[
+                               Text(globals.currentUser.address[i].name, style:
+                               TextStyle(color: Colors.deepOrange,
+                                   fontWeight: FontWeight.bold,fontSize: 16),),
+                               Text(addressListString(globals.currentUser.address[i]),
+                                 style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w300,fontSize: 16),)
+                             ],
+                           ),
+                             flex: 2,),
+//                           Expanded(child: VerticalDivider(color: Colors.black,
+//                             thickness: 0.5,
+//                             width: 5,
+//                             endIndent: 5.0,
+//                             indent: 5.0,
+//                           ),
+//                             flex: 0,),
+                            Expanded(child: Column(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  FlatButton.icon(onPressed:(){
+                                    setState(() {
+                                      addressEnter(false,globals.currentUser.address[i] );
+                                    });
+                                  },
+                                    icon: Icon(Icons.edit, color: Colors.deepOrange, size: 20,),
+                                    label: Text("")
+                                    // Text(AppLocalizations.of(context).translate('edit'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                                  ),
+                                //  SizedBox(height: 3,),
+                                  FlatButton.icon(onPressed: null,
+                                    icon: Icon(Icons.delete_forever, color: Colors.deepOrange, size: 20,),
+                                    label: Text("")
+                                   // Text(AppLocalizations.of(context).translate('delete'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
+                                  )
+                                ]),flex: 0,),
 
-                     children: [
-
-//                      Text(globals.currentUser.address[i].name, style:
-//                      TextStyle(color: Colors.deepOrange,
-//                          fontWeight: FontWeight.bold,fontSize: 16),),
-
-                       Padding(
-                         padding: const EdgeInsets.fromLTRB(0,10.0,0,10.0),
-                         child:
-                         Row(
-                             children :[
-                               Icon(Icons.location_on, color: Configurations.themColor, size: 18,),
-                               SizedBox(width: 10,),
-                               Expanded(child: Column(
-                                 children: <Widget>[
-                                   Text(globals.currentUser.address[i].name, style:
-                                   TextStyle(color: Colors.deepOrange,
-                                       fontWeight: FontWeight.bold,fontSize: 16),),
-                                   Text(addressListString(globals.currentUser.address[i]),
-                                     style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w300,fontSize: 16),)
-                                 ],
-                               ),
-                                 flex: 2,)
 
 
-
-                             ]
-                         ),
-                       ),
-                     ],
+                         ]
+                     ),
                    ),
                  ),
                ),
@@ -775,8 +791,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           _buildCoverImage(MediaQuery.of(context).size),
           SizedBox(height: 10,),
           setDetails(),
-          SizedBox(height: 20,),
-          setTabbar(),
+        //  SizedBox(height: 20,),
+          //setTabbar(),
         ],
       ),
     );
@@ -1225,7 +1241,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                       ),
                       onPressed: () {
                         /* ... */
-                        addressEnter(false);
+                        addressEnter(false, null);
                       },
                     ),
                   ],
@@ -1245,7 +1261,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
 
   void showAddress() {
-    addressEnter(false);
+    addressEnter(false, null);
   }
 
   void updateProfile() {
@@ -1371,28 +1387,32 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   String mapAddressTitle = "Set Location Map";
 
   bool isAdddressUpdate = false;
-  void addressEnter(bool isNewAddress) {
+  void addressEnter(bool isNewAddress, Address editAdd) {
 
       isAdddressUpdate = true;
       showDialog(
         context: context,
-        builder: (BuildContext context) => _buildAddressDialog(context, isNewAddress, setState),
+        builder: (BuildContext context) => _buildAddressDialog(context, isNewAddress, setState, editAdd),
       );
 
 
 
   }
 
-  Widget _buildAddressDialog(BuildContext context, bool isNewAddress,StateSetter setState) {
+  Widget _buildAddressDialog(BuildContext context, bool isNewAddress,StateSetter setState, Address editAddress) {
     if(isNewAddress) {
 //      singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
 //          adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
       singleAddress = Address(0, "", "", "",
           "", "", "", "", globals.currentUser.id, "");
     } else {
+
       if(singleAddress.name == null || singleAddress.name == "") {
         singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
             globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+      }
+       else{
+         singleAddress= Address(editAddress.id,)
       }
     }
 
@@ -1899,7 +1919,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           Align(alignment: Alignment.topRight,
               child: IconButton(
                 onPressed: () {
-                  addressEnter(true);
+                  addressEnter(true, null);
                   },
                 icon: Icon(Icons.add),
               )
