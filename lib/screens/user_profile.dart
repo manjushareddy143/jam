@@ -684,7 +684,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                 children: <Widget>[
                                   FlatButton.icon(onPressed:(){
                                     setState(() {
-                                      addressEnter(false,globals.currentUser.address[i] );
+                                      addressEnter(false, globals.currentUser.address[i]);
                                     });
                                   },
                                     icon: Icon(Icons.edit, color: Colors.deepOrange, size: 20,),
@@ -692,7 +692,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     // Text(AppLocalizations.of(context).translate('edit'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
                                   ),
                                 //  SizedBox(height: 3,),
-                                  FlatButton.icon(onPressed: null,
+                                  FlatButton.icon(onPressed: () => {
+                                    deleteAddress(globals.currentUser.address[i])
+                                  },
                                     icon: Icon(Icons.delete_forever, color: Colors.deepOrange, size: 20,),
                                     label: Text("")
                                    // Text(AppLocalizations.of(context).translate('delete'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),),
@@ -721,6 +723,36 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
      ),
    );
 
+  }
+
+  void deleteAddress(Address delAddress)  async {
+    var addressData = new Map<String, dynamic>();
+    addressData["id"] = delAddress.id.toString();
+    addressData["user_id"] = globals.currentUser.id.toString();
+
+    HttpClient httpClient = new HttpClient();
+    var syncUserResponse =
+        await httpClient.postRequest(context, Configurations.DELETE_USER_ADDRESS, addressData, true);
+    processDeleteAddressResponse(syncUserResponse);
+  }
+  void processDeleteAddressResponse(Response res) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        List addresses = data;
+        setState(() {
+          globals.currentUser.address = Address.processListOfAddress(addresses);
+          Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
+          statusUpdateAddress();
+        });
+      } else {
+        showInfoAlert(context, "Unknown error from server side");
+      }
+    } else {
+      printLog("login response code is not 200");
+      var data = json.decode(res.body);
+      showInfoAlert(context, data['message']);
+    }
   }
 
   Widget setProfilePic(){
@@ -1407,13 +1439,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           "", "", "", "", globals.currentUser.id, "");
     } else {
 
-      if(singleAddress.name == null || singleAddress.name == "") {
-        singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
-            globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+      if(editAddress != null) {
+        singleAddress = Address(editAddress.id, editAddress.address_line1, editAddress.address_line2,
+            editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name);
+      } else {
+        if(singleAddress.name == null || singleAddress.name == "") {
+          singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
+              globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+        }
       }
-       else{
-         singleAddress= Address(editAddress.id,)
-      }
+
+
     }
 
     return AlertDialog(
@@ -1667,7 +1703,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                   AppLocalizations.of(context).translate('btn_save'),
                                   style: TextStyle(fontSize: 16.5)),
                               onPressed: () {
-                                addressSave(isNewAddress, setState);
+                                addressSave(isNewAddress, setState, editAddress);
                               }),
                         ),
                       ],
@@ -1679,6 +1715,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               );
             }));
   }
+
   Set<Marker> _markers = {};
   BitmapDescriptor pinLocationIcon;
   static LatLng pinPosition = LatLng(globals.latitude, globals.longitude);
@@ -1747,7 +1784,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     );
   }
 
-  void addressSave(bool isNewAddress, StateSetter setState) {
+  void addressSave(bool isNewAddress, StateSetter setState, Address editAddress) {
     _markers.clear();
 
     if(isMapAdrs == true) {
@@ -1771,7 +1808,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         _autoValidateAddress = false;
         setState(() {
           if(isNewAddress) {
-            AddAddress(setState);
+            AddAddress(setState, isNewAddress, editAddress);
             singleAddress = globals.currentUser.address[0];
           }
           else {
@@ -1793,9 +1830,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 "\n" +
                 adrs_postalcode.text;
             print("addressString == $addressString");
-            singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
-                adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
-            Navigator.of(context).pop();
+            AddAddress(setState, isNewAddress, editAddress);
+
+
+
+//            singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
+//                adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
+//            Navigator.of(context).pop();
           }
         });
       }
@@ -1809,25 +1850,48 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   }
 
-  void AddAddress(StateSetter setState) {
+  void AddAddress(StateSetter setState, bool isNewAddress, Address editAddress) {
+    print(isNewAddress);
     var addressData = new Map<String, dynamic>();
-    addressData["name"] = adrs_name.text;
-    addressData["address_line1"] = adrs_line1.text;
-    addressData["address_line2"] = adrs_line2.text;
-    addressData["user_id"] = globals.currentUser.id.toString();
-    addressData["landmark"] = adrs_landmark.text;
-    addressData["district"] = adrs_disctric.text;
-    addressData["city"] = adrs_city.text;
-    addressData["postal_code"] = adrs_postalcode.text;
-    addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
-    apiCallAddAddress(addressData, setState);
+
+    if(isNewAddress) {
+      addressData["name"] = adrs_name.text;
+      addressData["address_line1"] = adrs_line1.text;
+      addressData["address_line2"] = adrs_line2.text;
+      addressData["user_id"] = globals.currentUser.id.toString();
+      addressData["landmark"] = adrs_landmark.text;
+      addressData["district"] = adrs_disctric.text;
+      addressData["city"] = adrs_city.text;
+      addressData["postal_code"] = adrs_postalcode.text;
+      addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+    } else {
+      addressData["id"] = editAddress.id.toString();
+      addressData["name"] = adrs_name.text;
+      addressData["address_line1"] = adrs_line1.text;
+      addressData["address_line2"] = adrs_line2.text;
+      addressData["user_id"] = globals.currentUser.id.toString();
+      addressData["landmark"] = adrs_landmark.text;
+      addressData["district"] = adrs_disctric.text;
+      addressData["city"] = adrs_city.text;
+      addressData["postal_code"] = adrs_postalcode.text;
+      addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
+    }
+    print(addressData);
+
+
+    apiCallAddAddress(addressData, setState, isNewAddress);
   }
 
-  void apiCallAddAddress(Map data, StateSetter setState) async {
+  void apiCallAddAddress(Map data, StateSetter setState, bool isNewAddress) async {
     try {
       HttpClient httpClient = new HttpClient();
+      String Url = Configurations.ADD_USER_ADDRESS;
+      if(!isNewAddress) {
+        Url = Configurations.EDIT_USER_ADDRESS;
+      }
+
       var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.ADD_USER_ADDRESS, data, true);
+      await httpClient.postRequest(context, Url, data, true);
       processAddressResponse(syncUserResponse, setState);
     } on Exception catch (e) {
       if (e is Exception) {
@@ -1836,22 +1900,27 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
+  void statusUpdateAddress() {
+    setState(() {
+      new Future<String>.delayed(new Duration(microseconds: 1), () => null)
+          .then((String value) {
+            build(context);
+      });
+    });
+
+
+  }
+
   void processAddressResponse(Response res, StateSetter setState) {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print("data::::::::$data");
         List addresses = data;
         setState(() {
           globals.currentUser.address = Address.processListOfAddress(addresses);
-          print("ADDRESS LENT == ${globals.currentUser.address.length}");
           Preferences.saveObject("user", jsonEncode(globals.currentUser.toJson()));
-          new Future<String>.delayed(new Duration(microseconds: 100), () => null)
-              .then((String value) {
-            Navigator.of(context).pop();
-            build(context);
-          });
-
+          Navigator.of(context).pop();
+          statusUpdateAddress();
         });
       } else {
         showInfoAlert(context, "Unknown error from server side");

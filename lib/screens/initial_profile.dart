@@ -929,6 +929,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["languages"] = lang;
             var addressData = new Map<String, dynamic>();
             addressData["name"] = adrs_name.text;
+            addressData["default_address"] = "1";
             addressData["address_line1"] = adrs_line1.text;
             addressData["address_line2"] = adrs_line2.text;
             addressData["landmark"] = adrs_landmark.text;
