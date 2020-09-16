@@ -53,14 +53,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   bool isEditProfile = false;
 
   bool _value1 = false;
-  void _value1Changed(bool value) => setState(() => _value1 = value);
+
 
   File _image;
  List<Tab> tabList = List();
   TabController _tabController;
   FocusNode focus_email, focus_fName, focus_lName, focus_no, focus_address, focus_radius;
 
-  Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "");
+  Address singleAddress = Address(0, "", "", "", "", "", "", "", globals.currentUser.id, "", 0);
 
   var editIcon = Icons.mode_edit;
 
@@ -68,7 +68,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   void initState(){
     globals.context = context;
     if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
-      singleAddress = globals.currentUser.address[0];
+      singleAddress = globals.currentUser.address.firstWhere((element) => element.default_address == 1);
+      //globals.currentUser.address[0];
     } else {
       print("no address");
     }
@@ -102,6 +103,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
   }
+
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
@@ -713,12 +715,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
            SizedBox(height: 80,),
-
-
-
-
-
-
          ],
        ),
      ),
@@ -870,8 +866,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     );
   }
 
-  Widget 
-  _buildProfileImage() {
+  Widget _buildProfileImage() {
     if(globals.currentUser.image == null) {
       return Expanded(
         child: Center(
@@ -1432,21 +1427,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   }
 
+
   Widget _buildAddressDialog(BuildContext context, bool isNewAddress,StateSetter setState, Address editAddress) {
     if(isNewAddress) {
 //      singleAddress = Address(singleAddress.id, adrs_line1.text, adrs_line2.text,
 //          adrs_landmark.text, adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, adrs_name.text);
       singleAddress = Address(0, "", "", "",
-          "", "", "", "", globals.currentUser.id, "");
+          "", "", "", "", globals.currentUser.id, "", 0);
     } else {
 
       if(editAddress != null) {
         singleAddress = Address(editAddress.id, editAddress.address_line1, editAddress.address_line2,
-            editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name);
+            editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name, editAddress.default_address);
       } else {
         if(singleAddress.name == null || singleAddress.name == "") {
           singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
-              globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "");
+              globals.addressLocation.subAdminArea, globals.addressLocation.locality, globals.addressLocation.postalCode, "", globals.currentUser.id, "", 0);
         }
       }
 
@@ -1696,7 +1692,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                           child:  Row(
                           children: <Widget>[
                             Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
-                              child: Checkbox(value: _value1, onChanged: _value1Changed), ),
+                              child: Checkbox(value: _value1, onChanged: (value) {
+                                setState(() {
+                                  _value1 = value;
+                                });
+                              } ), ),
                             Text(AppLocalizations.of(context).translate('default'),style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold), ),
 
                           ],
@@ -1725,6 +1725,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               );
             }));
   }
+
 
   Set<Marker> _markers = {};
   BitmapDescriptor pinLocationIcon;
@@ -1807,7 +1808,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         showMap = false;
         isMapAdrs = false;
         singleAddress = Address(0, adrs_line1.text, adrs_line2.text,
-        "", adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, "");
+        "", adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, "", 0);
         print("adrs_line1.text == ${adrs_line1.text}");
       });
     }
@@ -1870,6 +1871,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["address_line2"] = adrs_line2.text;
       addressData["user_id"] = globals.currentUser.id.toString();
       addressData["landmark"] = adrs_landmark.text;
+      addressData["default_address"] = (_value1) ? "1" : "0";
       addressData["district"] = adrs_disctric.text;
       addressData["city"] = adrs_city.text;
       addressData["postal_code"] = adrs_postalcode.text;
@@ -1877,6 +1879,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     } else {
       addressData["id"] = editAddress.id.toString();
       addressData["name"] = adrs_name.text;
+      addressData["default_address"] = (_value1) ? "1" : "0";
       addressData["address_line1"] = adrs_line1.text;
       addressData["address_line2"] = adrs_line2.text;
       addressData["user_id"] = globals.currentUser.id.toString();
@@ -1909,6 +1912,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       }
     }
   }
+
+
+
+
+
 
   void statusUpdateAddress() {
     setState(() {
