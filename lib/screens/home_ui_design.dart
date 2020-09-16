@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -258,21 +259,27 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
                                   ,),
 
-//                                SizedBox(width: 100,
-//                                child: Container(
-//                                  child: Column(
-//                                    children: <Widget>[
-//                                      Icon(Icons.assignment,
-//                                          color: Configurations.themColor, size: 40.0),
-//                                      Text(
-//                                        AppLocalizations.of(context).translate('home_txt_insured'),
-//                                        maxLines: 2,
-//                                        textAlign: TextAlign.center,
-//                                        overflow: TextOverflow.ellipsis,
-//                                      )
-//                                    ],
-//                                  ),
-//                                ),),
+                                SizedBox(width: 100,
+                                child: GestureDetector(
+                                  child: Container(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Icon(Icons.chat,
+                                            color: Configurations.themColor, size: 40.0),
+                                        Text(
+                                          AppLocalizations.of(context).translate('support_chat'),
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  onTap: () => {
+                                    print("CALL TO CHAT"),
+                                    launch(whatsAppChat("").toString())
+                                  },
+                                ),),
 
                                 SizedBox(width: 100,
                                   child: GestureDetector(
@@ -311,6 +318,14 @@ class _HomeUIPageState extends State<HomeUIPage> {
     }
   }
   Future<void> _launched;
+
+  String whatsAppChat(String message) {
+    if (Platform.isIOS) {
+      return "whatsapp://wa.me/+917874xxxxx/?text=${Uri.parse(message)}";
+    } else {
+      return "whatsapp://send?phone=+917874xxxxx&text=${Uri.parse(message)}";
+    }
+  }
 
   Future<void> _makePhoneCall(String url) async {
     if (await canLaunch(url)) {
