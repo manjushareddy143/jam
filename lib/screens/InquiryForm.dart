@@ -370,6 +370,7 @@ class _InquiryPageState extends State<InquiryPage> {
         }
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
+        data["addresss"] = selectedAddress;
         data["booking_date"] = format.format(selecteDate);
         data["contact"] = txtContact.text;
         data["start_time"] = formatt.format(start_time);
@@ -415,7 +416,7 @@ class _InquiryPageState extends State<InquiryPage> {
     return Container(
           decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
           border: Border.all(width: 0.9,color: Configurations.themColor)),
-          padding: const EdgeInsets.fromLTRB(10,0,0,0),
+          padding: const EdgeInsets.fromLTRB(10,0,0,10),
       child: Row(
         children: [
           Text("Default Address" ,
@@ -467,9 +468,31 @@ class _InquiryPageState extends State<InquiryPage> {
   List<DropdownMenuItem<String>> buildAddressMenuItems(List<Address> addressList){
     List<DropdownMenuItem<String>> items = List();
     addressList.forEach((val) {
-      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name),));
+      items.add(DropdownMenuItem(
+        value: val.id.toString(), child: ListTile(
+        title: Text(val.name),
+        subtitle: Text(addressString(val)),
+      ),));
+      //
     });
     return items;
+  }
+
+  String addressString(Address address) {
+    String addressString = "";
+    if(address != null) {
+      addressString = address.address_line1;
+      if(address.address_line2 != "" && address.address_line2 != null) {
+        addressString += ", " + address.address_line2;
+      }
+
+      if(address.landmark != "" && address.landmark != null) {
+        addressString += ", " + address.landmark;
+      }
+      addressString += ", " + address.district
+          + ", " + address.city + ", " + address.postal_code + ".";
+    }
+    return addressString;
   }
 
   List<DropdownMenuItem<String>> buildServicesMenuItems(List<Service> serviceList) {
