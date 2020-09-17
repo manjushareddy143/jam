@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:jam/models/address.dart';
 import 'package:jam/models/provider.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
@@ -65,8 +66,12 @@ class _InquiryPageState extends State<InquiryPage> {
   DateTime _currentDt = new DateTime.now();
 
   String selectedService;
+  String selectedAddress;
   List<DropdownMenuItem<String>> _dropDownService;
+
   List<Service> _lstServices = new List<Service>();
+  List<Address> _lstAddress = new List<Address>();
+  List<DropdownMenuItem<String>> _dropDownAddress;
 
   List<SubCategory> _lstSubCategory = new List<SubCategory>();
 
@@ -99,10 +104,13 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_no = FocusNode();
     focus_remark = FocusNode();
     _lstServices.add(this.service);
+    _lstAddress= globals.currentUser.address;
     if(this.category != null){
       _lstSubCategory.add(this.category);
     }
 //    print("DATA === ${_lstSubCategory}");
+    _dropDownAddress = buildAddressMenuItems(_lstAddress);
+   selectedAddress =_dropDownAddress[0].value;
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
     if(_lstSubCategory.length > 0){
@@ -303,6 +311,8 @@ class _InquiryPageState extends State<InquiryPage> {
         },
       ),
       SizedBox(height: 10,),
+     setDefaultAddress(),
+      SizedBox(height: 10,),
 
       setDate(),
       SizedBox(height: 10,),
@@ -401,6 +411,30 @@ class _InquiryPageState extends State<InquiryPage> {
       }
     }
   }
+  Widget setDefaultAddress(){
+    return Container(
+          decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+          border: Border.all(width: 0.9,color: Configurations.themColor)),
+          padding: const EdgeInsets.fromLTRB(10,0,0,0),
+      child: Row(
+        children: [
+          Text("Default Address" ,
+              style: TextStyle(fontSize: 15 , color: Colors.black45)),
+          SizedBox(width: 20,),
+          Expanded(child: DropdownButton(
+            underline: SizedBox(),
+            isExpanded: true,
+            value: selectedAddress,
+            items: _dropDownAddress,
+            onChanged: changedAddress,
+
+
+          ),)
+
+        ],
+      )
+    );
+  }
 
   Widget setDropDown() {
     return Container(
@@ -409,7 +443,8 @@ class _InquiryPageState extends State<InquiryPage> {
       padding: const EdgeInsets.fromLTRB(10,0,0,0),
       child: Row(
         children:[
-          Text(AppLocalizations.of(context).translate('inquiry_txt_primary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+          Text(AppLocalizations.of(context).translate('inquiry_txt_primary') ,
+              style: TextStyle(fontSize: 15 , color: Colors.black45)),
           SizedBox(width: 20,),
           Expanded(child: DropdownButton(
               underline: SizedBox(),
@@ -423,6 +458,18 @@ class _InquiryPageState extends State<InquiryPage> {
         ],
       ),
     );
+  }
+  void changedAddress(String selectedItem){
+    setState(() {
+      selectedAddress = selectedItem;
+    });
+  }
+  List<DropdownMenuItem<String>> buildAddressMenuItems(List<Address> addressList){
+    List<DropdownMenuItem<String>> items = List();
+    addressList.forEach((val) {
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name),));
+    });
+    return items;
   }
 
   List<DropdownMenuItem<String>> buildServicesMenuItems(List<Service> serviceList) {
