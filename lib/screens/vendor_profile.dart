@@ -54,7 +54,6 @@ int swiperIndex =0;
 
     // TODO: implement initState
     super.initState();
-    globals.context = context;
 
   }
   @override
@@ -65,6 +64,7 @@ int swiperIndex =0;
   Provider vendor;
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     var r = this.provider.rate;
       return Scaffold(
@@ -860,6 +860,9 @@ int swiperIndex =0;
     showReview = (this.provider.reviews.length == 0) ? false : true;
     showReview = (this.provider.reviews.length == 0) ? false : true;
   String title = (this.provider.reviews.length == 0) ? "No Ratings" : "Ratings & Reviews";
+
+  print(this.provider.reviews[1].rate_by);
+
     return Column(crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
 //          Text(
@@ -868,12 +871,14 @@ int swiperIndex =0;
 //            height: 20,
 //          ),
         for(int index = 0; index< provider.reviews.length; index++)
-          Visibility(child:
+          if(this.provider.reviews[index].rate_by != null)
+            Visibility(child:
           Container(
 //            height: 160,
 //            width: 320,
             padding: EdgeInsets.only(right: 20, left: 20),
-            child:  Card(color: Colors.white,
+            child:
+            Card(color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -915,7 +920,7 @@ int swiperIndex =0;
                       Padding(padding: EdgeInsets.only(right: 20, top: 10, bottom: 0),
                         child: Row(
                           children: <Widget>[
-                            Text(capitalize(this.provider.reviews[index].rate_by.first_name), style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
+                            Text(capitalize(this.provider.reviews[index].rate_by.first_name ), style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15),),
 //                            Text(" / Posted on", style: TextStyle(fontWeight: FontWeight.w300,fontSize: 12,))
                           ],
                         ),

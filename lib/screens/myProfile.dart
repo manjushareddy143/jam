@@ -22,7 +22,6 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   TabController _tabController;
   @override
   void initState(){
-    globals.context = context;
     tabList.add(new Tab(text: 'About',));
 
     _tabController= TabController(vsync: this, length: tabList.length);
@@ -38,6 +37,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
   }
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     return Scaffold(
         appBar: new AppBar(leading: BackButton(color:Colors.black),

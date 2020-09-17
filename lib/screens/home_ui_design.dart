@@ -45,8 +45,6 @@ class _HomeUIPageState extends State<HomeUIPage> {
     // TODO: implement initState
     super.initState();
 
-    globals.context = context;
-
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -91,6 +89,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     if (isLoadin) {
       return new Scaffold(backgroundColor: Colors.orange[50],
         appBar: new AppBar(backgroundColor: Colors.deepOrange,

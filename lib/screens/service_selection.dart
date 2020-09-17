@@ -62,7 +62,6 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
     selectedListOfService = new List<Service>();
     selectedServices = new List<SelectedService>();
     selectedListOfCategory = new List<SubCategory>();
-    globals.context = context;
 
     selectedServices.clear();
     serviceNamesString = "";
@@ -109,7 +108,7 @@ bool Value = false;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+    globals.context = context;
 
     if (listofServices == null) {
       return new Scaffold(

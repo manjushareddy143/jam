@@ -32,11 +32,11 @@ class _sliderScreen extends State<SliderScreen>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
   }
   final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,

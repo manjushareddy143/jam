@@ -81,7 +81,6 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     editIcon = Icons.mode_edit;
-    globals.context = context;
     _currentIndex = 0;
     isShowAppBar = true;
 //    print(globals.currentUser.roles[0].slug);
@@ -97,6 +96,7 @@ class _HomePageState extends State<HomePage> {
   bool isShowAppBar = false;
 
   Widget build(BuildContext context) {
+    globals.context = context;
 //    printLog(globals.addressLocation);
 //    printLog(globals.newAddress);
 //    printLog(globals.addressChange);

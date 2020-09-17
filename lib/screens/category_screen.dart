@@ -49,7 +49,7 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
+
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -97,6 +97,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     if (isLoadin) {
       return new Scaffold(backgroundColor: Colors.orange[50],

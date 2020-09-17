@@ -83,7 +83,7 @@ class _vendorSignup extends State<VendorSignup>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
+
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
   }
@@ -92,6 +92,7 @@ class _vendorSignup extends State<VendorSignup>{
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     return Scaffold(
       body: Form(

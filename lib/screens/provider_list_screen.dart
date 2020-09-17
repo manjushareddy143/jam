@@ -48,7 +48,6 @@ class _ProviderListState extends State<ProviderListPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
     if(service.categories.length > 0) {
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(service.categories);
       selectedSubCategory = _dropDownSubCategory[0].value;
@@ -114,7 +113,7 @@ class _ProviderListState extends State<ProviderListPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    globals.context = context;
     if (listofProviders == null) {
       return new Scaffold(backgroundColor: Colors.orange[50],
         appBar: new AppBar(backgroundColor: Colors.deepOrange,

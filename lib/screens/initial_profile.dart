@@ -100,7 +100,6 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
     focus_language = FocusNode();
     focus_adress = FocusNode();
     focus_radius = FocusNode();
-    globals.context = context;
     setState(() {
 //      if (globals.currentUser.roles[0].slug == "provider")
 //        print("provider");
@@ -240,6 +239,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     return GestureDetector(
       onTap: (){
         FocusScopeNode currentFocus = FocusScope.of(context);
