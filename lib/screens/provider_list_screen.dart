@@ -126,6 +126,7 @@ class _ProviderListState extends State<ProviderListPage> {
       return Scaffold( backgroundColor: Colors.orange[50],
           appBar: AppBar(
             automaticallyImplyLeading: true,
+
             backgroundColor: Colors.deepOrange,
             centerTitle: true,
 

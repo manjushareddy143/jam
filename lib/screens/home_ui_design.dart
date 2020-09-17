@@ -29,7 +29,7 @@ class HomeUIDesign extends StatelessWidget {
 }
 
 class HomeUIPage extends StatefulWidget {
-  const HomeUIPage({Key key}) : super(key: key);
+  HomeUIPage({Key key}) : super(key: key);
 
   @override
   _HomeUIPageState createState() => _HomeUIPageState();
@@ -99,7 +99,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
       );
     } else {
 //      if(listofServices.length > 0) {
-        return new Scaffold(backgroundColor: Colors.orange[50],
+        return new Scaffold(
+          backgroundColor: Colors.orange[50],
           body: CustomScrollView(
             slivers: <Widget>[
               SliverFixedExtentList(
@@ -343,53 +344,35 @@ class _HomeUIPageState extends State<HomeUIPage> {
   );
 
 
-  SliverPersistentHeader makeHeader(String headerText) {
-    return SliverPersistentHeader(
-        //pinned: true,
-        delegate: _SliverAppBarDelegate(
-      minHeight: 60.0,
-      maxHeight: 200.0,
-      child: Container(
-        //color: Colors.lightBlue,
-        child: Center(
-          child:
-              //Text(headerText))),
-              Image.asset(
-            "assets/images/topbar.jpg",
-            fit: BoxFit.fill,
-          ),
-        ),
-      ),
-    ));
-  }
+//  SliverPersistentHeader makeHeader(String headerText) {
 }
 
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  }); //configuration for the slivers layout
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-
-  @override
-  double get minExtent => minHeight;
-
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new SizedBox.expand(child: child); //box with a specified size
-  }
-
-  @override //called to check if the present delegate is different from old delegate, if yes it rebuilds
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
+//class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+//  _SliverAppBarDelegate({
+//    @required this.minHeight,
+//    @required this.maxHeight,
+//    @required this.child,
+//  }); //configuration for the slivers layout
+//  final double minHeight;
+//  final double maxHeight;
+//  final Widget child;
+//
+//  @override
+//  double get minExtent => minHeight;
+//
+//  @override
+//  double get maxExtent => math.max(maxHeight, minHeight);
+//
+//  @override
+//  Widget build(
+//      BuildContext context, double shrinkOffset, bool overlapsContent) {
+//    return new SizedBox.expand(child: child); //box with a specified size
+//  }
+//
+//  @override //called to check if the present delegate is different from old delegate, if yes it rebuilds
+//  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+//    return maxHeight != oldDelegate.maxHeight ||
+//        minHeight != oldDelegate.minHeight ||
+//        child != oldDelegate.child;
+//  }
+//}

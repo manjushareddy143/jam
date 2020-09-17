@@ -237,40 +237,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               ),
               FlatButton(
                 onPressed: ()  {
-                     Preferences.removePreference("user");
-                      Preferences.removePreference("profile");
-
-                         if(globals.currentUser.social_signin == "facebook") {
-                          logoutFacebook();
-                       } else if(globals.currentUser.social_signin == "gmail") {
-                        signOutGoogle();
-                         }
-                     globals.isCustomer = true;
-                         globals.currentUser = null;
-                     globals.customRadius = null;
-                     globals.customImage = null;
-                     globals.customGender = null;
-                     globals.customContact = null;
-                     globals.customFirstName = null;
-                     globals.customLanguage = null;
-
-                   //  globals.currentUser.address =null;
-                     ServiceSelectionUIPageState.serviceNamesString = null;
-                      ServiceSelectionUIPageState.selectedServices = null;
-
-
-//                     Navigator.pushReplacement(
-//                         context,
-//                         MaterialPageRoute(
-//                           builder: (context) => SliderScreen(),
-//                           // builder: (context) => UserLogin(),
-//                         )
-//                     );
-                  Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
-
-
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => UserLogin()));
+                     logoutApiCAll();
                 },
                 /*Navigator.of(context).pop(true)*/
                 child: Text(AppLocalizations.of(context).translate('yes')),
@@ -284,26 +251,60 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   void logoutApiCAll() async {
     Map<String, String> data = new Map();
-//    data["user_id"] = selecteCode + txtContact.text;
-//    data["token"] = txtPass.text;
+    data["user_id"] = globals.currentUser.id.toString();
+    data["token"] = globals.fcmToken;
+    print(data);
 
-//    try {
-//      HttpClient httpClient = new HttpClient();
-//      if(globals.isCustomer ==true) {
-//        var syncUserResponse =
-//            await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
-//        processLogOutResponse(syncUserResponse);
-//      } else {
-//        var syncUserResponse =
-//            await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
-//        processLoginResponse(syncUserResponse);
-//      }
-//    } on Exception catch (e) {
-//      if (e is Exception) {
-//        printExceptionLog(e);
-//      }
-//    }
+    try {
+      HttpClient httpClient = new HttpClient();
+        var syncUserResponse =
+            await httpClient.postRequest(context, Configurations.LOGOUT_URL, data, false);
+        processLogoutResponse(syncUserResponse);
 
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processLogoutResponse(Response res) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        logoutProcess();
+      } else {
+        logoutProcess();
+      }
+    } else {
+      logoutProcess();
+    }
+  }
+
+  void logoutProcess() {
+    Preferences.removePreference("user");
+    Preferences.removePreference("profile");
+
+    if(globals.currentUser.social_signin == "facebook") {
+      logoutFacebook();
+    } else if(globals.currentUser.social_signin == "gmail") {
+      signOutGoogle();
+    }
+    globals.isCustomer = true;
+    globals.currentUser = null;
+    globals.customRadius = null;
+    globals.customImage = null;
+    globals.customGender = null;
+    globals.customContact = null;
+    globals.customFirstName = null;
+    globals.customLanguage = null;
+
+    //  globals.currentUser.address =null;
+    ServiceSelectionUIPageState.serviceNamesString = null;
+    ServiceSelectionUIPageState.selectedServices = null;
+
+    Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => UserLogin()));
   }
 
 

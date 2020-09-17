@@ -78,6 +78,7 @@ class _MyAppState extends State<MyApp> {
               case "2" :
                 printLog("ACCEPT");
                 msg = AppLocalizations.of(globals.context).translate('order_accept');
+                printLog("ACCEPT ${msg}");
                 pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
               case "3" :
