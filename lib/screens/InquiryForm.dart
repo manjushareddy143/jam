@@ -103,13 +103,22 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_no = FocusNode();
     focus_remark = FocusNode();
     _lstServices.add(this.service);
-    _lstAddress= globals.currentUser.address;
+
     if(this.category != null){
       _lstSubCategory.add(this.category);
     }
 //    print("DATA === ${_lstSubCategory}");
-    _dropDownAddress = buildAddressMenuItems(_lstAddress);
-   selectedAddress =_dropDownAddress[0].value;
+
+
+    if(globals.currentUser.address != null)
+    if(globals.currentUser.address.length > 0) {
+      _lstAddress= globals.currentUser.address;
+      _dropDownAddress = buildAddressMenuItems(_lstAddress);
+      selectedAddress =_dropDownAddress[0].value;
+    } else {
+      selectedAddress = "Please Add Address";
+    }
+
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
     if(_lstSubCategory.length > 0){
@@ -357,7 +366,9 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
   void validateForm() {
-    if (_formKey.currentState.validate()) {
+    if(_lstAddress.length <= 0) {
+      showInfoAlert(context, "Please add Address first");
+    } else if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _autoValidate = false;
       setState(() {
@@ -370,7 +381,7 @@ class _InquiryPageState extends State<InquiryPage> {
         }
         data["orderer_name"] = txtName.text;
         data["email"] = txtEmail.text;
-        data["addresss"] = selectedAddress;
+        data["address_id"] = selectedAddress;
         data["booking_date"] = format.format(selecteDate);
         data["contact"] = txtContact.text;
         data["start_time"] = formatt.format(start_time);
