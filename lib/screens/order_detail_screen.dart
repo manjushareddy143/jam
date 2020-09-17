@@ -63,7 +63,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    globals.context = context;
     if(this.isCustomer == true) {
       _dropDownTypes = buildAndGetDropDownMenuItems(_customerCancelReasonList);
     } else {
@@ -94,7 +93,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   @override
   Widget build(BuildContext context) {
-
+    globals.context = context;
     // TODO: implement build
     return Scaffold(
 //        appBar: new AppBar(leading: BackButton(color:Colors.black),

@@ -62,6 +62,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
+        print("count -- ${globals.msgCount}");
+        print("notification -- ${message['data']}");
         if(globals.msgCount%2==0) {
           Map data = message['data'];
           if(data.containsKey('status')) {
@@ -71,28 +73,37 @@ class _MyAppState extends State<MyApp> {
             switch(message['data']['status']) {
               case "1" :
                 msg = AppLocalizations.of(globals.context).translate('book_placed');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
               case "2" :
                 printLog("ACCEPT");
                 msg = AppLocalizations.of(globals.context).translate('order_accept');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
               case "3" :
                 msg = AppLocalizations.of(globals.context).translate('order_cancel_vendor');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
                 case "4" :
                 msg = AppLocalizations.of(globals.context).translate('order_cancel_user');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
               case "5" :
                 msg = AppLocalizations.of(globals.context).translate('order_complete');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
                 break;
               case "6" :
                 msg = AppLocalizations.of(globals.context).translate('check_total_cost');
+                pushInfoAlert(globals.context, message['notification']['title'], msg);
+                break;
+              default:
+                pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
                 break;
             }
 
             printLog("MSG == ${msg}");
 
-            pushInfoAlert(globals.context, message['notification']['title'], msg);
+
           } else {
             pushInfoAlert(globals.context, message['notification']['title'], message['notification']['body']);
           }

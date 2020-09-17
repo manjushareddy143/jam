@@ -83,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    globals.context = context;
+
 //    _googleSignIn = GoogleSignIn();
 
     focus_firstname = FocusNode();
@@ -112,6 +112,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     return GestureDetector(
       onTap: (){

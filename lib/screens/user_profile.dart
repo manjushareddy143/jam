@@ -66,7 +66,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
-    globals.context = context;
     if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
       singleAddress = globals.currentUser.address.firstWhere((element) => element.default_address == 1);
       //globals.currentUser.address[0];
@@ -186,6 +185,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    globals.context = context;
     // TODO: implement build
     return GestureDetector(
       onTap: (){
@@ -281,6 +281,32 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
   }
+
+  void logoutApiCAll() async {
+    Map<String, String> data = new Map();
+//    data["user_id"] = selecteCode + txtContact.text;
+//    data["token"] = txtPass.text;
+
+//    try {
+//      HttpClient httpClient = new HttpClient();
+//      if(globals.isCustomer ==true) {
+//        var syncUserResponse =
+//            await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+//        processLogOutResponse(syncUserResponse);
+//      } else {
+//        var syncUserResponse =
+//            await httpClient.postRequest(context, Configurations.REGISTER_URL, data, false);
+//        processLoginResponse(syncUserResponse);
+//      }
+//    } on Exception catch (e) {
+//      if (e is Exception) {
+//        printExceptionLog(e);
+//      }
+//    }
+
+  }
+
+
   Widget profile(){
 
     print("isEditProfile = ${isEditProfile}");

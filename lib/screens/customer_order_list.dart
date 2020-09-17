@@ -56,7 +56,6 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     print("List order");
     // TODO: implement initState
     super.initState();
-    globals.context = context;
     getProfile();
 
   }
@@ -107,7 +106,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
   @override
   Widget build(BuildContext context) {
-
+    globals.context = context;
     // TODO: implement build
     if (globals.listofOrders == null) {
       return new Scaffold(

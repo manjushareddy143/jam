@@ -98,7 +98,6 @@ class _InquiryPageState extends State<InquiryPage> {
   @override
   void initState() {
     super.initState();
-    globals.context = context;
     focus_name = FocusNode();
     focus_mail = FocusNode();
     focus_no = FocusNode();
@@ -157,6 +156,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     return GestureDetector(
       onTap: (){

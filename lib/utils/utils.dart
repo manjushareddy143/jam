@@ -412,7 +412,7 @@ void pushInfoAlert(BuildContext context, String title ,String message) {
           new FlatButton(
             child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
-              globals.msgCount = 0;
+//              globals.msgCount = 0;
               Navigator.of(_keyLoader.currentContext, rootNavigator: true)
                   .pop();
             },

@@ -32,7 +32,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
   TabController _tabController;
   @override
   void initState() {
-    globals.context = context;
+
     // TODO: implement initState
     super.initState();
     _tabController = new TabController(vsync: this, length:2);
@@ -43,6 +43,7 @@ class _VendorOrderState extends State<VendorOrderUIPage> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     // TODO: implement build
     _width = MediaQuery.of(context).size.width;
     _height = MediaQuery.of(context).size.height;

@@ -56,7 +56,6 @@ class _user extends State<UserLogin>{
     super.initState();
     focus_email = FocusNode();
     focus_pwd = FocusNode();
-    globals.context = context;
     getFCMToken();
   }
 
@@ -90,6 +89,7 @@ class _user extends State<UserLogin>{
 
   @override
   Widget build(BuildContext context) {
+    globals.context = context;
     Paint paint = Paint();
     paint.color= Configurations.themColor;
     return GestureDetector(
