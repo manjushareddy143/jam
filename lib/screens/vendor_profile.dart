@@ -861,7 +861,7 @@ int swiperIndex =0;
     showReview = (this.provider.reviews.length == 0) ? false : true;
   String title = (this.provider.reviews.length == 0) ? "No Ratings" : "Ratings & Reviews";
 
- 
+
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

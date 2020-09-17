@@ -427,6 +427,7 @@ class _InquiryPageState extends State<InquiryPage> {
             underline: SizedBox(),
             isExpanded: true,
             value: selectedAddress,
+            icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
             items: _dropDownAddress,
             onChanged: changedAddress,
 
@@ -472,7 +473,7 @@ class _InquiryPageState extends State<InquiryPage> {
       items.add(DropdownMenuItem(
         value: val.id.toString(), child: ListTile(
         title: Text(val.name),
-        subtitle: Text(addressString(val)),
+        subtitle: Text(addressString(val), maxLines: 2,),
       ),));
       //
     });
