@@ -107,17 +107,23 @@ class _InquiryPageState extends State<InquiryPage> {
     if(this.category != null){
       _lstSubCategory.add(this.category);
     }
-//    print("DATA === ${_lstSubCategory}");
+    print("DATA === ${globals.guest}");
 
+    if(globals.guest == false) {
 
-    if(globals.currentUser.address != null)
-    if(globals.currentUser.address.length > 0) {
-      _lstAddress= globals.currentUser.address;
-      _dropDownAddress = buildAddressMenuItems(_lstAddress);
-      selectedAddress =_dropDownAddress[0].value;
-    } else {
-      selectedAddress = "Please Add Address";
+      if(globals.currentUser.address != null)
+        if(globals.currentUser.address.length > 0) {
+          _lstAddress= globals.currentUser.address;
+          _dropDownAddress = buildAddressMenuItems(_lstAddress);
+          selectedAddress =_dropDownAddress[0].value;
+        } else {
+          selectedAddress = "Please Add Address";
+        }
+
+    } else{
+
     }
+
 
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;

@@ -10,6 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
+//import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jam/classes/language.dart';
 import 'package:jam/login/login.dart';
@@ -17,9 +18,12 @@ import 'package:jam/main.dart';
 import 'package:jam/models/address.dart';
 import 'package:jam/models/user.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/crop_photo.dart';
 import 'package:jam/screens/service_selection.dart';
 import 'package:jam/utils/preferences.dart';
 import 'package:jam/utils/utils.dart';
+import 'package:simple_image_crop/simple_image_crop.dart';
+//import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:jam/app_localizations.dart';
@@ -66,6 +70,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   @override
   void initState(){
+
+    print("PROFILE IMAGE === ${globals.proImg}");
+
+
+
     if(globals.currentUser.address != null && globals.currentUser.address.length > 0) {
       singleAddress = globals.currentUser.address.firstWhere((element) => element.default_address == 1);
       //globals.currentUser.address[0];
@@ -98,6 +107,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         }
       });
     }
+
 
 
 
@@ -135,16 +145,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
-//  void getProfile() async  {
-//    await Preferences.readObject("user").then((onValue) async {
-//      var userdata = json.decode(onValue);
-//      setState(() {
-//        globals.currentUser = User.fromJson(userdata);
-//      });
-//    });
-//  }
 
-  String imageUrl = "";
+
   Future getImage() async {
     final imageSrc = await showDialog<ImageSource>(
       context: context,
@@ -175,12 +177,45 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       );
       if (image != null) {
         setState(() {
-          imageUrl = null;
           _image = image;
+          _navigateAndDisplaySelection(context);
         });
       }
     }
   }
+
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CropPhotoRoute(img: _image)),
+    );
+
+    setState(() {
+      _image = result;
+    });
+
+
+    print("$result");
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+//    Scaffold.of(context)
+//      ..removeCurrentSnackBar()
+//      ..showSnackBar(SnackBar(content: Text("$result")));
+  }
+
+//  final imgCropKey = GlobalKey<ImgCropState>();
+//  final cropKey = GlobalKey<ImgCropState>();
+//  Widget cropImg() {
+//    return ImgCrop(
+//      key: cropKey,
+//      // chipRadius: 100,
+//      // chipShape: 'rect',
+//      maximumScale: 3,
+//      image: FileImage(_image),
+//    );
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -395,17 +430,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
             ],
           )
-//          new Container(
-////            height: 80.0,
-//            width: MediaQuery.of(context).size.width,
-//            child: ,
-//          ),
         ),
-
-//        new Container(
-////              height: MediaQuery.of(context).size.height * .75,
-//          color: Colors.white,
-//        ),
 
 
       ],
@@ -825,7 +850,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
         DecorationImage(
           image:
-          (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) : NetworkImage(globals.currentUser.image) : FileImage(_image),
+          (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) :
+          (globals.currentUser.image.contains("http"))? NetworkImage(globals.currentUser.image): NetworkImage(Configurations.BASE_URL +  globals.currentUser.image)
+              : FileImage(_image),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(80.0),
@@ -857,27 +884,24 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget _buildCoverImage(Size screenSize) {
     return Container(
       height: screenSize.height /3.6,
-//      color: Colors.transparent,
       child: Padding( padding: EdgeInsets.fromLTRB(10, 20, 0, 0),
         child: Column(
           children: <Widget>[
             //SizedBox(height: 20),
-            _buildProfileImage(),
-           // SizedBox(height: 10),
-        Text(globals.currentUser.first_name,
-          textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
-          style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
-              color: Colors.black),
-        ),
-            //SizedBox(height: 5),
 
-         GestureDetector(
-           onTap: () {
-             if(isEditProfile) {
-               getImage();
-             } else {
-               showInfoAlert(context, "Please enable edit mode");
-             }
+            _buildProfileImage(),
+            Text(globals.currentUser.first_name,
+              textAlign: TextAlign.center, overflow: TextOverflow.ellipsis,
+              style: TextStyle( fontSize: 20.0,fontWeight: FontWeight.w400,
+                  color: Colors.black),
+            ),
+            GestureDetector(
+                onTap: () {
+                  if(isEditProfile) {
+                    getImage();
+                  } else {
+                    showInfoAlert(context, "Please enable edit mode");
+                  }
            },
              child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
                  style: TextStyle(fontSize: 12 ,fontWeight: FontWeight.w500,
@@ -887,11 +911,46 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           ],
         ),
       ),
-//      decoration: BoxDecoration(
-//        color: Colors.transparent,
-//      ),
     );
   }
+//  Future<Null> _cropImage(String imgPath) async {
+//    File croppedFile = await ImageCropper.cropImage(
+//        sourcePath: imgPath, //imageFile.path,
+//        aspectRatioPresets: Platform.isAndroid
+//            ? [
+//          CropAspectRatioPreset.square,
+//          CropAspectRatioPreset.ratio3x2,
+//          CropAspectRatioPreset.original,
+//          CropAspectRatioPreset.ratio4x3,
+//          CropAspectRatioPreset.ratio16x9
+//        ]
+//            : [
+//          CropAspectRatioPreset.original,
+//          CropAspectRatioPreset.square,
+//          CropAspectRatioPreset.ratio3x2,
+//          CropAspectRatioPreset.ratio4x3,
+//          CropAspectRatioPreset.ratio5x3,
+//          CropAspectRatioPreset.ratio5x4,
+//          CropAspectRatioPreset.ratio7x5,
+//          CropAspectRatioPreset.ratio16x9
+//        ],
+//        androidUiSettings: AndroidUiSettings(
+//            toolbarTitle: 'Cropper',
+//            toolbarColor: Colors.deepOrange,
+//            toolbarWidgetColor: Colors.white,
+//            initAspectRatio: CropAspectRatioPreset.original,
+//            lockAspectRatio: false),
+//        iosUiSettings: IOSUiSettings(
+//          title: 'Cropper',
+//        ));
+//    if (croppedFile != null) {
+////      imageFile = croppedFile;
+////      setState(() {
+////        state = AppState.cropped;
+////      });
+//    }
+//  }
+
 
   Widget _buildProfileImage() {
     if(globals.currentUser.image == null) {
@@ -929,7 +988,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         ),
         flex: 1,
       );
-    } else {
+    }
+    else {
       return Center(
       child: Container(
         child: GestureDetector(
@@ -950,7 +1010,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           DecorationImage(
             image:
            // (globals.currentUser.image == null) ? AssetImage("assets/images/BG-1x.jpg") : NetworkImage(globals.currentUser.image),
-            (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) : NetworkImage(globals.currentUser.image) : FileImage(_image),
+            (_image == null) ? (globals.currentUser.social_signin == "") ? NetworkImage(Configurations.BASE_URL + globals.currentUser.image) :
+            (globals.currentUser.image.contains("http"))? NetworkImage(globals.currentUser.image): NetworkImage(Configurations.BASE_URL +  globals.currentUser.image) : FileImage(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -1940,11 +2001,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
   }
 
-
-
-
-
-
   void statusUpdateAddress() {
     setState(() {
       new Future<String>.delayed(new Duration(microseconds: 1), () => null)
@@ -2176,3 +2232,4 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   }
 }
+

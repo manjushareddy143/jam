@@ -95,10 +95,13 @@ class _vendorSignup extends State<VendorSignup>{
     globals.context = context;
     // TODO: implement build
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        autovalidate: _autoValidate,
-        child: SingleChildScrollView(child: vendorScreenUI()),
+      body: Align(
+        child: Form(
+          key: _formKey,
+          autovalidate: _autoValidate,
+          child: SingleChildScrollView(child: vendorScreenUI()),
+        ),
+        alignment: Alignment.bottomCenter,
       ),
     );
   }
@@ -500,8 +503,12 @@ class _vendorSignup extends State<VendorSignup>{
           ],
         ),
       ),
-        new Image.asset("assets/images/bottomSignup.png",
-          height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
+
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: Image.asset("assets/images/bottomSignup.png",
+          width: double.infinity, fit: BoxFit.fitWidth, ),
+      ),
 
 
 

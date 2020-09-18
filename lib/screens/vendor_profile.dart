@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
+import 'package:jam/login/login.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
 import 'package:jam/screens/InquiryForm.dart';
@@ -137,17 +138,39 @@ int swiperIndex =0;
 
 
           onPressed: () {
-            printLog('this.category::: ${this.category}');
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        InquiryPage(service: service, provider: provider,
-                          category: this.category,)));
+            if(globals.guest == true){
+              show();
+            } else {
+              printLog('this.category::: ${this.category}');
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          InquiryPage(service: service, provider: provider,
+                            category: this.category,)));
+            }
           },
         ),
       ),
     );
+  }
+
+  void show(){
+    showDialog(context: context,
+        builder: (BuildContext context){
+          return AlertDialog(
+            content: Text("You cant place order, Login first!!!", style: TextStyle(color: Colors.teal),),
+            actions: <Widget>[
+              // usually buttons at the bottom of the dialog
+              new FlatButton (
+                child: new Text("OK", style: TextStyle(color: Colors.orangeAccent),),
+                onPressed: () {
+                  Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
+                },
+              ),
+            ],
+          );
+        });
   }
   Widget setCard(){
 
@@ -208,13 +231,18 @@ int swiperIndex =0;
 
 
                 FlatButton.icon(onPressed: () {
-                  printLog('this.category::: ${this.category}');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              InquiryPage(service: service, provider: provider,
-                                category: this.category,)));
+                  if(globals.guest == true){
+                    show();
+                  } else {
+                    printLog('this.category::: ${this.category}');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                InquiryPage(
+                                  service: service, provider: provider,
+                                  category: this.category,)));
+                  }
                 },
                   icon: Icon(Icons.calendar_today, color: Configurations.themColor, size: 13,),
                   label: Text(AppLocalizations.of(context).translate('book'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),

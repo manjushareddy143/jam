@@ -91,20 +91,26 @@ class _customerSignup extends State<CustomerSignup>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child: customerScreenUI(),
+      body: Align(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(top: 50),
+          child: Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: customerScreenUI(),
+          ),
         ),
+        alignment: Alignment.bottomCenter,
       ),
+
+
     );
   }
 
   Widget customerScreenUI(){
     return Column(
       children: <Widget>[
-        SizedBox(height: 40,),
+//        SizedBox(height: 50,),
 
         Image.asset("assets/images/jamLogo.png",
           height: 40.0, width: 95.0 , fit: BoxFit.fill,),
@@ -173,10 +179,6 @@ class _customerSignup extends State<CustomerSignup>{
             },
 
           ), flex: 4,),
-
-//            Flexible( flex:4,
-//            child:
-//          )
           ],
           ),
         ),
@@ -309,7 +311,7 @@ class _customerSignup extends State<CustomerSignup>{
             )
           ],
         ),),
-        SizedBox(height: 20,),
+     //   SizedBox(height: 20,),
 
         Visibility(child: Column(
        // mainAxisAlignment: MainAxisAlignment.center,
@@ -318,7 +320,7 @@ class _customerSignup extends State<CustomerSignup>{
           SizedBox(height: 20,
             child: Text("------------------------ OR ------------------------"),
           ),
-          SizedBox(height: 20),
+//          SizedBox(height: 20),
 
           SignInButton(
             Buttons.Facebook,
@@ -384,8 +386,11 @@ class _customerSignup extends State<CustomerSignup>{
         ),
       ),
 
-        Image.asset("assets/images/bottomSignup.png",
-          height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Image.asset("assets/images/bottomSignup.png",
+            width: double.infinity, fit: BoxFit.fitWidth, ),
+        ),
     ],);
   }
 

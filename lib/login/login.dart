@@ -102,236 +102,239 @@ class _user extends State<UserLogin>{
       },
       child: new Scaffold( key: _primeKey,
 
-        body: new Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child:  SingleChildScrollView(
-            child: new Column(
-//                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-//                  new Image.asset("assets/images/BG-1x.jpg",
-//                    height: 250.0, width: double.infinity, fit: BoxFit.fill, ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-//                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(padding: EdgeInsets.only(left: 10, top: 10),
-                      child: DropdownButton(
-                        underline: SizedBox(),
-                        onChanged: ( Language language){
-                          _changeLanguage(language);
-                        },
-                        icon: Icon(Icons.language, color: Configurations.themColor,),
-                        items: Language.languageList()
-                            .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                          value:  lang,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget> [
-                              Text(lang.flag),
-                              Text(lang.name)
-                            ],
-                          ) ,
-                        )).toList(),
-                      ),)
-                    ],
-                  ),
-//                SizedBox(height: 20,),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0,5,0,10),
-                    child: Row(
-//                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
+        body: Align(
+          alignment: Alignment.bottomCenter,
+          child: Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child:  SingleChildScrollView(
+              child: new Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Image.asset("assets/images/jamLogo.png",
-                          height: 58.0, width: 110.0 , fit: BoxFit.fill, ),
+                        Padding(padding: EdgeInsets.only(top: 50),
+                          child: DropdownButton(
+                            underline: SizedBox(),
+                            onChanged: ( Language language){
+                              _changeLanguage(language);
+                            },
+                            icon: Icon(Icons.language, color: Configurations.themColor,),
+                            items: Language.languageList()
+                                .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                              value:  lang,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget> [
+                                  Text(lang.flag),
+                                  Text(lang.name)
+                                ],
+                              ) ,
+                            )).toList(),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                   SizedBox(height: 10,),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                     children: <Widget>[
-                       Text(AppLocalizations.of(context).translate('txt_loginuser'),
-                         textAlign: TextAlign.center,
-                         overflow: TextOverflow.ellipsis,
-                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0, color: Colors.deepOrangeAccent),
-                       )
-                     ],
-                   ),
 
-                //  SizedBox(height: 30),
 
-                  Container( padding: new  EdgeInsets.all(10),
-                    margin: EdgeInsets.only(left: 15, right: 15),
-                    child:
-                    Column(children: <Widget>[
-                      TextFormField(
-                        focusNode: focus_email,
-                        controller: txtUser,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context).translate('login_txt_user');
-                          }
-                          return validateEmail(value);
-                        },
-                        cursorColor: Configurations.themColor,
 
-                        obscureText: false,
-                        decoration: InputDecoration(
-                          //focusColor: Configurations.themColor,
-                          //suffixIcon: Icon(Icons.face),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
-                            color: Configurations.themColor,
-                            width: 0.9,
-                          ), borderRadius: BorderRadius.circular(9.0),),
-                          labelText: //"Email or Username"
-                           AppLocalizations.of(context).translate('email_placeholder'),
-                          labelStyle: TextStyle(color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Configurations.themColor),
-                          ),
-
-                        ),
-
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0,0,0,0),
+                      child: Row(
+//                    crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset("assets/images/jamLogo.png",
+                            height: 50.0, width: 110.0 , fit: BoxFit.fill, ),
+                        ],
                       ),
-                      SizedBox(height: 15),
-                      new TextFormField(
-                        focusNode: focus_pwd,
-                        controller: txtPass,
-                        cursorColor: Configurations.themColor,
-
-                        validator: (value){
-                          if (value.isEmpty) {
-                            return AppLocalizations.of(context).translate('login_txt_pwd');
-                          }
-                          return null;
-                        },
-
-                        obscureText: true,
-                        decoration: InputDecoration( suffixIcon: Icon(Icons.lock,color: Colors.grey,),focusColor: Configurations.themColor,
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
-                            color: Configurations.themColor,
-                            width: 0.9,
-                          ), borderRadius: BorderRadius.circular(9.0),),
-                          labelText:  AppLocalizations.of(context).translate('pwd_placeholder'),
-                          labelStyle: TextStyle(color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Configurations.themColor),
-                          ),
-                        ),
-                      ),
-                    ],
                     ),
-                  ),
+//                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context).translate('txt_loginuser'),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0, color: Colors.deepOrangeAccent),
+                        )
+                      ],
+                    ),
 
-                  Container( padding: new  EdgeInsets.fromLTRB(25,0,25,10), child:  Row(
-                    children: <Widget>[
-                         Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
-                           child: Checkbox(value: _value1, onChanged: _value1Changed), ),
-                      Text(AppLocalizations.of(context).translate('txt_remember'),style: TextStyle(color: Colors.black), ),
-                      Spacer(),
-                      FlatButton(onPressed:(){
-                        showDialog(context:  context,
-                          builder: (BuildContext context) => setPasswordAgain(context),);
-                      },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
-                    ],
-                  ),),
-                  SizedBox(height: 5),
-                  ButtonTheme(
-                    minWidth: 300,
-                    child: new  RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                           // side: BorderSide(color: Colors.red)
+                    //  SizedBox(height: 30),
+
+                    Container( padding: new  EdgeInsets.all(10),
+                      margin: EdgeInsets.only(left: 15, right: 15),
+                      child:
+                      Column(children: <Widget>[
+                        TextFormField(
+                          focusNode: focus_email,
+                          controller: txtUser,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return AppLocalizations.of(context).translate('login_txt_user');
+                            }
+                            return validateEmail(value);
+                          },
+                          cursorColor: Configurations.themColor,
+
+                          obscureText: false,
+                          decoration: InputDecoration(
+                            //focusColor: Configurations.themColor,
+                            //suffixIcon: Icon(Icons.face),
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                              color: Configurations.themColor,
+                              width: 0.9,
+                            ), borderRadius: BorderRadius.circular(9.0),),
+                            labelText: //"Email or Username"
+                            AppLocalizations.of(context).translate('email_placeholder'),
+                            labelStyle: TextStyle(color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Configurations.themColor),
+                            ),
+
+                          ),
+
                         ),
+                        SizedBox(height: 15),
+                        new TextFormField(
+                          focusNode: focus_pwd,
+                          controller: txtPass,
+                          cursorColor: Configurations.themColor,
 
-                        color: Configurations.themColor,
-                        textColor: Colors.white,
-                        padding: EdgeInsets.fromLTRB(120,10,120,10),
-                        child:  Text(
+                          validator: (value){
+                            if (value.isEmpty) {
+                              return AppLocalizations.of(context).translate('login_txt_pwd');
+                            }
+                            return null;
+                          },
+
+                          obscureText: true,
+                          decoration: InputDecoration( suffixIcon: Icon(Icons.lock,color: Colors.grey,),focusColor: Configurations.themColor,
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                              color: Configurations.themColor,
+                              width: 0.9,
+                            ), borderRadius: BorderRadius.circular(9.0),),
+                            labelText:  AppLocalizations.of(context).translate('pwd_placeholder'),
+                            labelStyle: TextStyle(color: Colors.grey),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Configurations.themColor),
+                            ),
+                          ),
+                        ),
+                      ],
+                      ),
+                    ),
+
+                    Container( padding: new  EdgeInsets.fromLTRB(25,0,25,10), child:  Row(
+                      children: <Widget>[
+                        Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
+                          child: Checkbox(value: _value1, onChanged: _value1Changed), ),
+                        Text(AppLocalizations.of(context).translate('txt_remember'),style: TextStyle(color: Colors.black), ),
+                        Spacer(),
+                        FlatButton(onPressed:(){
+                          showDialog(context:  context,
+                            builder: (BuildContext context) => setPasswordAgain(context),);
+                        },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
+                      ],
+                    ),),
+//                    SizedBox(height: 5),
+                    ButtonTheme(
+                      minWidth: 300,
+                      child: new  RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            // side: BorderSide(color: Colors.red)
+                          ),
+
+                          color: Configurations.themColor,
+                          textColor: Colors.white,
+                          padding: EdgeInsets.fromLTRB(120,10,120,10),
+                          child:  Text(
                             AppLocalizations.of(context).translate('btn_login'),
                             style: TextStyle(fontSize: 16.5), overflow: TextOverflow.ellipsis,
-                        ),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          _validateInputs();
-                        }
+                          ),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            _validateInputs();
+                          }
+                      ),
                     ),
-                  ),
 
-                  Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(AppLocalizations.of(context).translate('txt_dont')),
+                    Container(child:  Row( mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(AppLocalizations.of(context).translate('txt_dont')),
 
-                      FlatButton( onPressed:() {
-                        Navigator.push(
-                            context, new MaterialPageRoute(
-                            builder: (BuildContext context) => masterSignup()
-                        )
-                        );
+                        FlatButton( onPressed:() {
+                          Navigator.push(
+                              context, new MaterialPageRoute(
+                              builder: (BuildContext context) => masterSignup()
+                          )
+                          );
                         },
-                        child: Text(
-                            AppLocalizations.of(context).translate('btn_signup'),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold,
-                                color: Configurations.themColor)
-                        ),
-                      )
-                    ],
-                  ),),
-                  SizedBox(height: 16,),
+                          child: Text(
+                              AppLocalizations.of(context).translate('btn_signup'),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold,
+                                  color: Configurations.themColor)
+                          ),
+                        )
+                      ],
+                    ),),
+//                    SizedBox(height: 16,),
 
-                  SizedBox(height: 20,
-                    child: Text("------------------------ OR ------------------------"),
-                  ),
-                  SizedBox(height: 10),
+                    SizedBox(height: 20,
+                      child: Text("------------------------ OR ------------------------"),
+                    ),
+                    SizedBox(height: 10),
 
-                  SignInButton(
-                    Buttons.Facebook,
-                    text: AppLocalizations.of(context).translate('btn_facebook'),
+                    SignInButton(
+                      Buttons.Facebook,
+                      text: AppLocalizations.of(context).translate('btn_facebook'),
 
-                   // padding: EdgeInsets.fromLTRB(120,10,120,10),
-                    onPressed: () {
-                      signinWithFacebook();
+                      // padding: EdgeInsets.fromLTRB(120,10,120,10),
+                      onPressed: () {
+                        signinWithFacebook();
+                      },
+                    ),
+                    SizedBox(height: 10,),
+
+                    SignInButton(
+                      Buttons.Google,
+                      text: AppLocalizations.of(context).translate('btn_gmail'),
+                      //padding: EdgeInsets.fromLTRB(120,10,120,10),
+                      onPressed: () {
+                        signinWithGmail();
+                      },
+                    ),
+
+
+//                    SizedBox(height: 10,),
+                    FlatButton( onPressed: (){
+                      globals.guest = true;
+                      globals.isVendor = false;
+                      globals.isCustomer=false;
+                      Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
                     },
-                  ),
-                  SizedBox(height: 10,),
-
-                  SignInButton(
-                    Buttons.Google,
-                    text: AppLocalizations.of(context).translate('btn_gmail'),
-                    //padding: EdgeInsets.fromLTRB(120,10,120,10),
-                    onPressed: () {
-                      signinWithGmail();
-                    },
-                  ),
-
-
-                  SizedBox(height: 10,),
-                  FlatButton( onPressed: (){
-                    globals.guest = true;
-                    globals.isVendor = false;
-                    globals.isCustomer=false;
-                    print("I am a guest :)");
-                    printLog(globals.guest);
-
-                    Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-                  },
-                    child: Text(AppLocalizations.of(context).translate('txt_skip'),
+                      child: Text(AppLocalizations.of(context).translate('txt_skip'),
                         textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
-                  ),
-            new Image.asset("assets/images/bottomLogin.png",
-                    height: 90.0, width: double.infinity, fit: BoxFit.fill, ),
+                    ),
+
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Image.asset("assets/images/bottomSignup.png",
+                         fit: BoxFit.fitWidth, ),
+                    ),
 
 
 
-                ]
+                  ]
+              ),
             ),
-          ),
 
-        ),
+          ),
+        )
       ),
     );
   }
