@@ -40,6 +40,7 @@ class _user extends State<UserLogin>{
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
+  bool obscureText = true;
   final _primeKey = GlobalKey<State>();
   //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -210,8 +211,19 @@ class _user extends State<UserLogin>{
                             return null;
                           },
 
-                          obscureText: true,
-                          decoration: InputDecoration( suffixIcon: Icon(Icons.lock,color: Colors.grey,),focusColor: Configurations.themColor,
+                          obscureText: obscureText,
+                          decoration: InputDecoration( suffixIcon:
+                          IconButton(
+                          onPressed: (){
+                            obscureText = !obscureText;
+                            setState(() {
+
+                            });
+                          },
+                            color: Colors.grey,
+                            icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+
+                          ),focusColor: Configurations.themColor,
                             enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                               color: Configurations.themColor,
                               width: 0.9,
