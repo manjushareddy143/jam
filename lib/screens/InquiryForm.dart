@@ -593,7 +593,8 @@ final formatt= DateFormat("h:mm a");
         onShowPicker: (context, currentValue) {
           return showDatePicker(
               context: context,
-              firstDate: _currentDt.add(Duration(days: -365)),
+              firstDate: DateTime.now(),
+//            firstDate: _currentDt.add(Duration(days: -365)),
               initialDate: currentValue ?? DateTime.now(),
               lastDate: DateTime(2021),
              );
