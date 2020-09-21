@@ -11,6 +11,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:pulse/components/widget_helper.dart';
 //import 'package:pulse/resources/about_screen.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/user_profile.dart';
 //import 'package:pulse/resources/my_colors.dart';
 //import 'package:pulse/resources/my_strings.dart';
 //import 'package:pulse/screens/login_screen.dart';
@@ -439,8 +440,8 @@ void showInfoAlert(BuildContext context, String message) {
           new FlatButton(
             child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
-              Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                  .pop();
+              Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => ProfileUIPage()));
+
             },
           ),
         ],

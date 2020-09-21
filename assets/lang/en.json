@@ -208,7 +208,15 @@
   "no": "No",
   "edit": "Edit",
   "delete": "Delete",
-  "default": "Set as Default Address"
+  "default": "Set as Default Address",
+  "skip_placeOrder" : "You can't place order, Login first!!!",
+  "no_data":"NO DATA FOUND",
+  "server_err": "Unkown error from server side",
+  "zoom": "Zoom and Crop",
+  "crop": "Crop",
+  "default_add": "Default Address",
+  "add_address": "Please add Address first"
+
 
 
 

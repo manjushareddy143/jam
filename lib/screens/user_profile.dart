@@ -502,7 +502,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
            + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
      }
    }
-
+   if(globals.currentUser.roles[0].slug == "customer")
+   {
+     if(globals.currentUser.address == null)
+       addressString ="";
+   }
 
 
    String ServiceRadiusHint = "Service Radius";
@@ -532,10 +536,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
      });
    }
 
-    String name = globals.currentUser.first_name+" " +globals.currentUser.last_name;
-    String gender = globals.currentUser.gender;
-    String num = globals.currentUser.contact;
-    String email = globals.currentUser.email;
+    String name = (globals.currentUser.first_name == null && globals.currentUser.last_name == null)? "":
+    globals.currentUser.first_name
+      //  +" " +globals.currentUser.last_name
+   ;
+   String lname =( globals.currentUser.last_name == null) ? " " :globals.currentUser.last_name;
+    String gender = (globals.currentUser.gender == null)?"":globals.currentUser.gender;
+    String num = (globals.currentUser.contact == null)?"":globals.currentUser.contact;
+    String email = (globals.currentUser.email == null)?"":globals.currentUser.email;
     int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
 
 //  print(globals.currentUser.toJson());
@@ -565,7 +573,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //
 //                   ),
                    Expanded(
-                     child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : name, style:
+                     child: Text((name == "" || name == null)? AppLocalizations.of(context).translate('txt_no_name_set') : (name + " "+ lname), style:
                      TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 15),maxLines: 2,
                      ),
                      flex: 2,
@@ -795,7 +803,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           statusUpdateAddress();
         });
       } else {
-        showInfoAlert(context, "Unknown error from server side");
+        showInfoAlert(context, AppLocalizations.of(context).translate('server_err'));
       }
     } else {
       printLog("login response code is not 200");
@@ -833,7 +841,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           if(isEditProfile) {
             getImage();
           }else {
-            showInfoAlert(context, "Please enable edit mode");
+            showInfoAlert(context, AppLocalizations.of(context).translate('text_edit_mode'));
           }
 
         }, // handle your image tap here
@@ -900,7 +908,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                   if(isEditProfile) {
                     getImage();
                   } else {
-                    showInfoAlert(context, "Please enable edit mode");
+                    showInfoAlert(context, AppLocalizations.of(context).translate('txt_edit_mode'));
                   }
            },
              child: Text(AppLocalizations.of(context).translate('upload'), textAlign: TextAlign.center,
@@ -964,7 +972,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 if(isEditProfile) {
                   getImage();
                 }else {
-                  showInfoAlert(context, "Please enable edit mode");
+                  showInfoAlert(context, AppLocalizations.of(context).translate('txt_edit_mode'));
                 }
 
               }, // handle your image tap here
@@ -998,7 +1006,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             if(isEditProfile) {
               getImage();
             }else {
-              showInfoAlert(context, "Please enable edit mode");
+              showInfoAlert(context, AppLocalizations.of(context).translate('txt_edit_mode'));
             }
 
           }, // handle your image tap here
@@ -1035,6 +1043,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget setDetails(){
 
 
+
     if(globals.currentUser.address != null) {
       //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
@@ -1051,6 +1060,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
       }
     }
+    if(globals.currentUser.roles[0].slug == "customer")
+      {
+        if(globals.currentUser.address == null)
+          addressString ="";
+      }
 
 
 
@@ -1090,6 +1104,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       print("enableEmail == ${enableEmail}");
     }
     print("after enableEmail == ${enableEmail}");
+
 
 
     return Padding(
@@ -1526,7 +1541,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
       if(editAddress != null) {
         singleAddress = Address(editAddress.id, editAddress.address_line1, editAddress.address_line2,
-            editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name, editAddress.default_address);
+            editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name,
+            editAddress.default_address);
       } else {
         if(singleAddress.name == null || singleAddress.name == "") {
           singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
@@ -1981,6 +1997,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
 
     apiCallAddAddress(addressData, setState, isNewAddress);
+    _value1 = false;
   }
 
   void apiCallAddAddress(Map data, StateSetter setState, bool isNewAddress) async {
@@ -2024,7 +2041,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           statusUpdateAddress();
         });
       } else {
-        showInfoAlert(context, "Unknown error from server side");
+        showInfoAlert(context, AppLocalizations.of(context).translate('server_err'));
       }
     } else {
       printLog("login response code is not 200");

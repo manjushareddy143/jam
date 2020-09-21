@@ -2,7 +2,7 @@
 
 //import 'dart:html';
 import 'dart:io';
-
+import 'package:jam/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
 import 'package:jam/globals.dart' as globals;
@@ -51,7 +51,7 @@ class _CropPhotoRouteState extends State<CropPhotoRoute> {
         appBar: AppBar(
           elevation: 0,
           title: Text(
-            'Zoom and Crop',
+            AppLocalizations.of(context).translate('zoom'),
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white,
@@ -79,7 +79,7 @@ class _CropPhotoRouteState extends State<CropPhotoRoute> {
             Navigator.pop(context, croppedFile);
           },
           tooltip: 'Increment',
-          child: Text('Crop'),
+          child: Text( AppLocalizations.of(context).translate('crop')),
         ));
   }
 }

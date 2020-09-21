@@ -215,7 +215,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Text("NO DATA FOUND", style: TextStyle(color: Hexcolor('#FB6907'), fontWeight: FontWeight.bold, ),),
+                Text(AppLocalizations.of(context).translate('no_data'), style: TextStyle(color: Hexcolor('#FB6907'), fontWeight: FontWeight.bold, ),),
               ],
             )
         ),

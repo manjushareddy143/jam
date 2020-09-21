@@ -373,7 +373,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   void validateForm() {
     if(_lstAddress.length <= 0) {
-      showInfoAlert(context, "Please add Address first");
+      showInfoAlert(context, AppLocalizations.of(context).translate('add_address'));
     } else if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       _autoValidate = false;
@@ -437,7 +437,7 @@ class _InquiryPageState extends State<InquiryPage> {
           padding: const EdgeInsets.fromLTRB(10,0,0,10),
       child: Row(
         children: [
-          Text("Default Address" ,
+          Text(AppLocalizations.of(context).translate('default_add') ,
               style: TextStyle(fontSize: 15 , color: Colors.black45)),
           SizedBox(width: 20,),
           Expanded(child: DropdownButton(

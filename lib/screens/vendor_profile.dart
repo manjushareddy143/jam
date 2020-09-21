@@ -159,11 +159,11 @@ int swiperIndex =0;
     showDialog(context: context,
         builder: (BuildContext context){
           return AlertDialog(
-            content: Text("You cant place order, Login first!!!", style: TextStyle(color: Colors.teal),),
+            content: Text(AppLocalizations.of(context).translate('skip_placeOrder'), style: TextStyle(color: Configurations.themColor),),
             actions: <Widget>[
               // usually buttons at the bottom of the dialog
               new FlatButton (
-                child: new Text("OK", style: TextStyle(color: Colors.orangeAccent),),
+                child: new Text(AppLocalizations.of(context).translate('ok'), style: TextStyle(color: Colors.orangeAccent),),
                 onPressed: () {
                   Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
                 },
