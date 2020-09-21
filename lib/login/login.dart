@@ -41,6 +41,8 @@ class _user extends State<UserLogin>{
   final GlobalKey<FormState> _forgetFormKey = GlobalKey<FormState>();
   bool _autoValidate = false;
   bool obscureText = true;
+  bool obscureText2 = true;
+  bool obscureText3 = true;
   final _primeKey = GlobalKey<State>();
   //const String loginURL ="";
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
@@ -800,9 +802,19 @@ class _user extends State<UserLogin>{
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: TextFormField(controller: newPass,
-                      obscureText: true,
+                      obscureText: obscureText2,
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.lock, color: Colors.grey),
+                          suffixIcon: IconButton(
+                            onPressed: (){
+                              obscureText2 = !obscureText2;
+                              setState(() {
+
+                              });
+                            },
+                            color: Colors.grey,
+                            icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
@@ -816,9 +828,18 @@ class _user extends State<UserLogin>{
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: TextFormField(controller: confPass,
-                      obscureText: true,
+                      obscureText: obscureText3,
                       decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.lock, color: Colors.grey),
+                          suffixIcon:  IconButton(
+                            onPressed: (){
+                              obscureText3 = !obscureText3;
+                              setState(() {
+
+                              });
+                            },
+                            color: Colors.grey,
+                            icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+                          ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),

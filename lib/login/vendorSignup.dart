@@ -76,6 +76,8 @@ class _vendorSignup extends State<VendorSignup>{
   final txtConfPass = TextEditingController();
   final txtContact = TextEditingController();
   bool _value1 = false;
+  bool obscureText = true;
+  bool obscureText1 = true;
   List<DropdownMenuItem<String>> _dropDownTypes;
   String selectedCountry;
 //  List _lstType = ["India", "Qatar"];
@@ -264,8 +266,18 @@ class _vendorSignup extends State<VendorSignup>{
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
           enabled: _fridgeEdit,
-          obscureText: true,
-          decoration: InputDecoration( suffixIcon: Icon(Icons.security, color: Colors.grey),
+          obscureText: obscureText1,
+          decoration: InputDecoration( suffixIcon:
+          IconButton(
+            onPressed: (){
+              obscureText1 = !obscureText1;
+              setState(() {
+
+              });
+            },
+            color: Colors.grey,
+            icon: Icon(obscureText1 ? Icons.visibility_off :Icons.visibility),
+          ),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),
@@ -293,9 +305,18 @@ class _vendorSignup extends State<VendorSignup>{
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
           enabled: _fridgeEdit,
-          obscureText: true,
+          obscureText: obscureText,
           decoration: InputDecoration(
-            suffixIcon: Icon(Icons.security, color: Colors.grey, ),
+            suffixIcon: IconButton(
+              onPressed: (){
+                obscureText = !obscureText;
+                setState(() {
+
+                });
+              },
+              color: Colors.grey,
+              icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+            ),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
               enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                 color: Configurations.themColor, width: 1,  ), ),

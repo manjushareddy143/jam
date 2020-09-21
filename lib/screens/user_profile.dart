@@ -1334,34 +1334,34 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                   title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
                   subtitle: Text(addressString),
                 ),
-                ButtonBar(
-                  children: <Widget>[
-                    FlatButton(
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.my_location,
-                            color: Configurations.themColor,
-                            size: 15,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)
-                                .translate('profile_txt_location'),
-                            style:
-                            TextStyle(color: Configurations.themColor),
-                          )
-                        ],
-                      ),
-                      onPressed: () {
-                        /* ... */
-                        addressEnter(false, null);
-                      },
-                    ),
-                  ],
-                ),
+//                ButtonBar(
+//                  children: <Widget>[
+//                    FlatButton(
+//                      child: Row(
+//                        children: <Widget>[
+//                          Icon(
+//                            Icons.my_location,
+//                            color: Configurations.themColor,
+//                            size: 15,
+//                          ),
+//                          SizedBox(
+//                            width: 10,
+//                          ),
+//                          Text(
+//                            AppLocalizations.of(context)
+//                                .translate('profile_txt_location'),
+//                            style:
+//                            TextStyle(color: Configurations.themColor),
+//                          )
+//                        ],
+//                      ),
+//                      onPressed: () {
+//                        /* ... */
+//                        addressEnter(false, null);
+//                      },
+//                    ),
+//                  ],
+//                ),
               ],
             ),
           ),)
