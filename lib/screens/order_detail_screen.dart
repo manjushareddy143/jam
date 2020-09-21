@@ -2043,8 +2043,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       child: Row(
                         children: [
                           Text(AppLocalizations.of(context).translate('timetaken')+" : "),
-                          Flexible(
-                            child: Container(height: 30, width: 100,
+                          Expanded(
+                            child: Container(height: 30,
 
                               child: TextFormField(
                                 controller:wrking_hr,
@@ -2136,10 +2136,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      Flexible(
+                                      Expanded(
                                         child:Text(AppLocalizations.of(context).translate('qty')),
                                       ),
-                                      Flexible(
+                                      Expanded(
                                         child: Container(height: 30, width: 100,
 
                                           child: TextField(
@@ -2165,10 +2165,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[ Flexible(
+                                    children: <Widget>[ Expanded(
                                       child:Text(AppLocalizations.of(context).translate('price')),
                                     ),
-                                      Flexible(
+                                      Expanded(
                                         child: Container(height: 30, width: 100,
 
                                           child: TextField(
@@ -2208,7 +2208,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('discount')+" : "),
-                            Container(width: 100, height: 30,
+                            Container(width: 90, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(
                                 textAlign: TextAlign.right,
@@ -2233,7 +2233,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('tax')+" : "),
-                            Container(width: 100, height: 30,
+                            Container(width: 90, height: 30,
                               padding: EdgeInsets.only(bottom: 1.0),
                               child: TextField(textAlign: TextAlign.right,
                                 decoration: InputDecoration(enabledBorder: OutlineInputBorder(
@@ -2258,21 +2258,23 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                           children: <Widget>[
                             Text(AppLocalizations.of(context).translate('addcharge')+" : "),
-                            Container(width: 100, height: 30,
-                              padding: EdgeInsets.only(bottom: 1.0),
-                              child: TextField(textAlign: TextAlign.right,
-                                decoration: InputDecoration(enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Configurations.themColor)
-                              ),  labelStyle: TextStyle(color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Configurations.themColor),
-                                ),) ,cursorColor: Configurations.themColor,
-                                controller: add_charge..text='0',
+                            Expanded(
+                              child: Container(width: 100, height: 30,
+                                padding: EdgeInsets.only(bottom: 1.0),
+                                child: TextField(textAlign: TextAlign.right,
+                                  decoration: InputDecoration(enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Configurations.themColor)
+                                ),  labelStyle: TextStyle(color: Colors.grey),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(color: Configurations.themColor),
+                                  ),) ,cursorColor: Configurations.themColor,
+                                  controller: add_charge..text='0',
 
 
-                                keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                  keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
 
-                              ),),
+                                ),),
+                            ),
                           ],
                         ),
                       ),
