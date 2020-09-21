@@ -80,14 +80,32 @@ class _vendorSignup extends State<VendorSignup>{
   bool obscureText1 = true;
   List<DropdownMenuItem<String>> _dropDownTypes;
   String selectedCountry;
+  FocusNode focus_email, focus_pwd,focus_cpwd,focus_fname, focus_lname,focus_no;
 //  List _lstType = ["India", "Qatar"];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    focus_email = FocusNode();
+    focus_pwd = FocusNode();
+    focus_cpwd = FocusNode();
+    focus_fname = FocusNode();
+    focus_lname = FocusNode();
+    focus_no = FocusNode();
 
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    focus_email.dispose();
+    focus_pwd.dispose();
+    focus_cpwd.dispose();
+    focus_fname.dispose();
+    focus_lname.dispose();
+    focus_no.dispose();
+    super.dispose();
   }
 
 
@@ -96,14 +114,24 @@ class _vendorSignup extends State<VendorSignup>{
   Widget build(BuildContext context) {
     globals.context = context;
     // TODO: implement build
-    return Scaffold(
-      body: Align(
-        child: Form(
-          key: _formKey,
-          autovalidate: _autoValidate,
-          child: SingleChildScrollView(child: vendorScreenUI()),
+    return GestureDetector(
+
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: Align(
+          child: Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
+            child: SingleChildScrollView(child: vendorScreenUI()),
+          ),
+          alignment: Alignment.bottomCenter,
         ),
-        alignment: Alignment.bottomCenter,
       ),
     );
   }
@@ -128,6 +156,7 @@ class _vendorSignup extends State<VendorSignup>{
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: TextFormField(
+            focusNode: focus_fname,
             enabled: _fridgeEdit,
             decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey,),
                 contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -155,6 +184,7 @@ class _vendorSignup extends State<VendorSignup>{
       Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
+          focusNode: focus_lname,
           enabled: _fridgeEdit,
           decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -180,6 +210,7 @@ class _vendorSignup extends State<VendorSignup>{
       Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
+          focusNode: focus_email,
           enabled: _fridgeEdit,
           decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey,),
               contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -231,6 +262,7 @@ class _vendorSignup extends State<VendorSignup>{
            // SizedBox( width: 10,),
             Flexible( flex: 4,
               child: TextFormField(
+                focusNode: focus_no,
                 enabled: _fridgeEdit,
                 decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color: Colors.grey),
                     contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
@@ -265,6 +297,7 @@ class _vendorSignup extends State<VendorSignup>{
       Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
+          focusNode: focus_pwd,
           enabled: _fridgeEdit,
           obscureText: obscureText1,
           decoration: InputDecoration( suffixIcon:
@@ -304,6 +337,7 @@ class _vendorSignup extends State<VendorSignup>{
       Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
+          focusNode: focus_cpwd,
           enabled: _fridgeEdit,
           obscureText: obscureText,
           decoration: InputDecoration(

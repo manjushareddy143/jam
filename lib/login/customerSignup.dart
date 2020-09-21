@@ -79,12 +79,24 @@ class _customerSignup extends State<CustomerSignup>{
   bool obscureText1 = true;
   List<DropdownMenuItem<String>> _dropDownTypes;
   String selectedCountry;
+  FocusNode focus_no, focus_pwd, focus_cpwd;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    focus_pwd = FocusNode();
+    focus_cpwd = FocusNode();
+    focus_no = FocusNode();
     _dropDownTypes = buildAndGetDropDownMenuItems(listCountry);
     selectedCountry = _dropDownTypes[177].value;
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    focus_cpwd.dispose();
+    focus_no.dispose();
+    focus_pwd.dispose();
+    super.dispose();
   }
 
 
@@ -92,20 +104,29 @@ class _customerSignup extends State<CustomerSignup>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      body: Align(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(top: 50),
-          child: Form(
-            key: _formKey,
-            autovalidate: _autoValidate,
-            child: customerScreenUI(),
+    return GestureDetector(
+      onTap: (){
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
+      },
+      child: Scaffold(
+        body: Align(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(top: 50),
+            child: Form(
+              key: _formKey,
+              autovalidate: _autoValidate,
+              child: customerScreenUI(),
+            ),
           ),
+          alignment: Alignment.bottomCenter,
         ),
-        alignment: Alignment.bottomCenter,
+
+
       ),
-
-
     );
   }
 
@@ -160,6 +181,7 @@ class _customerSignup extends State<CustomerSignup>{
 
           Expanded(child: TextFormField(
             enabled: _fridgeEdit,
+            focusNode: focus_no,
             cursorColor: Configurations.themColor,
             decoration: InputDecoration( suffixIcon: Icon(Icons.phone, color:
             Colors.grey),
@@ -189,6 +211,7 @@ class _customerSignup extends State<CustomerSignup>{
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: TextFormField(
+            focusNode: focus_pwd,
             enabled: _fridgeEdit,
             obscureText: obscureText1,
             cursorColor: Configurations.themColor,
@@ -227,6 +250,7 @@ class _customerSignup extends State<CustomerSignup>{
         Padding(
         padding: EdgeInsets.only(left: 20, right: 20),
         child: TextFormField(
+          focusNode: focus_cpwd,
           enabled: _fridgeEdit,
           obscureText: obscureText,
           decoration: InputDecoration(
