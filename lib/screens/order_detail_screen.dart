@@ -398,8 +398,18 @@ class _DetailUIPageState extends State<DetailUIPage> {
        if(globals.order.address.landmark != "" && globals.order.address.landmark != null) {
          addressString += ", " + globals.order.address.landmark;
        }
-       addressString += ", " + globals.order.address.district
-           + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
+       if(globals.order.address.district != "" && globals.order.address.district != null) {
+         addressString += ", " + globals.order.address.district;
+       }
+
+       if(globals.order.address.city != "" && globals.order.address.city != null) {
+         addressString += ", " + globals.order.address.city;
+       }
+
+       if(globals.order.address.postal_code != "" && globals.order.address.postal_code != null) {
+         addressString += ", " + globals.order.address.postal_code;
+       }
+       addressString += ".";
      }
      return Container(
 //         color: Colors.grey,
@@ -1398,8 +1408,18 @@ class _DetailUIPageState extends State<DetailUIPage> {
       if(globals.order.address.landmark != "" && globals.order.address.landmark != null) {
         addressString += ", " + globals.order.address.landmark;
       }
-      addressString += ", " + globals.order.address.district
-          + ", " + globals.order.address.city + ", " + globals.order.address.postal_code + ".";
+
+      if(globals.order.address.district != "" && globals.order.address.district != null) {
+        addressString += ", " + globals.order.address.district;
+      }
+      if(globals.order.address.city != "" && globals.order.address.city != null) {
+        addressString += ", " + globals.order.address.city;
+      }
+
+      if(globals.order.address.postal_code != "" && globals.order.address.postal_code != null) {
+        addressString += ", " + globals.order.address.postal_code;
+      }
+      addressString += ".";
     }
 
 

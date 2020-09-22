@@ -508,8 +508,16 @@ class _InquiryPageState extends State<InquiryPage> {
       if(address.landmark != "" && address.landmark != null) {
         addressString += ", " + address.landmark;
       }
-      addressString += ", " + address.district
-          + ", " + address.city + ", " + address.postal_code + ".";
+      if(address.district != "" && address.district != null) {
+        addressString += ", " + address.district;
+      }
+      if(address.city != "" && address.city != null) {
+        addressString += ", " + address.city;
+      }
+      if(address.postal_code != "" && address.postal_code != null) {
+        addressString += ", " + address.postal_code;
+      }
+      addressString += ".";
     }
     return addressString;
   }
