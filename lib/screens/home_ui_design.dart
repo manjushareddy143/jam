@@ -307,7 +307,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     ),
                                     onTap: () => {
                                       print("CALL TO SUPPORT"),
-                                      launch(_makePhoneCall('tel:+917874xxxxxxx').toString())
+                                      launch(_makePhoneCall('tel:+97477837501').toString())
                                     },
                                   ),
                                 )
@@ -329,9 +329,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   String whatsAppChat(String message) {
     if (Platform.isIOS) {
-      return "whatsapp://wa.me/+917874xxxxx/?text=${Uri.parse(message)}";
+      return "whatsapp://wa.me/+97477837501/?text=${Uri.parse(message)}";
     } else {
-      return "whatsapp://send?phone=+917874xxxxx&text=${Uri.parse(message)}";
+      return "whatsapp://send?phone=+97477837501&text=${Uri.parse(message)}";
     }
   }
 
