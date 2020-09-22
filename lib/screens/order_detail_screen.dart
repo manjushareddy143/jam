@@ -129,7 +129,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
   Widget refreshButton() {
 
     if(globals.localization == 'ar_SA') {
-      return Positioned(left: 15, top: 45,
+      return Positioned(left: 15, top: 55,
         child: GestureDetector(
           onTap: () {
             print("REFRESH ORDER");
@@ -146,7 +146,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         );
 
     } else {
-      return  Positioned(right: 15, top: 45,
+      return  Positioned(right: 15, top: 55,
         child: GestureDetector(
           onTap: () {
             print("REFRESH ORDER");
