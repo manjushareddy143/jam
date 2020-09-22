@@ -102,7 +102,7 @@ int swiperIndex =0;
  // }
   Widget setupProfile(){
     return Container(
-      height: 400.0,
+      height: 460.0,
       margin: const EdgeInsets.symmetric(
         vertical: 16.0,
         horizontal: 24.0,
@@ -232,7 +232,7 @@ int swiperIndex =0;
 
 
     return Container(
-      height: 900,
+      height: 1000,
         margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 30, bottom: 22),
     decoration: new BoxDecoration(
     color: Colors.white,
@@ -413,9 +413,9 @@ int swiperIndex =0;
                    children: <Widget>[
                      Icon(Icons.settings, color: Colors.grey, size: 14,),
                      SizedBox(width: 10,),
-                     Flexible(
+                     Expanded(
                        child: Text(services,
-                         maxLines: 2,style:
+                         maxLines: 3,style:
                          TextStyle(color: Colors.black, fontWeight: FontWeight.w600),)
                      )
 
