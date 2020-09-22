@@ -498,8 +498,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
        if(singleAddress.landmark != "" && singleAddress.landmark != null) {
          addressString += ", " + singleAddress.landmark;
        }
-       addressString += ", " + singleAddress.district
-           + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
+
+       if(singleAddress.district != "" && singleAddress.district != null) {
+         addressString += ", " + singleAddress.district;
+       }
+       if(singleAddress.city != "" && singleAddress.city != null) {
+         addressString += ", " + singleAddress.city;
+       }
+       if(singleAddress.postal_code != "" && singleAddress.postal_code != null) {
+         addressString += ", " + singleAddress.postal_code;
+       }
+       addressString += ".";
      }
    }
    if(globals.currentUser.roles[0].slug == "customer")
@@ -556,12 +565,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       //  +" " +globals.currentUser.last_name
    ;
    String lname =( globals.currentUser.last_name == null) ? " " :globals.currentUser.last_name;
-    String gender = (globals.currentUser.gender == null)?"": AppLocalizations.of(context).translate(globals.currentUser.gender);
+
+    String gender = (globals.currentUser.gender == null)? "": AppLocalizations.of(context).translate(globals.currentUser.gender);
     String num = (globals.currentUser.contact == null)?"":globals.currentUser.contact;
     String email = (globals.currentUser.email == null)?"":globals.currentUser.email;
     int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
 
-//  print(globals.currentUser.toJson());
+  print(globals.currentUser.toJson());
 
    return Container(
 //      height: 900,
@@ -604,10 +614,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
            Padding(
              padding: const EdgeInsets.fromLTRB(0,0.0,0,0),
              child: Row(children :[
-               Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('gender') : gender, style:
+               Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('txt_not_selected') : gender, style:
                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
                SizedBox(width: 10,),
-               Icon((gender ==  AppLocalizations.of(context).translate('Female'))?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
+               Icon((gender == "" || gender== null)? Ionicons.ios_transgender:  (gender ==  AppLocalizations.of(context).translate('Female'))?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
              ]
              ),
            ),
@@ -1071,8 +1081,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         if(singleAddress.landmark != "" && singleAddress.landmark != null) {
           addressString += ", " + singleAddress.landmark;
         }
-        addressString += ", " + singleAddress.district
-            + ", " + singleAddress.city + ", " + singleAddress.postal_code + ".";
+        if(singleAddress.district != "" && singleAddress.district != null) {
+          addressString += ", " + singleAddress.district;
+        }
+        if(singleAddress.city != "" && singleAddress.city != null) {
+          addressString += ", " + singleAddress.city;
+        }
+
+        if(singleAddress.postal_code != "" && singleAddress.postal_code != null) {
+          addressString += ", " + singleAddress.postal_code;
+        }
+
+        addressString += ".";
       }
     }
     if(globals.currentUser.roles[0].slug == "customer")
@@ -1311,18 +1331,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             ),
 
          //  Address
-          Visibility( visible: !isEditProfile,
-            child: TextField(style: TextStyle(color: Colors.grey),
-              focusNode: focus_address,
-              decoration: InputDecoration(hintText: (addressString == null || addressString == "") ?
-              AppLocalizations.of(context).translate('txt_no_email_set'): addressString, prefixIcon: Icon(Icons.location_on, color: Colors.grey,),enabled: isEditProfile,
-              helperMaxLines: 5, hintMaxLines: 5,
-                labelStyle: TextStyle(color: Colors.grey),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Configurations.themColor),
-                ),), cursorColor: Configurations.themColor,
-            ),
-          ),
+//          Visibility( visible: !isEditProfile,
+//            child: TextField(style: TextStyle(color: Colors.grey),
+//              focusNode: focus_address,
+//              decoration: InputDecoration(hintText: (addressString == null || addressString == "") ?
+//              AppLocalizations.of(context).translate('txt_no_email_set'): addressString, prefixIcon: Icon(Icons.location_on, color: Colors.grey,),enabled: isEditProfile,
+//              helperMaxLines: 5, hintMaxLines: 5,
+//                labelStyle: TextStyle(color: Colors.grey),
+//                focusedBorder: UnderlineInputBorder(
+//                  borderSide: BorderSide(color: Configurations.themColor),
+//                ),), cursorColor: Configurations.themColor,
+//            ),
+//          ),
 //          Padding(
 //            padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
 //            child: Column(
@@ -1366,49 +1386,50 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //            ),
 //          ),
 //
-          Visibility(visible: isEditProfile,
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  onTap: showAddress,
-                  leading: Icon(Icons.location_on),
-                  title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
-                  subtitle: Text(addressString),
-                ),
-//                ButtonBar(
-//                  children: <Widget>[
-//                    FlatButton(
-//                      child: Row(
-//                        children: <Widget>[
-//                          Icon(
-//                            Icons.my_location,
-//                            color: Configurations.themColor,
-//                            size: 15,
-//                          ),
-//                          SizedBox(
-//                            width: 10,
-//                          ),
-//                          Text(
-//                            AppLocalizations.of(context)
-//                                .translate('profile_txt_location'),
-//                            style:
-//                            TextStyle(color: Configurations.themColor),
-//                          )
-//                        ],
-//                      ),
-//                      onPressed: () {
-//                        /* ... */
-//                        addressEnter(false, null);
-//                      },
-//                    ),
-//                  ],
+//          Visibility(visible: isEditProfile,
+//          child: Padding(
+//            padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+//            child: Column(
+//              mainAxisSize: MainAxisSize.min,
+//              children: <Widget>[
+//                ListTile(
+//                  onTap: showAddress,
+//                  leading: Icon(Icons.location_on),
+//                  title: Text( (singleAddress != null) ? (singleAddress.name == "") ? "" : adrs_name.text : "")  ,
+//                  subtitle: Text(addressString),
 //                ),
-              ],
-            ),
-          ),)
+////                ButtonBar(
+////                  children: <Widget>[
+////                    FlatButton(
+////                      child: Row(
+////                        children: <Widget>[
+////                          Icon(
+////                            Icons.my_location,
+////                            color: Configurations.themColor,
+////                            size: 15,
+////                          ),
+////                          SizedBox(
+////                            width: 10,
+////                          ),
+////                          Text(
+////                            AppLocalizations.of(context)
+////                                .translate('profile_txt_location'),
+////                            style:
+////                            TextStyle(color: Configurations.themColor),
+////                          )
+////                        ],
+////                      ),
+////                      onPressed: () {
+////                        /* ... */
+////                        addressEnter(false, null);
+////                      },
+////                    ),
+////                  ],
+////                ),
+//              ],
+//            ),
+//          )
+//            ,)
         ],
 
       ),
@@ -1427,41 +1448,40 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   void updateProfile() {
     print("update");
     var data = new Map<String, String>();
-    if(globals.currentUser.first_name != prfl_fname.text && globals.currentUser.first_name != null) {
+    if(globals.currentUser.first_name != prfl_fname.text) {
       data["first_name"] = prfl_fname.text;
     }
 
-    if(globals.currentUser.last_name != prfl_lname.text && globals.currentUser.last_name != null) {
+    if(globals.currentUser.last_name != prfl_lname.text) {
       data["last_name"] = prfl_lname.text;
     }
 
 
-    if(globals.currentUser.contact != prfl_contact.text && globals.currentUser.contact == null && globals.currentUser.contact == "") {
+    if(globals.currentUser.contact != prfl_contact.text) {
       data["contact"] = prfl_contact.text;
     }
 
-    if(globals.currentUser.gender != dropdownvalue && globals.currentUser.gender != null) {
+    if(globals.currentUser.gender != dropdownvalue) {
       data["gender"] = dropdownvalue;
     }
     print(globals.currentUser.gender);
     print(dropdownvalue);
     print(data['gender']);
     print(globals.currentUser.email);
-    if(globals.currentUser.email != prfl_email.text && globals.currentUser.email != null) {
-
+    if(globals.currentUser.email != prfl_email.text) {
       data["email"] = prfl_email.text;
     }
     print(data['email']);
     if(globals.currentUser.provider != null) {
 
-      if(globals.currentUser.provider.service_radius.toString() != prfl_radius.text && globals.currentUser.provider.service_radius != null) {
+      if(globals.currentUser.provider.service_radius.toString() != prfl_radius.text) {
 
         data["service_radius"] = prfl_radius.text;
       }
     }
 
     String lang = languages.join(',');
-    if(globals.currentUser.languages != lang && globals.currentUser.languages != null) {
+    if(globals.currentUser.languages != lang) {
       data["languages"] = lang;
     }
 
@@ -1754,6 +1774,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         controller: (singleAddress.district == "") ?
                                         adrs_disctric : adrs_disctric
                                           ..text = singleAddress.district,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return AppLocalizations.of(context)
+                                                .translate('profile_txt_district');
+                                          }
+                                          return null;
+                                        },
                                       ),
                                     )
                                   ],
@@ -1805,13 +1832,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         controller: (singleAddress.postal_code == "") ?
                                         adrs_postalcode : adrs_postalcode
                                           ..text = singleAddress.postal_code,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_postalcode');
-                                          }
-                                          return null;
-                                        },
+//                                        validator: (value) {
+//                                          if (value.isEmpty) {
+//                                            return AppLocalizations.of(context)
+//                                                .translate('profile_txt_postalcode');
+//                                          }
+//                                          return null;
+//                                        },
                                       ),
                                     )
                                   ],
@@ -2007,7 +2034,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["default_address"] = (_value1) ? "1" : "0";
       addressData["district"] = adrs_disctric.text;
       addressData["city"] = adrs_city.text;
-      addressData["postal_code"] = adrs_postalcode.text;
+      if(adrs_postalcode.text != '' && adrs_postalcode.text != null) {
+        addressData["postal_code"] = adrs_postalcode.text;
+      }
+
       addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
     } else {
       addressData["id"] = editAddress.id.toString();
@@ -2114,8 +2144,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     if(address.landmark != "" && address.landmark != null) {
       newAddressString += ", " + address.landmark;
     }
-    newAddressString += ", " + address.district
-        + ", " + address.city + ", " + address.postal_code + ".";
+
+    if(address.district != "" && address.district != null) {
+      newAddressString += ", " + address.district;
+    }
+
+
+    if(address.city != "" && address.city != null) {
+      newAddressString += ", " + address.city;
+    }
+    if(address.postal_code != "" && address.postal_code != null) {
+      newAddressString += ", " + address.postal_code;
+    }
 
     print("NEW addressString == $newAddressString");
     return newAddressString;

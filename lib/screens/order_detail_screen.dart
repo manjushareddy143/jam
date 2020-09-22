@@ -378,12 +378,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
        name = order.provider.first_name + " " + order.provider.last_name;
      }
 
-     print(globals.order.invoice.working_hr);
+//     print(globals.order.invoice.working_hr);
      String comment = "";
      if(globals.order.rating != null) {
        comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
      }
-     print(globals.order.rating.toString());
+//     print(globals.order.rating.toString());
 
 
 
@@ -1574,8 +1574,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                 if(setRate > 0) {
                   sendRating();
                 } else {
-                  print(txtComment.text);
-                  print(setRate);
+
                 }
 //                Navigator.of(context).pop();
               },
@@ -1876,7 +1875,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         setState(() {
           if(globals.currentUser.roles[0].slug == "provider") {
             globals.order.status = int.parse(status);
-            print("globals.order.status ========= ${globals.order.status}");
+
             if(globals.order.status == 6) {
               getOrderDetail();
             }
@@ -1944,7 +1943,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         globals.order = Order.fromJson(json.decode(data));
 
         int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
-        print("working_hr ::: ${globals.order.invoice.working_hr}");
+
         if(idx != null) {
           globals.listofOrders[idx] = globals.order;
 

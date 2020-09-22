@@ -1301,14 +1301,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       ..text =
                                           globals.addressLocation.postalCode,
                                     //adrs_postalcode,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return AppLocalizations.of(context)
-                                            .translate(
-                                                'profile_txt_postalcode');
-                                      }
-                                      return null;
-                                    },
+//                                    validator: (value) {
+//                                      if (value.isEmpty) {
+//                                        return AppLocalizations.of(context)
+//                                            .translate(
+//                                                'profile_txt_postalcode');
+//                                      }
+//                                      return null;
+//                                    },
                                   ),
                                 ),
                             SizedBox(
