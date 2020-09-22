@@ -60,6 +60,7 @@ class InitialProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    globals.context = context;
     return WillPopScope(
       onWillPop: onBackPressed,
       child: Scaffold(
@@ -82,16 +83,20 @@ class InitialProfilePage extends StatefulWidget {
 class _InitialProfilePageState extends State<InitialProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _autoValidate = false;
+
   List<DropdownMenuItem<String>> _dropDownTypes;
-  List _lstType = ["Male", "Female"];
+
   String dropdownvalue;
   File _image;
   List<Service> listofServices;
+  List _lstType;
   bool isLoadin = true;
   FocusNode focus_fname, focus_lname, focus_phnno, focus_mail, focus_gender, focus_language, focus_adress,focus_radius;
   @override
   void initState() {
     super.initState();
+
+    _lstType = [{'id' : '1', 'text' : AppLocalizations.of(globals.context).translate('Male')}, {'id' : '2', 'text' : AppLocalizations.of(globals.context).translate('Female')}];
     focus_fname = FocusNode();
     focus_lname = FocusNode();
     focus_phnno = FocusNode();
@@ -181,6 +186,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
      printLog("gender"+globals.customGender.toString());
     } else {
       dropdownvalue = _dropDownTypes[0].value;
+      print('gen == ${dropdownvalue}');
     }
 
     print(globals.currentUser.image);
@@ -239,7 +245,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    globals.context = context;
+
     return GestureDetector(
       onTap: (){
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -922,7 +928,14 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             data["last_name"] = prfl_lname.text;
 
             data["contact"] = prfl_phone.text;
-            data["gender"] = dropdownvalue;
+
+            if(dropdownvalue == 1) {
+              data["gender"] = 'Male';
+            } else {
+              data["gender"] = 'Female';
+            }
+
+
             data["email"] = prfl_email.text;
             String lang = language.join(',');
             print("lang ${globals.currentUser.roles[0].slug}");
@@ -1438,7 +1451,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: Row(
           children: [
             SizedBox(width: 4,),
-            Icon((dropdownvalue == "Male")
+            Icon((dropdownvalue == 1)
                 ? Ionicons.ios_male
                 : Ionicons.ios_female),
             SizedBox(
@@ -1467,7 +1480,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
       List reportForlist) {
     List<DropdownMenuItem<String>> items = List();
     reportForlist.forEach((key) {
-      items.add(DropdownMenuItem(value: key, child: Text(key)));
+      items.add(DropdownMenuItem(value: key['id'], child: Text(key['text'])));
     });
     return items;
   }

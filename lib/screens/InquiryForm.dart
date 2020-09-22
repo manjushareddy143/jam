@@ -517,7 +517,7 @@ class _InquiryPageState extends State<InquiryPage> {
   List<DropdownMenuItem<String>> buildServicesMenuItems(List<Service> serviceList) {
     List<DropdownMenuItem<String>> items = List();
     serviceList.forEach((val) {
-      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text((globals.localization == 'ar_SA') ? val.arabic_name : val.name)));
     });
     return items;
   }
@@ -555,7 +555,7 @@ class _InquiryPageState extends State<InquiryPage> {
   List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
     List<DropdownMenuItem<String>> items = List();
     listSubCategory.forEach((val) {
-      items.add(DropdownMenuItem(value: val.id.toString(), child: Text(val.name)));
+      items.add(DropdownMenuItem(value: val.id.toString(), child: Text((globals.localization == 'ar_SA') ? val.arabic_name : val.name)));
     });
     return items;
   }

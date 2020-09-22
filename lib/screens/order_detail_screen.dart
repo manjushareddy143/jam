@@ -107,9 +107,70 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
     );
   }
+
+  Widget backButton() {
+
+    if(globals.localization == 'ar_SA') {
+      return Positioned(right: 15, top: 45,
+        child: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: () => {
+          Navigator.of(context).pop()
+        },),
+      );
+
+    } else {
+      return Positioned(left: 15, top: 45,
+        child: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: () => {
+          Navigator.of(context).pop()
+        },),
+      );
+    }
+  }
+
+  Widget refreshButton() {
+
+    if(globals.localization == 'ar_SA') {
+      return Positioned(left: 15, top: 45,
+        child: GestureDetector(
+          onTap: () {
+            print("REFRESH ORDER");
+            setState(() {
+              getOrderDetail();
+            });
+
+            },
+            child: Icon(
+              Icons.refresh,color: Colors.white,
+              size: 28.0,
+            ),
+          ),
+        );
+
+    } else {
+      return  Positioned(right: 15, top: 45,
+        child: GestureDetector(
+          onTap: () {
+            print("REFRESH ORDER");
+            getOrderDetail();
+
+          },
+          child: Icon(
+            Icons.refresh,color: Colors.white,
+            size: 28.0,
+          ),
+        ),
+      );
+    }
+  }
+
+
    Widget detail(){
 
-    print(order.status);
+     double positionRight = 0;
+     double positionLeft = 0;
+     double positionMark = 0;
+
+
+
     return Stack(
       children: [
         Container(
@@ -129,11 +190,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
               )
           ),
         ),
-        Positioned(left: 15, top: 45,
-          child: IconButton(icon: Icon(Icons.arrow_back_ios, color: Colors.white), onPressed: () => {
-          Navigator.of(context).pop()
-          },),
-        ),
+
+        backButton(),
+
         // TITLE
         Positioned(left: 25, top: 120,
           child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -142,23 +201,15 @@ class _DetailUIPageState extends State<DetailUIPage> {
               TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
 
               ),
-              Padding(
-                  padding: EdgeInsets.all( 20.0),
-                  child: GestureDetector(
-                    onTap: () {
-                     // getProfile();
-                      order.g
-
-                    },
-                    child: Icon(
-                      Icons.refresh,color: Colors.white,
-                      size: 28.0,
-                    ),
-                  )
-              ),
+//              Padding(
+//                  padding: EdgeInsets.all( 20.0),
+//                  child:
+//              ),
             ],
           ),
         ),
+
+        refreshButton(),
 
         Container(
         alignment: Alignment.bottomCenter,
@@ -187,7 +238,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             ),
                           ],
                         ),
-                        onTap:  () => {print("COmplete"),
+                        onTap:  () => {
                           insertIvoiceDetail(),
                         },
                       ),
@@ -206,7 +257,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text(AppLocalizations.of(context).translate('cancel'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                           ],
                         ),
-                        onTap:  () => {print("COmplete"),
+                        onTap:  () => {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -229,7 +280,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             SizedBox(width: 8,),
                             Text(AppLocalizations.of(context).translate('complete'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                             ),],),
-                        onTap: () => {print("COmplete"),
+                        onTap: () => {
 
                           showDialog(context: context,
                             builder: (BuildContext context) {
@@ -327,7 +378,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
        name = order.provider.first_name + " " + order.provider.last_name;
      }
 
-     print(globals.order.rating);
+     print(globals.order.invoice.working_hr);
      String comment = "";
      if(globals.order.rating != null) {
        comment = (globals.order.rating.comment == null || globals.order.rating.comment.length == 0) ? "" : globals.order.rating.comment;
@@ -513,7 +564,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                          Text(AppLocalizations.of(context).translate('txt_services')+" ", style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w500,fontSize: 14),),
-                         Text(globals.order.service.name , style:
+                         Text((globals.localization == 'ar_SA') ? globals.order.service.arabic_name : globals.order.service.name , style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w300,fontSize: 14),)
 
@@ -531,7 +582,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                            Text(AppLocalizations.of(context).translate('txt_category')+" " , style:
                            TextStyle(color: Colors.black,
                                fontWeight: FontWeight.w500,fontSize: 14),),
-                           Text(globals.order.category.name , style:
+                           Text((globals.localization == 'ar_SA') ? globals.order.category.arabic_name : globals.order.category.name , style:
                            TextStyle(color: Colors.black,
                                fontWeight: FontWeight.w300,fontSize: 14),)
 
@@ -1174,8 +1225,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
     } else {
       name = order.provider.first_name + " " + order.provider.last_name;
     }
-
-//    print("RAT == ${globals.order.rating}");
 
     String comment = "";// (globals.order.rating.comment == null || globals.order.rating.comment.length > 0) ? "" : globals.order.rating.comment;
 
@@ -1860,6 +1909,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
     }
   }
 
+
+
   void getOrderDetail() async {
     HttpClient httpClient = new HttpClient();
     print('api call start signup');
@@ -1869,21 +1920,42 @@ class _DetailUIPageState extends State<DetailUIPage> {
     processOrderResponse(syncUserResponse);
   }
 
+
+
+  void setOrderUpdate() {
+    setState(() {
+      new Future<String>.delayed(new Duration(microseconds: 1), () => null)
+          .then((String value) {
+            print("REFRESH DATA FROM API");
+            detail();
+      });
+    });
+  }
+
   processOrderResponse(Response res)  {
     if (res != null) {
       if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        print("data ::: $data");
+//        var data = json.decode(res.body);
 
-        setState(() {
-          globals.order = Order.fromJson(data);
-          int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
-          if(idx != null) {
-            globals.listofOrders[idx] = globals.order;
-          }
-          print("rating ::: ${globals.order.rating}");
-//          build(context);
-        });
+        var data =  utf8.decode(res.bodyBytes); //json.decode(res.body);
+//        printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
+//        List roles = json.decode(data);
+//        setState(() {
+        globals.order = Order.fromJson(json.decode(data));
+
+        int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
+        print("working_hr ::: ${globals.order.invoice.working_hr}");
+        if(idx != null) {
+          globals.listofOrders[idx] = globals.order;
+
+        }
+        setOrderUpdate();
+
+
+//          build(globals.context);
+//          print("rating ::: ${globals.order.rating}");
+
+//        });
 
       } else {
         printLog("login response code is not 200");

@@ -407,7 +407,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget> [
-                  Text(lang.flag),
+                  Text(AppLocalizations.of(context).translate(lang.flag)),
                   Text(lang.name)
                 ],
               ) ,
@@ -519,18 +519,33 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
    if(globals.currentUser.services  != null) {
      globals.currentUser.services.forEach((element) {
        if (services.isEmpty) {
-         services = element.service.name;
+         services = (globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name;
        } else {
-         if(!services.contains(element.service.name)) {
-           services += ", " +element.service.name;
+         if(!services.contains((globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name)) {
+           if(globals.localization == 'ar_SA') {
+             services += ", " + element.service.arabic_name;
+           } else {
+             services += ", " + element.service.name;
+           }
+
          }
        }
 
        if(element.categories != null) {
          if (services.isEmpty) {
-           services = " - " + element.categories.name;
+           if(globals.localization == 'ar_SA') {
+             services = " - " + element.categories.arabic_name;
+           } else {
+             services = " - " + element.categories.name;
+           }
+
          } else {
-           services += " - " +element.categories.name;
+           if(globals.localization == 'ar_SA') {
+             services += " - " +element.categories.arabic_name;
+           } else{
+             services += " - " +element.categories.name;
+           }
+
          }
        }
      });
@@ -541,7 +556,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       //  +" " +globals.currentUser.last_name
    ;
    String lname =( globals.currentUser.last_name == null) ? " " :globals.currentUser.last_name;
-    String gender = (globals.currentUser.gender == null)?"":globals.currentUser.gender;
+    String gender = (globals.currentUser.gender == null)?"": AppLocalizations.of(context).translate(globals.currentUser.gender);
     String num = (globals.currentUser.contact == null)?"":globals.currentUser.contact;
     String email = (globals.currentUser.email == null)?"":globals.currentUser.email;
     int AddressLength =  (globals.currentUser.address == null) ? 0 : globals.currentUser.address.length;
@@ -592,7 +607,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                Text((gender == "" || gender== null)? AppLocalizations.of(context).translate('gender') : gender, style:
                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
                SizedBox(width: 10,),
-               Icon((gender == 'Female')?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
+               Icon((gender ==  AppLocalizations.of(context).translate('Female'))?Ionicons.ios_female : Ionicons.ios_male, color: Colors.grey, size: 14,),
              ]
              ),
            ),
@@ -630,7 +645,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
                Icon(Icons.language, color: Configurations.themColor, size: 14,),
                SizedBox(width: 10,),
-               Text((globals.currentUser.languages == "" || globals.currentUser.languages == null)? AppLocalizations.of(context).translate('txt_no_lang_set'): globals.currentUser.languages, style:
+               Text((globals.currentUser.languages == "" || globals.currentUser.languages == null)? AppLocalizations.of(context).translate('txt_no_lang_set'): AppLocalizations.of(context).translate(globals.currentUser.languages), style:
                TextStyle(color: Colors.black, fontWeight: FontWeight.w300,fontSize: 14),),
 
              ]
@@ -1080,18 +1095,32 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     if(globals.currentUser.services  != null) {
       globals.currentUser.services.forEach((element) {
         if (services.isEmpty) {
-          services = element.service.name;
+          services = (globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name ;
         } else {
-          if(!services.contains(element.service.name)) {
-            services += ", " +element.service.name;
+          if(!services.contains((globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name)) {
+            if(globals.localization == 'ar_SA') {
+              services += ", " +element.service.arabic_name;
+            } else {
+              services += ", " +element.service.name;
+            }
           }
         }
 
         if(element.categories != null) {
           if (services.isEmpty) {
-            services = " - " + element.categories.name;
+            if(globals.localization == 'ar_SA') {
+              services = " - " + element.categories.arabic_name;
+            } else {
+              services = " - " + element.categories.name;
+            }
+
           } else {
-            services += " - " +element.categories.name;
+            if(globals.localization == 'ar_SA') {
+              services += " - " +element.categories.arabic_name;
+            } else {
+              services += " - " +element.categories.name;
+            }
+
           }
         }
       });
@@ -1173,7 +1202,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             // Gender
             child: TextField(
               decoration: InputDecoration(
-                  hintText: ( gender == null) ? AppLocalizations.of(context).translate('txt_not_selected'): globals.currentUser.gender,
+                  hintText: ( gender == null) ? AppLocalizations.of(context).translate('txt_not_selected'): AppLocalizations.of(context).translate(globals.currentUser.gender),
                   prefixIcon: Icon(Icons.face,color: Colors.grey,), enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Configurations.themColor),
@@ -1221,10 +1250,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                    children: <Widget>[
                      Icon(Icons.language, color: Colors.grey,),
                      SizedBox(width: 10,),
-                     Text("English"),
+                     Text(AppLocalizations.of(context).translate('English')),
                      Checkbox(value: _english, onChanged: _selecteEnglish),
                      SizedBox(width: 1,),
-                     Text("Arabic"),
+                     Text(AppLocalizations.of(context).translate('Arabic')),
                      Checkbox(value: _arabic, onChanged: _selecteArabic),
                    ],
                  ),)),
@@ -2025,8 +2054,6 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             build(context);
       });
     });
-
-
   }
 
   void processAddressResponse(Response res, StateSetter setState) {
@@ -2227,16 +2254,16 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                   Icons.arrow_drop_down,
                   color: Configurations.themColor,
                 ),
-                items: <String>['Male', 'Female'
-                ]
-                    .map<DropdownMenuItem<String>>((String value) {
+                items:<String>['Male', 'Female']
+                    .map<DropdownMenuItem<String>>((value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value),
+                    child: Text(AppLocalizations.of(globals.context).translate(value)),
                   );
                 }).toList(),
                 onChanged: (String newValue) {
                   setState(() {
+                    print('testtttt -== ${newValue}');
                     dropdownvalue = newValue;
                     gender = newValue;
                   });},

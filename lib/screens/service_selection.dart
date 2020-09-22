@@ -89,8 +89,11 @@ class ServiceSelectionUIPageState extends State<ServiceSelectionUIPage> with Tic
   void processServiceResponse(Response res) {
     if (res != null) {
       if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        List roles = data;
+//        var data = json.decode(res.body);
+//        List roles = data;
+        var data =  utf8.decode(res.bodyBytes); //json.decode(res.body);
+//        printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
+        List roles = json.decode(data);
         setState(() {
           listofServices = Service.processServices(roles);
         });
@@ -240,7 +243,7 @@ bool Value = false;
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     child: Text(
-                      service.name,
+                      (globals.localization == 'ar_SA') ? service.arabic_name : service.name,
                       maxLines: 3,
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
@@ -322,7 +325,7 @@ bool Value = false;
               Padding(
                 padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child: Text(
-                  category.name,
+                  (globals.localization == 'ar_SA') ? category.arabic_name : category.name,
                   maxLines: 3,
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                   overflow: TextOverflow.ellipsis,
@@ -386,7 +389,7 @@ bool Value = false;
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     child: Text(
-                      service.name,
+                      (globals.localization == 'ar_SA') ? service.arabic_name : service.name,
                       maxLines: 3,
                       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
                       overflow: TextOverflow.ellipsis,
@@ -515,7 +518,7 @@ bool Value = false;
     else {
       selectedListOfService.forEach((service) {
         if(selectedServices.any((selection) => service.id == selection.service_id)) {
-            String srvcName = service.name;
+            String srvcName = (globals.localization == 'ar_SA') ? service.arabic_name : service.name;
             if (serviceNamesString.isEmpty) {
               serviceNamesString = "* " + srvcName;
             } else {
@@ -528,9 +531,20 @@ bool Value = false;
               if(element.category_id != 0) {
                 SubCategory sbctgry = service.categories.firstWhere((category) => category.id == element.category_id);
                 if (serviceNamesString.isEmpty) {
-                  serviceNamesString = "\t\t - " + sbctgry.name;
+                  if(globals.localization == 'ar_SA') {
+                    serviceNamesString = "\t\t - " +  sbctgry.arabic_name;
+                  } else {
+                    serviceNamesString = "\t\t - " +  sbctgry.name;
+                  }
+
                 } else {
-                  serviceNamesString += "\n\t\t - " +sbctgry.name;
+                  if(globals.localization == 'ar_SA') {
+                    serviceNamesString += "\n\t\t - " +sbctgry.arabic_name;
+                  } else {
+                    serviceNamesString += "\n\t\t - " +sbctgry.name;
+                  }
+
+
                 }
               }
             });

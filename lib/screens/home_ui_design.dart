@@ -68,8 +68,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
     if (res != null) {
 
       if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        List roles = data;
+        var data =  utf8.decode(res.bodyBytes); //json.decode(res.body);
+        printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
+        List roles = json.decode(data);
 
         setState(() {
           listofServices = Service.processServices(roles);
@@ -99,6 +100,13 @@ class _HomeUIPageState extends State<HomeUIPage> {
       );
     } else {
 //      if(listofServices.length > 0) {
+
+
+
+
+//
+
+
         return new Scaffold(
           backgroundColor: Colors.orange[50],
           body: CustomScrollView(
@@ -171,7 +179,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
 
                                   Flexible(
-                                    child: Text(listofServices[serviceIndex].name,
+                                    child: Text((globals.localization == 'ar_SA') ? listofServices[serviceIndex].arabic_name : listofServices[serviceIndex].name,
                                       maxLines: 2,
                                       style: TextStyle(fontSize: 10,letterSpacing: 0.8,color: Colors.black,fontWeight: FontWeight.w600),
 

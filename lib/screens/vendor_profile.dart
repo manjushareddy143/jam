@@ -172,6 +172,7 @@ int swiperIndex =0;
           );
         });
   }
+
   Widget setCard(){
 
     print("NAME == ${this.provider.first_name}");
@@ -186,18 +187,32 @@ int swiperIndex =0;
     String services = "";
     this.provider.services.forEach((element) {
       if (services.isEmpty) {
-        services = element.service.name;
+        services = (globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name;
       } else {
-        if(!services.contains(element.service.name)) {
-          services += ", " +element.service.name;
+        if(!services.contains((globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name)) {
+          if(globals.localization == 'ar_SA') {
+            services += ", " + element.service.arabic_name;
+          } else {
+            services += ", " + element.service.name;
+          }
+
         }
       }
 
       if(element.categories != null) {
         if (services.isEmpty) {
-          services = " - " + element.categories.name;
+          if(globals.localization == 'ar_SA') {
+            services = " - " +  element.categories.arabic_name;
+          } else {
+            services = " - " +  element.categories.name;
+          }
         } else {
-          services += " - " +element.categories.name;
+          if(globals.localization == 'ar_SA') {
+            services += " - " +  element.categories.arabic_name;
+          } else {
+            services += " - " +  element.categories.name;
+          }
+//          services += " - " +element.categories.name;
         }
       }
     });
@@ -211,8 +226,13 @@ int swiperIndex =0;
     if(this.provider.organisation != null) {
       contact = this.provider.organisation.admin.contact;
     }
+
+
+
+
+
     return Container(
-      height: 700,
+      height: 900,
         margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 30, bottom: 22),
     decoration: new BoxDecoration(
     color: Colors.white,
@@ -332,7 +352,8 @@ int swiperIndex =0;
                  children: <Widget>[
                    Icon(Icons.person, color: Colors.grey, size: 14,),
                    SizedBox(width: 10,),
-                   Text(this.provider.gender, style:
+
+                   Text(AppLocalizations.of(context).translate(this.provider.gender), style:
                    TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 13),)
 
                  ],
@@ -356,7 +377,7 @@ int swiperIndex =0;
                    children: <Widget>[
                      Icon(Icons.local_library, color: Colors.grey, size: 14,),
                      SizedBox(width: 10,),
-                     Text( this.provider.languages, style:
+                     Text(AppLocalizations.of(context).translate(this.provider.languages), style:
                      TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 13),)
 
                    ],

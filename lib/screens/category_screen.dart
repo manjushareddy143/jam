@@ -80,8 +80,13 @@ class _CategoryPageState extends State<CategoryPage> {
   void processServiceResponse(Response res) {
     if (res != null) {
       if (res.statusCode == 200) {
-        var data = json.decode(res.body);
-        List roles = data;
+//        var data = json.decode(res.body);
+        var data =  utf8.decode(res.bodyBytes); //json.decode(res.body);
+        printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
+        List roles = json.decode(data);
+
+
+//        List roles = data;
         setState(() {
           listofServices = Service.processServices(roles);
           isLoadin = false;
@@ -151,7 +156,7 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
 
           Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
-            child: Text(service.name,maxLines: 2,
+            child: Text((globals.localization == 'ar_SA') ? service.arabic_name : service.name,maxLines: 2,
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.justify,

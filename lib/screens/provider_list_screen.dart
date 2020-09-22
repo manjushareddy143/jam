@@ -49,6 +49,7 @@ class _ProviderListState extends State<ProviderListPage> {
     // TODO: implement initState
     super.initState();
     if(service.categories.length > 0) {
+//      print('test ==== ${service.categories[0].toJson()}');
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(service.categories);
       selectedSubCategory = _dropDownSubCategory[0].value;
     }
@@ -74,7 +75,7 @@ class _ProviderListState extends State<ProviderListPage> {
   List<DropdownMenuItem<SubCategory>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
     List<DropdownMenuItem<SubCategory>> items = List();
     listSubCategory.forEach((val) {
-      items.add(DropdownMenuItem(value: val, child: Text(val.name)));
+      items.add(DropdownMenuItem(value: val, child: Text((globals.localization == 'ar_SA') ? val.arabic_name : val.name))); // val.name
     });
     return items;
   }
@@ -97,7 +98,6 @@ class _ProviderListState extends State<ProviderListPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        print('providers=== $data');
         List providers = data;
         setState(() {
           listofProviders = User.processListOfUser(providers);

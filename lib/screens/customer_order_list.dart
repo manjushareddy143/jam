@@ -125,18 +125,13 @@ class _OrderUIPageState extends State<OrderUIPage>  {
           title: new Text(AppLocalizations.of(context).translate('tab_orders')),
           backgroundColor: Configurations.themColor,
           actions: [
-            Padding(
-                padding: EdgeInsets.all( 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    getProfile();
-                  },
-                  child: Icon(
-                    Icons.refresh,
-                    size: 26.0,
-                  ),
-                )
-            ),
+            FlatButton.icon(onPressed: () => {
+              getOrders()
+            }, icon: Icon(
+              Icons.refresh,
+              color: Colors.white,
+              size: 26.0,
+            ), label: Text('')),
           ],
         ),
           body:
@@ -377,7 +372,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
 
                     Container(
                       width: 150,
-                      child: Text(order.service.name,
+                      child: Text((globals.localization == 'ar_SA') ? order.service.arabic_name : order.service.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 5),
                     ),

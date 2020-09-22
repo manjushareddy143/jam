@@ -106,6 +106,8 @@ class HttpClient {
     if (isNetworkAvailable) {
       Map<String, String> headers = new Map();
 
+
+
       http.Response response = await http.get(apiUrl);
 
       response = handleResponse(context, response, hideLoad);
