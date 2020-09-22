@@ -136,8 +136,27 @@ class _DetailUIPageState extends State<DetailUIPage> {
         ),
         // TITLE
         Positioned(left: 25, top: 120,
-          child: Text(AppLocalizations.of(context).translate('order_detail'), style:
-          TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
+          child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(AppLocalizations.of(context).translate('order_detail'), style:
+              TextStyle(color: Colors.white, fontWeight: FontWeight.w600,fontSize: 18),
+
+              ),
+              Padding(
+                  padding: EdgeInsets.all( 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                     // getProfile();
+                      order.g
+
+                    },
+                    child: Icon(
+                      Icons.refresh,color: Colors.white,
+                      size: 28.0,
+                    ),
+                  )
+              ),
+            ],
           ),
         ),
 

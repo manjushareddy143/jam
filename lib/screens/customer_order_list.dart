@@ -124,6 +124,20 @@ class _OrderUIPageState extends State<OrderUIPage>  {
           automaticallyImplyLeading: true,
           title: new Text(AppLocalizations.of(context).translate('tab_orders')),
           backgroundColor: Configurations.themColor,
+          actions: [
+            Padding(
+                padding: EdgeInsets.all( 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    getProfile();
+                  },
+                  child: Icon(
+                    Icons.refresh,
+                    size: 26.0,
+                  ),
+                )
+            ),
+          ],
         ),
           body:
           SingleChildScrollView(
