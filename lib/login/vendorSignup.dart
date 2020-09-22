@@ -460,7 +460,7 @@ class _vendorSignup extends State<VendorSignup>{
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: 20,
-            child: Text("------------------------ OR ------------------------"),
+            child: Text("------------------------ " + AppLocalizations.of(context).translate('OR') +" ------------------------"),
           ),
           SizedBox(height: 10),
           SignInButton(

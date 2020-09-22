@@ -130,7 +130,7 @@ class _user extends State<UserLogin>{
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: <Widget> [
-                                  Text(lang.flag),
+                                Text(AppLocalizations.of(context).translate(lang.flag)),
                                   Text(lang.name)
                                 ],
                               ) ,
@@ -299,7 +299,7 @@ class _user extends State<UserLogin>{
 //                    SizedBox(height: 16,),
 
                     SizedBox(height: 20,
-                      child: Text("------------------------ OR ------------------------"),
+                      child: Text("------------------------ " + AppLocalizations.of(context).translate('OR') +" ------------------------"),
                     ),
                     SizedBox(height: 10),
 

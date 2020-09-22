@@ -106,7 +106,7 @@ class _sliderScreen extends State<SliderScreen>{
 
 
                   FlatButton(
-                    child: Text("Create an Account",style: TextStyle(color: Colors.white),),
+                    child: Text(AppLocalizations.of(context).translate('CreateAccount'),style: TextStyle(color: Colors.white),),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5)),
                     color: Colors.deepOrangeAccent,
@@ -118,13 +118,14 @@ class _sliderScreen extends State<SliderScreen>{
                   SizedBox(height: 10,),
 
                   SizedBox(height: 20,
-                    child: Text("------------------------ OR ------------------------", style: TextStyle(color: Colors.grey),),
+
+                    child: Text("------------------------ " + AppLocalizations.of(context).translate('OR') +" ------------------------", style: TextStyle(color: Colors.grey),),
                   ),
                   SizedBox(height: 10,),
                   FlatButton( onPressed: (){
                     Navigator.push(context, new MaterialPageRoute(builder: (BuildContext context) => UserLogin()));
                   },
-                    child: Text("LOGIN NOW",
+                    child: Text(AppLocalizations.of(context).translate('LoginNOW'),
                       textAlign: TextAlign.center,style: TextStyle( color: Colors.blueGrey,fontWeight: FontWeight.w700),),
                   ),
 

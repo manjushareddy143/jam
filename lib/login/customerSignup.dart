@@ -365,7 +365,7 @@ class _customerSignup extends State<CustomerSignup>{
         children: <Widget>[
 
           SizedBox(height: 20,
-            child: Text("------------------------ OR ------------------------"),
+            child: Text("------------------------ " + AppLocalizations.of(context).translate('OR') +" ------------------------"),
           ),
 //          SizedBox(height: 20),
 
