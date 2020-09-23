@@ -440,8 +440,8 @@ void showInfoAlert(BuildContext context, String message) {
           new FlatButton(
             child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
-              Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => ProfileUIPage()));
-
+          //    Navigator.pushReplacement(context, new MaterialPageRoute(builder: (BuildContext context) => ProfileUIPage()));
+                  Navigator.of(context).pop();
             },
           ),
         ],

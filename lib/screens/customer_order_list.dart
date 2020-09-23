@@ -195,6 +195,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     if(globals.listofOrders.length > 0) {
       for(int orderCount = 0; orderCount< globals.listofOrders.length; orderCount++) {
         list.add(setupCard(globals.listofOrders[orderCount]));
+
       }
     } else {
       list.add(EmpyOrderCard());

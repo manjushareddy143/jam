@@ -777,7 +777,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                                fontWeight: FontWeight.w500,fontSize: 14),
                              ),
                          ),
-                         Text(globals.order.email, style:
+                         Text((globals.order.email == null)? "":globals.order.email, style:
                          TextStyle(color: Colors.black,
                              fontWeight: FontWeight.w300,fontSize: 14),)
 
@@ -1573,7 +1573,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Rating',
+            AppLocalizations.of(context).translate('rate'),
             style: const TextStyle(fontSize: 20.0, color: Colors.black, fontWeight: FontWeight.bold),
           ),
         ],
