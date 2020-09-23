@@ -225,7 +225,9 @@
   "zoom": "Zoom and Crop",
   "crop": "Crop",
   "default_add": "Default Address",
-  "add_address": "Please add Address first"
+  "add_address": "Please add Address first",
+  "set_location": "Set Location Map",
+  "select_img": "Select the image source"
 
 
 

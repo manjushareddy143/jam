@@ -2,6 +2,7 @@
 
 //import 'dart:html';
 import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:jam/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_image_crop/simple_image_crop.dart';
@@ -79,7 +80,7 @@ class _CropPhotoRouteState extends State<CropPhotoRoute> {
             Navigator.pop(context, croppedFile);
           },
           tooltip: 'Increment',
-          child: Text( AppLocalizations.of(context).translate('crop')),
+          child: Center(child: Text( AppLocalizations.of(context).translate('crop'), style: TextStyle(fontSize: 11), maxLines: 2,)),
         ));
   }
 }

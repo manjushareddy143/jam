@@ -151,7 +151,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     final imageSrc = await showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Select the image source"),
+        title: Text(AppLocalizations.of(context).translate('select_img')),
         actions: <Widget>[
           MaterialButton(
             child: Text(AppLocalizations.of(context).translate('profile_camera')),
@@ -232,7 +232,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       },
       child: Scaffold(
           backgroundColor: Colors.orange[50],
-        resizeToAvoidBottomPadding: false,
+          resizeToAvoidBottomPadding: false,
           body: SingleChildScrollView(
             child: new Form(
               key: _formKey,
@@ -866,7 +866,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           if(isEditProfile) {
             getImage();
           }else {
-            showInfoAlert(context, AppLocalizations.of(context).translate('text_edit_mode'));
+            showInfoAlert(context, AppLocalizations.of(context).translate('txt_edit_mode'));
           }
 
         }, // handle your image tap here
@@ -1639,7 +1639,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                 width: 10,
                               ),
                               Text(
-                                mapAddressTitle,
+                                mapAddressTitle =AppLocalizations.of(context)
+                                    .translate('set_location'),
                                 style:
                                 TextStyle(color: Configurations.themColor),
                               )

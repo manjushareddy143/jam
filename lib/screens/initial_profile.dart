@@ -31,7 +31,7 @@ import 'package:http/http.dart' as http;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:flutter/src/cupertino/date_picker.dart';
-
+import 'package:jam/screens/crop_photo.dart';
 class InitialProfileScreen extends StatelessWidget {
 
   Future <bool> onBackPressed(){
@@ -301,10 +301,31 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         setState(() {
           imageUrl = null;
           _image = image;
-          globals.customImage = _image;
+          _navigateAndDisplaySelection(context);
+         // globals.customImage = _image;
         });
       }
     }
+  }
+  _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CropPhotoRoute(img: _image)),
+    );
+
+    setState(() {
+      _image = result;
+    });
+
+
+    print("$result");
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+//    Scaffold.of(context)
+//      ..removeCurrentSnackBar()
+//      ..showSnackBar(SnackBar(content: Text("$result")));
   }
 
   Widget _buildCoverImage(Size screenSize) {
