@@ -126,6 +126,16 @@ bool Value = false;
         appBar: new AppBar(backgroundColor: Configurations.themColor,
           title: new Text(AppLocalizations.of(context)
               .translate('init_services')),
+          actions: [
+            FlatButton.icon(onPressed: () {
+              serviceSave();
+            },
+              icon: Icon(Icons.save, color: Colors.white, ),
+              label: Text("",
+              //  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500, fontSize: 14),
+              ),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -139,23 +149,23 @@ bool Value = false;
                   parentList: setupParentList(),
                 ),
               ),
-              SizedBox(
-                height: 20,
-              ),
+//              SizedBox(
+//                height: 20,
+//              ),
 
 
-              ButtonTheme(
-                minWidth: 300.0,
-                child: RaisedButton(
-                    color: Configurations.themColor,
-                    textColor: Colors.white,
-                    child: Text(
-                        AppLocalizations.of(context).translate('btn_save'),
-                        style: TextStyle(fontSize: 16.5)),
-                    onPressed: () {
-                      serviceSave();
-                    }),
-              ),
+//              ButtonTheme(
+//                minWidth: 300.0,
+//                child: RaisedButton(
+//                    color: Configurations.themColor,
+//                    textColor: Colors.white,
+//                    child: Text(
+//                        AppLocalizations.of(context).translate('btn_save'),
+//                        style: TextStyle(fontSize: 16.5)),
+//                    onPressed: () {
+//                      serviceSave();
+//                    }),
+//              ),
 //              SizedBox(
 //                height: 20,
 //              ),

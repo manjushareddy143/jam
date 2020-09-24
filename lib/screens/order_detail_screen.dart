@@ -1552,6 +1552,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
             buildRatingSection(setState),
 
             TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Comment'
+              ),
+
               maxLines: null,
               controller: txtComment,
               keyboardType: TextInputType.multiline,
@@ -1695,6 +1700,10 @@ class _DetailUIPageState extends State<DetailUIPage> {
             buildDropDownSection(setState),
 
             TextField(
+              decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Comment here'
+              ),
               maxLines: null,
               controller: txtCancel,
               keyboardType: TextInputType.multiline,
