@@ -129,7 +129,8 @@ class _OrderUIPageState extends State<OrderUIPage>  {
               getOrders()
             }, icon: Icon(
               Icons.refresh,
-              color: Colors.white,
+              color: Colors.white
+              ,
               size: 26.0,
             ), label: Text('')),
           ],

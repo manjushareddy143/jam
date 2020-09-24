@@ -1,5 +1,6 @@
 
 import 'package:jam/models/invoice.dart';
+import 'package:jam/models/order_cancelled.dart';
 import 'package:jam/models/rating.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
@@ -35,6 +36,7 @@ class Order {
   final Service service;
   final Rating rating;
   Invoice invoice;
+  OrderCanelled cancelled;
 //  final User provider;
 //  final User user;
 
@@ -44,7 +46,7 @@ class Order {
       this.service, this.category,
 //      this.provider_first_name, this.provider_image, this.provider_last_name,
       this.comment, this.rating, this.invoice,
-      this.user_id,this.address, this.otp, this.user, this.provider);
+      this.user_id,this.address, this.otp, this.user, this.provider, this.cancelled);
   //this.provider, this.user, this.ratings
 
   Order.fromJson(Map<String, dynamic> json)
@@ -59,6 +61,8 @@ class Order {
         remark = json['remark'],
         status = json['status'],
         booking_date = json['booking_date'],
+        cancelled = ((json.containsKey('cancelled') && json['cancelled'] != null )
+            ? OrderCanelled.fromJson(json['cancelled']) : null),
 //        provider_first_name = json['provider_first_name'],
 //        provider_image = json['provider_image'],
 //        provider_last_name = json['provider_last_name'],

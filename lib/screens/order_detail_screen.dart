@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:jam/models/invoice.dart';
 import 'package:jam/models/order.dart';
+import 'package:jam/models/order_cancelled.dart';
 import 'package:jam/resources/configurations.dart';
 import 'package:jam/screens/pdf_view.dart';
 import 'package:jam/utils/httpclient.dart';
@@ -226,6 +227,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
               Row(
                 children: <Widget>[
                   if(order.status == 3 || order.status == 4)
+                    if(globals.order.cancelled != null)
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -236,14 +238,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
-                                  child: Text("Too Slow",style: TextStyle(fontWeight: FontWeight.bold,
+                                  child: Text((globals.order.cancelled != null) ? (globals.order.cancelled.reason != null) ? globals.order.cancelled.reason : "" : "",style: TextStyle(fontWeight: FontWeight.bold,
                                       color: Configurations.themColor, fontSize: 18),),
                                 ),
                               ),
 
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text("must be fast!!"),
+                                child: Text((globals.order.cancelled != null) ? (globals.order.cancelled.comment != null) ?globals.order.cancelled.comment : ""  : ""),
                               )
                             ],
                           ),
@@ -1943,12 +1945,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //
           if(status == "4") {
             showInfoAlert(context, AppLocalizations.of(context).translate('booking_cancel'));
+
             int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
             if(idx != null) {
               globals.order.status = 4;
+              globals.order.cancelled = OrderCanelled(cancelReason, (txtCancel.text.length ==0 || txtCancel.text.length == null) ? " - " : txtCancel.text);
               globals.listofOrders[idx] = globals.order;
             }
           }
+
+
 
 
             print("ITS CUSTOMER");
