@@ -490,7 +490,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
      if(globals.currentUser.address.length > 0) {
        addressString = singleAddress.name;
-       addressString += ", " + singleAddress.address_line1;
+       if(singleAddress.address_line1 != "" && singleAddress.address_line1 != null){
+         addressString += ", " + singleAddress.address_line1;
+       }
+
        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
          addressString += ", " + singleAddress.address_line2;
        }
@@ -755,7 +758,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                Text(globals.currentUser.address[i].name, style:
                                TextStyle(color: Colors.deepOrange,
                                    fontWeight: FontWeight.bold,fontSize: 16),),
-                               Text(addressListString(globals.currentUser.address[i]),
+                               Text(
+                                 (addressListString(globals.currentUser.address[i] )== null ? "":addressListString(globals.currentUser.address[i])),
                                  style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w300,fontSize: 16),)
                              ],
                            ),
@@ -1073,7 +1077,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
       if(globals.currentUser.address.length > 0) {
         addressString= singleAddress.name;
-        addressString += ", " +  singleAddress.address_line1;
+        if(singleAddress.address_line1 != "" && singleAddress.address_line1 != null) {
+        addressString += ", " +  singleAddress.address_line1;}
         if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
           addressString += ", " + singleAddress.address_line2;
         }
@@ -1494,8 +1499,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["address_line2"] = adrs_line2.text;
       addressData["user_id"] = globals.currentUser.id.toString();
       addressData["landmark"] = adrs_landmark.text;
-      addressData["district"] = adrs_disctric.text;
-      addressData["city"] = adrs_city.text;
+      addressData["district"] = "";
+      addressData["city"] = "";
       addressData["postal_code"] = adrs_postalcode.text;
       addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
       data["address"] = jsonEncode(addressData);
@@ -1560,8 +1565,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   final adrs_line1 = TextEditingController();
   final adrs_line2 = TextEditingController();
   final adrs_landmark = TextEditingController();
-  final adrs_disctric = TextEditingController();
-  final adrs_city = TextEditingController();
+//  final adrs_disctric = TextEditingController();
+//  final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
 
   String mapAddressTitle = "Set Location Map";
@@ -1700,6 +1705,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     Container(
                                       width: 100.0,
                                       child: TextFormField(
+                                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('address1_placeholder'),
@@ -1710,13 +1716,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                         ),cursorColor: Configurations.themColor,
                                         controller: (singleAddress.address_line1 == "")
                                             ? adrs_line1 : adrs_line1 ..text = singleAddress.address_line1,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_address1');
-                                          }
-                                          return null;
-                                        },
+//                                        validator: (value) {
+//                                          if (value.isEmpty) {
+//                                            return AppLocalizations.of(context)
+//                                                .translate('profile_txt_address1');
+//                                          }
+//                                          return null;
+//                                        },
                                       ),
                                     ),
                                     SizedBox(
@@ -1726,6 +1732,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     Container(
                                       width: 100.0,
                                       child: TextFormField(
+                                          keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                           decoration: InputDecoration(
                                             labelText: AppLocalizations.of(context)
                                                 .translate('address2_placeholder'),
@@ -1756,72 +1763,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                       ),
                                     ),
 
-                                    SizedBox(
+                                   SizedBox(
                                       width: 10,
-                                    ),
-
-                                    // District
+                                   ),
                                     Container(
                                       width: 100.0,
                                       child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('district_placeholder'),
-                                          labelStyle: TextStyle(color: Colors.grey),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(color: Configurations.themColor),
-                                          ),
-                                        ),cursorColor: Configurations.themColor,
-                                        controller: (singleAddress.district == "") ?
-                                        adrs_disctric : adrs_disctric
-                                          ..text = singleAddress.district,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_district');
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-
-                                Row(
-                                  children: <Widget>[
-                                    // City
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
-                                        decoration: InputDecoration(
-                                          labelText: AppLocalizations.of(context)
-                                              .translate('city_placeholder'),
-                                          labelStyle: TextStyle(color: Colors.grey),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(color: Configurations.themColor),
-                                          ),
-                                        ),cursorColor: Configurations.themColor,
-                                        controller: (singleAddress.city == "") ?
-                                        adrs_city : adrs_city
-                                          ..text = singleAddress.city,
-                                        //adrs_city,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return AppLocalizations.of(context)
-                                                .translate('profile_txt_city');
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    // postal Code
-                                    Container(
-                                      width: 100.0,
-                                      child: TextFormField(
+                                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('postalcode_placeholder'),
@@ -1842,8 +1790,69 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //                                        },
                                       ),
                                     )
+//
+//                                    // District
+//                                    Container(
+//                                      width: 100.0,
+//                                      child: TextFormField(
+//                                        decoration: InputDecoration(
+//                                          labelText: AppLocalizations.of(context)
+//                                              .translate('district_placeholder'),
+//                                          labelStyle: TextStyle(color: Colors.grey),
+//                                          focusedBorder: UnderlineInputBorder(
+//                                            borderSide: BorderSide(color: Configurations.themColor),
+//                                          ),
+//                                        ),cursorColor: Configurations.themColor,
+//                                        controller: (singleAddress.district == "") ?
+//                                        adrs_disctric : adrs_disctric
+//                                          ..text = singleAddress.district,
+//                                        validator: (value) {
+//                                          if (value.isEmpty) {
+//                                            return AppLocalizations.of(context)
+//                                                .translate('profile_txt_district');
+//                                          }
+//                                          return null;
+//                                        },
+//                                      ),
+//                                    )
                                   ],
                                 ),
+
+//                                Row(
+//                                  children: <Widget>[
+                                    // City
+//                                    Container(
+//                                      width: 100.0,
+//                                      child: TextFormField(
+//                                        decoration: InputDecoration(
+//                                          labelText: AppLocalizations.of(context)
+//                                              .translate('city_placeholder'),
+//                                          labelStyle: TextStyle(color: Colors.grey),
+//                                          focusedBorder: UnderlineInputBorder(
+//                                            borderSide: BorderSide(color: Configurations.themColor),
+//                                          ),
+//                                        ),cursorColor: Configurations.themColor,
+//                                        controller: (singleAddress.city == "") ?
+//                                        adrs_city : adrs_city
+//                                          ..text = singleAddress.city,
+//                                        //adrs_city,
+//                                        validator: (value) {
+//                                          if (value.isEmpty) {
+//                                            return AppLocalizations.of(context)
+//                                                .translate('profile_txt_city');
+//                                          }
+//                                          return null;
+//                                        },
+//                                      ),
+//                                    ),
+//                                    SizedBox(
+//                                      width: 10,
+//                                    ),
+
+                                    // postal Code
+//
+//                                  ],
+//                                ),
                                 SizedBox(
                                   height: 20,
                                 ),
@@ -1932,15 +1941,17 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
           setState(() {
             getAddress(LatLng(latLogn.latitude, latLogn.longitude)).then((onValue) {
               globals.addressLocation = onValue;
+         //     print(onValue.toMap());
               globals.latitude = latLogn.latitude;
               globals.longitude = latLogn.longitude;
               addressString = globals.addressLocation.addressLine;
               adrs_line1.text = globals.addressLocation.featureName;
               adrs_line2.text = globals.addressLocation.subLocality;
-              adrs_disctric.text = globals.addressLocation.subAdminArea;
-              adrs_city.text = globals.addressLocation.locality;
+//              adrs_disctric.text = globals.addressLocation.subAdminArea;
+//              adrs_city.text = globals.addressLocation.locality;
               adrs_postalcode.text = globals.addressLocation.postalCode;
-              print("adrs_line1.text == ${adrs_line1.text}");
+//              print("adrs_line1.text == ${adrs_line1.text}");
+//              printLog(globals.addressLocation.addressLine.toString());
               isMapAdrs = true;
             });
             _markers.add(
@@ -1969,7 +1980,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         showMap = false;
         isMapAdrs = false;
         singleAddress = Address(0, adrs_line1.text, adrs_line2.text,
-        "", adrs_disctric.text, adrs_city.text, adrs_postalcode.text, "", globals.currentUser.id, "", 0);
+        "", "", "", adrs_postalcode.text, "", globals.currentUser.id, "", 0);
         print("adrs_line1.text == ${adrs_line1.text}");
       });
     }
@@ -1995,10 +2006,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             if (adrs_landmark.text.isNotEmpty) {
               addressString += "\n" + adrs_landmark.text;
             }
-            addressString += "\n" +
-                adrs_disctric.text +
-                "\n" +
-                adrs_city.text +
+            addressString +=
                 "\n" +
                 adrs_postalcode.text;
             print("addressString == $addressString");
@@ -2033,8 +2041,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["user_id"] = globals.currentUser.id.toString();
       addressData["landmark"] = adrs_landmark.text;
       addressData["default_address"] = (_value1) ? "1" : "0";
-      addressData["district"] = adrs_disctric.text;
-      addressData["city"] = adrs_city.text;
+      addressData["district"] = "";
+      addressData["city"] = "";
       if(adrs_postalcode.text != '' && adrs_postalcode.text != null) {
         addressData["postal_code"] = adrs_postalcode.text;
       }
@@ -2048,8 +2056,8 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       addressData["address_line2"] = adrs_line2.text;
       addressData["user_id"] = globals.currentUser.id.toString();
       addressData["landmark"] = adrs_landmark.text;
-      addressData["district"] = adrs_disctric.text;
-      addressData["city"] = adrs_city.text;
+      addressData["district"] = "";
+      addressData["city"] = "";
       addressData["postal_code"] = adrs_postalcode.text;
       addressData["location"] = globals.latitude.toString() + ',' + globals.longitude.toString();
     }

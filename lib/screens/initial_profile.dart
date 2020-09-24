@@ -967,8 +967,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
             addressData["address_line1"] = adrs_line1.text;
             addressData["address_line2"] = adrs_line2.text;
             addressData["landmark"] = adrs_landmark.text;
-            addressData["district"] = adrs_disctric.text;
-            addressData["city"] = adrs_city.text;
+            addressData["district"] = "";
+            addressData["city"] = "";
             addressData["postal_code"] = adrs_postalcode.text;
             addressData["location"] = globals.latitude.toString() +
                 ',' +
@@ -1055,8 +1055,8 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
   final adrs_line1 = TextEditingController();
   final adrs_line2 = TextEditingController();
   final adrs_landmark = TextEditingController();
-  final adrs_disctric = TextEditingController();
-  final adrs_city = TextEditingController();
+//  final adrs_disctric = TextEditingController();
+//  final adrs_city = TextEditingController();
   final adrs_postalcode = TextEditingController();
 
   String mapAddressTitle = "Set Location Map";
@@ -1161,6 +1161,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextFormField(
+                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)
                                           .translate('address1_placeholder'),
@@ -1172,20 +1173,20 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                         borderSide: BorderSide(color: Configurations.themColor),
                                       ),
                                     ),cursorColor: Configurations.themColor,
-                                    controller: (globals
-                                                .addressLocation.featureName ==
-                                            "")
-                                        ? adrs_line1
-                                        : adrs_line1
-                                      ..text =
-                                          globals.addressLocation.featureName,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return AppLocalizations.of(context)
-                                            .translate('profile_txt_address1');
-                                      }
-                                      return null;
-                                    },
+                                    controller: adrs_line1,
+//                                    (globals.addressLocation.featureName ==
+//                                            "")
+//                                        ? adrs_line1
+//                                        : adrs_line1
+//                                      ..text =
+//                                          globals.addressLocation.featureName,
+//                                    validator: (value) {
+//                                      if (value.isEmpty) {
+//                                        return AppLocalizations.of(context)
+//                                            .translate('profile_txt_address1');
+//                                      }
+//                                      return null;
+//                                    },
                                   ),
                                 ),
 
@@ -1193,6 +1194,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextFormField(
+                                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                       decoration: InputDecoration(
                                         labelText: AppLocalizations.of(context)
                                             .translate('address2_placeholder'),
@@ -1238,64 +1240,64 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
 
                                 // District
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)
-                                          .translate('district_placeholder'),
-                                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(
-                                        color: Configurations.themColor, width: 1,  ), ),
-                                      labelStyle: TextStyle(color: Colors.grey),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Configurations.themColor),
-                                      ),
-                                    ),cursorColor: Configurations.themColor,
-                                    controller: (globals
-                                                .addressLocation.subAdminArea ==
-                                            "")
-                                        ? adrs_disctric
-                                        : adrs_disctric
-                                      ..text =
-                                          globals.addressLocation.subAdminArea,
-                                  ),
-                                ),
+//                                Padding(
+//                                  padding: const EdgeInsets.all(8.0),
+//                                  child: TextFormField(
+//                                    decoration: InputDecoration(
+//                                      labelText: AppLocalizations.of(context)
+//                                          .translate('district_placeholder'),
+//                                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+//                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+//                                        color: Configurations.themColor, width: 1,  ), ),
+//                                      labelStyle: TextStyle(color: Colors.grey),
+//                                      focusedBorder: UnderlineInputBorder(
+//                                        borderSide: BorderSide(color: Configurations.themColor),
+//                                      ),
+//                                    ),cursorColor: Configurations.themColor,
+//                                    controller: (globals
+//                                                .addressLocation.subAdminArea ==
+//                                            "")
+//                                        ? adrs_disctric
+//                                        : adrs_disctric
+//                                      ..text =
+//                                          globals.addressLocation.subAdminArea,
+//                                  ),
+//                                ),
 
 
 
 
                                 // City
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)
-                                          .translate('city_placeholder'),
-                                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(
-                                        color: Configurations.themColor, width: 1,  ), ),
-                                      labelStyle: TextStyle(color: Colors.grey),
-                                      focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Configurations.themColor),
-                                      ),
-                                    ),cursorColor: Configurations.themColor,
-                                    controller:
-                                        (globals.addressLocation.locality == "")
-                                            ? adrs_city
-                                            : adrs_city
-                                          ..text =
-                                              globals.addressLocation.locality,
-                                    //adrs_city,
-                                    validator: (value) {
-                                      if (value.isEmpty) {
-                                        return AppLocalizations.of(context)
-                                            .translate('profile_txt_city');
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
+//                                Padding(
+//                                  padding: const EdgeInsets.all(8.0),
+//                                  child: TextFormField(
+//                                    decoration: InputDecoration(
+//                                      labelText: AppLocalizations.of(context)
+//                                          .translate('city_placeholder'),
+//                                      contentPadding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+//                                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+//                                        color: Configurations.themColor, width: 1,  ), ),
+//                                      labelStyle: TextStyle(color: Colors.grey),
+//                                      focusedBorder: UnderlineInputBorder(
+//                                        borderSide: BorderSide(color: Configurations.themColor),
+//                                      ),
+//                                    ),cursorColor: Configurations.themColor,
+//                                    controller:
+//                                        (globals.addressLocation.locality == "")
+//                                            ? adrs_city
+//                                            : adrs_city
+//                                          ..text =
+//                                              globals.addressLocation.locality,
+//                                    //adrs_city,
+//                                    validator: (value) {
+//                                      if (value.isEmpty) {
+//                                        return AppLocalizations.of(context)
+//                                            .translate('profile_txt_city');
+//                                      }
+//                                      return null;
+//                                    },
+//                                  ),
+//                                ),
 
 
 
@@ -1303,6 +1305,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(4.0),
                                   child: TextFormField(
+                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)
                                           .translate('postalcode_placeholder'),
@@ -1314,13 +1317,13 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                       enabledBorder: OutlineInputBorder(borderSide: BorderSide(
                                         color: Configurations.themColor, width: 1,  ), ),
                                     ),cursorColor: Configurations.themColor,
-                                    controller: (globals
-                                                .addressLocation.postalCode ==
-                                            "")
-                                        ? adrs_postalcode
-                                        : adrs_postalcode
-                                      ..text =
-                                          globals.addressLocation.postalCode,
+                                    controller: adrs_postalcode,
+//                                    (globals.addressLocation.postalCode ==
+//                                            "")
+//                                        ? adrs_postalcode
+//                                        : adrs_postalcode
+//                                      ..text =
+//                                          globals.addressLocation.postalCode,
                                     //adrs_postalcode,
 //                                    validator: (value) {
 //                                      if (value.isEmpty) {
@@ -1431,8 +1434,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         print(adrs_landmark.text);
 
           addressString= adrs_name.text;
+        if (adrs_line1.text.isNotEmpty) {
 
-        addressString += "\n" + adrs_line1.text;
+        addressString += "\n" + adrs_line1.text;}
         if (adrs_line2.text.isNotEmpty) {
           addressString += "\n" + adrs_line2.text;
         }
@@ -1441,10 +1445,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
           addressString += "\n" + adrs_landmark.text;
         }
         addressString += "\n" +
-            adrs_disctric.text +
-            "\n" +
-            adrs_city.text +
-            "\n" +
+//            adrs_disctric.text +
+//            "\n" +
+//            adrs_city.text +
+//            "\n" +
             adrs_postalcode.text;
       });
       Navigator.of(context).pop();
