@@ -223,6 +223,15 @@ class _InquiryPageState extends State<InquiryPage> {
       name = this.provider.first_name + " " + this.provider.last_name;
     }
 
+    String prime_service = "";
+    if(globals.localization == 'ar_SA') {
+      prime_service = this.service.arabic_name;
+    } else {
+      prime_service = this.service.name;
+    }
+
+
+
     return Container(margin: EdgeInsets.all(20),
     child:
     Column(
@@ -267,7 +276,9 @@ class _InquiryPageState extends State<InquiryPage> {
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Configurations.themColor),
           ),),cursorColor: Configurations.themColor,
-        controller: txtService..text = this.service.name,
+        controller: txtService..text = prime_service,
+        enabled: false,
+
 
         //txtName,//..text = 'KAR-MT30',
 //        validator: (value){
