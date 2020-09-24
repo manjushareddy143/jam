@@ -1462,7 +1462,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
 
 
+
     if(globals.currentUser.contact != prfl_contact.text) {
+
       data["contact"] = prfl_contact.text;
     }
 
@@ -1705,7 +1707,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     Container(
                                       width: 100.0,
                                       child: TextFormField(
-                                        keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                        keyboardType: TextInputType.text,
                                         decoration: InputDecoration(
                                           labelText: AppLocalizations.of(context)
                                               .translate('address1_placeholder'),
@@ -1732,7 +1734,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     Container(
                                       width: 100.0,
                                       child: TextFormField(
-                                          keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                          keyboardType: TextInputType.text,
                                           decoration: InputDecoration(
                                             labelText: AppLocalizations.of(context)
                                                 .translate('address2_placeholder'),

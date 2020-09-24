@@ -950,7 +950,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
             data["contact"] = prfl_phone.text;
 
-            if(dropdownvalue == 1) {
+            if(dropdownvalue == '1') {
               data["gender"] = 'Male';
             } else {
               data["gender"] = 'Female';
@@ -1161,7 +1161,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextFormField(
-                                    keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                    keyboardType: TextInputType.text,
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)
                                           .translate('address1_placeholder'),
@@ -1194,7 +1194,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: TextFormField(
-                                      keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+                                      keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                         labelText: AppLocalizations.of(context)
                                             .translate('address2_placeholder'),
@@ -1476,7 +1476,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         child: Row(
           children: [
             SizedBox(width: 4,),
-            Icon((dropdownvalue == 1)
+            Icon((dropdownvalue == '1')
                 ? Ionicons.ios_male
                 : Ionicons.ios_female),
             SizedBox(

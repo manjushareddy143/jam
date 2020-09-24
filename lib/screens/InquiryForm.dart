@@ -253,6 +253,29 @@ class _InquiryPageState extends State<InquiryPage> {
       SizedBox(height: 15,),
 
       setDropDown(),
+//      TextFormField(
+//        focusNode: focus_name,
+//        decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey),
+//          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+//          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
+//          labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname'), labelStyle: TextStyle(color: Colors.grey),
+//          focusedBorder: UnderlineInputBorder(
+//            borderSide: BorderSide(color: Configurations.themColor),
+//          ),),cursorColor: Configurations.themColor,
+//        controller: (txtName == "") ? txtName : txtName..text = firstName,
+//        //txtName,//..text = 'KAR-MT30',
+//        validator: (value){
+//          if (value.isEmpty) {
+//            return AppLocalizations.of(context).translate('signup_txt_enteruser');
+//          }
+//          return null;
+//        },
+//      ),
+//      Text(AppLocalizations.of(context).translate('inquiry_txt_primary') ,
+//          style: TextStyle(fontSize: 15 , color: Colors.black45)),
+//      Text(selectedService ,
+//          style: TextStyle(fontSize: 15 , color: Colors.black45)),
+
       SizedBox(height: 10,),
 
       Visibility(visible: (this.category != null),
