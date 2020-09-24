@@ -52,6 +52,7 @@ class _InquiryPageState extends State<InquiryPage> {
   bool _autoValidate = false;
 //   bool subCategory ;
   final txtName = TextEditingController();
+  final txtService =TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
   final txtRemark = TextEditingController();
@@ -77,7 +78,7 @@ class _InquiryPageState extends State<InquiryPage> {
 
   String selectedSubCategory = "";
   List<DropdownMenuItem<String>> _dropDownSubCategory;
-  FocusNode focus_name,focus_mail,focus_no,  focus_remark;
+  FocusNode focus_name,focus_mail,focus_no,  focus_remark, focus_service;
 
 
 
@@ -87,6 +88,7 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_name.dispose();
     focus_mail.dispose();
     focus_no.dispose();
+    focus_service.dispose();
 
     focus_remark.dispose();
 
@@ -102,6 +104,7 @@ class _InquiryPageState extends State<InquiryPage> {
     focus_mail = FocusNode();
     focus_no = FocusNode();
     focus_remark = FocusNode();
+    focus_service = FocusNode();
     _lstServices.add(this.service);
 
     if(this.category != null){
@@ -252,25 +255,28 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
       SizedBox(height: 15,),
 
-      setDropDown(),
-//      TextFormField(
-//        focusNode: focus_name,
-//        decoration: InputDecoration( suffixIcon: Icon(Icons.person, color: Colors.grey),
-//          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-//          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
-//          labelText: AppLocalizations.of(context).translate('inquiry_txt_firstname'), labelStyle: TextStyle(color: Colors.grey),
-//          focusedBorder: UnderlineInputBorder(
-//            borderSide: BorderSide(color: Configurations.themColor),
-//          ),),cursorColor: Configurations.themColor,
-//        controller: (txtName == "") ? txtName : txtName..text = firstName,
-//        //txtName,//..text = 'KAR-MT30',
+//      setDropDown(),
+//      SizedBox(height: 10,),
+      TextFormField(
+        readOnly: true,
+        focusNode: focus_service,
+        decoration: InputDecoration( suffixIcon: Icon(Icons.work, color: Colors.grey),
+          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
+          labelText: AppLocalizations.of(context).translate('primary'), labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ),),cursorColor: Configurations.themColor,
+        controller: txtService..text = this.service.name,
+
+        //txtName,//..text = 'KAR-MT30',
 //        validator: (value){
 //          if (value.isEmpty) {
 //            return AppLocalizations.of(context).translate('signup_txt_enteruser');
 //          }
 //          return null;
 //        },
-//      ),
+      ),
 //      Text(AppLocalizations.of(context).translate('inquiry_txt_primary') ,
 //          style: TextStyle(fontSize: 15 , color: Colors.black45)),
 //      Text(selectedService ,
