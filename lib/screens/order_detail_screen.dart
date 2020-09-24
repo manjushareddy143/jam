@@ -225,6 +225,32 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
               Row(
                 children: <Widget>[
+                  if(order.status == 3 || order.status == 4)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: Text("Too Slow",style: TextStyle(fontWeight: FontWeight.bold,
+                                      color: Configurations.themColor, fontSize: 18),),
+                                ),
+                              ),
+
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("must be fast!!"),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
 
                   if(order.status == 2 && this.isCustomer == false)
                     Expanded(
