@@ -500,7 +500,11 @@ class _InquiryPageState extends State<InquiryPage> {
   String addressString(Address address) {
     String addressString = "";
     if(address != null) {
-      addressString = address.address_line1;
+
+      if(address.address_line1 != "" && address.address_line1 != null) {
+        addressString += address.address_line1;
+      }
+
       if(address.address_line2 != "" && address.address_line2 != null) {
         addressString += ", " + address.address_line2;
       }

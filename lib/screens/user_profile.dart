@@ -2145,7 +2145,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
   String addressListString(Address address) {
 
-    String newAddressString = address.address_line1;
+    String newAddressString = "";
+
+
+    if(address.address_line1 != "" && address.address_line1 != null) {
+      newAddressString += ", " + address.address_line1;
+    }
+
     if(address.address_line2 != "" && address.address_line2 != null) {
       newAddressString += ", " + address.address_line2;
     }

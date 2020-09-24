@@ -418,7 +418,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
      String addressString = "";
      if(globals.order.address != null) {
        addressString= globals.order.address.name;
-       addressString += ", " +globals.order.address.address_line1;
+//       addressString += ", " +globals.order.address.;
+       if(globals.order.address.address_line1 != "" && globals.order.address.address_line1 != null) {
+         addressString += ", " + globals.order.address.address_line1;
+       }
+
        if(globals.order.address.address_line2 != "" && globals.order.address.address_line2 != null) {
          addressString += ", " + globals.order.address.address_line2;
        }
@@ -1428,7 +1432,11 @@ class _DetailUIPageState extends State<DetailUIPage> {
    String addressString = "";
     if(globals.order.address != null) {
       addressString = globals.order.address.name;
-      addressString+= ", " +globals.order.address.address_line1;
+
+      if(globals.order.address.address_line1 != "" && globals.order.address.address_line1 != null) {
+        addressString += ", " + globals.order.address.address_line1;
+      }
+
       if(globals.order.address.address_line2 != "" && globals.order.address.address_line2 != null) {
         addressString += ", " + globals.order.address.address_line2;
       }
