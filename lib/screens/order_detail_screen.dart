@@ -1580,7 +1580,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
             TextField(
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Comment'
+                  hintText: AppLocalizations.of(context).translate('comment')
               ),
 
               maxLines: null,
@@ -1728,7 +1728,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
             TextField(
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Comment here'
+                  hintText: AppLocalizations.of(context).translate('comment')
               ),
               maxLines: null,
               controller: txtCancel,
