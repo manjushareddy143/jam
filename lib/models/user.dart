@@ -57,7 +57,7 @@ class User {
         roles = ((json.containsKey('roles') && json['roles'] != null ) ?
         json['roles'].map<UserRole>((json) => new UserRole.fromJson(json)).toList() : null),
         address = ((json.containsKey('address') && json['address'] != null ) ?
-        json['address'].map<Address>((json) => new Address.fromJson(json)).toList() :
+        json['address'].map<Address>((json) => new Address.fromJson(json)).toList().reversed.toList() :
         null), rate = ((json.containsKey('rate') && json['rate'] != null )
       ? json['rate'].map<Rate>((json) => new Rate.fromJson(json)).toList() : null),
         provider = ((json.containsKey('provider') && json['provider'] != null )

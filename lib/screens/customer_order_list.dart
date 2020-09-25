@@ -93,7 +93,9 @@ class _OrderUIPageState extends State<OrderUIPage>  {
         var data = json.decode(res.body);
         List orders = data;
         setState(() {
-          globals.listofOrders = Order.processOrders(orders);
+          globals.listofOrders = Order.processOrders(orders).reversed.toList();
+//          List<Order> listofOrders
+
           print("ORDERS === ${globals.listofOrders.length}");
         });
       } else {
