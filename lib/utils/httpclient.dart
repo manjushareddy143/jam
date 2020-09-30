@@ -122,6 +122,7 @@ class HttpClient {
 
   Future<Map> handleMultipartResponse(BuildContext context, dynamic response) async {
     print(response.statusCode);
+    print(response);
     dismissLoading(context);
     if (response.statusCode == 400) {
       printLog(response.statusCode);
@@ -150,6 +151,8 @@ class HttpClient {
       showInfoAlert(context, errorMsg);
     }
     else {
+      final respStr = await response.stream.bytesToString();
+      print('ERROR === $respStr');
       return null;
     }
   }

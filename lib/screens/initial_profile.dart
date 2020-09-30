@@ -513,8 +513,9 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
                                 padding: EdgeInsets.only(left: 20, right: 20,top: 55),
                                 child: TextFormField(
                                   focusNode: focus_fname,
-                                  controller: (firstName == "") ? prfl_fname : prfl_fname
-                                    ..text = firstName,
+                                  controller: (globals.customFirstName == "")? prfl_fname :prfl_fname ..text = globals.customFirstName,
+//                                  firstName == "") ? prfl_fname : prfl_fname
+//                                    ..text = firstName,
                                   decoration: InputDecoration(
                                     //                          prefixIcon: Icon(Icons.person,
                                     //                            textDirection: TextDirection.rtl,

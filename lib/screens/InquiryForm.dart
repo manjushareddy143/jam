@@ -271,7 +271,8 @@ class _InquiryPageState extends State<InquiryPage> {
         focusNode: focus_service,
         decoration: InputDecoration( suffixIcon: Icon(Icons.work, color: Colors.grey),
           contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ),),
+          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor,
+            width: 1,  ),),
           labelText: AppLocalizations.of(context).translate('primary'), labelStyle: TextStyle(color: Colors.grey),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Configurations.themColor),
