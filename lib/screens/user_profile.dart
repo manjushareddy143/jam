@@ -83,6 +83,50 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     }
     tabList.add(new Tab(text: 'Address',));
     _tabController= TabController(vsync: this, length: tabList.length);
+    if(globals.name != null) {
+      print(globals.name);
+
+      fname = globals.name;
+    } else {
+      globals.name = globals.currentUser.first_name;
+      fname = globals.currentUser.first_name;
+    }
+
+    if(globals.currentUser.provider != null){
+      if(globals.rad != null) {
+        print(globals.rad);
+
+        radi = globals.rad;
+      } else {
+        globals.rad = globals.currentUser.provider.service_radius.toString();
+        radi = globals.currentUser.provider.service_radius.toString();
+    }
+
+    }
+    if(globals.lname != null) {
+      print(globals.lname);
+
+      lname = globals.lname;
+    } else {
+      globals.lname = globals.currentUser.last_name;
+      lname = globals.currentUser.last_name;
+    }
+    if(globals.num != null) {
+      print(globals.num);
+
+      num = globals.num;
+    } else {
+      globals.num = globals.currentUser.contact;
+      num = globals.currentUser.contact;
+    }
+    if(globals.email != null) {
+      print(globals.email);
+
+      eMail = globals.email;
+    } else {
+      globals.email= globals.currentUser.email;
+      eMail= globals.currentUser.email;
+    }
 
     super.initState();
     focus_fName = FocusNode();
@@ -222,27 +266,18 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     super.build(context);
     globals.context = context;
     // TODO: implement build
-    return GestureDetector(
-      onTap: (){
-        FocusScopeNode currentFocus = FocusScope.of(context);
+    return Scaffold(
+        backgroundColor: Colors.orange[50],
+        resizeToAvoidBottomPadding: false,
+        body: SingleChildScrollView(
+          child: new Form(
+            key: _formKey,
+            autovalidate: _autoValidate,
 
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
-      },
-      child: Scaffold(
-          backgroundColor: Colors.orange[50],
-          resizeToAvoidBottomPadding: false,
-          body: SingleChildScrollView(
-            child: new Form(
-              key: _formKey,
-              autovalidate: _autoValidate,
-
-              child: profile(),
-              //myProfileUI(),
-            ),
-          )
-      ),
+            child: profile(),
+            //myProfileUI(),
+          ),
+        )
     );
   }
 
@@ -866,7 +901,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
       child: GestureDetector(
         onTap: () {
-          print("object");
+          print("Image Focus Object");
           if(isEditProfile) {
             getImage();
           }else {
@@ -935,6 +970,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             GestureDetector(
                 onTap: () {
                   if(isEditProfile) {
+                    printLog("Image focus");
                     getImage();
                   } else {
                     showInfoAlert(context, AppLocalizations.of(context).translate('txt_edit_mode'));
@@ -997,7 +1033,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
             child: GestureDetector(
               onTap: () {
-                print("object");
+                print("Image Focus Object");
                 if(isEditProfile) {
                   getImage();
                 }else {
@@ -1031,7 +1067,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       child: Container(
         child: GestureDetector(
           onTap: () {
-            print("object");
+            print(" Image Focus object");
             if(isEditProfile) {
               getImage();
             }else {
@@ -1072,39 +1108,39 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   Widget setDetails(){
 
 
-
-    if(globals.currentUser.address != null) {
-      //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
-      if(globals.currentUser.address.length > 0) {
-        addressString= singleAddress.name;
-        if(singleAddress.address_line1 != "" && singleAddress.address_line1 != null) {
-        addressString += ", " +  singleAddress.address_line1;}
-        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
-          addressString += ", " + singleAddress.address_line2;
-        }
-
-        if(singleAddress.landmark != "" && singleAddress.landmark != null) {
-          addressString += ", " + singleAddress.landmark;
-        }
-        if(singleAddress.district != "" && singleAddress.district != null) {
-          addressString += ", " + singleAddress.district;
-        }
-        if(singleAddress.city != "" && singleAddress.city != null) {
-          addressString += ", " + singleAddress.city;
-        }
-
-        if(singleAddress.postal_code != "" && singleAddress.postal_code != null) {
-          addressString += ", " + singleAddress.postal_code;
-        }
-
-        addressString += ".";
-      }
-    }
-    if(globals.currentUser.roles[0].slug == "customer")
-      {
-        if(globals.currentUser.address == null)
-          addressString ="";
-      }
+//
+//    if(globals.currentUser.address != null) {
+//      //print("ADDRESS GET  ${globals.currentUser.address[0].address_line1}");
+//      if(globals.currentUser.address.length > 0) {
+//        addressString= singleAddress.name;
+//        if(singleAddress.address_line1 != "" && singleAddress.address_line1 != null) {
+//        addressString += ", " +  singleAddress.address_line1;}
+//        if(singleAddress.address_line2 != "" && singleAddress.address_line2 != null) {
+//          addressString += ", " + singleAddress.address_line2;
+//        }
+//
+//        if(singleAddress.landmark != "" && singleAddress.landmark != null) {
+//          addressString += ", " + singleAddress.landmark;
+//        }
+//        if(singleAddress.district != "" && singleAddress.district != null) {
+//          addressString += ", " + singleAddress.district;
+//        }
+//        if(singleAddress.city != "" && singleAddress.city != null) {
+//          addressString += ", " + singleAddress.city;
+//        }
+//
+//        if(singleAddress.postal_code != "" && singleAddress.postal_code != null) {
+//          addressString += ", " + singleAddress.postal_code;
+//        }
+//
+//        addressString += ".";
+//      }
+//    }
+//    if(globals.currentUser.roles[0].slug == "customer")
+//      {
+//        if(globals.currentUser.address == null)
+//          addressString ="";
+//      }
 
 
 
@@ -1155,6 +1191,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     bool enableEmail = false;
     if(globals.currentUser.social_signin == null || globals.currentUser.social_signin == "") {
       enableEmail = true;
+
       print("enableEmail == ${enableEmail}");
     }
     print("after enableEmail == ${enableEmail}");
@@ -1163,83 +1200,98 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
     return Padding(
       padding:  EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
-      child: Column( crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          // FistName
-          TextField(
-            focusNode: focus_fName,style: (isEditProfile) ?
-          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.first_name == null
-                || globals.currentUser.first_name == "" ) ?
-            AppLocalizations.of(context).translate('signin_firstname_placeholder')  : globals.currentUser.first_name,
-                prefixIcon: Icon(Icons.person, color: Colors.grey,),enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Configurations.themColor),
-              ),),cursorColor: Configurations.themColor,
-            controller: (globals.currentUser.first_name == "")
-                ? prfl_fname : prfl_fname ..text = globals.currentUser.first_name,
-          ),
+      child: GestureDetector(
+        onTap: (){
+          printLog("Focus start");
+          FocusScopeNode currentFocus = FocusScope.of(context);
 
-          // LastName
-          TextField(
-            focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ?
-            AppLocalizations.of(context).translate('signin_lastname_placeholder') : globals.currentUser.last_name,
-                prefixIcon: Icon(Icons.person,color: Colors.grey,),enabled: isEditProfile,
-              labelStyle: TextStyle(color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Configurations.themColor),
-              ),),cursorColor: Configurations.themColor,
-            controller: (globals.currentUser.last_name == "")
-                ? prfl_lname : prfl_lname ..text = globals.currentUser.last_name,
-          ),
-
-          // EMAIL
-          TextField(
-            focusNode: focus_email,style: (enableEmail) ?
-          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: (globals.currentUser.email == null || globals.currentUser.email == "") ? AppLocalizations.of(context).translate('inquiry_txt_email')  : globals.currentUser.email,
-                prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: enableEmail,
-              labelStyle: TextStyle(color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Configurations.themColor),
-              ),), cursorColor: Configurations.themColor,
-
-            controller: (globals.currentUser.email == "")
-                ? prfl_email : prfl_email ..text = globals.currentUser.email,
-
-          ),
-
-          // PHONE
-          TextField(
-            focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? AppLocalizations.of(context).translate('txt_phn_no')  : globals.currentUser.contact,
-              prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile,  labelStyle: TextStyle(color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Configurations.themColor),
-              ),), cursorColor: Configurations.themColor,
-            controller: (globals.currentUser.contact == "")
-                ? prfl_contact : prfl_contact ..text = globals.currentUser.contact,
-            keyboardType: TextInputType.phone,
-          ),
-
-          Visibility( visible: !isEditProfile,
-            // Gender
-            child: TextField(
-              decoration: InputDecoration(
-                  hintText: ( gender == null) ? AppLocalizations.of(context).translate('txt_not_selected'): AppLocalizations.of(context).translate(globals.currentUser.gender),
-                  prefixIcon: Icon(Icons.face,color: Colors.grey,), enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: Column( crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // FistName
+            TextField(
+              focusNode: focus_fName,style: (isEditProfile) ?
+            TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+              decoration: InputDecoration(hintText: (globals.currentUser.first_name == null
+                  || globals.currentUser.first_name == "" ) ?
+              AppLocalizations.of(context).translate('signin_firstname_placeholder')  : globals.currentUser.first_name,
+                  prefixIcon: Icon(Icons.person, color: Colors.grey,),enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Configurations.themColor),
-                ),
-              ),cursorColor: Configurations.themColor,
+                ),),cursorColor: Configurations.themColor,
+              controller: (globals.name == "")
+                  ? prfl_fname : prfl_fname ..text = globals.name,
+              onChanged: setName,
             ),
-          ),
-       //   setDropDown(),
-          Visibility(
-            visible: isEditProfile,
-            child: Padding(padding: EdgeInsets.only(left: 10), child: setDropDown(),),
-          ),
+
+            // LastName
+            TextField(
+              focusNode: focus_lName,style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+              decoration: InputDecoration(hintText: (globals.currentUser.last_name == null || globals.currentUser.last_name == "") ?
+              AppLocalizations.of(context).translate('signin_lastname_placeholder') : globals.currentUser.last_name,
+                  prefixIcon: Icon(Icons.person,color: Colors.grey,),enabled: isEditProfile,
+                labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),),cursorColor: Configurations.themColor,
+              controller: (globals.lname == "")
+                  ? prfl_lname : prfl_lname ..text = globals.lname,
+              onChanged: setLname,
+            ),
+
+            // EMAIL
+            TextField(
+              focusNode: focus_email,
+              style: (enableEmail) ?
+            TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+              decoration: InputDecoration(hintText: (globals.currentUser.email == null ||
+                  globals.currentUser.email == "") ? AppLocalizations.of(context).translate('inquiry_txt_email')  : globals.currentUser.email,
+                  prefixIcon: Icon(Icons.email,  color: Colors.grey,),enabled: enableEmail,
+                labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),), cursorColor: Configurations.themColor,
+
+              controller: (globals.email == "")
+                  ? prfl_email : prfl_email ..text = globals.email,
+              onChanged: setMail,
+
+            ),
+
+            // PHONE
+            TextField(
+              focusNode: focus_no, style: (isEditProfile) ? TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+              decoration: InputDecoration(hintText: ( globals.currentUser.contact == null ) ? AppLocalizations.of(context).translate('txt_phn_no')  : globals.currentUser.contact,
+                prefixIcon: Icon(Icons.call,color: Colors.grey,),enabled: isEditProfile,  labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),), cursorColor: Configurations.themColor,
+              controller: (globals.num== "")
+                  ? prfl_contact : prfl_contact ..text = globals.num,
+               keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+              onChanged: setNum,
+            ),
+
+            Visibility( visible: !isEditProfile,
+              // Gender
+              child: TextField(
+                decoration: InputDecoration(
+                    hintText: ( gender == null) ? AppLocalizations.of(context).translate('txt_not_selected'): AppLocalizations.of(context).translate(globals.currentUser.gender),
+                    prefixIcon: Icon(Icons.face,color: Colors.grey,), enabled: isEditProfile, labelStyle: TextStyle(color: Colors.grey),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Configurations.themColor),
+                  ),
+                ),cursorColor: Configurations.themColor,
+              ),
+            ),
+         //   setDropDown(),
+            Visibility(
+              visible: isEditProfile,
+              child: Padding(padding: EdgeInsets.only(left: 10), child: setDropDown(),),
+            ),
 
 
 
@@ -1266,26 +1318,26 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //                  ],
 //                ),)),
 
-          Visibility( visible: isEditProfile,
-           child: Container(
-               decoration: myBoxDecoration(),
-               child: Padding(padding: EdgeInsets.only(left: 10),
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.start,
-                   children: <Widget>[
-                     Icon(Icons.language, color: Colors.grey,),
-                     SizedBox(width: 10,),
-                     Text(AppLocalizations.of(context).translate('English')),
-                     Checkbox(value: _english, onChanged: _selecteEnglish),
-                     SizedBox(width: 1,),
-                     Text(AppLocalizations.of(context).translate('Arabic')),
-                     Checkbox(value: _arabic, onChanged: _selecteArabic),
-                   ],
-                 ),)),
-           ),
+            Visibility( visible: isEditProfile,
+             child: Container(
+                 decoration: myBoxDecoration(),
+                 child: Padding(padding: EdgeInsets.only(left: 10),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     children: <Widget>[
+                       Icon(Icons.language, color: Colors.grey,),
+                       SizedBox(width: 10,),
+                       Text(AppLocalizations.of(context).translate('English')),
+                       Checkbox(value: _english, onChanged: _selecteEnglish),
+                       SizedBox(width: 1,),
+                       Text(AppLocalizations.of(context).translate('Arabic')),
+                       Checkbox(value: _arabic, onChanged: _selecteArabic),
+                     ],
+                   ),)),
+             ),
 
 
-          // Services
+            // Services
 //          if(globals.currentUser.roles[0].slug == "provider")
 //            Visibility( visible: !isEditProfile,
 //              child:  TextField(style: TextStyle(color: Colors.grey),
@@ -1297,45 +1349,48 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //            ),
 
 
-          // Radius
-          if(globals.currentUser.roles[0].slug == "provider")
-          TextField(
-            focusNode: focus_radius, style: (isEditProfile) ?
-          TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
-            decoration: InputDecoration(hintText: ServiceRadiusHint,
-              prefixIcon: Icon(Icons.location_searching,color: Colors.grey),
-              enabled: isEditProfile,
-              labelStyle: TextStyle(color: Colors.grey),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Configurations.themColor),
-              ),),cursorColor: Configurations.themColor,
-            controller: (ServiceRadiusHint == "0")
-                ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,
-            keyboardType: TextInputType.number,
-          ),
-
-          // SERVICES
-          if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null)
-
-            Padding(
-              padding: EdgeInsets.only(left: 0, right: 0),
-              child: Container(
-//                decoration: BoxDecoration(
-//                    border: Border.all(width: 0.9)),
-                child: ListTile(
-                  onTap: enterServices,
-                  leading: Icon(Icons.work),
-                  title: Text(
-                      (ServiceSelectionUIPageState.serviceNamesString == "")
-                          ? AppLocalizations.of(context).translate('init_services')
-                          : AppLocalizations.of(context).translate('init_your_services')),
-                  subtitle:
-                  Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? services : ServiceSelectionUIPageState.serviceNamesString),
-                ),
-              ),
+            // Radius
+            if(globals.currentUser.roles[0].slug == "provider")
+            TextField(
+              focusNode: focus_radius, style: (isEditProfile) ?
+            TextStyle(color: Colors.black) : TextStyle(color: Colors.grey),
+              decoration: InputDecoration(hintText: ServiceRadiusHint,
+                prefixIcon: Icon(Icons.location_searching,color: Colors.grey),
+                enabled: isEditProfile,
+                labelStyle: TextStyle(color: Colors.grey),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Configurations.themColor),
+                ),),cursorColor: Configurations.themColor,
+              controller:(globals.rad == "")
+                  ? prfl_radius : prfl_radius ..text = globals.rad,
+//              (ServiceRadiusHint == "0")
+//                  ? prfl_radius : prfl_radius ..text = ServiceRadiusHint ,
+              keyboardType: TextInputType.numberWithOptions(signed: true, decimal: true),
+              onChanged: setRadius,
             ),
 
-         //  Address
+            // SERVICES
+            if (globals.currentUser.roles[0].slug == "provider" && globals.currentUser.org_id == null)
+
+              Padding(
+                padding: EdgeInsets.only(left: 0, right: 0),
+                child: Container(
+//                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.9)),
+                  child: ListTile(
+                    onTap: enterServices,
+                    leading: Icon(Icons.work),
+                    title: Text(
+                        (ServiceSelectionUIPageState.serviceNamesString == "")
+                            ? AppLocalizations.of(context).translate('init_services')
+                            : AppLocalizations.of(context).translate('init_your_services')),
+                    subtitle:
+                    Text((ServiceSelectionUIPageState.serviceNamesString == null || ServiceSelectionUIPageState.serviceNamesString == "") ? services : ServiceSelectionUIPageState.serviceNamesString),
+                  ),
+                ),
+              ),
+
+           //  Address
 //          Visibility( visible: !isEditProfile,
 //            child: TextField(style: TextStyle(color: Colors.grey),
 //              focusNode: focus_address,
@@ -1435,12 +1490,30 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //            ),
 //          )
 //            ,)
-        ],
+          ],
 
+        ),
       ),
     );
   }
+  String fname, lname, num, eMail, radi;
 
+  void setName(String str){
+    globals.name = str;
+
+  }
+   void setLname(String str){
+    globals.lname = str;
+   }
+  void setMail(String str){
+    globals.email = str;
+  }
+  void setNum(String str){
+    globals.num = str;
+  }
+  void setRadius(String str){
+    globals.rad = str;
+  }
   void enterServices() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ServiceSelectionUIPage(isInitialScreen: 0,)));
@@ -2123,6 +2196,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   List<String> languages = new List<String>();
   void _selecteEnglish(bool value) {
     setState(() {
+      fname = prfl_fname.text;
+      lname = prfl_lname.text;
+      num = prfl_contact.text;
+      eMail = prfl_email.text;
+      if(globals.currentUser.provider != null){
+        radi = prfl_radius.text;
+      }
+
       _english = value;
       if(languages.contains("English")) {
         languages.remove("English");
@@ -2133,6 +2214,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
   }
   void _selecteArabic(bool value) {
     setState(() {
+      fname = prfl_fname.text;
+      lname = prfl_lname.text;
+      num = prfl_contact.text;
+      eMail = prfl_email.text;
       _arabic = value;
       if(languages.contains("Arabic")) {
         languages.remove("Arabic");

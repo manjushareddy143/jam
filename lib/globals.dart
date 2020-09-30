@@ -32,6 +32,11 @@ File customImage;
 String customGender;
 String customContact;
 String customFirstName;
+String name;
+String lname;
+String email;
+String num;
+String rad;
 List<String> customLanguage = new List<String>();
 List<Order> listofOrders;
 

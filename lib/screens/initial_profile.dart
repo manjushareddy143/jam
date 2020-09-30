@@ -114,6 +114,7 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
         print(globals.customFirstName);
         firstName = globals.customFirstName;
       } else {
+        globals.customFirstName = globals.currentUser.first_name;
         firstName = globals.currentUser.first_name;
       }
 
