@@ -582,7 +582,7 @@ class _vendorSignup extends State<VendorSignup>{
   }
 
   _launchURL() async {
-    const url = "http://www.savitriya.com/privacy-policy/";
+    const url = Configurations.BASE_URL + "/Terms_and_Condition_JAM.html";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
