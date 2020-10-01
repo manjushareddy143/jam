@@ -22,10 +22,12 @@ import 'package:jam/screens/download.dart';
 import 'package:jam/widget/widget_helper.dart';
 import 'package:open_file/open_file.dart';
 //import 'package:native_pdf_view/native_pdf_view.dart';
+import 'dart:io' show Platform;
 
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:url_launcher/url_launcher.dart';
 
 //import 'package:path_provider/path_provider.dart';
 
@@ -328,13 +330,23 @@ class _DetailUIPageState extends State<DetailUIPage> {
                             Text(AppLocalizations.of(context).translate('download_invoice'), style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
                             ),],),
                         onTap: () async {
-                          Widget_Helper.showLoading(context);
-                          DownLoadHelper down = new DownLoadHelper();
-                          String status = await down.downloadFile(setState, order.id.toString());
 
-                          Widget_Helper.dismissLoading(context);
-                          final result = await OpenFile.open(status);
-                          printLog(result);
+
+                          if(Platform.isIOS) {
+                            final invoiceURL = Configurations.INVOICE_DOWNLALD_URL +  "?id=" + order.id.toString();
+                            print(invoiceURL);
+                            _launchURL(invoiceURL);
+                          } else {
+
+                            Widget_Helper.showLoading(context);
+                            DownLoadHelper down = new DownLoadHelper();
+                            String status = await down.downloadFile(setState, order.id.toString());
+
+                            Widget_Helper.dismissLoading(context);
+                            final result = await OpenFile.open(status);
+                            printLog(result);
+
+                          }
                         } ,
                       ),
                     ),
@@ -350,6 +362,15 @@ class _DetailUIPageState extends State<DetailUIPage> {
       ],
     );
    }
+
+  _launchURL(url) async {
+//    const url = Configurations.BASE_URL + "/Terms_and_Condition_JAM.html";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw AppLocalizations.of(context).translate('launch_url')+' $url';
+    }
+  }
 
    Widget CardDetails (){
      String statusString = "";
@@ -992,150 +1013,150 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
   }
 
-  Widget detailUI(){
-     return SingleChildScrollView(
-         child: Column(mainAxisSize: MainAxisSize.min,
-         //crossAxisAlignment: CrossAxisAlignment.end,
-         children: <Widget>[
-           setOrderInfo(),
-           setServiceInfo(),
-           detailInfo(),
-           Visibility(child: invoiceDetails(),
-           visible: (order.status == 6 || order.status == 5) ? true : false,),
-
-           if(order.status == 5)
-           ButtonTheme(
-             minWidth: 270.0,
-             child:  RaisedButton(
-                 color: Configurations.themColor,
-                 textColor: Colors.white,
-                 child:  Text(
-                     AppLocalizations.of(context).translate('download_invoice'),
-                     style: TextStyle(fontSize: 16.5)
-                 ),
-               onPressed: () async {
-                   Widget_Helper.showLoading(context);
-                   DownLoadHelper down = new DownLoadHelper();
-                   String status = await down.downloadFile(setState, order.id.toString());
-                   Widget_Helper.dismissLoading(context);
-                   final result = await OpenFile.open(status);
-               },
-             ),
-           ),
-           Row(
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: <Widget>[
-               if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
-               ButtonTheme(
-                 child:  RaisedButton(
-                     color: Configurations.themColor,
-                     textColor: Colors.white,
-                     child: Row(
-                       children: <Widget>[
-                         Icon(Icons.check_circle, color: Colors.white, size: 20,),
-                         SizedBox(width: 10,),
-                         Text(
-                             AppLocalizations.of(context).translate('accept'),
-                             style: TextStyle(fontSize: 14)
-                         ),
-                       ],
-                     ),
-                     onPressed: () => {
-                       print("Accept"),
-                       orderAccept()
-                     }
-                 ),
-               ),
-
-               if(order.status == 2 && this.isCustomer == false)
-                 ButtonTheme(
-                   child:  RaisedButton(
-                       color: Configurations.themColor,
-                       textColor: Colors.white,
-                       child: Row(
-                         children: <Widget>[
-                           Icon(Icons.attach_money, color: Colors.white, size: 20,),
-                           SizedBox(width: 8,),
-                           Text(
-                               AppLocalizations.of(context).translate('submit_invoice'),
-                               style: TextStyle(fontSize: 14)
-                           ),
-                         ],
-                       ),
-                       onPressed: () => {
-                         print("COmplete"),
-                         insertIvoiceDetail(),
-//                         showDialog(
+//  Widget detailUI(){
+//     return SingleChildScrollView(
+//         child: Column(mainAxisSize: MainAxisSize.min,
+//         //crossAxisAlignment: CrossAxisAlignment.end,
+//         children: <Widget>[
+//           setOrderInfo(),
+//           setServiceInfo(),
+//           detailInfo(),
+//           Visibility(child: invoiceDetails(),
+//           visible: (order.status == 6 || order.status == 5) ? true : false,),
+//
+//           if(order.status == 5)
+//           ButtonTheme(
+//             minWidth: 270.0,
+//             child:  RaisedButton(
+//                 color: Configurations.themColor,
+//                 textColor: Colors.white,
+//                 child:  Text(
+//                     AppLocalizations.of(context).translate('download_invoice'),
+//                     style: TextStyle(fontSize: 16.5)
+//                 ),
+//               onPressed: () async {
+//                   Widget_Helper.showLoading(context);
+//                   DownLoadHelper down = new DownLoadHelper();
+//                   String status = await down.downloadFile(setState, order.id.toString());
+//                   Widget_Helper.dismissLoading(context);
+//                   final result = await OpenFile.open(status);
+//               },
+//             ),
+//           ),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               if(order.status == 1 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+//               ButtonTheme(
+//                 child:  RaisedButton(
+//                     color: Configurations.themColor,
+//                     textColor: Colors.white,
+//                     child: Row(
+//                       children: <Widget>[
+//                         Icon(Icons.check_circle, color: Colors.white, size: 20,),
+//                         SizedBox(width: 10,),
+//                         Text(
+//                             AppLocalizations.of(context).translate('accept'),
+//                             style: TextStyle(fontSize: 14)
+//                         ),
+//                       ],
+//                     ),
+//                     onPressed: () => {
+//                       print("Accept"),
+//                       orderAccept()
+//                     }
+//                 ),
+//               ),
+//
+//               if(order.status == 2 && this.isCustomer == false)
+//                 ButtonTheme(
+//                   child:  RaisedButton(
+//                       color: Configurations.themColor,
+//                       textColor: Colors.white,
+//                       child: Row(
+//                         children: <Widget>[
+//                           Icon(Icons.attach_money, color: Colors.white, size: 20,),
+//                           SizedBox(width: 8,),
+//                           Text(
+//                               AppLocalizations.of(context).translate('submit_invoice'),
+//                               style: TextStyle(fontSize: 14)
+//                           ),
+//                         ],
+//                       ),
+//                       onPressed: () => {
+//                         print("COmplete"),
+//                         insertIvoiceDetail(),
+////                         showDialog(
+////                           context: context,
+////                           builder: (BuildContext context) {
+////                             return buildCompleteDialog(context);
+////
+////                           },
+////                         )
+//                       }
+//                   ),
+//                 ),
+//               if(order.status == 6 && this.isCustomer == false)
+//                 ButtonTheme(
+//                   child:  RaisedButton(
+//                       color: Configurations.themColor,
+//                       textColor: Colors.white,
+//                       child: Row(
+//                         children: <Widget>[
+//                           Icon(Icons.thumb_up, color: Colors.white, size: 20,),
+//                           SizedBox(width: 8,),
+//                           Text(
+//                               AppLocalizations.of(context).translate('complete'),
+//                               style: TextStyle(fontSize: 14)
+//                           ),
+//                         ],
+//                       ),
+//                       onPressed: () => {
+//                         print("COmplete"),
+//
+//                   showDialog(
 //                           context: context,
 //                           builder: (BuildContext context) {
-//                             return buildCompleteDialog(context);
-//
+//                            return buildCompleteDialog(context);
+////
 //                           },
 //                         )
-                       }
-                   ),
-                 ),
-               if(order.status == 6 && this.isCustomer == false)
-                 ButtonTheme(
-                   child:  RaisedButton(
-                       color: Configurations.themColor,
-                       textColor: Colors.white,
-                       child: Row(
-                         children: <Widget>[
-                           Icon(Icons.thumb_up, color: Colors.white, size: 20,),
-                           SizedBox(width: 8,),
-                           Text(
-                               AppLocalizations.of(context).translate('complete'),
-                               style: TextStyle(fontSize: 14)
-                           ),
-                         ],
-                       ),
-                       onPressed: () => {
-                         print("COmplete"),
-
-                   showDialog(
-                           context: context,
-                           builder: (BuildContext context) {
-                            return buildCompleteDialog(context);
+//                       }
+//                   ),
+//                 ),
+//               if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
+//               SizedBox(width: 50,),
+//               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
+//               ButtonTheme(
+//                 child:  RaisedButton(
+//                     color: Configurations.themColor,
+//                     textColor: Colors.white,
+//                     child: Row(
+//                       children: <Widget>[
+//                         Icon(Icons.cancel, color: Colors.white, size: 20,),
+//                         SizedBox(width: 10,),
+//                         Text(
+//                             AppLocalizations.of(context).translate('cancel'),
+//                             style: TextStyle(fontSize: 14)
+//                         ),
+//                       ],
+//                     ),
+//                     onPressed: () => {
+//                       showDialog(
+//                         context: context,
+//                         builder: (BuildContext context) {
+//                           return buildCancelDialog(context);
 //
-                           },
-                         )
-                       }
-                   ),
-                 ),
-               if(order.status != 5 && order.status != 4 && order.status != 3 && this.isCustomer == false)
-               SizedBox(width: 50,),
-               if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6)
-               ButtonTheme(
-                 child:  RaisedButton(
-                     color: Configurations.themColor,
-                     textColor: Colors.white,
-                     child: Row(
-                       children: <Widget>[
-                         Icon(Icons.cancel, color: Colors.white, size: 20,),
-                         SizedBox(width: 10,),
-                         Text(
-                             AppLocalizations.of(context).translate('cancel'),
-                             style: TextStyle(fontSize: 14)
-                         ),
-                       ],
-                     ),
-                     onPressed: () => {
-                       showDialog(
-                         context: context,
-                         builder: (BuildContext context) {
-                           return buildCancelDialog(context);
-
-                         },
-                       )
-                     }
-                 ),
-               ),
-             ],
-           ),
-         ]),
-     );
-  }
+//                         },
+//                       )
+//                     }
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ]),
+//     );
+//  }
 
 
  Widget setOrderInfo(){
