@@ -91,6 +91,14 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
       globals.name = globals.currentUser.first_name;
       fname = globals.currentUser.first_name;
     }
+//    if(globals.addName != null) {
+//      print(globals.addName);
+//
+//      adName = globals.addName;
+//    } else {
+//      globals.addName = globals.currentUser.addres;
+//      adName = globals.currentUser.first_name;
+//    }
 
     if(globals.currentUser.provider != null){
       if(globals.rad != null) {
@@ -1600,6 +1608,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     } else if(_image != null) {
       apiCall(data);
     }
+    globals.name=null;
+    globals.lname=null;
+    globals.email=null;
+    globals.num=null;
+    globals.rad=null;
+   
   }
 
   void apiCall(Map data) async {
@@ -1672,6 +1686,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
         singleAddress = Address(editAddress.id, editAddress.address_line1, editAddress.address_line2,
             editAddress.landmark, editAddress.district, editAddress.city, editAddress.postal_code, editAddress.location, editAddress.user_id, editAddress.name,
             editAddress.default_address);
+        globals.addName =editAddress.name;
+        globals.addBuilding=editAddress.address_line1;
+        globals.addStreet =editAddress.address_line2;
+        globals.addZone=editAddress.landmark;
+        globals.addLandline =editAddress.postal_code;
       } else {
         if(singleAddress.name == null || singleAddress.name == "") {
           singleAddress = Address(singleAddress.id, globals.addressLocation.featureName, globals.addressLocation.subLocality, "",
@@ -1763,8 +1782,9 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                       borderSide: BorderSide(color: Configurations.themColor),
                                     ),
                                   ),cursorColor: Configurations.themColor,
-                                  controller: (singleAddress.name == "")
-                                      ? adrs_name : adrs_name ..text = singleAddress.name,
+                                  controller: (globals.addName =="")? adrs_name :adrs_name ..text =globals.addName,
+//                                  (singleAddress.name == "")
+//                                      ? adrs_name : adrs_name ..text = singleAddress.name,
                                   validator: (value) {
                                     if (value.isEmpty) {
                                       return AppLocalizations.of(context)
@@ -1772,6 +1792,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                     }
                                     return null;
                                   },
+                                  onChanged: setAddName,
                                 ),
 
                                 Row(
@@ -1789,8 +1810,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                             borderSide: BorderSide(color: Configurations.themColor),
                                           ),
                                         ),cursorColor: Configurations.themColor,
-                                        controller: (singleAddress.address_line1 == "")
-                                            ? adrs_line1 : adrs_line1 ..text = singleAddress.address_line1,
+                                        controller: (globals.addBuilding =="")? adrs_line1 :adrs_line1 ..text =globals.addBuilding,
+//                                        (singleAddress.address_line1 == "")
+//                                            ? adrs_line1 : adrs_line1 ..text = singleAddress.address_line1,
+
 //                                        validator: (value) {
 //                                          if (value.isEmpty) {
 //                                            return AppLocalizations.of(context)
@@ -1798,6 +1821,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //                                          }
 //                                          return null;
 //                                        },
+                                      onChanged: setAddBuilding,
                                       ),
                                     ),
                                     SizedBox(
@@ -1816,8 +1840,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                               borderSide: BorderSide(color: Configurations.themColor),
                                             ),
                                           ),cursorColor: Configurations.themColor,
-                                          controller: (singleAddress.address_line2 == "") ? adrs_line2 : adrs_line2
-                                            ..text = singleAddress.address_line2
+                                          controller:(globals.addStreet =="")? adrs_line2 :adrs_line2..text =globals.addStreet,
+//                                          (singleAddress.address_line2 == "") ? adrs_line2 : adrs_line2
+//                                            ..text = singleAddress.address_line2,
+                                        onChanged: setAddStreet,
+
                                       ),
                                     ),
                                   ],
@@ -1833,8 +1860,10 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                             labelText: AppLocalizations.of(context)
                                                 .translate('landmark_placeholder'),
                                           ),
-                                          controller: (singleAddress.landmark == "") ? adrs_landmark : adrs_landmark
-                                            ..text = singleAddress.landmark
+                                          controller: (globals.addZone =="")? adrs_landmark :adrs_landmark ..text =globals.addZone,
+//                                          (singleAddress.landmark == "") ? adrs_landmark : adrs_landmark
+//                                            ..text = singleAddress.landmark,
+                                        onChanged: setAddZone,
                                       ),
                                     ),
 
@@ -1853,9 +1882,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                                             borderSide: BorderSide(color: Configurations.themColor),
                                           ),
                                         ),cursorColor: Configurations.themColor,
-                                        controller: (singleAddress.postal_code == "") ?
-                                        adrs_postalcode : adrs_postalcode
-                                          ..text = singleAddress.postal_code,
+                                        controller: (globals.addLandline =="")? adrs_postalcode :adrs_postalcode ..text =globals.addLandline,
+//                                        (singleAddress.postal_code == "") ?
+//                                        adrs_postalcode : adrs_postalcode
+//                                          ..text = singleAddress.postal_code,
+
+
+
 //                                        validator: (value) {
 //                                          if (value.isEmpty) {
 //                                            return AppLocalizations.of(context)
@@ -1863,6 +1896,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 //                                          }
 //                                          return null;
 //                                        },
+                                      onChanged: setAddLandline,
                                       ),
                                     )
 //
@@ -1939,6 +1973,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                             Theme(data:ThemeData(unselectedWidgetColor: Configurations.themColor),
                               child: Checkbox(value: _value1, onChanged: (value) {
                                 setState(() {
+                                  globals.addName = adrs_name.text;
+                                  globals.addBuilding=adrs_line1.text;
+                                  globals.addStreet =adrs_line2.text;
+                                  globals.addZone =adrs_landmark.text;
+                                  globals.addLandline=adrs_postalcode.text;
                                   _value1 = value;
                                 });
                               } ), ),
@@ -1970,7 +2009,22 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
               );
             }));
   }
-
+ // String adName;
+   void setAddName (String str){
+    globals.addName =str;
+   }
+  void setAddBuilding (String str){
+    globals.addBuilding =str;
+  }
+  void setAddStreet (String str){
+    globals.addStreet =str;
+  }
+  void setAddZone(String str){
+    globals.addZone =str;
+  }
+  void setAddLandline(String str){
+    globals.addLandline =str;
+  }
 
   Set<Marker> _markers = {};
   BitmapDescriptor pinLocationIcon;
@@ -2086,6 +2140,12 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
                 adrs_postalcode.text;
             print("addressString == $addressString");
             AddAddress(setState, isNewAddress, editAddress);
+            globals.addName = null;
+            globals.addBuilding= null;
+            globals.addStreet = null;
+            globals.addZone= null;
+            globals.addLandline=null;
+
 
 
 

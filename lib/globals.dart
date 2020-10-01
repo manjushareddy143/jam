@@ -37,6 +37,11 @@ String lname;
 String email;
 String num;
 String rad;
+String addName;
+String addBuilding;
+String addStreet;
+String addZone;
+String addLandline;
 List<String> customLanguage = new List<String>();
 List<Order> listofOrders;
 
