@@ -664,21 +664,26 @@ class _vendorSignup extends State<VendorSignup>{
           getOTP(phone);
         }
         else if(Platform.isIOS) {
-          Map<String, String> data = new Map();
-          data["contact"] = selecteCode + txtContact.text;
-          data["password"] = txtPass.text;
-          if(globals.isCustomer == true) {
-            data["type_id"] = "4";
-            data["term_id"] = "1";
-          } else {
-            data["first_name"] = txtName.text;
-            data["last_name"] = txtLname.text;
-            data["email"] = txtEmail.text;
-            data["type_id"] = "3";
-            data["term_id"] = "2";
-            data["resident_country"] = selectedCountry;
-          }
-          callLoginAPI(data);
+          Widget_Helper.showLoading(context);
+
+          String phone = selecteCode + txtContact.text;
+          getOTP(phone);
+
+//          Map<String, String> data = new Map();
+//          data["contact"] = selecteCode + txtContact.text;
+//          data["password"] = txtPass.text;
+//          if(globals.isCustomer == true) {
+//            data["type_id"] = "4";
+//            data["term_id"] = "1";
+//          } else {
+//            data["first_name"] = txtName.text;
+//            data["last_name"] = txtLname.text;
+//            data["email"] = txtEmail.text;
+//            data["type_id"] = "3";
+//            data["term_id"] = "2";
+//            data["resident_country"] = selectedCountry;
+//          }
+//          callLoginAPI(data);
         }
       } else {
         showInfoAlert(context, AppLocalizations.of(globals.context).translate('terms'));
