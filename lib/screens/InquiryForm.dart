@@ -53,6 +53,7 @@ class _InquiryPageState extends State<InquiryPage> {
 //   bool subCategory ;
   final txtName = TextEditingController();
   final txtService =TextEditingController();
+  final txtPrice = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
   final txtRemark = TextEditingController();
@@ -111,6 +112,7 @@ class _InquiryPageState extends State<InquiryPage> {
       _lstSubCategory.add(this.category);
     }
     print("DATA === ${globals.guest}");
+   // print("Price====${provider.price}");
 
     if(globals.guest == false) {
 
@@ -298,6 +300,25 @@ class _InquiryPageState extends State<InquiryPage> {
 
       Visibility(visible: (this.category != null),
           child: setDropDown1()),
+
+      SizedBox(height: 10,),
+      TextFormField(
+        readOnly: true,
+        //focusNode: focus_service,
+        decoration: InputDecoration( suffixIcon: Icon(Icons.work, color: Colors.grey),
+          contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+          disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor,
+            width: 1,  ),),
+          labelText: AppLocalizations.of(context).translate('price_txt'), labelStyle: TextStyle(color: Colors.grey),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Configurations.themColor),
+          ),),cursorColor: Configurations.themColor,
+        controller: txtPrice..text = provider.price,
+        enabled: false,
+
+
+
+      ),
       SizedBox(height: 10,),
 
       TextFormField(

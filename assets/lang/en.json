@@ -230,7 +230,8 @@
   "select_img": "Select the image source",
   "rate": "Rating",
   "comment": "Comment here",
-  "primary": "Primary Service"
+  "primary": "Primary Service",
+  "price_txt": "Price"
 
 
 
