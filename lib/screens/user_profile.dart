@@ -339,6 +339,7 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
             await httpClient.postRequest(context, Configurations.LOGOUT_URL, data, false);
         processLogoutResponse(syncUserResponse);
 
+
     } on Exception catch (e) {
       if (e is Exception) {
         printExceptionLog(e);
@@ -375,6 +376,11 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
     globals.customContact = null;
     globals.customFirstName = null;
     globals.customLanguage = null;
+    globals.name=null;
+    globals.lname=null;
+    globals.email=null;
+    globals.num=null;
+    globals.rad=null;
 
     //  globals.currentUser.address =null;
     ServiceSelectionUIPageState.serviceNamesString = null;
