@@ -581,7 +581,8 @@ class _DetailUIPageState extends State<DetailUIPage> {
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,20.0,0,0),
                    child: Row(children :[
-                     Text(AppLocalizations.of(context).translate('txt_service_detail')+ " ", style:
+                     Text(AppLocalizations.of(context).translate('txt_service_detail')+ " ",
+                       style:
                      TextStyle(color: Configurations.themColor,
                          fontWeight: FontWeight.w700,fontSize: 16),),
                      Padding(
@@ -626,10 +627,14 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
                          Text(AppLocalizations.of(context).translate('txt_services')+" ", style:
                          TextStyle(color: Colors.black,
-                             fontWeight: FontWeight.w500,fontSize: 14),),
-                         Text((globals.localization == 'ar_SA') ? globals.order.service.arabic_name : globals.order.service.name , style:
-                         TextStyle(color: Colors.black,
-                             fontWeight: FontWeight.w300,fontSize: 14),)
+                             fontWeight: FontWeight.w500,fontSize: 14), maxLines: 2,),
+                         SizedBox(width: 5,),
+                         Flexible(
+                           child: Text((globals.localization == 'ar_SA') ?
+                           globals.order.service.arabic_name : globals.order.service.name , style:
+                           TextStyle(color: Colors.black,
+                               fontWeight: FontWeight.w300,fontSize: 14), maxLines: 2,),
+                         )
 
                        ],
                      )
