@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
-
+import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -248,6 +248,7 @@ class _user extends State<UserLogin>{
                         Text(AppLocalizations.of(context).translate('txt_remember'),style: TextStyle(color: Colors.black), ),
                         Spacer(),
                         FlatButton(onPressed:(){
+                          showChangePass = true;
                           showDialog(context:  context,
                             builder: (BuildContext context) => setPasswordAgain(context),);
                         },child: Text(AppLocalizations.of(context).translate('txt_forget'),  style: TextStyle( color: Configurations.themColor),)),
@@ -334,6 +335,49 @@ class _user extends State<UserLogin>{
                       child: Text(AppLocalizations.of(context).translate('txt_skip'),
                         textAlign: TextAlign.center,style: TextStyle( color: Colors.grey,),),
                     ),
+                    Visibility(
+                      visible: _showOTPField,
+                      //visible:true,
+                      child:
+                      Column(mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 30),
+                          Text(
+                            AppLocalizations.of(context).translate('otp'),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0, color: Configurations.themColor),
+                          ),
+                          Container(padding: EdgeInsets.all(0),
+                            width: 320,
+                            height: 50,
+                            child: PinEntryTextField(//fieldWidth: 500, fontSize: 100,
+                              showFieldAsBox: false,
+                              fields: 6,
+                              onSubmit: submitPin,
+                            ),
+                          ),
+
+                          SizedBox(height: 10),
+
+                          ButtonTheme(
+                            minWidth: 300.0,
+                            child:  RaisedButton(
+                                color: Configurations.themColor,
+                                textColor: Colors.white,
+                                child:  Text(
+                                    AppLocalizations.of(context).translate('next'),
+                                    style: TextStyle(fontSize: 16.5)
+                                ),
+                                onPressed: () {
+                                  otpVerification();
+                                }
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
 
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -352,7 +396,70 @@ class _user extends State<UserLogin>{
       ),
     );
   }
+  String pinCode = "";
+  submitPin(String pin) {
+    pinCode = pin;
+  }
+  void otpVerification() async {
+    if(pinCode != "" && pinCode.length > 5) {
+      Widget_Helper.showLoading(context);
+      await _signInWithPhoneNumber(pinCode);
+    } else {
+      showInfoAlert(context, AppLocalizations.of(context).translate('enter_otp'));
+    }
 
+  }
+  Future  _signInWithPhoneNumber(String smsCode) async {
+    _authCredential = PhoneAuthProvider.getCredential(
+      verificationId: actualCode,
+      smsCode: smsCode,
+    );
+
+    firebaseAuth.signInWithCredential(_authCredential)
+        .then((AuthResult value) {
+      if (value.user != null) {
+        setState(() {
+
+
+          resetPassword("contact", txtno.text, setState);
+//          Map<String, String> data = new Map();
+//          data["password"] = txtPass.text;
+//          data["contact"] =  txtno.text;
+//          if(globals.isCustomer == true) {
+//            data["type_id"] = "4";
+//            data["term_id"] = "1";
+//          } else {
+//            data["email"] = txtEmail.text;
+//            data["first_name"] = txtName.text;
+//            data["last_name"] = txtLname.text;
+//            data["type_id"] = "3";
+//            data["term_id"] = "2";
+//            data["resident_country"] = selectedCountry;
+//          }
+//          callLoginAPI(data);
+
+        });
+
+
+
+      } else {
+        setState(() {
+          status = AppLocalizations.of(context).translate('invalid');
+          Widget_Helper.dismissLoading(context);
+          showInfoAlert(context, status);
+        });
+      }
+    }).catchError((error) {
+      setState(() {
+        Widget_Helper.dismissLoading(context);
+        showInfoAlert(context, error.message);
+        _showOTPField = false;
+        _hideSocialSignin = true;
+        _fridgeEdit = true;
+
+      });
+    });
+  }
   void signinWithGmail() {
     Widget_Helper.showLoading(context);
     signInWithGoogle()
@@ -713,7 +820,7 @@ class _user extends State<UserLogin>{
   final newPass = TextEditingController();
   final confPass = TextEditingController();
   Widget setPasswordAgain(BuildContext context){
-    showChangePass = false;
+  //  showChangePass = true;
     return AlertDialog(
       title: Center(
         child: Text(
@@ -726,153 +833,155 @@ class _user extends State<UserLogin>{
       ),
       content: StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
        return Container( height: 250,
-        child: Column(
-          children: <Widget>[
-
-            Visibility(child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: TextFormField(controller: txtemail,
-                      obscureText: false,
-                      cursorColor: Configurations.themColor,
-                      decoration: InputDecoration(
-                          suffixIcon: Icon(Icons.email, color: Configurations.themColor),
-                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(
-                            color: Configurations.themColor,
-                            width: 0.9,
-                          ),
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          labelText: AppLocalizations.of(context).translate('forgot_email_placeholder'),labelStyle: TextStyle(color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Configurations.themColor),
-                        ),)
-                  ),
-                ),
-                Text(AppLocalizations.of(context).translate('txt_or'),style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.grey
-                ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child:
-                  TextFormField(
-                    controller: txtno,
-                    obscureText: false,
-                    decoration: InputDecoration(
-                        suffixIcon: Icon(Icons.phone, color: Configurations.themColor),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Configurations.themColor,
-                            width: 0.9,
-                          ),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        ),
-                        labelText: AppLocalizations.of(context).translate('forgot_number_placeholder'),labelStyle: TextStyle(color: Colors.grey),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Configurations.themColor),
-                      ),),
-                    keyboardType: TextInputType.phone,
-                    cursorColor: Configurations.themColor,
-                  ),
-                ),
-                SizedBox(height: 10,),
-                ButtonTheme(minWidth: 300,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                      // side: BorderSide(color: Colors.red)
-                    ),
-                    color: Configurations.themColor,
-                    textColor: Colors.white,
-                    child: Text(AppLocalizations.of(context).translate('btn_submit')),
-                    onPressed: (){
-                      validateer(setState);
-                    },
-
-                  ),)
-              ],
-            ),
-              visible: !showChangePass,
-            ),
-
-            Visibility(child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: TextFormField(controller: newPass,
-                      obscureText: obscureText2,
-                      decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: (){
-                              obscureText2 = !obscureText2;
-                              setState(() {
-
-                              });
-                            },
-                            color: Colors.grey,
-                            icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
-
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          labelText: AppLocalizations.of(context).translate('newpwd'),
-                        labelStyle: TextStyle(color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Configurations.themColor),
-                        ),), cursorColor: Configurations.themColor,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: TextFormField(controller: confPass,
-                      obscureText: obscureText3,
-                      decoration: InputDecoration(
-                          suffixIcon:  IconButton(
-                            onPressed: (){
-                              obscureText3 = !obscureText3;
-                              setState(() {
-
-                              });
-                            },
-                            color: Colors.grey,
-                            icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                          labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),
-                        labelStyle: TextStyle(color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Configurations.themColor),
-                        ),), cursorColor: Configurations.themColor,
-                  ),
-                ),
-                SizedBox(height: 30,),
-                ButtonTheme(minWidth: 300,
-                  child: RaisedButton(
-                    color: Configurations.themColor,
-                    textColor: Colors.white,
-                    child: Text(AppLocalizations.of(context).translate('btn_submit')),
-                    onPressed: (){
-                      validatePassword(setState);
-                    },
-
-                  ),)
-            ],),
-              visible: showChangePass,
-            )
+         child: Column(
+           children: <Widget>[
 
 
-          ],
-        ),
-        key: _forgetFormKey,
-      );
+             Visibility(child: Column(
+               children: <Widget>[
+                 Padding(
+                   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                   child: TextFormField(controller: txtemail,
+                       obscureText: false,
+                       cursorColor: Configurations.themColor,
+                       decoration: InputDecoration(
+                           suffixIcon: Icon(Icons.email, color: Configurations.themColor),
+                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(
+                             color: Configurations.themColor,
+                             width: 0.9,
+                           ),
+                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                           ),
+                           labelText: AppLocalizations.of(context).translate('forgot_email_placeholder'),labelStyle: TextStyle(color: Colors.grey),
+                         focusedBorder: UnderlineInputBorder(
+                           borderSide: BorderSide(color: Configurations.themColor),
+                         ),)
+                   ),
+                 ),
+                 Text(AppLocalizations.of(context).translate('txt_or'),style: TextStyle(
+                   fontWeight: FontWeight.bold, color: Colors.grey
+                 ),
+                 ),
+                 Padding(
+                   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                   child:
+                   TextFormField(
+                     controller: txtno,
+                     obscureText: false,
+                     decoration: InputDecoration(
+                         suffixIcon: Icon(Icons.phone, color: Configurations.themColor),
+                         enabledBorder: OutlineInputBorder(
+                           borderSide: BorderSide(
+                             color: Configurations.themColor,
+                             width: 0.9,
+                           ),
+                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                         ),
+                         labelText: AppLocalizations.of(context).translate('forgot_number_placeholder'),labelStyle: TextStyle(color: Colors.grey),
+                       focusedBorder: UnderlineInputBorder(
+                         borderSide: BorderSide(color: Configurations.themColor),
+                       ),),
+                     keyboardType: TextInputType.phone,
+                     cursorColor: Configurations.themColor,
+                   ),
+                 ),
+                 SizedBox(height: 10,),
+                 ButtonTheme(minWidth: 300,
+                   child: RaisedButton(
+                     shape: RoundedRectangleBorder(
+                       borderRadius: BorderRadius.circular(5.0),
+                       // side: BorderSide(color: Colors.red)
+                     ),
+                     color: Configurations.themColor,
+                     textColor: Colors.white,
+                     child: Text(AppLocalizations.of(context).translate('btn_submit')),
+                     onPressed: (){
+
+                       validateer(setState);
+                     },
+
+                   ),)
+               ],
+             ),
+               visible: showChangePass,
+             ),
+
+             Visibility(child: Column(
+               children: <Widget>[
+                 Padding(
+                   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                   child: TextFormField(controller: newPass,
+                       obscureText: obscureText2,
+                       decoration: InputDecoration(
+                           suffixIcon: IconButton(
+                             onPressed: (){
+                               obscureText2 = !obscureText2;
+                               setState(() {
+
+                               });
+                             },
+                             color: Colors.grey,
+                             icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+
+                           ),
+                           border: OutlineInputBorder(
+                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                           ),
+                           labelText: AppLocalizations.of(context).translate('newpwd'),
+                         labelStyle: TextStyle(color: Colors.grey),
+                         focusedBorder: UnderlineInputBorder(
+                           borderSide: BorderSide(color: Configurations.themColor),
+                         ),), cursorColor: Configurations.themColor,
+                   ),
+                 ),
+                 Padding(
+                   padding: const EdgeInsets.only(top: 10, bottom: 10),
+                   child: TextFormField(controller: confPass,
+                       obscureText: obscureText3,
+                       decoration: InputDecoration(
+                           suffixIcon:  IconButton(
+                             onPressed: (){
+                               obscureText3 = !obscureText3;
+                               setState(() {
+
+                               });
+                             },
+                             color: Colors.grey,
+                             icon: Icon(obscureText ? Icons.visibility_off :Icons.visibility),
+                           ),
+                           border: OutlineInputBorder(
+                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                           ),
+                           labelText: AppLocalizations.of(context).translate('signin_confirm_pwd'),
+                         labelStyle: TextStyle(color: Colors.grey),
+                         focusedBorder: UnderlineInputBorder(
+                           borderSide: BorderSide(color: Configurations.themColor),
+                         ),), cursorColor: Configurations.themColor,
+                   ),
+                 ),
+                 SizedBox(height: 30,),
+                 ButtonTheme(minWidth: 300,
+                   child: RaisedButton(
+                     color: Configurations.themColor,
+                     textColor: Colors.white,
+                     child: Text(AppLocalizations.of(context).translate('btn_submit')),
+                     onPressed: (){
+                       validatePassword(setState);
+                     },
+
+                   ),)
+             ],),
+               visible: showPass,
+             )
+
+
+           ],
+         ),
+       );
       }),
     );
   }
+  bool showPass = false;
 
   void validateer(StateSetter setState){
 //    _forgetFormKey.currentState.validate();
@@ -899,9 +1008,13 @@ class _user extends State<UserLogin>{
         if(isValid != null) {
           showInfoAlert(context, isValid);
         } else {
-          print("email validation");
+          print("Number validation");
           print(txtno.text);
-          resetPassword("contact", txtno.text, setState);
+          Navigator.of(context).pop();
+          Widget_Helper.showLoading(context);
+          String phone =  txtno.text;
+          getOTP(phone);
+
         }
       }
     }
@@ -932,7 +1045,11 @@ class _user extends State<UserLogin>{
         print("data::::::::${resetUid}");
         if(resetUid != 0 && resetUid != null) {
           setState(() {
-            showChangePass = true;
+
+            showChangePass = false;
+            showPass = true;
+            showDialog(context:  context,
+              builder: (BuildContext context) => setPasswordAgain(context),);
           });
         }
       } else {
@@ -942,6 +1059,65 @@ class _user extends State<UserLogin>{
       }
     }
   }
+  bool _showOTPField = false;
+  bool _hideSocialSignin = true;
+  bool _fridgeEdit = true;
+  var _authCredential;
+  static String status;
+  var firebaseAuth;
+
+  Future getOTP(String phone) async{
+    firebaseAuth = await FirebaseAuth.instance;
+    firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phone,
+        timeout: Duration(seconds: 60),
+        verificationCompleted: verificationCompleted,
+        verificationFailed: verificationFailed,
+        codeSent: codeSent,
+        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+    print("otp step all done");
+  }
+
+  verificationCompleted (AuthCredential auth) {
+    printLog(txtno.text);
+    setState(() {
+      print("otp step 1");
+      status = AppLocalizations.of(context).translate('alert4');
+    });
+    _authCredential = auth;
+
+  }
+
+  verificationFailed (AuthException authException) {
+    setState(() {
+      Widget_Helper.dismissLoading(context);
+      status = '${authException.message}';
+      if (authException.message.contains('not authorized'))
+        status = AppLocalizations.of(context).translate('alert2');
+      else if (authException.message.contains('Network'))
+        status = AppLocalizations.of(context).translate('alert3');
+      showInfoAlert(context, status);
+      print("otp step 2");
+    });
+  }
+
+  static String actualCode;
+
+  codeSent (String verificationId, [int forceResendingToken]) async {
+    actualCode = verificationId;
+    setState(() {
+
+      _showOTPField = true;
+      _hideSocialSignin = false;
+      _fridgeEdit = false;
+      Widget_Helper.dismissLoading(context);
+      print("otp step 3");
+
+    });
+  }
+
+  codeAutoRetrievalTimeout(String verificationId) {}
+
 
   void validatePassword(StateSetter setState) {
     if((newPass.text.isEmpty) && (newPass.text.isEmpty)) {
@@ -977,8 +1153,16 @@ class _user extends State<UserLogin>{
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         print("data::::::::${data}");
+        print("showotpfield;;;;;$_showOTPField");
+        _showOTPField = false;
+        print("showotpfield;;;;;$_showOTPField");
         if(data['status'] == true) {
           Navigator.of(context).pop();
+          Navigator.pushReplacement(
+              context, new MaterialPageRoute(
+              builder: (BuildContext context) => UserLogin()
+          )
+          );
         }
       } else {
         printLog("login response code is not 200");

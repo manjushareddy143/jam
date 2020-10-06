@@ -6,8 +6,6 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - country_list_pick (0.0.1):
-    - Flutter
   - Crashlytics (3.14.0):
     - Fabric (~> 1.10.2)
   - Fabric (1.10.2)
@@ -215,7 +213,6 @@ PODS:
 
 DEPENDENCIES:
   - android_intent (from `.symlinks/plugins/android_intent/ios`)
-  - country_list_pick (from `.symlinks/plugins/country_list_pick/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_auth_web (from `.symlinks/plugins/firebase_auth_web/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -284,8 +281,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   android_intent:
     :path: ".symlinks/plugins/android_intent/ios"
-  country_list_pick:
-    :path: ".symlinks/plugins/country_list_pick/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_auth_web:
@@ -358,7 +353,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   android_intent: 367df2f1277a74e4a90e14a8ab3df3112d087052
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  country_list_pick: 15dde46ef0157b459a00e2747795278c104b437a
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
