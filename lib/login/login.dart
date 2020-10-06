@@ -370,7 +370,11 @@ class _user extends State<UserLogin>{
                                     style: TextStyle(fontSize: 16.5)
                                 ),
                                 onPressed: () {
-                                  otpVerification();
+                                  if(isNo == true)
+                                  {otpVerification();}
+                                  else
+                                    {_otpVerificationEmail();}
+
                                 }
                             ),
                           ),
@@ -407,6 +411,9 @@ class _user extends State<UserLogin>{
     } else {
       showInfoAlert(context, AppLocalizations.of(context).translate('enter_otp'));
     }
+
+  }
+  Future _otpVerificationEmail() async {
 
   }
   Future  _signInWithPhoneNumber(String smsCode) async {
@@ -1001,6 +1008,9 @@ class _user extends State<UserLogin>{
           print("email validation");
           print(txtemail.text);
           resetPassword("email", txtemail.text, setState);
+//          Widget_Helper.showLoading(context);
+//          String email =  txtemail.text;
+//          getEmail(email);
         }
 
       } else if((txtno.text.isNotEmpty)) {
@@ -1065,8 +1075,11 @@ class _user extends State<UserLogin>{
   var _authCredential;
   static String status;
   var firebaseAuth;
+  bool isNo = false;
 
   Future getOTP(String phone) async{
+    isNo = true;
+
     firebaseAuth = await FirebaseAuth.instance;
     firebaseAuth.verifyPhoneNumber(
         phoneNumber: phone,
@@ -1076,6 +1089,25 @@ class _user extends State<UserLogin>{
         codeSent: codeSent,
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
     print("otp step all done");
+  }
+  Future getEmail(String email) async {
+    isNo = false;
+    Map<String, String> data = new Map();
+
+    data["email"] = email;
+    printLog(data);
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+      await httpClient.postRequest(context, Configurations.CHANGE_PASSWORD_STATUS_URL, data, true);
+      processChangeResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+
+
   }
 
   verificationCompleted (AuthCredential auth) {

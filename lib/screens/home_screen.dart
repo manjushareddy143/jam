@@ -287,19 +287,21 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
+                size: 30,
               ),
               title: SizedBox.shrink()),
 
 
           BottomNavigationBarItem(
               icon: Icon(
-                Icons.grid_on,
+                Icons.grid_on,size: 30,
               ),
               title: SizedBox.shrink()),
           if(globals.guest == false)
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.calendar_today,
+                size: 30,
               ),
               title: SizedBox.shrink(),
             ),
@@ -309,7 +311,7 @@ class _HomePageState extends State<HomePage> {
 //                title: SizedBox.shrink()),
           if(globals.guest == false)
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_pin),
+              icon: Icon(Icons.person_pin,size: 30,),
               title: SizedBox.shrink()),
 
         ],
