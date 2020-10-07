@@ -49,7 +49,6 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     new Future<String>.delayed(new Duration(microseconds: 10), () => null)
         .then((String value) {
       getServices();
@@ -149,17 +148,17 @@ class _CategoryPageState extends State<CategoryPage> {
 
       child: Row(
         children: <Widget>[
-          Container(padding: EdgeInsets.all(5),
+          Container(margin: EdgeInsets.only(top : 12),
             child:  Image.network( Configurations.BASE_URL +
               service.icon_image,
-              height: 40.0, width: 80.0, fit: BoxFit.contain,),
+              height: 50.0, width: 80.0, fit: BoxFit.contain),
           ),
 
-          Padding(padding: EdgeInsets.fromLTRB(2, 10, 2, 10),
+          Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
             child: Text((globals.localization == 'ar_SA') ? service.arabic_name : service.name,maxLines: 2,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: MediaQuery.of(context).size.width/27, fontWeight: FontWeight.w500, fontFamily: 'Lato'),
               overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.justify,
+              textAlign: TextAlign.end,
 
             ),
           )

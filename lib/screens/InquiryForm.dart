@@ -338,6 +338,10 @@ class _InquiryPageState extends State<InquiryPage> {
           }
           return null;
         },
+        onChanged: (value){
+          printLog("change value ::: $value");
+            firstName = value;
+        },
       ),
       SizedBox(height: 10,),
 
@@ -448,6 +452,7 @@ class _InquiryPageState extends State<InquiryPage> {
           data["category_id"] = selectedSubCategory;
         }
         data["orderer_name"] = txtName.text;
+        printLog("orderer name when the api call :: ${txtName.text}");
         data["email"] = txtEmail.text;
         data["address_id"] = selectedAddress;
         data["booking_date"] = format.format(selecteDate);

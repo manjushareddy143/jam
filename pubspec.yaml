@@ -96,8 +96,13 @@ splashscreen: ^1.2.0
 
 # The following section is specific to Flutter.
 flutter:
-
-
+  fonts:
+    - family: Proxima-nova
+      fonts:
+        - asset: assets/fonts/proxima_ssv/Proxima Nova Alt Bold.otf
+    - family: Lato
+      fonts:
+      - asset: assets/fonts/Lato/Lato-Regular.ttf
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
