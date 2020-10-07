@@ -334,7 +334,6 @@ class _OrderUIPageState extends State<OrderUIPage>  {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
-
             elevation: 5,
             child: Row(
               children: <Widget>[

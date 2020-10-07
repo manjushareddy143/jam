@@ -274,7 +274,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                       ),
                       flex: 2,),
 
-                  SizedBox(width: 2,),
+                  SizedBox(width: 2),
 
                   if(order.status != 5 && order.status != 4 && order.status != 3 && order.status != 6 && order.status != 1)
                     Expanded(child: Container(
@@ -2016,13 +2016,12 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
 
-  void setOrderUpdate() {
+  void setOrderUpdate(int status) {
     setState(() {
-      new Future<String>.delayed(new Duration(microseconds: 1), () => null)
-          .then((String value) {
-            print("REFRESH DATA FROM API");
+             order.status = status;
+            print("REFRESH DATA FROM API ::: ${order.status}");
             detail();
-      });
+
     });
   }
 
@@ -2035,7 +2034,16 @@ class _DetailUIPageState extends State<DetailUIPage> {
 //        printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
 //        List roles = json.decode(data);
 //        setState(() {
+
+        var response_details = json.decode(res.body);
+        printLog("Login Data: $response_details");
+        //get auth UserID
+
+        int status = response_details['status'];
+        printLog("OrderStatus ::: $status");
+
         globals.order = Order.fromJson(json.decode(data));
+
 
         int idx = globals.listofOrders.indexWhere((element) => element.id == globals.order.id);
 
@@ -2043,7 +2051,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           globals.listofOrders[idx] = globals.order;
 
         }
-        setOrderUpdate();
+        setOrderUpdate(status);
 
 
 //          build(globals.context);

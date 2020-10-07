@@ -134,19 +134,27 @@ class _HomeUIPageState extends State<HomeUIPage> {
                   /*crossAxisCount: 3, // how many grid needed in a row
             mainAxisSpacing: 4.0,
             crossAxisSpacing: 4.0,*/
-                  delegate: new SliverChildBuilderDelegate(
+                    delegate: new SliverChildBuilderDelegate(
                         (BuildContext context, int serviceIndex) {
                       return
                         // children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(15.0),
-                          child: Container(color: Colors.white,
+                          child: Container(
                             alignment: FractionalOffset.center,
                             height: 50.0,
                             width: 50.0,
-//                          decoration: BoxDecoration(
-//                            border: Border.all(color: Colors.white ),
-//                          ),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 6.0,
+                                )
+                              ],
+                              shape: BoxShape.rectangle,
+                              color: Colors.white,
+//                              border: Border.all(width: 1.0, color: Colors.deepOrange),
+                            ),
                             child: new GestureDetector(
                               //tapping to go the corresponding view linked with it using navigator
                               onTap: () {
