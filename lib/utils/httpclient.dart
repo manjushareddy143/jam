@@ -217,7 +217,7 @@ class HttpClient {
                 Container(
                     padding: EdgeInsets.all(16.0),
                     child: new CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.tealAccent),
+                      valueColor: AlwaysStoppedAnimation(Colors.deepOrange),
                     )),
                 new Text(AppLocalizations.of(context).translate('alert_pleasewait')),
               ],

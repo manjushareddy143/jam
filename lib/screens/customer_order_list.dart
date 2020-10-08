@@ -114,6 +114,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       return new Scaffold(
         appBar: globals.isCustomer ? null :
         new AppBar(
+          centerTitle: true,
           automaticallyImplyLeading: true,
           title: new Text(AppLocalizations.of(context).translate('loading'),
             style: TextStyle(color:Configurations.themColor),),
@@ -123,6 +124,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
       return Scaffold(
           backgroundColor: Colors.orange[50],
         appBar: new AppBar(
+          centerTitle: true,
           automaticallyImplyLeading: !globals.isCustomer,
           title: new Text(AppLocalizations.of(context).translate('tab_orders')),
           backgroundColor: Configurations.themColor,

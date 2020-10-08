@@ -137,6 +137,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
           onTap: () {
             print("REFRESH ORDER");
             setState(() {
+              findTotal();
               getOrderDetail();
             });
 
@@ -153,6 +154,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
         child: GestureDetector(
           onTap: () {
             print("REFRESH ORDER");
+            findTotal();
             getOrderDetail();
 
           },
@@ -490,7 +492,7 @@ class _DetailUIPageState extends State<DetailUIPage> {
                    child: Row(children :[
                      Text(AppLocalizations.of(context).translate('txt_book_details'), style:
                      TextStyle(color: Configurations.themColor,
-                         fontWeight: FontWeight.w500,fontSize: 16),),
+                         fontWeight: FontWeight.w700,fontSize: 16),),
                      Padding(
                        padding:EdgeInsets.symmetric(horizontal:10.0),
                        child:Container(

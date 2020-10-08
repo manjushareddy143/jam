@@ -133,6 +133,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 builder: (context) => ProviderListPage(service: service)));
       },
       child: Card(
+        shadowColor: Colors.grey,
+        elevation: 5.0,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
         child: Row(
           children: <Widget>[

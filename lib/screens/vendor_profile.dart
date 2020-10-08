@@ -71,6 +71,7 @@ int swiperIndex =0;
       return Scaffold(
         backgroundColor: Colors.orange[50],
         appBar: AppBar(backgroundColor: Colors.deepOrange,
+        centerTitle: true,
         title: Text(AppLocalizations.of(context).translate('vendorprofile'), style: TextStyle(
           fontSize: 20.0,
           fontWeight: FontWeight.w400,
@@ -232,9 +233,16 @@ int swiperIndex =0;
 
 
     return Container(
+
       height: 1000,
         margin: new EdgeInsets.only(left: 5.0, right: 5.0, top: 30, bottom: 22),
     decoration: new BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey,
+          blurRadius: 6.0,
+        )
+      ],
     color: Colors.white,
     shape: BoxShape.rectangle,
     borderRadius: new BorderRadius.circular(8.0),),
@@ -468,7 +476,12 @@ int swiperIndex =0;
               image: (img != null)?
               NetworkImage(img) : setImgPlaceholder(),
               fit: BoxFit.cover,
-            )),
+            ),   boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 6.0,
+          )
+        ],),
       ),
     );
 
@@ -923,11 +936,13 @@ int swiperIndex =0;
           if(this.provider.reviews[index].rate_by != null)
             Visibility(child:
           Container(
+
 //            height: 160,
 //            width: 320,
             padding: EdgeInsets.only(right: 20, left: 20),
             child:
             Card(color: Colors.white,
+              elevation: 4.0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
