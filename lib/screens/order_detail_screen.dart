@@ -2078,20 +2078,21 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
   String findTotal() {
-    if(order.invoice != null) {
-      double cost = double.parse(order.provider.servicePrice.price);
-      double serviceAmount = order.invoice.working_hr * cost;
+    printLog("findTotal method call : ${globals.order.invoice}");
+    if(globals.order.invoice != null) {
+      double cost = double.parse(globals.order.provider.servicePrice.price);
+      double serviceAmount = globals.order.invoice.working_hr * cost;
 
-      int meterialAmount = order.invoice.material_quantity * order.invoice.material_price;
+      int meterialAmount = globals.order.invoice.material_quantity * globals.order.invoice.material_price;
 
-      int additional_total = order.invoice.additional_charges * order.invoice.working_hr;
+      int additional_total = globals.order.invoice.additional_charges * globals.order.invoice.working_hr;
 
       double sub_total = serviceAmount + additional_total + meterialAmount;
 
-      double total_discount = sub_total - order.invoice.discount;
+      double total_discount = sub_total - globals.order.invoice.discount;
 
 //      double totalWithDiscount =  sub_total -  total_discount;
-      double taxCut =  total_discount * order.invoice.tax /100;
+      double taxCut =  total_discount * globals.order.invoice.tax /100;
       double total = total_discount +  taxCut;
 
       return total.toStringAsFixed(2);
@@ -2103,13 +2104,13 @@ class _DetailUIPageState extends State<DetailUIPage> {
   }
 
   Widget invoiceDetails(){
-    String workingHour = (order.invoice != null) ? order.invoice.working_hr.toString() : "0";
-    String materialQTY = (order.invoice != null) ? order.invoice.material_quantity.toString() : "0";
-    String materialCost = (order.invoice != null) ? order.invoice.material_price.toString() : "0";
-    String discount = (order.invoice != null) ? order.invoice.discount.toString() : "0";
-    String tax = (order.invoice != null) ? order.invoice.tax.toString() : "0";
-    String add_charge = (order.invoice != null) ? order.invoice.additional_charges.toString() : "0";
-    String taxrate = (order.invoice != null) ? order.invoice.tax_rate.toString() : "0";
+    String workingHour = (globals.order.invoice != null) ? globals.order.invoice.working_hr.toString() : "0";
+    String materialQTY = (globals.order.invoice != null) ? globals.order.invoice.material_quantity.toString() : "0";
+    String materialCost = (globals.order.invoice != null) ? globals.order.invoice.material_price.toString() : "0";
+    String discount = (globals.order.invoice != null) ? globals.order.invoice.discount.toString() : "0";
+    String tax = (globals.order.invoice != null) ? globals.order.invoice.tax.toString() : "0";
+    String add_charge = (globals.order.invoice != null) ? globals.order.invoice.additional_charges.toString() : "0";
+    String taxrate = (globals.order.invoice != null) ? globals.order.invoice.tax_rate.toString() : "0";
 
 
 
