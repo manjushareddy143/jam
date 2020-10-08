@@ -405,6 +405,7 @@ class _user extends State<UserLogin>{
     pinCode = pin;
   }
   void otpVerification() async {
+    printLog("otpVerification ::: ");
     if(pinCode != "" && pinCode.length > 5) {
       Widget_Helper.showLoading(context);
       await _signInWithPhoneNumber(pinCode);
@@ -414,7 +415,7 @@ class _user extends State<UserLogin>{
 
   }
   Future _otpVerificationEmail() async {
-
+    otpVerify("otp" ,pinCode, setState);
   }
   Future  _signInWithPhoneNumber(String smsCode) async {
     _authCredential = PhoneAuthProvider.getCredential(
@@ -1004,13 +1005,14 @@ class _user extends State<UserLogin>{
         String isValid = validateEmail(txtemail.text);
         if(isValid != null) {
           showInfoAlert(context, isValid);
-        } else {
+        } else if(txtemail.text.isNotEmpty){
           print("email validation");
           print(txtemail.text);
+          Navigator.of(context).pop();
           resetPassword("email", txtemail.text, setState);
 //          Widget_Helper.showLoading(context);
-//          String email =  txtemail.text;
-//          getEmail(email);
+          String email =  txtemail.text;
+          getEmail(email);
         }
 
       } else if((txtno.text.isNotEmpty)) {
@@ -1052,10 +1054,10 @@ class _user extends State<UserLogin>{
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
         resetUid = data['id'];
-        print("data::::::::${resetUid}");
+        print("data::::::::$resetUid");
         if(resetUid != 0 && resetUid != null) {
+          printLog("come inside::::");
           setState(() {
-
             showChangePass = false;
             showPass = true;
             showDialog(context:  context,
@@ -1069,6 +1071,47 @@ class _user extends State<UserLogin>{
       }
     }
   }
+
+
+  void otpVerify(String key, String Val, StateSetter setState) async {
+    Map<String, String> data = new Map();
+    data[key] = Val;
+    printLog("otp ::: $key");
+    printLog("otp ::: $Val");
+    try {
+      HttpClient httpClient = new HttpClient();
+      var syncUserResponse =
+      await httpClient.postRequest(context, Configurations.RESET_PASSWORD_EMAIL, data, true);
+      processOtpVerifyResponse(syncUserResponse, setState);
+    } on Exception catch (e) {
+      if (e is Exception) {
+        printExceptionLog(e);
+      }
+    }
+  }
+
+  void processOtpVerifyResponse(Response res, StateSetter setState) {
+    if (res != null) {
+      if (res.statusCode == 200) {
+        var data = json.decode(res.body);
+        print("data::::::::$resetUid");
+        setState(() {
+          _showOTPField = false;
+          showChangePass = false;
+          showPass = true;
+          showDialog(context:  context,
+            builder: (BuildContext context) => setPasswordAgain(context));
+        });
+      } else {
+        printLog("login response code is not 200");
+        var data = json.decode(res.body);
+        showInfoAlert(context, data['message']);
+      }
+    }
+  }
+
+
+
   bool _showOTPField = false;
   bool _hideSocialSignin = true;
   bool _fridgeEdit = true;
@@ -1090,24 +1133,14 @@ class _user extends State<UserLogin>{
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
     print("otp step all done");
   }
+
   Future getEmail(String email) async {
     isNo = false;
     Map<String, String> data = new Map();
-
-    data["email"] = email;
-    printLog(data);
-    try {
-      HttpClient httpClient = new HttpClient();
-      var syncUserResponse =
-      await httpClient.postRequest(context, Configurations.CHANGE_PASSWORD_STATUS_URL, data, true);
-      processChangeResponse(syncUserResponse, setState);
-    } on Exception catch (e) {
-      if (e is Exception) {
-        printExceptionLog(e);
-      }
-    }
-
-
+    printLog("data : $email");
+    _showOTPField = true;
+    setState(() {
+    });
   }
 
   verificationCompleted (AuthCredential auth) {

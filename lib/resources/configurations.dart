@@ -13,12 +13,12 @@ class Configurations {
   static const String LOGIN_URL = BASE_URL + APP_URL + API_VERSION + "/login";
   static const String BOOKING_URL = BASE_URL + APP_URL + API_VERSION + "/booking";
   static const String PROVIDER_BOOKING_URL = BASE_URL + APP_URL + API_VERSION + "/booking/provider";
-
   static const String PROVIDER_SERVICES_URL = BASE_URL + APP_URL + API_VERSION + "/providers/service";
   static const String SERVICES_ALL_URL = BASE_URL + APP_URL + API_VERSION +"/all_services";
   static const String BOOKING_RATING_URL = BASE_URL + APP_URL + API_VERSION +"/experience";
   static const String BOOKING_STATUS_URL = BASE_URL + APP_URL + API_VERSION +"/booking_status";
   static const String RESET_PASSWORD_STATUS_URL = BASE_URL + APP_URL +"/resetPassword";
+  static const String RESET_PASSWORD_EMAIL = BASE_URL + "/verify_forget_otp";
   static const String CHANGE_PASSWORD_STATUS_URL = BASE_URL + APP_URL +"/changepassword";
   static const String INVOICE_DOWNLALD_URL = BASE_URL + APP_URL + API_VERSION +"/invoice_download";
   static const String INVOICE_GENERATE_URL = BASE_URL + APP_URL + API_VERSION +"/invoice";
