@@ -139,7 +139,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                       return
                         // children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(top: 23, bottom: 22,right:3 , left:3),
+                          padding: const EdgeInsets.only(top: 26, bottom: 12,right:3 , left:3),
                           child: Container(
                             margin: EdgeInsets.only(left:5, right:5),
                             alignment: FractionalOffset.center,
