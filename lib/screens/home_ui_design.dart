@@ -139,8 +139,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
                       return
                         // children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding: const EdgeInsets.only(top: 23, bottom: 22,right:3 , left:3),
                           child: Container(
+                            margin: EdgeInsets.only(left:5, right:5),
                             alignment: FractionalOffset.center,
                             height: 50.0,
                             width: 50.0,
@@ -175,8 +176,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                 //crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    width: 46.00,
-                                    height: 46.00,
+                                    width: 60.00,
+                                    height: 40.00,
                                     child: Image.network(
                                       Configurations.BASE_URL + listofServices[serviceIndex].icon_image,
                                       fit: BoxFit.fill,

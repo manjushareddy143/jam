@@ -18,9 +18,6 @@ import 'package:jam/app_localizations.dart';
 import 'package:jam/globals.dart' as globals;
 
 class CategoryScreen extends StatelessWidget {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Center(child: CategoryPage());
@@ -35,15 +32,10 @@ class CategoryPage extends StatefulWidget {
   _CategoryPageState createState() => _CategoryPageState();
 }
 
-
-
 class _CategoryPageState extends State<CategoryPage> {
-
-
   List<Service> listofServices;
   int serviceIndex = 0;
   bool isLoadin = true;
-
 
   @override
   void initState() {
@@ -53,7 +45,6 @@ class _CategoryPageState extends State<CategoryPage> {
         .then((String value) {
       getServices();
     });
-
   }
 
   @override
@@ -65,8 +56,8 @@ class _CategoryPageState extends State<CategoryPage> {
   getServices() async {
     try {
       HttpClient httpClient = new HttpClient();
-      var syncServicesResponse = await httpClient.getRequest(context,
-          Configurations.SERVICES_ALL_URL, null, null, true, false);
+      var syncServicesResponse = await httpClient.getRequest(
+          context, Configurations.SERVICES_ALL_URL, null, null, true, false);
 
       processServiceResponse(syncServicesResponse);
     } on Exception catch (e) {
@@ -80,10 +71,9 @@ class _CategoryPageState extends State<CategoryPage> {
     if (res != null) {
       if (res.statusCode == 200) {
 //        var data = json.decode(res.body);
-        var data =  utf8.decode(res.bodyBytes); //json.decode(res.body);
+        var data = utf8.decode(res.bodyBytes); //json.decode(res.body);
         printLog("RESMAYUR ==== ${utf8.decode(res.bodyBytes)}");
         List roles = json.decode(data);
-
 
 //        List roles = data;
         setState(() {
@@ -104,67 +94,79 @@ class _CategoryPageState extends State<CategoryPage> {
     globals.context = context;
     // TODO: implement build
     if (isLoadin) {
-      return new Scaffold(backgroundColor: Colors.orange[50],
-        appBar: new AppBar(backgroundColor: Colors.deepOrange,
+      return new Scaffold(
+        backgroundColor: Colors.orange[50],
+        appBar: new AppBar(
+          backgroundColor: Colors.deepOrange,
           automaticallyImplyLeading: false,
           title: new Text(AppLocalizations.of(context).translate('loading')),
         ),
       );
     } else {
 //      if(listofServices.length > 0) {
-      return new Scaffold(backgroundColor: Colors.orange[50],
+      return new Scaffold(
+        backgroundColor: Colors.orange[50],
         body: SingleChildScrollView(
-       // if(listofServices != null)
-         child:  Column(children:
-
-
-         listOfCards(),
-
-         ),
+          // if(listofServices != null)
+          child: Column(
+            children: listOfCards(),
+          ),
         ),
       );
     }
   }
+
   List<Widget> listOfCards() {
     List<Widget> list = new List();
-    for(int orderCount = 0; orderCount< listofServices.length; orderCount++) {
+    for (int orderCount = 0; orderCount < listofServices.length; orderCount++) {
       list.add(SetupCard(listofServices[orderCount]));
     }
     return list;
   }
 
-  Widget SetupCard(Service service){
-
-      return
-    GestureDetector(
-      onTap:(){Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  ProviderListPage(service: service)
-          )
-      );},
-      child: Card(margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-
-      child: Row(
-        children: <Widget>[
-          Container(margin: EdgeInsets.only(top : 12),
-            child:  Image.network( Configurations.BASE_URL +
-              service.icon_image,
-              height: 50.0, width: 80.0, fit: BoxFit.contain),
-          ),
-
-          Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
-            child: Text((globals.localization == 'ar_SA') ? service.arabic_name : service.name,maxLines: 2,
-              style: TextStyle(fontSize: MediaQuery.of(context).size.width/27, fontWeight: FontWeight.w500, fontFamily: 'Lato'),
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.end,
-
+  Widget SetupCard(Service service) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProviderListPage(service: service)));
+      },
+      child: Card(
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        child: Row(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 12),
+              child: Image.network(Configurations.BASE_URL + service.icon_image,
+                  height: 50.0, width: 80.0, fit: BoxFit.contain),
             ),
-          )
-        ],
+            Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 10)),
+            Flexible(
+              child: Text(
+                (globals.localization == 'ar_SA')
+                    ? service.arabic_name
+                    : service.name,
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Lato'),
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.left,
+              ),
+            )
+//          Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 10),
+//            child: Text((globals.localization == 'ar_SA') ? service.arabic_name : service.name,maxLines: 2,
+//              style: TextStyle(fontSize: MediaQuery.of(context).size.width/27, fontWeight: FontWeight.w500, fontFamily: 'Lato'),
+//              overflow: TextOverflow.ellipsis,
+//              textAlign: TextAlign.end,
+//
+//            ),
+//          )
+          ],
+        ),
       ),
-
-  ),
-    );}
+    );
+  }
 }
