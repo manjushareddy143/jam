@@ -176,8 +176,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                 //crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
-                                    width: 60.00,
-                                    height: 40.00,
+                                    width: 46.00,
+                                    height: 46.00,
                                     child: Image.network(
                                       Configurations.BASE_URL + listofServices[serviceIndex].icon_image,
                                       fit: BoxFit.fill,
