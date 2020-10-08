@@ -184,7 +184,8 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     ),
                                   ), //new Icon(Icons.face),
 
-                                 Padding(padding: EdgeInsets.all(5.0)),
+//                                 Padding(
+//                                     padding: EdgeInsets.all(1.0)),
 
 
                                   Flexible(

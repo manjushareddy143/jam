@@ -137,7 +137,7 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 12),
+              margin: EdgeInsets.only(top: 5, bottom: 5),
               child: Image.network(Configurations.BASE_URL + service.icon_image,
                   height: 50.0, width: 80.0, fit: BoxFit.contain),
             ),
@@ -149,8 +149,8 @@ class _CategoryPageState extends State<CategoryPage> {
                     : service.name,
                 maxLines: 2,
                 style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                     fontFamily: 'Lato'),
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.left,
