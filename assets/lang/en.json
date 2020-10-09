@@ -231,9 +231,11 @@
   "rate": "Rating",
   "comment": "Comment here",
   "primary": "Primary Service",
-  "price_txt": "Price"
-
-
+  "price_txt": "Price",
+  "home": "Home",
+  "bottom_categories" : "Categories",
+  "bottom_orders" : "Orders",
+  "profile" : "Profile"
 
 
 

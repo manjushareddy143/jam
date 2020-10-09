@@ -488,7 +488,8 @@ class _InquiryPageState extends State<InquiryPage> {
     if (res != null) {
       if (res.statusCode == 200) {
         var data = json.decode(res.body);
-        Navigator.pop(context);
+//        Navigator.pop(context);
+        printLog("bl");
 //        showInfoAlert(context, AppLocalizations.of(context).translate('booking_order'));
         pushInfoAlert(globals.context, "JAM", AppLocalizations.of(context).translate('booking_order'));
       } else {

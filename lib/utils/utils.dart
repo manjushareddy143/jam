@@ -11,6 +11,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:pulse/components/widget_helper.dart';
 //import 'package:pulse/resources/about_screen.dart';
 import 'package:jam/resources/configurations.dart';
+import 'package:jam/screens/customer_order_list.dart';
+import 'package:jam/screens/order_detail_screen.dart';
 import 'package:jam/screens/user_profile.dart';
 //import 'package:pulse/resources/my_colors.dart';
 //import 'package:pulse/resources/my_strings.dart';
@@ -414,9 +416,15 @@ void pushInfoAlert(BuildContext context, String title ,String message) {
           new FlatButton(
             child: new Text(AppLocalizations.of(context).translate('ok')),
             onPressed: () {
+              if(message == AppLocalizations.of(context).translate('booking_order')){
+                printLog("booking order");
+                navigateToOtherScreen(context, OrderUIPage(url: Configurations.BOOKING_URL, isCustomer: true,));
+              }
 //              globals.msgCount = 0;
-              Navigator.of(_keyLoader.currentContext, rootNavigator: true)
-                  .pop();
+              else{
+                Navigator.of(_keyLoader.currentContext, rootNavigator: true)
+                    .pop();
+              }
             },
           ),
         ],

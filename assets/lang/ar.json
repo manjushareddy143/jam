@@ -227,5 +227,9 @@
   "rate": "تقييم",
   "comment": "التعليق هنا",
   "primary": "الخدمة الأساسية",
-  "price_txt": "السعر"
+  "price_txt": "السعر",
+  "home": "الصفحة الرئيسية",
+  "bottom_categories" : "التصنيفات",
+  "bottom_orders" : "الطلب #٪ s",
+  "profile" : "Profile"
 }

@@ -139,9 +139,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
                       return
                         // children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(top: 26, bottom: 12,right:3 , left:3),
+                          padding: const EdgeInsets.only(top: 0, bottom: 0),
                           child: Container(
-                            margin: EdgeInsets.only(left:5, right:5),
+                            margin: EdgeInsets.only(left:7, right:7, top : 10, bottom : 30),
                             alignment: FractionalOffset.center,
                             height: 50.0,
                             width: 50.0,
@@ -150,11 +150,14 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                 BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 6.0,
+//                                    spreadRadius: 5,
+                                    offset: Offset(8.0, 5.75)
                                 )
                               ],
                               shape: BoxShape.rectangle,
                               color: Colors.white,
-//                              border: Border.all(width: 1.0, color: Colors.deepOrange),
+                                borderRadius: new BorderRadius.all(Radius.circular(10)
+                                )
                             ),
                             child: new GestureDetector(
                               //tapping to go the corresponding view linked with it using navigator
@@ -189,14 +192,17 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
 
                                   Flexible(
-                                    child: Text((globals.localization == 'ar_SA') ? listofServices[serviceIndex].arabic_name : listofServices[serviceIndex].name,
-                                      maxLines: 2,
-                                      style: TextStyle(fontSize: 10,letterSpacing: 0.8,color: Colors.black,fontWeight: FontWeight.w600),
+                                    child: Container(
+                                      margin: EdgeInsets.only(right : 2, left:2),
+                                      child: Text((globals.localization == 'ar_SA') ? listofServices[serviceIndex].arabic_name : listofServices[serviceIndex].name,
+                                        maxLines: 2,
+                                        style: TextStyle(fontSize: 10,letterSpacing: 0.8,color: Colors.black,fontWeight: FontWeight.w600),
 
-                                      textAlign: TextAlign.center,
-                                      overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        overflow: TextOverflow.ellipsis,
 
-                                    ),
+                                      ),
+                                    )
                                   ),
                                 ],
                               ),
@@ -261,8 +267,16 @@ class _HomeUIPageState extends State<HomeUIPage> {
 //                                  width: 50,
                                     child: Column(
                                       children: <Widget>[
-                                        Icon(Icons.account_box,
-                                            color: Configurations.themColor, size: 40.0),
+                                         Stack(
+                                          children: <Widget>[
+                                            Positioned(
+                                              left: 1.0,
+                                              top: 1.0,
+                                              child: Icon(Icons.account_box, color: Colors.black54,size: 40.0),
+                                            ),
+                                            Icon(Icons.account_box, color: Configurations.themColor, size: 40.0),
+                                          ],
+                                        ),
                                         Text(
                                           AppLocalizations.of(context).translate('support_email'),
                                           maxLines: 2,
@@ -282,8 +296,16 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                   child: Container(
                                     child: Column(
                                       children: <Widget>[
-                                        Icon(Icons.chat,
-                                            color: Configurations.themColor, size: 40.0),
+                                        Stack(
+                                          children: <Widget>[
+                                            Positioned(
+                                              left: 1.0,
+                                              top: 1.0,
+                                              child: Icon(Icons.chat, color: Colors.black54,size: 40.0),
+                                            ),
+                                            Icon(Icons.chat, color: Configurations.themColor, size: 40.0),
+                                          ],
+                                        ),
                                         Text(
                                           AppLocalizations.of(context).translate('support_chat'),
                                           maxLines: 2,
@@ -304,8 +326,16 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     child: Container(
                                         child: Column(
                                           children: <Widget>[
-                                            Icon(MaterialIcons.person,
-                                                color: Configurations.themColor, size: 40.0),
+                                            Stack(
+                                              children: <Widget>[
+                                                Positioned(
+                                                  left: 1.0,
+                                                  top: 1.0,
+                                                  child: Icon(MaterialIcons.person, color: Colors.black54,size: 40.0),
+                                                ),
+                                                Icon(MaterialIcons.person, color: Configurations.themColor, size: 40.0),
+                                              ],
+                                            ),
                                             Text(
                                               AppLocalizations.of(context).translate('support_call'),
                                               overflow: TextOverflow.ellipsis,

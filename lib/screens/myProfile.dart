@@ -158,6 +158,7 @@ class _ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateM
         new Container(color: Colors.grey,
           width: double.infinity,
           child: TabBar(
+
             controller: _tabController,
               indicator: UnderlineTabIndicator(
                   borderSide: BorderSide(

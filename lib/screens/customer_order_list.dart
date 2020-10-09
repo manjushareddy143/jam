@@ -112,7 +112,7 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     // TODO: implement build
     if (globals.listofOrders == null) {
       return new Scaffold(
-        appBar: globals.isCustomer ? null :
+        appBar: /*globals.isCustomer ? null :*/
         new AppBar(
           centerTitle: true,
           automaticallyImplyLeading: true,
@@ -123,9 +123,10 @@ class _OrderUIPageState extends State<OrderUIPage>  {
     } else {
       return Scaffold(
           backgroundColor: Colors.orange[50],
-        appBar: new AppBar(
+        appBar: /*globals.isCustomer ? null :*/
+        new AppBar(
           centerTitle: true,
-          automaticallyImplyLeading: !globals.isCustomer,
+          automaticallyImplyLeading: /*!globals.isCustomer*/true,
           title: new Text(AppLocalizations.of(context).translate('tab_orders')),
           backgroundColor: Configurations.themColor,
           actions: [
