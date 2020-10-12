@@ -257,7 +257,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                SizedBox(width:  100,
+                                SizedBox(width:  70,
                                 child: GestureDetector(
                                   onTap: () => {
                                     print("EMAIL TO SUPPORT"),
@@ -291,7 +291,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
                                   ,),
 
-                                SizedBox(width: 100,
+                                SizedBox(width: 70,
                                 child: GestureDetector(
                                   child: Container(
                                     child: Column(
@@ -321,7 +321,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                   },
                                 ),),
 
-                                SizedBox(width: 100,
+                                SizedBox(width: 70,
                                   child: GestureDetector(
                                     child: Container(
                                         child: Column(
@@ -347,7 +347,37 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                     ),
                                     onTap: () => {
                                       print("CALL TO SUPPORT"),
-                                      launch(_makePhoneCall('tel:+97477837501').toString())
+                                      launch(_makePhoneCall('tel:+97444626215').toString())
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 70,
+                                  child: GestureDetector(
+                                    child: Container(
+                                        child: Column(
+                                          children: <Widget>[
+                                            Stack(
+                                              children: <Widget>[
+                                                Positioned(
+                                                  left: 1.0,
+                                                  top: 1.0,
+                                                  child: Icon(Icons.web_asset_outlined, color: Colors.black54,size: 40.0),
+                                                ),
+                                                Icon(Icons.web_asset_outlined, color: Configurations.themColor, size: 40.0),
+                                              ],
+                                            ),
+                                            Text(
+                                              AppLocalizations.of(context).translate('support_web'),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        )
+                                    ),
+                                    onTap: () => {
+                                      print("WEB TO SUPPORT"),
+                                      webSupport("https://www.mosaicdoha.com/")
                                     },
                                   ),
                                 )
@@ -369,9 +399,9 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   String whatsAppChat(String message) {
     if (Platform.isIOS) {
-      return "whatsapp://wa.me/+97477837501/?text=${Uri.parse(message)}";
+      return "whatsapp://wa.me/+97444626215/?text=${Uri.parse(message)}";
     } else {
-      return "whatsapp://send?phone=+97477837501&text=${Uri.parse(message)}";
+      return "whatsapp://send?phone=+97444626215&text=${Uri.parse(message)}";
     }
   }
 
@@ -385,11 +415,23 @@ class _HomeUIPageState extends State<HomeUIPage> {
 
   final Uri _emailLaunchUri = Uri(
       scheme: 'mailto',
-      path: 'admin@jam.com',
+      path: 'customercare@jam-app.com',
       queryParameters: {
         'subject': 'JAM%20Support'
       }
   );
+
+
+
+  Future<void> webSupport(String url) async {
+    if (await canLaunch(url)){
+      printLog("Web url launch");
+      await launch(url);
+    }
+    else{}
+    // can't launch url, there is some error
+    throw "Could not launch $url";
+  }
 
 
 //  SliverPersistentHeader makeHeader(String headerText) {

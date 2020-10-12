@@ -32,7 +32,7 @@ dependencies:
 #  url_launcher: ^5.4.11
   url_launcher: ^5.5.3
   ff_navigation_bar: ^0.1.5
-  image_picker: ^0.6.6+4
+  image_picker: 0.6.7+11
   flutter_launcher_icons: ^0.7.4
   hexcolor: ^1.0.1
   country_list_pick: ^1.0.1+2
