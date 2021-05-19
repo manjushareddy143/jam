@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:jam/api/i18n.dart';
 
@@ -235,6 +236,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
     return MaterialApp(
         theme: ThemeData(fontFamily: 'Lato'),
         locale: _locale,

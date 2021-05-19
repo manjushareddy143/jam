@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  intent: ^1.4.0
+  share: ^0.6.5+4
   open_file: ^3.0.1
 #  native_pdf_view: ^3.6.2
   simple_image_crop: ^0.1.3

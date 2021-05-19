@@ -252,9 +252,12 @@ int swiperIndex =0;
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
-                    FlatButton.icon(onPressed: null,
+                    FlatButton.icon(onPressed: () {
+                      printLog("CALL");
+                    },
                       icon: Icon(Icons.call, color: Configurations.themColor, size: 13,),
-                      label: Text(AppLocalizations.of(context).translate('call'), style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
+                      label: Text(AppLocalizations.of(context).translate('call'),
+                        style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.w500, fontSize: 14),),
                     ),
 
 

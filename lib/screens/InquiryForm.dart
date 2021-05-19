@@ -393,10 +393,10 @@ class _InquiryPageState extends State<InquiryPage> {
       ),
       SizedBox(height: 10,),
      setDefaultAddress(),
-      SizedBox(height: 10,),
+      SizedBox(height: 20,),
 
       setDate(),
-      SizedBox(height: 10,),
+      SizedBox(height: 20,),
 
       setTime(),
       SizedBox(height: 10,),
@@ -647,19 +647,17 @@ class _InquiryPageState extends State<InquiryPage> {
   }
 
 final format = DateFormat("dd-MM-yyyy");
-final formatt= DateFormat("h:mm a");
+final formatt= DateFormat("hh:mm a");
 
 
 
-  Widget setDate(){
+  Widget setDate() {
 
-//    Locale local = Locale('en', 'US');
-//    if(globals.localization == 'ar_SA') {
-//
-//      local = Locale('ar', 'SA');
-//
-//
-//    }
+    var currDt = DateTime.now();
+
+    // printLog("test == ${currDt.year}");
+    // printLog("test == ${currDt.year+1}");
+
     return Container(
     padding: EdgeInsets.fromLTRB(0,0,0,0),
       height: 50,
@@ -670,14 +668,13 @@ final formatt= DateFormat("h:mm a");
             suffixIcon: Icon(Icons.calendar_today),
             enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
             labelText: AppLocalizations.of(context).translate('inquiry_txt_date')),
-        onShowPicker: (context, currentValue) {
-          return showDatePicker(
+        onShowPicker: (context, currentValue) async {
+          return await showDatePicker(
               context: context,
-              firstDate: DateTime.now(),
-//            firstDate: _currentDt.add(Duration(days: -365)),
+              firstDate: _currentDt,
               initialDate: currentValue ?? DateTime.now(),
-              lastDate: DateTime(2021),
-             );
+              lastDate: DateTime(currDt.year+1),
+           );
         },
 
         onChanged: (val) => {
@@ -699,22 +696,10 @@ final formatt= DateFormat("h:mm a");
             Flexible(
               flex: 4,
               child: DateTimeField(
-
                 initialValue: _currentDt,
                 format: formatt,
                 decoration: InputDecoration( suffixIcon: Icon(Icons.timer),
                   hasFloatingPlaceholder: false,
-//                    errorStyle: TextStyle(
-//                      color: Colors.red,
-//                      wordSpacing: 5.0,
-//                    ),
-//                    labelStyle: TextStyle(
-//                        color: Colors.green,
-//                        letterSpacing: 1.3
-//                    ),
-//                    hintStyle: TextStyle(
-//                        letterSpacing: 1.3
-//                    ),
                   enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor, width: 1,  ), ),
                 ),
                 onShowPicker: (context, currentValue) async {
@@ -722,21 +707,31 @@ final formatt= DateFormat("h:mm a");
                     context: context,
                    // initialTime: TimeOfDay(hour: 12, minute: 00),
                     initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                    // builder: (context, child) => MediaQuery(
+                    //     data: MediaQuery.of(context)
+                    //         .copyWith(alwaysUse24HourFormat: true),
+                    //     child: child),
 
 
                   );
                   return DateTimeField.convert(time);
-
-
-
                 },
 
                 onChanged: (val) => {
-                  printLog(val),
+                  // printLog(val),
+                  // printLog(DateTime.now()),
                   start_time = val// TimeOfDay.fromDateTime(val ?? DateTime.now()).toString(),
                 },
                 validator:  (value){
+                  String formattedTime = DateFormat.Hms().format(value);
+                  DateFormat formatter = DateFormat('yyyy-MM-dd');
+                  String myDate = formatter.format(start_time);
+                  var val = myDate + " " + formattedTime ;
+                  DateTime checkTime = DateTime.parse(val);
+
                   if (value.isAfter(end_time)) {
+                    return AppLocalizations.of(context).translate('inquiry_time');
+                  } else if (value.isAfter(checkTime)) {
                     return AppLocalizations.of(context).translate('inquiry_time');
                   }
                   return null;
@@ -768,6 +763,15 @@ final formatt= DateFormat("h:mm a");
 //                    print(TimeOfDay.fromDateTime(val ?? DateTime.now()))
                 },
                 validator:  (value){
+                  printLog("end == ${value}");
+                  // String formattedTime = DateFormat.Hms().format(value);
+                  // DateFormat formatter = DateFormat('yyyy-MM-dd');
+                  // String myDate = formatter.format(DateTime.now());
+                  // var val = myDate + " " + formattedTime ;
+                  // DateTime checkTime = DateTime.parse(val);
+                  // printLog(checkTime);
+                  printLog(start_time);
+
                   if (value.isBefore(start_time)) {
                     return AppLocalizations.of(context).translate('inquiry_time');
                   }

@@ -1,5 +1,9 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/rendering.dart';
+import 'package:intent/extra.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +35,15 @@ import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
 
 import 'package:jam/widget/widget_helper.dart';
+
+import 'package:intent/intent.dart' as android_intent;
+import 'package:intent/action.dart' as android_action;
+import 'dart:async' show StreamController;
+import 'dart:io';
+import 'package:share/share.dart';
+import 'dart:ui' as ui;
+
+
 
 class UserLogin extends StatefulWidget {
   _user createState() => new _user();
@@ -382,6 +395,11 @@ class _user extends State<UserLogin>{
                       ),
                     ),
 
+                    FlatButton(onPressed: () {
+                      instgramOpen();
+                    }, child: Text("INSTAGRAM")
+                    ),
+
 
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -400,6 +418,87 @@ class _user extends State<UserLogin>{
       ),
     );
   }
+
+  Future<void> instgramOpen() async {
+
+//    String directory = (await getTemporaryDirectory()).path;
+//    printLog(directory);
+
+    try {
+      var url = 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg';
+      var response = await get(url);
+
+      final documentDirectory = (await getExternalStorageDirectory()).path;
+
+      File imgFile = new File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      final RenderBox box = context.findRenderObject();
+
+
+      Share.shareFiles(['${documentDirectory}/flutter0.png'], text: 'Great picture',
+          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size, subject: "Test");
+    } on PlatformException catch (e) {
+      print("Exception while taking screenshot:" + e.toString());
+    }
+
+
+//    try {
+//      RenderRepaintBoundary boundary =
+//      _primeKey.currentContext.findRenderObject();
+//      if (boundary.debugNeedsPaint) {
+//        Timer(Duration(seconds: 1), () => shareScreenshot());
+//        return null;
+//      }
+//      ui.Image image = (await rootBundle.load('assets/images/ac.jpeg')) as ui.Image;
+//
+//      final directory = (await getExternalStorageDirectory()).path;
+//      printLog(directory);
+//      ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+//      Uint8List pngBytes = byteData.buffer.asUint8List();
+//      File imgFile = new File('$directory/ac.jpeg');
+//      imgFile.writeAsBytes(pngBytes);
+//      final RenderBox box = context.findRenderObject();
+//      Share.shareFiles(['$directory/ac.jpeg'],
+//          subject: 'Share ScreenShot',
+//          text: 'Hello, check your share files!',
+//          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
+//      );
+//    } on PlatformException catch (e) {
+//      print("Exception while taking screenshot:" + e.toString());
+//    }
+
+
+//    var path = 'images/ac.jpeg';
+//    final byteData = await rootBundle.load('assets/$path');
+//    File file = new File('${(await getTemporaryDirectory()).path}/$path');
+//    printLog(file.path);
+//
+//    final filePath = await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
+//    File tempFile = File(filePath);
+//
+//    Uri uri = Uri.file('${(await getTemporaryDirectory()).path}/$path');
+//
+//    android_intent.Intent share = android_intent.Intent()..setAction(android_action.Action.ACTION_SEND);
+//    share.setType('image/*');
+//    share.putExtra(Extra.EXTRA_STREAM, uri);
+//
+//    share.startActivity(createChooser: true);
+//
+//
+//
+//    android_intent.Intent()
+//      ..setAction(android_action.Action.ACTION_SEND)
+//      ..setType('image/*')
+//      ..setPackage('shareFile')
+//      ..setData(file.uri)
+//      ..putExtra(Extra.EXTRA_STREAM, file.uri)
+//      ..startActivityForResult().then(
+//            (data) => print(data),
+//        onError: (e) => print(e.toString()));
+
+  }
+
   String pinCode = "";
   submitPin(String pin) {
     pinCode = pin;

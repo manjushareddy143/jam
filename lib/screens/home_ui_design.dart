@@ -361,9 +361,10 @@ class _HomeUIPageState extends State<HomeUIPage> {
                                                 Positioned(
                                                   left: 1.0,
                                                   top: 1.0,
-                                                  child: Icon(Icons.web_asset_outlined, color: Colors.black54,size: 40.0),
+                                                  child: Icon(IconData(0xe8da, fontFamily: 'MaterialIcons'), color: Colors.black54,size: 40.0),
                                                 ),
-                                                Icon(Icons.web_asset_outlined, color: Configurations.themColor, size: 40.0),
+                                                Icon(IconData(0xe8da, fontFamily: 'MaterialIcons')
+                                                    , color: Configurations.themColor, size: 40.0),
                                               ],
                                             ),
                                             Text(
