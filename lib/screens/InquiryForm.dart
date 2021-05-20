@@ -231,6 +231,12 @@ class _InquiryPageState extends State<InquiryPage> {
     } else {
       prime_service = this.service.name;
     }
+    
+    
+    printLog("phoneNumber=  ${phoneNumber}");
+    if(phoneNumber == null || phoneNumber == "") {
+      phoneNumber = '+974';
+    }
 
 
 

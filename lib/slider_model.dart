@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jam/app_localizations.dart';
+import 'package:jam/globals.dart' as globals;
+
 class Slide {
   final String img;
   final String header;
@@ -13,11 +16,11 @@ class Slide {
 }
  final slideList =[
    Slide(img: 'assets/images/slider1.png',
-           header: 'GET THINGS DONE FAST',
-           text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
+           header: 'intro_title',
+           text: 'intro_detail'),
    Slide(img: 'assets/images/slider2.png',
-       header: 'GET THINGS DONE FAST',
-       text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.'),
+       header: 'intro_title',
+       text: 'intro_detail'),
    Slide(img: 'assets/images/slider3.png',
-       header: 'GET THINGS DONE FAST',
-       text: 'NOW YOU CAN GET FAST SERVICE FOR VARIOUS THINGS THAT YOU NEED HELP FOR.')];
+       header: 'intro_title',
+       text: 'intro_detail')];

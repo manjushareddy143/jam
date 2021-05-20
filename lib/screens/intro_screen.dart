@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:jam/classes/language.dart';
 import 'package:jam/login/login.dart';
 import 'package:jam/login/masterSignupScreen.dart';
+import 'package:jam/main.dart';
+import 'package:jam/resources/configurations.dart';
 import 'package:jam/slider_layout.dart';
 import 'package:jam/slider_model.dart';
 import 'package:jam/slider_dots.dart';
 import 'package:jam/globals.dart' as globals;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/screens/home_screen.dart';
+import 'package:jam/utils/preferences.dart';
+import 'package:jam/utils/utils.dart';
 
 class SliderScreen extends StatefulWidget {
   _sliderScreen createState() => new _sliderScreen();
@@ -33,6 +38,26 @@ class _sliderScreen extends State<SliderScreen>{
     // TODO: implement initState
     super.initState();
   }
+
+
+  void _changeLanguage(Language language){
+    Locale _temp;
+    switch(language.languageCode){
+      case 'en': _temp = Locale(language.languageCode, 'US');
+      break;
+      case 'ar': _temp = Locale(language.languageCode, 'SA');
+      break;
+      default: _temp = Locale(language.languageCode, 'US');
+    }
+    printLog("testet"+_temp.languageCode);
+    Preferences.saveObject('lang', _temp.countryCode);
+    MyApp.setLocale(context, _temp);
+    setState(() {
+      build(context);
+    });
+  }
+
+
   final PageController _pageController = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
@@ -43,6 +68,7 @@ class _sliderScreen extends State<SliderScreen>{
       body: SingleChildScrollView(
         child: Column(
           children: [
+
             Container(
               height: MediaQuery.of(context).size.height * 0.23,
               //170,
@@ -54,7 +80,41 @@ class _sliderScreen extends State<SliderScreen>{
                   )
               ),
             ),
-           Container(
+
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisSize: MainAxisSize.max,
+                // verticalDirection: VerticalDirection.down,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.zero,
+                    child: DropdownButton(
+                      underline: SizedBox(),
+                      onChanged: ( Language language){
+                        _changeLanguage(language);
+                      },
+                      icon: Icon(Icons.language, color: Configurations.themColor,),
+                      items: Language.languageList()
+                          .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                        value:  lang,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget> [
+                            Text(AppLocalizations.of(context).translate(lang.flag)),
+                            Text(lang.name)
+                          ],
+                        ) ,
+                      )).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+
+
+            Container(
              height: MediaQuery.of(context).size.height * 0.57,
              color: Colors.white,
              child: Stack(alignment: AlignmentDirectional.bottomCenter,
@@ -72,11 +132,14 @@ class _sliderScreen extends State<SliderScreen>{
                    child:  Row(mainAxisSize: MainAxisSize.min,
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
+
                        for( int i1 = 0; i1 < slideList.length; i1 ++)
                          if(i1 == current)
-                           SliderDots(true)
+                          SliderDots(true)
                          else
-                           SliderDots(false)
+                          SliderDots(false)
+
+
                      ],
                    ),)
 

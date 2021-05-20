@@ -21,6 +21,7 @@ import 'package:jam/app_localizations.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatelessWidget{
 
@@ -254,6 +255,8 @@ int swiperIndex =0;
 
                     FlatButton.icon(onPressed: () {
                       printLog("CALL");
+                      _makingPhoneCall(contact);
+
                     },
                       icon: Icon(Icons.call, color: Configurations.themColor, size: 13,),
                       label: Text(AppLocalizations.of(context).translate('call'),
@@ -444,6 +447,14 @@ int swiperIndex =0;
     ),
     );
 
+  }
+  _makingPhoneCall(String contact) async {
+    var url = 'tel:' + contact;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
   Widget setImage(){
     String img = "";

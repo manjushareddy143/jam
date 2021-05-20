@@ -111,6 +111,18 @@ class _HomeUIPageState extends State<HomeUIPage> {
           backgroundColor: Colors.orange[50],
           body: CustomScrollView(
             slivers: <Widget>[
+
+              // Banner Swipe
+              SliverFixedExtentList(
+                itemExtent: 200.0,
+                delegate: SliverChildListDelegate(
+                  [
+                    Container(child: CarouselDemo()),
+                  ],
+                ),
+              ),
+
+
               SliverFixedExtentList(
                 itemExtent: 50.0,
                 delegate: SliverChildListDelegate(
@@ -214,15 +226,7 @@ class _HomeUIPageState extends State<HomeUIPage> {
                   )
               ),
 
-              // Banner Swipe
-              SliverFixedExtentList(
-                itemExtent: 200.0,
-                delegate: SliverChildListDelegate(
-                  [
-                    Container(child: CarouselDemo()),
-                  ],
-                ),
-              ),
+
 
               //
               SliverFixedExtentList(

@@ -89,6 +89,7 @@ class _user extends State<UserLogin>{
 
     super.dispose();
   }
+
   void _changeLanguage(Language language){
     Locale _temp;
     switch(language.languageCode){
@@ -350,6 +351,7 @@ class _user extends State<UserLogin>{
                     ),
                     Visibility(
                       visible: _showOTPField,
+
                       //visible:true,
                       child:
                       Column(mainAxisAlignment: MainAxisAlignment.center,
@@ -928,6 +930,8 @@ class _user extends State<UserLogin>{
   final confPass = TextEditingController();
   Widget setPasswordAgain(BuildContext context){
   //  showChangePass = true;
+
+    txtno.text = "+974";
     return AlertDialog(
       title: Center(
         child: Text(

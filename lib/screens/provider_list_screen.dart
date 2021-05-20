@@ -19,6 +19,7 @@ import 'dart:math' as math;
 import 'package:jam/app_localizations.dart';
 import 'package:jam/screens/vendor_profile.dart';
 import 'package:jam/globals.dart' as globals;
+import 'package:url_launcher/url_launcher.dart';
 
 //class ProviderListScreen extends StatelessWidget {
 //  @override
@@ -412,7 +413,10 @@ class _ProviderListState extends State<ProviderListPage> {
                   child: Row(
                     children: <Widget>[
                       FlatButton.icon(
-                        onPressed: null,
+                        onPressed: () {
+                          printLog("CALL");
+                          _makingPhoneCall(user.contact);
+                        },
                         icon: Icon(
                           Icons.call,
                           color: Colors.black,
@@ -470,6 +474,15 @@ class _ProviderListState extends State<ProviderListPage> {
         ],
       ),
     );
+  }
+
+  _makingPhoneCall(String contact) async {
+    var url = 'tel:' + contact;
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void show() {

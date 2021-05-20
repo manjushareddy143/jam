@@ -1208,7 +1208,13 @@ class ProfileUIPageState extends State<ProfileUIPage> with TickerProviderStateMi
 
       print("enableEmail == ${enableEmail}");
     }
-    print("after enableEmail == ${enableEmail}");
+
+    if(prfl_contact.text.isEmpty) {
+      prfl_contact.text = '+974';
+      print("prfl_contact == ${prfl_contact.text}");
+    }
+
+    print("globals.num == ${globals.num}");
 
 
 

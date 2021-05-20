@@ -440,7 +440,10 @@ class _InitialProfilePageState extends State<InitialProfilePage> {
 
 
     bool ishideService = false;
-  //  print("tes == ${globals.currentUser.services.length}");
+   print("phoneNumber == ${phoneNumber}");
+    if(phoneNumber == null || phoneNumber == "") {
+      phoneNumber = '+974';
+    }
 
     if(globals.currentUser.services != null) {
       print("Services is present");

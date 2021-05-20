@@ -409,8 +409,10 @@ void pushInfoAlert(BuildContext context, String title ,String message) {
       // return object of type Dialog
       return AlertDialog(
         key: _keyLoader,
-        title: new Text(title),
-        content: new Text(message),
+        title: new Text(title,
+            textAlign: TextAlign.center),
+        content: new Text(message,
+            textAlign: TextAlign.center),
         actions: <Widget>[
           // usually buttons at the bottom of the dialog
           new FlatButton(

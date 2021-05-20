@@ -93,6 +93,8 @@ class _MyAppState extends State<MyApp> {
               case "3":
                 msg = AppLocalizations.of(globals.context)
                     .translate('order_cancel_vendor');
+
+                msg += "\n\n" + message['data']['reason'] + "\n\n" + message['data']['comment'];
                 pushInfoAlert(
                     globals.context, message['notification']['title'], msg);
                 break;
