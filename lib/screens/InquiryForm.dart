@@ -53,6 +53,7 @@ class _InquiryPageState extends State<InquiryPage> {
 //   bool subCategory ;
   final txtName = TextEditingController();
   final txtService =TextEditingController();
+  final txtSubCategory =TextEditingController();
   final txtPrice = TextEditingController();
   final txtContact = TextEditingController();
   final txtEmail = TextEditingController();
@@ -133,8 +134,11 @@ class _InquiryPageState extends State<InquiryPage> {
     _dropDownService = buildServicesMenuItems(_lstServices);
     selectedService = _dropDownService[0].value;
     if(_lstSubCategory.length > 0){
+
       _dropDownSubCategory = buildSubCategoryDropDownMenuItems(_lstSubCategory);
+      // printLog("msg -- ${_dropDownSubCategory[0]}");
       selectedSubCategory = _dropDownSubCategory[0].value;
+
     }
 
     setProfile();
@@ -226,14 +230,19 @@ class _InquiryPageState extends State<InquiryPage> {
     }
 
     String prime_service = "";
+    String prime_category = "";
     if(globals.localization == 'ar_SA') {
       prime_service = this.service.arabic_name;
+      prime_category = this.category.arabic_name;
     } else {
       prime_service = this.service.name;
+      prime_category = this.category.name;
     }
+
+
     
     
-    printLog("phoneNumber=  ${phoneNumber}");
+    printLog("service=  ${this.category.name}");
     if(phoneNumber == null || phoneNumber == "") {
       phoneNumber = '+974';
     }
@@ -616,26 +625,60 @@ class _InquiryPageState extends State<InquiryPage> {
 
 
   Widget setDropDown1() {
-    return Container(
-      decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
-          border: Border.all(width: 0.9,color: Configurations.themColor)),
-      padding: const EdgeInsets.fromLTRB(10,0,0,0),
-      child: Row(
-        children:[
-          Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
-          SizedBox(width: 20,),
-          Expanded(child: DropdownButton(
-              underline: SizedBox(),
-              isExpanded: true,
-              value: (selectedSubCategory != null) ? selectedSubCategory.toUpperCase() : "",
-              icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
-              items: _dropDownSubCategory,
-              onChanged: changedDropDownItem1),
-          ),
 
-        ],
-      ),
+    String prime_category = "";
+    if(globals.localization == 'ar_SA') {
+      prime_category = this.category.arabic_name;
+    } else {
+      prime_category = this.category.name;
+    }
+
+    return
+      TextFormField(
+      readOnly: true,
+      focusNode: focus_service,
+      decoration: InputDecoration( suffixIcon: Icon(Icons.work, color: Colors.grey),
+        contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        disabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Configurations.themColor,
+          width: 1,  ),),
+        labelText: AppLocalizations.of(context).translate('inquiry_txt_secondary'), labelStyle: TextStyle(color: Colors.grey),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Configurations.themColor),
+        ),),cursorColor: Configurations.themColor,
+      controller: txtSubCategory..text = prime_category,
+      enabled: false,
+
+
+      //txtName,//..text = 'KAR-MT30',
+//        validator: (value){
+//          if (value.isEmpty) {
+//            return AppLocalizations.of(context).translate('signup_txt_enteruser');
+//          }
+//          return null;
+//        },
     );
+
+    //   Container(
+    //   decoration: BoxDecoration(borderRadius:  BorderRadius.circular(9.0),
+    //       border: Border.all(width: 0.9,color: Configurations.themColor)),
+    //   padding: const EdgeInsets.fromLTRB(10,0,0,0),
+    //   child: Row(
+    //     children:[
+    //       Text(AppLocalizations.of(context).translate('inquiry_txt_secondary') , style: TextStyle(fontSize: 15 , color: Colors.black45)),
+    //       SizedBox(width: 20,),
+    //       Expanded(child: DropdownButton(
+    //           underline: SizedBox(),
+    //           isExpanded: true,
+    //           value: (selectedSubCategory != null) ? selectedSubCategory.toUpperCase() : "",
+    //           icon: Icon(Icons.arrow_drop_down, color: Configurations.themColor,),
+    //           items: _dropDownSubCategory,
+    //           onChanged: changedDropDownItem1,
+    //       ),
+    //       ),
+    //
+    //     ],
+    //   ),
+    // );
   }
 
   List<DropdownMenuItem<String>> buildSubCategoryDropDownMenuItems(List<SubCategory> listSubCategory) {
