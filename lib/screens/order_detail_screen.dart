@@ -483,9 +483,6 @@ class _DetailUIPageState extends State<DetailUIPage> {
              padding:  EdgeInsetsDirectional.fromSTEB(20, 5, 20, 0),
              child: Column(
                children: [
-
-
-
                  // Booking Detail
                  Padding(
                    padding: const EdgeInsets.fromLTRB(0,10.0,0,0),
@@ -2078,9 +2075,9 @@ class _DetailUIPageState extends State<DetailUIPage> {
 
 
   String findTotal() {
-    printLog("findTotal method call : ${globals.order.invoice}");
+    printLog("findTotal method call : ${globals.order.servicePrice.price}");
     if(globals.order.invoice != null) {
-      double cost = double.parse(globals.order.provider.servicePrice.price);
+      double cost = double.parse(globals.order.servicePrice.price);
       double serviceAmount = globals.order.invoice.working_hr * cost;
 
       int meterialAmount = globals.order.invoice.material_quantity * globals.order.invoice.material_price;

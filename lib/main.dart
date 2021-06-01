@@ -268,7 +268,14 @@ class _MyAppState extends State<MyApp> {
           for (Locale supportedLocale in supportedLocales) {
             if (supportedLocale.languageCode == locale.languageCode ||
                 supportedLocale.countryCode == locale.countryCode) {
-              printLog("*language ok $supportedLocale");
+
+              if(supportedLocale.languageCode == "en") {
+                globals.myLang = "EN";
+              } else {
+                globals.myLang = "AR";
+              }
+              printLog("*language ok ==  ${supportedLocale.languageCode}");
+              printLog("*myLang ${globals.myLang}");
               return supportedLocale;
             }
           }

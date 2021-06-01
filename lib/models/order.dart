@@ -5,6 +5,7 @@ import 'package:jam/models/rating.dart';
 import 'package:jam/models/service.dart';
 import 'package:jam/models/sub_category.dart';
 import 'package:jam/models/user.dart';
+import 'package:jam/models/user_services.dart';
 
 import 'address.dart';
 
@@ -22,6 +23,7 @@ class Order {
   final SubCategory category;
   final String booking_date;
   final String orderer_name;
+  final UserServices servicePrice;
   final String email;
   final String contact;
   final String start_time;
@@ -43,7 +45,7 @@ class Order {
   Order(this.id, this.provider_id, this.service_id, this.category_id,
       this.orderer_name, this.email,this.contact, this.start_time,
       this.end_time, this.remark, this.status, this.booking_date,
-      this.service, this.category,
+      this.service, this.category, this.servicePrice,
 //      this.provider_first_name, this.provider_image, this.provider_last_name,
       this.comment, this.rating, this.invoice,
       this.user_id,this.address, this.otp, this.user, this.provider, this.cancelled);
@@ -53,6 +55,7 @@ class Order {
       : id = json['id'], provider_id = json['provider_id'],
         service_id = json['service_id'],
         category_id = json['category_id'],
+        servicePrice = ((json.containsKey('service_price') && json['service_price'] != null ) ? UserServices.fromJson(json['service_price']) : null),
         orderer_name = json['orderer_name'],
         email = json['email'],
         contact = json['contact'],

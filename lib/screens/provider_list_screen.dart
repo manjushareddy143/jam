@@ -265,6 +265,7 @@ class _ProviderListState extends State<ProviderListPage> {
           GestureDetector(
             child: vendorCard(user, service, capitalize(name)),
             onTap: () => {
+              printLog("CLICK"),
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -321,6 +322,7 @@ class _ProviderListState extends State<ProviderListPage> {
   }
 
   Widget vendorCard(User user, Service service, String name) {
+    // printLog("user -= ${user.services[17].toJson()}");
     EdgeInsets margin1 = EdgeInsets.only(left: 40.0);
     EdgeInsets margin2 = EdgeInsets.only(left: 55.0, top: 10);
     if (globals.localization == 'ar_SA') {

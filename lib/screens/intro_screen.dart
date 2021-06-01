@@ -44,10 +44,13 @@ class _sliderScreen extends State<SliderScreen>{
     Locale _temp;
     switch(language.languageCode){
       case 'en': _temp = Locale(language.languageCode, 'US');
+      globals.myLang = "EN";
       break;
       case 'ar': _temp = Locale(language.languageCode, 'SA');
+      globals.myLang = "AR";
       break;
       default: _temp = Locale(language.languageCode, 'US');
+      // globals.myLang = "EN";
     }
     printLog("testet"+_temp.languageCode);
     Preferences.saveObject('lang', _temp.countryCode);
@@ -83,31 +86,30 @@ class _sliderScreen extends State<SliderScreen>{
 
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisSize: MainAxisSize.max,
                 // verticalDirection: VerticalDirection.down,
                 children: <Widget>[
-                  Padding(padding: EdgeInsets.zero,
-                    child: DropdownButton(
-                      underline: SizedBox(),
-                      onChanged: ( Language language){
-                        _changeLanguage(language);
-                      },
-                      icon: Icon(Icons.language, color: Configurations.themColor,),
-                      items: Language.languageList()
-                          .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                        value:  lang,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget> [
-                            Text(AppLocalizations.of(context).translate(lang.flag)),
-                            Text(lang.name)
-                          ],
-                        ) ,
-                      )).toList(),
-                    ),
+                  DropdownButton(
+                    underline: SizedBox(),
+                    onChanged: ( Language language){
+                      _changeLanguage(language);
+                    },
+                    icon: Icon(Icons.language, color: Configurations.themColor,),
+                    items: Language.languageList()
+                        .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                      value:  lang,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget> [
+                          Text(AppLocalizations.of(context).translate(lang.flag)),
+                          Text(lang.name)
+                        ],
+                      ) ,
+                    )).toList(),
                   ),
+                  Text(" " + globals.myLang)
                 ],
               ),
             ),

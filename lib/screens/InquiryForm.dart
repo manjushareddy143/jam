@@ -231,18 +231,25 @@ class _InquiryPageState extends State<InquiryPage> {
 
     String prime_service = "";
     String prime_category = "";
+    // printLog("this.service ${this.category}");
     if(globals.localization == 'ar_SA') {
       prime_service = this.service.arabic_name;
-      prime_category = this.category.arabic_name;
+      if(this.category != null) {
+        prime_category = this.category.arabic_name;
+      }
+
     } else {
       prime_service = this.service.name;
-      prime_category = this.category.name;
+      if(this.category != null) {
+        prime_category = this.category.name;
+      }
+
     }
 
 
     
     
-    printLog("service=  ${this.category.name}");
+    // printLog("service=  ${this.category}");
     if(phoneNumber == null || phoneNumber == "") {
       phoneNumber = '+974';
     }
@@ -627,11 +634,14 @@ class _InquiryPageState extends State<InquiryPage> {
   Widget setDropDown1() {
 
     String prime_category = "";
-    if(globals.localization == 'ar_SA') {
-      prime_category = this.category.arabic_name;
-    } else {
-      prime_category = this.category.name;
+    if(this.category != null) {
+      if(globals.localization == 'ar_SA') {
+        prime_category = this.category.arabic_name;
+      } else {
+        prime_category = this.category.name;
+      }
     }
+
 
     return
       TextFormField(

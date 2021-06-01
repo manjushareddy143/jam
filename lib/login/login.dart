@@ -90,18 +90,24 @@ class _user extends State<UserLogin>{
     super.dispose();
   }
 
+
   void _changeLanguage(Language language){
     Locale _temp;
     switch(language.languageCode){
       case 'en': _temp = Locale(language.languageCode, 'US');
+      globals.myLang = "EN";
         break;
       case 'ar': _temp = Locale(language.languageCode, 'SA');
+      globals.myLang = "AR";
       break;
       default: _temp = Locale(language.languageCode, 'US');
     }
-    printLog("testet"+_temp.languageCode);
+    printLog("testet  = "+_temp.languageCode);
     Preferences.saveObject('lang', _temp.countryCode);
     MyApp.setLocale(context, _temp);
+    setState(() {
+      build(context);
+    });
   }
 
   @override
@@ -129,26 +135,34 @@ class _user extends State<UserLogin>{
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Padding(padding: EdgeInsets.only(top: 50),
-                          child: DropdownButton(
-                            underline: SizedBox(),
-                            onChanged: ( Language language){
-                              _changeLanguage(language);
-                            },
-                            icon: Icon(Icons.language, color: Configurations.themColor,),
-                            items: Language.languageList()
-                                .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
-                              value:  lang,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: <Widget> [
-                                Text(AppLocalizations.of(context).translate(lang.flag)),
-                                  Text(lang.name)
-                                ],
-                              ) ,
-                            )).toList(),
+                          child: Row(
+                            children: <Widget>[
+                              DropdownButton(
+                                underline: SizedBox(),
+                                onChanged: ( Language language){
+                                  _changeLanguage(language);
+                                },
+
+
+                                icon: Icon(Icons.language, color: Configurations.themColor,),
+
+                                items: Language.languageList()
+                                    .map<DropdownMenuItem<Language>>((lang) => DropdownMenuItem(
+                                  value:  lang,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: <Widget> [
+                                      Text(AppLocalizations.of(context).translate(lang.flag)),
+                                      Text(lang.name)
+                                    ],
+                                  ) ,
+                                )).toList(),
+                              ),
+                              Text(" " + globals.myLang)
+                            ],
                           ),
                         ),
                       ],
@@ -191,6 +205,11 @@ class _user extends State<UserLogin>{
                           validator: (value) {
                             if (value.isEmpty) {
                               return AppLocalizations.of(context).translate('login_txt_user');
+                            } else if(isNumeric(value)) {
+                              if(!value.contains('+974')) {
+                                return "Please Enter +974";
+                              }
+
                             }
                             return validateEmail(value);
                           },
@@ -397,10 +416,10 @@ class _user extends State<UserLogin>{
                       ),
                     ),
 
-                    FlatButton(onPressed: () {
-                      instgramOpen();
-                    }, child: Text("INSTAGRAM")
-                    ),
+                    // FlatButton(onPressed: () {
+                    //   instgramOpen();
+                    // }, child: Text("INSTAGRAM")
+                    // ),
 
 
                     Align(
@@ -421,85 +440,85 @@ class _user extends State<UserLogin>{
     );
   }
 
-  Future<void> instgramOpen() async {
-
-//    String directory = (await getTemporaryDirectory()).path;
-//    printLog(directory);
-
-    try {
-      var url = 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg';
-      var response = await get(url);
-
-      final documentDirectory = (await getExternalStorageDirectory()).path;
-
-      File imgFile = new File('$documentDirectory/flutter.png');
-      imgFile.writeAsBytesSync(response.bodyBytes);
-
-      final RenderBox box = context.findRenderObject();
-
-
-      Share.shareFiles(['${documentDirectory}/flutter0.png'], text: 'Great picture',
-          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size, subject: "Test");
-    } on PlatformException catch (e) {
-      print("Exception while taking screenshot:" + e.toString());
-    }
-
-
-//    try {
-//      RenderRepaintBoundary boundary =
-//      _primeKey.currentContext.findRenderObject();
-//      if (boundary.debugNeedsPaint) {
-//        Timer(Duration(seconds: 1), () => shareScreenshot());
-//        return null;
-//      }
-//      ui.Image image = (await rootBundle.load('assets/images/ac.jpeg')) as ui.Image;
+//   Future<void> instgramOpen() async {
 //
-//      final directory = (await getExternalStorageDirectory()).path;
-//      printLog(directory);
-//      ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-//      Uint8List pngBytes = byteData.buffer.asUint8List();
-//      File imgFile = new File('$directory/ac.jpeg');
-//      imgFile.writeAsBytes(pngBytes);
-//      final RenderBox box = context.findRenderObject();
-//      Share.shareFiles(['$directory/ac.jpeg'],
-//          subject: 'Share ScreenShot',
-//          text: 'Hello, check your share files!',
-//          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
-//      );
-//    } on PlatformException catch (e) {
-//      print("Exception while taking screenshot:" + e.toString());
-//    }
-
-
-//    var path = 'images/ac.jpeg';
-//    final byteData = await rootBundle.load('assets/$path');
-//    File file = new File('${(await getTemporaryDirectory()).path}/$path');
-//    printLog(file.path);
+// //    String directory = (await getTemporaryDirectory()).path;
+// //    printLog(directory);
 //
-//    final filePath = await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
-//    File tempFile = File(filePath);
+//     try {
+//       var url = 'https://i.ytimg.com/vi/fq4N0hgOWzU/maxresdefault.jpg';
+//       var response = await get(url);
 //
-//    Uri uri = Uri.file('${(await getTemporaryDirectory()).path}/$path');
+//       final documentDirectory = (await getExternalStorageDirectory()).path;
 //
-//    android_intent.Intent share = android_intent.Intent()..setAction(android_action.Action.ACTION_SEND);
-//    share.setType('image/*');
-//    share.putExtra(Extra.EXTRA_STREAM, uri);
+//       File imgFile = new File('$documentDirectory/flutter.png');
+//       imgFile.writeAsBytesSync(response.bodyBytes);
 //
-//    share.startActivity(createChooser: true);
+//       final RenderBox box = context.findRenderObject();
 //
 //
+//       Share.shareFiles(['${documentDirectory}/flutter0.png'], text: 'Great picture',
+//           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size, subject: "Test");
+//     } on PlatformException catch (e) {
+//       print("Exception while taking screenshot:" + e.toString());
+//     }
 //
-//    android_intent.Intent()
-//      ..setAction(android_action.Action.ACTION_SEND)
-//      ..setType('image/*')
-//      ..setPackage('shareFile')
-//      ..setData(file.uri)
-//      ..putExtra(Extra.EXTRA_STREAM, file.uri)
-//      ..startActivityForResult().then(
-//            (data) => print(data),
-//        onError: (e) => print(e.toString()));
-
-  }
+//
+// //    try {
+// //      RenderRepaintBoundary boundary =
+// //      _primeKey.currentContext.findRenderObject();
+// //      if (boundary.debugNeedsPaint) {
+// //        Timer(Duration(seconds: 1), () => shareScreenshot());
+// //        return null;
+// //      }
+// //      ui.Image image = (await rootBundle.load('assets/images/ac.jpeg')) as ui.Image;
+// //
+// //      final directory = (await getExternalStorageDirectory()).path;
+// //      printLog(directory);
+// //      ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+// //      Uint8List pngBytes = byteData.buffer.asUint8List();
+// //      File imgFile = new File('$directory/ac.jpeg');
+// //      imgFile.writeAsBytes(pngBytes);
+// //      final RenderBox box = context.findRenderObject();
+// //      Share.shareFiles(['$directory/ac.jpeg'],
+// //          subject: 'Share ScreenShot',
+// //          text: 'Hello, check your share files!',
+// //          sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size
+// //      );
+// //    } on PlatformException catch (e) {
+// //      print("Exception while taking screenshot:" + e.toString());
+// //    }
+//
+//
+// //    var path = 'images/ac.jpeg';
+// //    final byteData = await rootBundle.load('assets/$path');
+// //    File file = new File('${(await getTemporaryDirectory()).path}/$path');
+// //    printLog(file.path);
+// //
+// //    final filePath = await FlutterAbsolutePath.getAbsolutePath(imageAsset.identifier);
+// //    File tempFile = File(filePath);
+// //
+// //    Uri uri = Uri.file('${(await getTemporaryDirectory()).path}/$path');
+// //
+// //    android_intent.Intent share = android_intent.Intent()..setAction(android_action.Action.ACTION_SEND);
+// //    share.setType('image/*');
+// //    share.putExtra(Extra.EXTRA_STREAM, uri);
+// //
+// //    share.startActivity(createChooser: true);
+// //
+// //
+// //
+// //    android_intent.Intent()
+// //      ..setAction(android_action.Action.ACTION_SEND)
+// //      ..setType('image/*')
+// //      ..setPackage('shareFile')
+// //      ..setData(file.uri)
+// //      ..putExtra(Extra.EXTRA_STREAM, file.uri)
+// //      ..startActivityForResult().then(
+// //            (data) => print(data),
+// //        onError: (e) => print(e.toString()));
+//
+//   }
 
   String pinCode = "";
   submitPin(String pin) {

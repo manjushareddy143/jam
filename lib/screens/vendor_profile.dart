@@ -177,7 +177,7 @@ int swiperIndex =0;
 
   Widget setCard(){
 
-    print("NAME == ${this.provider.first_name}");
+    // print("NAME == ${this.provider.first_name}");
     String name = "";
     if(this.provider.organisation != null) {
       name = this.provider.organisation.name;
@@ -187,7 +187,9 @@ int swiperIndex =0;
 
 
     String services = "";
+    printLog(this.provider.services.length);
     this.provider.services.forEach((element) {
+
       if (services.isEmpty) {
         services = (globals.localization == 'ar_SA') ? element.service.arabic_name : element.service.name;
       } else {
@@ -472,7 +474,7 @@ int swiperIndex =0;
       img = (this.provider.organisation.logo != null && this.provider.organisation.logo.contains("http"))
           ? this.provider.organisation.logo : Configurations.BASE_URL +this.provider.organisation.logo;
     }
-    print("IM == ${img}");
+    // print("IM == ${img}");
     return new Container(
 //      margin: new EdgeInsets.symmetric(
 //          vertical: 8.0
