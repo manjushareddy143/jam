@@ -12,6 +12,7 @@
   "btn_login" : "LOGIN",
   "btn_signup": "Sign Up",
   "btn_facebook": "Sign in with Facebook",
+  "btn_apple": "Sign with Apple",
   "btn_gmail": "Sign in with Google",
   "forgot_title": "Find your Account",
   "forgot_email_placeholder": "Enter your email",

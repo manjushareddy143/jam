@@ -29,6 +29,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  apple_sign_in:
+    dependency: "direct main"
+    description:
+      name: apple_sign_in
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.0"
   archive:
     dependency: transitive
     description:
@@ -722,7 +729,7 @@ packages:
     source: hosted
     version: "3.0.13"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"
@@ -791,6 +798,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1+1"
+  sign_in_with_apple:
+    dependency: "direct main"
+    description:
+      name: sign_in_with_apple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.4"
   simple_image_crop:
     dependency: "direct main"
     description:
@@ -817,6 +831,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4+1"
+  social_login:
+    dependency: "direct main"
+    description:
+      name: social_login
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   source_span:
     dependency: transitive
     description:
@@ -979,5 +1000,5 @@ packages:
     source: hosted
     version: "2.2.1"
 sdks:
-  dart: ">=2.10.0-110 <2.11.0"
+  dart: ">=2.10.0-110 <=2.11.0-161.0.dev"
   flutter: ">=1.20.0 <2.0.0"

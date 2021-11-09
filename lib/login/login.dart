@@ -33,6 +33,7 @@ import 'package:jam/globals.dart' as globals;
 import 'package:jam/login/masterSignupScreen.dart';
 import 'dart:io' show Platform;
 import 'package:http/http.dart' as http;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'package:jam/widget/widget_helper.dart';
 
@@ -42,6 +43,10 @@ import 'dart:async' show StreamController;
 import 'dart:io';
 import 'package:share/share.dart';
 import 'dart:ui' as ui;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:social_login/social_login.dart';
+import 'package:apple_sign_in/apple_sign_in.dart';
+
 
 
 
@@ -347,7 +352,7 @@ class _user extends State<UserLogin>{
                       },
                     ),
                     SizedBox(height: 10,),
-
+                      
                     SignInButton(
                       Buttons.Google,
                       text: AppLocalizations.of(context).translate('btn_gmail'),
@@ -357,6 +362,23 @@ class _user extends State<UserLogin>{
                       },
                     ),
 
+ SignInButton(
+                      Buttons.Apple,
+                      text: AppLocalizations.of(context).translate('btn_apple'),
+
+                      // padding: EdgeInsets.fromLTRB(120,10,120,10),
+                      
+  
+  onPressed: () {
+    signInWithApple();
+  }
+   
+     
+              ),
+
+                      
+                     
+                    SizedBox(height: 10,),
 
 //                    SizedBox(height: 10,),
                     FlatButton( onPressed: (){
@@ -524,6 +546,7 @@ class _user extends State<UserLogin>{
   submitPin(String pin) {
     pinCode = pin;
   }
+   
   void otpVerification() async {
     printLog("otpVerification ::: ");
     if(pinCode != "" && pinCode.length > 5) {
@@ -534,6 +557,9 @@ class _user extends State<UserLogin>{
     }
 
   }
+    
+
+
   Future _otpVerificationEmail() async {
     otpVerify("otp" ,pinCode, setState);
   }
@@ -588,6 +614,58 @@ class _user extends State<UserLogin>{
       });
     });
   }
+    
+    void signInWithApple() async {
+   if(await AppleSignIn.isAvailable()) {
+     print('Apple SignIn ');
+      final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      webAuthenticationOptions: WebAuthenticationOptions(
+                    // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+                    clientId:
+                        'com.jam.appservies',
+                    redirectUri: Uri.parse(
+                      'https://staging.jam-app.com/api/v1/all_services',
+                    ),
+                  ),
+                  // TODO: Remove these if you have no need for them
+                  
+                );
+    
+
+    print(credential);
+    final signInWithAppleEndpoint = Uri(
+                  scheme: 'https',
+                  host: 'flutter-sign-in-with-apple-example.glitch.me',
+                  path: '/sign_in_with_apple',
+                  queryParameters: <String, String>{
+                    'code': credential.authorizationCode,
+                    if (credential.givenName != null)
+                      'firstName': credential.givenName,
+                    if (credential.familyName != null)
+                      'lastName': credential.familyName,
+                    'useBundleId':
+                        Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+                    if (credential.state != null) 'state': credential.state,
+                  },
+                );
+
+                final session = await http.Client().post(
+                  signInWithAppleEndpoint,
+                );
+
+                // If we got this far, a session based on the Apple ID credential has been created in your system,
+                // and you can now set this as the app's session
+                print(session);
+
+}
+else{
+    print('Apple SignIn is not available for your device');
+}
+    }
   void signinWithGmail() {
     Widget_Helper.showLoading(context);
     signInWithGoogle()

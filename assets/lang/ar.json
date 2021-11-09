@@ -12,6 +12,7 @@
   "btn_login" : "تسجيل الدخول",
   "btn_signup": "سجل",
   "btn_facebook": "قم بتسجيل",
+  "btn_apple": "تسجيل الدخول مع أبل",
   "btn_gmail": "الدخول مع جوجل",
   "forgot_title": "جد حسابك",
   "forgot_email_placeholder": "أدخل بريدك الإلكتروني",

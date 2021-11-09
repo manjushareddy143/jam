@@ -29,7 +29,7 @@ dependencies:
   geocoder:
 
   geopoint_location:
-
+  social_login: 
 #  flutter_geofence: ^0.2.0
 #  url_launcher: ^5.4.11
   url_launcher:
@@ -38,8 +38,9 @@ dependencies:
   flutter_launcher_icons:
   hexcolor:
   country_list_pick:
-  country_code_picker: 
-
+  country_code_picker:
+  sign_in_with_apple:
+  apple_sign_in:
   pin_entry_text_field:
 
   firebase_crashlytics:
@@ -48,7 +49,8 @@ dependencies:
   tree_view:
   dio:
   path_provider:
-
+  provider:
+  
 
   flutter_datetime_picker:
 
