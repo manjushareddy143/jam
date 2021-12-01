@@ -52,17 +52,20 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Explanation on why the camera access is needed.</string>
+	<string>Jamapp would like to use your camera to update profile picture</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs your location to test the location feature of the Google Maps location picker plugin.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Jamapp would like to save photos to your photo gallery to update profile picture</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We use access to photo library responsibly</string>
+	<string>Jamapp would like access to your photo gallery to update profile picture</string>
 	<key>Status bar is initially hidden </key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

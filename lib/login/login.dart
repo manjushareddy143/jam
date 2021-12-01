@@ -44,7 +44,7 @@ import 'dart:io';
 import 'package:share/share.dart';
 import 'dart:ui' as ui;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:social_login/social_login.dart';
+//import 'package:social_login/social_login.dart';
 import 'package:apple_sign_in/apple_sign_in.dart';
 
 

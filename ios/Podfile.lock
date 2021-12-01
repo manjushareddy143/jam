@@ -171,8 +171,6 @@ PODS:
     - Flutter
   - simple_image_crop (0.0.1):
     - Flutter
-  - social_login (0.0.1):
-    - Flutter
   - url_launcher (0.0.1):
     - Flutter
 
@@ -199,7 +197,6 @@ DEPENDENCIES:
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - simple_image_crop (from `.symlinks/plugins/simple_image_crop/ios`)
-  - social_login (from `.symlinks/plugins/social_login/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
@@ -273,8 +270,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   simple_image_crop:
     :path: ".symlinks/plugins/simple_image_crop/ios"
-  social_login:
-    :path: ".symlinks/plugins/social_login/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
 
@@ -324,7 +319,6 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sign_in_with_apple: 34f3f5456a45fd7ac5fb42905e2ad31dae061b4a
   simple_image_crop: 7bc768de8b5fa16adafb0c96557bba83ec6f734e
-  social_login: d8ca55740a202760bd7c4b82745d073e4e93deef
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
